@@ -1,7 +1,7 @@
 
 import React from "react";
 
-import { SteedosClient }  from '@steedos/client';
+import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object/src/index";
 import { FormProvider } from "@steedos/builder-form/src/index";
@@ -19,20 +19,20 @@ const {
 - locale: zh_CN, en_US, zh_TW  TODO: 和steedos的locale值不一样，获取user之后需要转换。
 
 */
-export function SteedosProvider(props:any) {
+export function SteedosProvider(props: any) {
 
   const {
     rootUrl = STEEDOS_ROOT_URL,
     tenantId = STEEDOS_TENANT_ID,
     userId = STEEDOS_USER_ID,
-    authToken =  STEEDOS_AUTH_TOKEN,
+    authToken = STEEDOS_AUTH_TOKEN,
     user = {},
     locale = STEEDOS_LOCALE,
     children,
   } = props;
 
   const client = new SteedosClient();
-  
+
   client.setUrl(rootUrl)
   client.setUserId(userId)
   client.setToken(authToken);
@@ -48,34 +48,31 @@ export function SteedosProvider(props:any) {
     client,
   }
 
-  const requestObject = async(objectApiName:string) => {
+  const requestObject = async (objectApiName: string) => {
     //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
-    if(!objectApiName){
+    if (!objectApiName) {
       return;
     }
     const object = await client.sobject(objectApiName).getConfig();
     return object;
   }
 
-  const requestRecords = async( objectApiName:string, filters:any, fields:any , options:any) => {
+  const requestRecords = async (objectApiName: string, filters: any, fields: any, options: any) => {
     const records = await client.sobject(objectApiName).find(filters, fields);
     return records;
 
   }
 
-  const updateRecord = async (objectApiName:string, objectRecordId:string, data:any) => {
+  const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
     const result = await client.sobject(objectApiName).update(objectRecordId, data);
 
     return result
   }
 
   const objectProviderProps = {
-    
-    requestObject: requestObject,
-    
-    requestRecords: requestRecords,
-    
-    updateRecord: updateRecord
+    requestObject,
+    requestRecords,
+    updateRecord
   }
 
   return (
