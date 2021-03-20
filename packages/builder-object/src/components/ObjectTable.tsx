@@ -209,6 +209,7 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     console.log("====request====params==", params);
     console.log("====request====sort==", sort);
     console.log("====request====filter==", filter);
+    // TODO: 这里antd的request请求函数与ObjectTable组件传入的filters,sort等格式不一样，需要转换处理
     const fields = columnFields.map((n) => { return n.fieldName });
     return objectContext.requestRecords(objectApiName, filter, fields, {
       pageSize: params.pageSize as number,
