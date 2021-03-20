@@ -34,6 +34,8 @@ export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType
   name: string,
   objectApiName?: string,
   columnFields: ObjectTableColumnProps[]
+  filters?: [] | string
+  filterableFields?: [string]
 } & Omit<ProTableProps<T, U, ValueType>, 'columns'> & {
   defaultClassName: string;
 }
