@@ -33,7 +33,7 @@ export type ObjectTableColumnProps = {
 export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType, ValueType> = {
   name: string,
   objectApiName?: string,
-  columns: ObjectTableColumnProps[]
+  columnFields: ObjectTableColumnProps[]
 } & Omit<ProTableProps<T, U, ValueType>, 'columns'> & {
   defaultClassName: string;
 }
@@ -151,7 +151,7 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     currentObjectApiName = objectContext.currentObjectApiName;
   }
 
-  const { name: tableId = 'default', columns, ...rest } = props
+  const { name: tableId = 'default', columnFields, ...rest } = props
 
   if (!store.forms[tableId])
     store.forms[tableId] = TableModel.create({id: tableId});
@@ -173,7 +173,7 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
 
   const objectFields = objectSchema.fields;
   let proColumns: any = []
-  _.forEach(columns, (columnItem: ObjectTableColumnProps) => {
+  _.forEach(columnFields, (columnItem: ObjectTableColumnProps) => {
     const proColumn = getObjectTableProColumn(objectFields[columnItem.fieldName]);
 
     if (proColumn) {
@@ -204,8 +204,11 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
       total: number,
     };
     */
-    const columnsFields = columns.map((n) => { return n.fieldName });
-    return objectContext.requestRecords(objectApiName, filter, columnsFields, {
+    console.log("====request====params==", params);
+    console.log("====request====sort==", sort);
+    console.log("====request====filter==", filter);
+    const fields = columnFields.map((n) => { return n.fieldName });
+    return objectContext.requestRecords(objectApiName, filter, fields, {
       pageSize: params.pageSize as number,
       current: params.current as number,
       sort: sort

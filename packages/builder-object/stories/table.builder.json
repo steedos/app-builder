@@ -27,7 +27,7 @@
                     "name": "Steedos:ObjectTable",
                     "options": {
                         "objectApiName": "accounts",
-                        "columns": [
+                        "columnFields": [
                             {
                                 "fieldName": "auto_num__c"
                             },
