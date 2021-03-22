@@ -104,7 +104,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         alert("表单修改成功！");
       }
     }else{
-      result = await objectContext.addNewRecord(objectApiName, values);
+      result = await objectContext.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");
       }

@@ -250,7 +250,7 @@ export const Preview = () => {
         //data:表单提交Data
         return []
       }}
-      addNewRecord = {async (objectApiName, data) => {
+      insertRecord = {async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return []
@@ -327,7 +327,7 @@ export const ObjectFormSimpleEdit = () => {
         //data:表单提交Data
         return []
       }}
-      addNewRecord = {async (objectApiName, data) => {
+      insertRecord = {async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return []
@@ -380,7 +380,7 @@ export const ObjectFormSimpleAdd = () => {
         //data:表单提交Data
         return []
       }}
-      addNewRecord = {async (objectApiName, data) => {
+      insertRecord = {async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return [{

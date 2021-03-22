@@ -69,7 +69,7 @@ export function SteedosProvider(props: any) {
     return result;
   }
 
-  const addNewRecord = async (objectApiName: string, data: any) => {
+  const insertRecord = async (objectApiName: string, data: any) => {
     const result= await client.sobject(objectApiName).insert(data);
     return result;
   }
@@ -78,7 +78,7 @@ export function SteedosProvider(props: any) {
     requestObject,
     requestRecords,
     updateRecord,
-    addNewRecord
+    insertRecord
   }
 
   return (
