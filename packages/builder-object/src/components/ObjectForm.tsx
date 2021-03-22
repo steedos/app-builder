@@ -24,7 +24,6 @@ export type ObjectFormProps = {
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
-  console.log('-ObjectForm--props--', props);
   let objectFormMode = props.builderState.state.formMode;
   if(objectFormMode === 'add'){
     objectFormMode = 'edit';
