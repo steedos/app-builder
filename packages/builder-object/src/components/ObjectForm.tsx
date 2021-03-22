@@ -20,16 +20,23 @@ export type FormProps<T = Record<string, any>>  = {
 export type ObjectFormProps = {
   objectApiName?: string,
   recordId?: string,
+  builderState?: any
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
+  console.log('-ObjectForm--props--', props);
+  let objectFormMode = props.builderState.state.formMode;
+  if(objectFormMode === 'add'){
+    objectFormMode = 'edit';
+  }
 
   const {
     name: formId = 'default',
-    mode = 'read', 
+    mode= objectFormMode, 
     layout = 'vertical',
     ...rest
   } = props;
+ 
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   const objectContext = useContext(ObjectContext);
@@ -84,16 +91,27 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   registerObjectFieldComponent(_.keys(object.fields));
   
   let initialValues = {};
-  const record = records[0];
-  fields.map((fieldName)=>{
-    initialValues[fieldName] = record[fieldName];
-  })
+  if(records.length > 0){
+    const record = records[0];
+    fields.map((fieldName)=>{
+      initialValues[fieldName] = record[fieldName];
+    })
+  }
   const onFinish = async(values:any) =>{
-    const result = await objectContext.updateRecord(objectApiName, recordId, values);
-    console.log('----onFinish--result--', result);
-    if(result){
-      alert("表单修改成功！");
-    }
+    let result;
+    console.log('---recordId---', recordId);
+    if(recordId){
+      result = await objectContext.updateRecord(objectApiName, recordId, values);
+      if(result){
+        alert("表单修改成功！");
+      }
+    }else{
+      result = await objectContext.addNewRecord(objectApiName, values);
+      if(result){
+        alert("添加成功！");
+      }
+    }   
+    console.log('----onFinish--result--', result);  
   }
   return (
     <Form 

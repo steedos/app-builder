@@ -1,6 +1,7 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
+import { store } from '@steedos/builder-store';
 
 import {
   ObjectProvider
@@ -249,6 +250,11 @@ export const Preview = () => {
         //data:表单提交Data
         return []
       }}
+      addNewRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return []
+      }}
     >
       <FormProvider locale="zh_CN">
         <BuilderComponent {...bcProps}>
@@ -266,12 +272,12 @@ client.setUserId(STEEDOS_TENANT_ID)
 client.setToken(STEEDOS_AUTH_TOKEN);
 client.setSpaceId(STEEDOS_USER_ID);
 
-export const ObjectFormSimple = () => {
+export const ObjectFormSimpleEdit = () => {
 
   require('../src/builder-widgets');
 
   builder.init(apiKey);
-
+  store.setCurrentRecordId("F5NXvdmHC5yaZ2qFv");
   const fieldSectionContent = require('./form.builder.json');
   const data = {
     formMode: 'read',
@@ -320,6 +326,66 @@ export const ObjectFormSimple = () => {
         //objectRecordId: recordId
         //data:表单提交Data
         return []
+      }}
+      addNewRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return []
+      }}
+    >
+      <BuilderComponent {...bcProps}>
+      </BuilderComponent>
+      <br /><br /><br />
+    </ObjectProvider>
+  )
+}
+
+export const ObjectFormSimpleAdd = () => {
+
+  require('../src/builder-widgets');
+
+  builder.init(apiKey);
+
+  const fieldSectionContent = require('./form.builder.json');
+  store.setCurrentRecordId('');
+  const data = {
+    formMode: 'add',
+  }
+  const bcProps = {
+    apiKey,
+    content: fieldSectionContent,
+    data,
+    onStateChange: (newData: any) => {
+    }
+  }
+
+  const accountsJson = require('../../ui-components/stories/account.json')
+  return (
+    <ObjectProvider
+      currentObjectApiName="accounts"
+      requestObject={async (objectApiName) => {
+        //objectApiName:对象api名称
+        //console.log("==in function==", objectApiName);
+        return accountsJson;
+      }}
+      requestRecords={async (objectApiName, filters, fields, options) => {
+        //objectApiName:对象api名称
+        //filters: 过滤条件
+        //fields: 要返回的字段
+        return []
+      }}
+      updateRecord = {async (objectApiName, objectRecordId, data) => {
+        //objectApiName:对象api名称
+        //objectRecordId: recordId
+        //data:表单提交Data
+        return []
+      }}
+      addNewRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return [{
+          _id: 'new1'
+        }]
       }}
     >
       <BuilderComponent {...bcProps}>

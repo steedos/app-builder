@@ -98,16 +98,18 @@ export default class SObject {
 
     /**
      * TODO 写入数据，并返回新记录
-     * @param doc 
+     * @param data 
      */
-    async insert(doc: Record){
-
+    async insert(data: Record){
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}`;
+        let result = await this.client.doFetch(url, {method: 'POST', body: JSON.stringify(data)});
+        return result.value;
     }
 
     /**
      * TODO 根据id，修改记录，并返回新记录
      * @param id 
-     * @param doc 
+     * @param data 
      */
     async update(id: string, data: Record){
         let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}/${id}`;

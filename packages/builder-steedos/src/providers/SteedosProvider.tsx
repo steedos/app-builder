@@ -20,7 +20,7 @@ const {
 
 */
 export function SteedosProvider(props: any) {
-
+  
   const {
     rootUrl = STEEDOS_ROOT_URL,
     tenantId = STEEDOS_TENANT_ID,
@@ -66,13 +66,19 @@ export function SteedosProvider(props: any) {
   const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
     const result = await client.sobject(objectApiName).update(objectRecordId, data);
 
-    return result
+    return result;
+  }
+
+  const addNewRecord = async (objectApiName: string, data: any) => {
+    const result= await client.sobject(objectApiName).insert(data);
+    return result;
   }
 
   const objectProviderProps = {
     requestObject,
     requestRecords,
-    updateRecord
+    updateRecord,
+    addNewRecord
   }
 
   return (

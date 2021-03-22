@@ -16,8 +16,8 @@ export const Form = observer((props:any) => {
 
   const {
     name: formId = 'default',
-    mode = 'read', 
-    layout = 'horizontal',
+    mode, 
+    layout,
     children, 
     ...rest
   } = props
