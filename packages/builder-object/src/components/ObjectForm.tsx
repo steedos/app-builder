@@ -26,7 +26,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   const {
     name: formId = 'default',
-    mode = 'edit', 
+    mode = 'read', 
     layout = 'vertical',
     ...rest
   } = props;
@@ -50,7 +50,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
                   'description', 'email', 'industry', 
                   'rating', 'salutation', 'startdate__c', 
                   'datetime__c','state', 'summary__c', 
-                  'website', 'html__c', 'annual_revenue', 'fn__c'];
+                  'website', 'annual_revenue', 'fn__c'];
   const results = useQueries([
     { queryKey: objectApiName, queryFn: async () => {
         return await objectContext.requestObject(objectApiName as string);

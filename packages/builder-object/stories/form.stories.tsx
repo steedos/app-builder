@@ -239,7 +239,6 @@ export const Preview = () => {
           state : 'SH',
           summary__c : 3,
           website : '123.com',
-          html__c: '这是HTML文本内容',
           annual_revenue: 56123,
           fn__c: 56123
         }]
@@ -312,7 +311,6 @@ export const ObjectFormSimple = () => {
           state : 'SH',
           summary__c : 3,
           website : '123.com',
-          html__c: '这是HTML文本内容',
           annual_revenue: 56123,
           fn__c: 56123
         }]
