@@ -136,6 +136,16 @@ export const ObjectField = observer((props: any) => {
   }else{
     formFieldProps = getFormFieldProps(formFieldProps, fieldType, formFieldProps.readonly);
   }
+
+  if(formFieldProps.required){
+    formFieldProps.rules = [
+      {
+        required: true,
+        message: `请输入${formFieldProps.label}...`,
+      },
+    ]
+  }
+
   // 默认取ProFormText组件
   return (
     <Field

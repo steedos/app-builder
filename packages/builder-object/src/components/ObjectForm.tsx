@@ -98,7 +98,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
   const onFinish = async(values:any) =>{
     let result;
-    console.log('---recordId---', recordId);
     if(recordId){
       result = await objectContext.updateRecord(objectApiName, recordId, values);
       if(result){
