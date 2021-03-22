@@ -60,7 +60,6 @@ export const getFormFieldProps = (formFieldProps:any, fieldType: string, readonl
 export const ObjectField = observer((props: any) => {
 // export function ObjectField(props: ObjectFieldProps) {
   // const store = useContext(BuilderStoreContext);
-  // console.log("=ObjectField==e==");
   const objectContext = useContext(ObjectContext);
   // const { currentObjectApiName } = store.context;
   let { currentObjectApiName } = store;
@@ -101,9 +100,10 @@ export const ObjectField = observer((props: any) => {
 
   // 从对象定义中生成字段信息。
   const fieldType: string = field.type;//根据objectApiName及fieldName算出type值
+  let objectFieldMode = props.builderState.state.formMode;
   let formFieldProps: any = {
     name: fieldName,
-    mode: "edit",
+    mode: objectFieldMode,
     label: field.label,
     placeholder: field.help,
     hidden: field.hidden,
@@ -112,15 +112,16 @@ export const ObjectField = observer((props: any) => {
     options: field.options,
     readonly: field.readonly
   }
-
+ 
   if(formFieldProps.mode == "edit"){
 
     if(field.omit){
       formFieldProps.hidden = true
     }
   }else if (formFieldProps.mode == "read"){
-    
-    formFieldProps.readonly = true
+    if(field.omit){
+      formFieldProps.readonly = true
+    }
   }
 
  
