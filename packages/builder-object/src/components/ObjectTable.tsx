@@ -37,7 +37,7 @@ export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType
   filters?: [] | string
   filterableFields?: [string]
 } & Omit<ProTableProps<T, U, ValueType>, 'columns'> & {
-  defaultClassName: string;
+  defaultClassName?: string;
 }
 
 export const getProColumnProps = (proColumnProps:any, fieldType: string, readonly: boolean, field:any) => {

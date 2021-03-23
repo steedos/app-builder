@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { SteedosContext, ObjectContext } from "@steedos/builder-steedos/src";
+import { ObjectTable } from "@steedos/builder-object/src";
 
 import _ from 'lodash';
 import { useQuery } from "react-query";
@@ -22,10 +23,24 @@ export const Test = (props: TestProps) => {
     data,
     isFetching
   } = useQuery(objectApiName, async () => {
-    return await objectContext.requestRecords(objectApiName, filters, fields);
+    let result = await objectContext.requestRecords(objectApiName, filters, fields);
+    return result.value;
   });
   console.log("Test data==", data);
   return (
-    <div>{_.map(data, (item)=>{return item.name}).join(",")}</div>
+    <div>
+      <span>
+        {_.map(data, (item)=>{return item.name}).join(",")}
+      </span>
+      <ObjectTable
+        name="test"
+        objectApiName="accounts"
+        columnFields={[{
+          fieldName: "name"
+        }, {
+          fieldName: "is_customer"
+        }]}
+      />
+    </div>
   )
 };
