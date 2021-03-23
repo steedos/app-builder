@@ -27,6 +27,18 @@ export const Test = (props: TestProps) => {
     return result.value;
   });
   console.log("Test data==", data);
+  const request = async ()=>{
+    const result = await objectContext.requestRecords("accounts", [], ["name"], {
+      pageSize: 10,
+      current: 1,
+      sort: [["name", "asc"]]
+    });
+    return {
+      data: result.value, 
+      success: true,
+      total: result["@odata.count"]
+    }
+  }
   return (
     <div>
       <span>
@@ -35,6 +47,7 @@ export const Test = (props: TestProps) => {
       <ObjectTable
         name="test"
         objectApiName="accounts"
+        request={request}
         columnFields={[{
           fieldName: "name"
         }, {
