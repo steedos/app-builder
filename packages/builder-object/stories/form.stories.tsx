@@ -190,27 +190,6 @@ export const Preview = () => {
   }
 
   const accountsJson = require('../../ui-components/stories/account.json')
-  // const requestObject = async(objectApiName:string) => {
-  //   //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
-  //   if(!objectApiName){
-  //     return;
-  //   }
-  //   const object = await client.sobject(objectApiName).getConfig();
-  //   return object;
-  // }
-
-  // const requestRecords = async( objectApiName:string, filters:any, fields:any , options:any) => {
-  //   const records = await client.sobject(objectApiName).find(filters, fields);
-  //   console.log('-----requestRecords-----', records);
-  //   return records;
-
-  // }
-
-    // const updateRecord = {async (objectApiName, objectRecordId, data) => {
-    //   const result = await client.sobject(objectApiName).update(objectRecordId, data);
-
-    //   return result
-    // }
   return (
     <ObjectProvider
       currentObjectApiName={context.currentObjectApiName}
@@ -264,13 +243,6 @@ export const Preview = () => {
     </ObjectProvider>
   )
 }
-
-const client = new SteedosClient();
-  
-client.setUrl(STEEDOS_ROOT_URL)
-client.setUserId(STEEDOS_TENANT_ID)
-client.setToken(STEEDOS_AUTH_TOKEN);
-client.setSpaceId(STEEDOS_USER_ID);
 
 export const ObjectFormSimpleEdit = () => {
 
