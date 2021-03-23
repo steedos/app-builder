@@ -12,32 +12,30 @@ import { registerObjectFieldComponent } from "..";
 import { observer } from "mobx-react-lite"
 import { FormModel, store } from '@steedos/builder-store';
 
+export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
+
 export type FormProps<T = Record<string, any>>  = {
-  mode?: ProFieldFCMode,
+  mode?: ObjectFormFieldMode,
   editable?: boolean,
 } & BaseFormProps
 
 export type ObjectFormProps = {
   objectApiName?: string,
-  recordId?: string,
-  builderState?: any
+  recordId?: string
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
-  let objectFormMode = props.builderState.state.formMode;
-  if(objectFormMode === 'add'){
-    objectFormMode = 'edit';
-  }
 
   const {
     name: formId = 'default',
-    mode= objectFormMode, 
+    mode= 'edit', 
     layout = 'vertical',
     ...rest
   } = props;
  
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
+  
   const objectContext = useContext(ObjectContext);
   let { currentObjectApiName, currentRecordId } = store;
   if(!currentObjectApiName){
@@ -48,7 +46,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
+
   const recordId = props.recordId ? props.recordId : currentRecordId || '';
+
 
   //TODO fields的确定
   const filter = ['_id', '=', recordId];
@@ -97,19 +97,22 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     })
   }
   const onFinish = async(values:any) =>{
-    let result;
-    if(recordId){
-      result = await objectContext.updateRecord(objectApiName, recordId, values);
-      if(result){
-        alert("表单修改成功！");
-      }
-    }else{
+    let result; 
+    if(mode === 'add'){
       result = await objectContext.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");
       }
-    }   
-    console.log('----onFinish--result--', result);  
+    }else{
+      if(!recordId){
+        return;
+      }
+        
+      result = await objectContext.updateRecord(objectApiName, recordId, values);
+      if(result){
+        alert("表单修改成功！");
+      }  
+    } 
   }
   return (
     <Form 

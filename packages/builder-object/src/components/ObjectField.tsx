@@ -58,17 +58,14 @@ export const getFormFieldProps = (formFieldProps:any, fieldType: string, readonl
 }
 
 export const ObjectField = observer((props: any) => {
-// export function ObjectField(props: ObjectFieldProps) {
-  // const store = useContext(BuilderStoreContext);
+
   const objectContext = useContext(ObjectContext);
-  // const { currentObjectApiName } = store.context;
   let { currentObjectApiName } = store;
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
   if(!objectApiName){
     objectApiName = objectContext.currentObjectApiName as string;
   }
-  // console.log("=ObjectField===objectApiName, fieldName===", objectApiName, fieldName);
   // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
   const {
     isLoading,
@@ -83,7 +80,6 @@ export const ObjectField = observer((props: any) => {
     return (<div>请输入字段名</div>)
 
   const objectSchema: any = data
-  //console.log("==requestObject==data===", data);
 
   if (!objectSchema)
     return (<div>Field Loading...</div>)
@@ -93,7 +89,7 @@ export const ObjectField = observer((props: any) => {
   const field: any = _.find(objectSchema.fields, (field, key) => {
     return fieldName === key;
   })
-  // console.log("==requestObject==field===", field);
+
   if (!field) {
     return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
   }

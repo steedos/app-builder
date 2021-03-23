@@ -244,7 +244,6 @@ export const FormAdd = () => {
   require('@steedos/builder-object/src/builder-widgets');
 
   store.setCurrentObjectApiName("accounts");
-  store.setCurrentRecordId('');
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,

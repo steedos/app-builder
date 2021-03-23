@@ -9,7 +9,8 @@
                     "name": "Steedos:ObjectForm",
                     "options": {
                         "objectApiName": "accounts",
-                        "recordId": ""
+                        "recordId": "",
+                        "mode": "edit"
                     }
                 },
                 "children": [

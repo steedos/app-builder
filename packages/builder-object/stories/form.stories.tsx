@@ -318,7 +318,6 @@ export const FormAdd = () => {
   builder.init(apiKey);
 
   const fieldSectionContent = require('./form.add.builder.json');
-  store.setCurrentRecordId('');
   const data = {
     formMode: 'add',
   }
