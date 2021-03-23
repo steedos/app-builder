@@ -179,7 +179,7 @@ export const Preview = () => {
     initialValues: { name: 'Hello World!' },
     columns: 3,
   }
-  const content ={} //require('./object-field-form.builder.json');
+  const content ={};
   const bcProps = {
     apiKey,
     //content,
@@ -189,7 +189,7 @@ export const Preview = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json');
   return (
     <ObjectProvider
       currentObjectApiName={context.currentObjectApiName}
@@ -244,13 +244,12 @@ export const Preview = () => {
   )
 }
 
-export const ObjectFormSimpleEdit = () => {
+export const FormEdit = () => {
 
   require('../src/builder-widgets');
 
   builder.init(apiKey);
-  store.setCurrentRecordId("F5NXvdmHC5yaZ2qFv");
-  const fieldSectionContent = require('./form.builder.json');
+  const fieldSectionContent = require('./form.edit.builder.json');
   const data = {
     formMode: 'read',
   }
@@ -262,7 +261,7 @@ export const ObjectFormSimpleEdit = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json')
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
@@ -312,13 +311,13 @@ export const ObjectFormSimpleEdit = () => {
   )
 }
 
-export const ObjectFormSimpleAdd = () => {
+export const FormAdd = () => {
 
   require('../src/builder-widgets');
 
   builder.init(apiKey);
 
-  const fieldSectionContent = require('./form.builder.json');
+  const fieldSectionContent = require('./form.add.builder.json');
   store.setCurrentRecordId('');
   const data = {
     formMode: 'add',
@@ -331,7 +330,7 @@ export const ObjectFormSimpleAdd = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json')
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
