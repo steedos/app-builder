@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
 import { ObjectContext } from "../";
@@ -30,10 +30,10 @@ export type ObjectTableColumnProps = {
   wrap?: boolean
 }
 
-export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType, ValueType> = {
-  name: string,
+export type ObjectTableProps = {
+  name?: string,
   objectApiName?: string,
-  columnFields: ObjectTableColumnProps[]
+  columnFields?: ObjectTableColumnProps[]
   filters?: [] | string
   filterableFields?: [string]
 } & Omit<ProTableProps<T, U, ValueType>, 'columns'> & {
@@ -144,7 +144,7 @@ export const getObjectTableProColumn = (field: any) => {
   return proColumnProps;
 }
 
-export const ObjectTable = observer(<T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
+export const ObjectTable = observer((props: ObjectTableProps) => {
 // export const ObjectTable = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
   // const store = useContext(BuilderStoreContext);
   const objectContext = useContext(ObjectContext);
@@ -153,7 +153,7 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     currentObjectApiName = objectContext.currentObjectApiName;
   }
 
-  const { name: tableId = 'default', columnFields = [], ...rest } = props
+  const { name: tableId = 'default', columnFields = [],filters, ...rest } = props
 
   if (!store.forms[tableId])
     store.forms[tableId] = TableModel.create({id: tableId});
@@ -163,31 +163,51 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     error,
     data,
     isFetching
-  } = useQuery(objectApiName, async () => {
+  } = useQuery(objectApiName+'_schema', async () => {
     return await objectContext.requestObject(objectApiName as string);
   });
   const objectSchema: any = data
+  let [proColumns, setProColumns] = useState([]);
+  useEffect(() => {
+    if (objectSchema) {
+    let tmpProColumns=[]
+    registerObjectTableComponent(_.keys(objectSchema.fields))
 
-  if (!objectSchema)
-    return (<div>Object Loading...</div>)
+    const objectFields = objectSchema.fields
 
-  registerObjectTableComponent(_.keys(objectSchema.fields));
+    if (objectFields) {
+      _.forEach(columnFields, (columnItem: ObjectTableColumnProps) => {
+        console.log(
+          objectFields,
+          objectFields[columnItem.fieldName],
+          columnItem.fieldName
+        )
+        const proColumn = getObjectTableProColumn(
+          objectFields[columnItem.fieldName]
+        )
 
-  const objectFields = objectSchema.fields;
-  let proColumns: any = []
-  _.forEach(columnFields, (columnItem: ObjectTableColumnProps) => {
-    const proColumn = getObjectTableProColumn(objectFields[columnItem.fieldName]);
-
-    if (proColumn) {
-      proColumns.push(proColumn);
-    }
-  });
+        if (proColumn) {
+          tmpProColumns.push(proColumn)
+         
+        }
+      })
+      }
+       setProColumns(tmpProColumns)
+  }
+  }, [objectSchema])
+  
+  
+  
 
   const request = async (params: U & {
     pageSize?: number;
     current?: number;
     keyword?: string;
   }, sort: Record<string, SortOrder>, filter: Record<string, React.ReactText[]>): Promise<Partial<RequestData<T>>> => {
+    
+    console.log(params)
+    
+    
     // 第一个参数 params 查询表单和 params 参数的结合
     // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
@@ -206,20 +226,33 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
       total: number,
     };
     */
-    console.log("====request====params==", params);
-    console.log("====request====sort==", sort);
-    console.log("====request====filter==", filter);
+
+    
+    const { current, pageSize, ...searchFilters } = params;
+    let tableFilters = Object.keys(searchFilters).map((key) => {
+      return 'contains('+key+',\''+searchFilters[key]+'\')'
+    })
+    
+    
+    
+    
     // TODO: 这里antd的request请求函数与ObjectTable组件传入的filters,sort等格式不一样，需要转换处理
     const fields = columnFields.map((n) => { return n.fieldName });
-    const result = await objectContext.requestRecords(objectApiName, [], fields, {
-      pageSize: params.pageSize as number,
-      current: params.current as number,
-      sort: sort
-    });
+    console.log([(filters?'('+filters+')':''), ...tableFilters].filter((a) => a).join(' and '))
+    const result = await objectContext.requestRecords(
+      objectApiName,
+     [(filters?'('+filters+')':''), ...tableFilters].filter((a) => a).join(' and '), //[filters, tableFilters].filter(a=>a).join(' and '),
+      fields,
+      {
+        pageSize: params.pageSize as number,
+        current: params.current as number,
+        sort: sort,
+      }
+    )
     return {
-      data: result.value, 
+      data: result, 
       success: true,
-      total: result["@odata.count"]
+      total: result.length//["@odata.count"]
     }
   }
 

@@ -6,7 +6,7 @@ import { SteedosProvider } from "@steedos/builder-steedos"
 import { SendOutlined } from "@ant-design/icons";
 import { Modal, TreeSelect, Select, Input, Button } from "antd";
 // import { ObjectTree } from "./ObjectTree";//"../../../builder-object";
-import { ObjectTree } from "@steedos/builder-object/src"
+import { ObjectTree,UserPicker } from "@steedos/builder-object/src"
 import _ from "lodash";
 import { useQuery } from "react-query";
 const { Option } = Select;
@@ -111,8 +111,13 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
   //   }
   // }, [allUserIds]);
   const [selectedEmails, setSelectedEmails] = useState([]);
+  
+  const handleOnChange = (users) => {
+    setSelectedEmails(users.map(({name,email})=>`${name}<${email}>`))
+  }
   return (
     <Modal
+        width="100%"
       visible={openPopup}
       onCancel={() => onClose()}
       onOk={() => {
@@ -120,28 +125,35 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
         onClose()
       }}
     >
-      <h2>添加收件人</h2>
-        <ObjectTree
-          objectApiName="space_users"
-          placeholder="点击选择"
-          style={{ width: "100%" }}
-          treeDefaultExpandAll
-          onChange={(values) => {
+
+      <UserPicker
+        onChange={handleOnChange}
+        treeProps={{
+          objectApiName: "organizations",
+          style: { width: "100%" },
+          defaultExpandAll: true,
+          onChange: (values) => {
             console.log(values)
-            //setSelectedEmails(texts)
-          }}
-        />
-      {/* <TreeSelect
-        placeholder="点击选择"
-        style={{ width: "100%" }}
-        treeCheckable={true}
-        //   showCheckedStrategy={SHOW_CHILD}
-        treeDefaultExpandAll
-        treeData={treeData}
-        onChange={(values, texts) => {
-          setSelectedEmails(texts);
+          },
         }}
-      ></TreeSelect> */}
+        tableProps={{
+        objectApiName:"space_users",
+        columnFields:[{
+          fieldName: "name"
+        }, {
+          fieldName: "email"
+        }]
+        }}
+      ></UserPicker>
+      {/* <ObjectTree
+        objectApiName="organizations"
+        style={{ width: "100%" }}
+        defaultExpandAll={true}
+        onChange={(values) => {
+          console.log(values)
+          //setSelectedEmails(texts)
+        }}
+      /> */}
     </Modal>
   )
 };
