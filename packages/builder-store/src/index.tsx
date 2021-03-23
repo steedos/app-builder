@@ -11,7 +11,7 @@ export const FormModel = types.model({
   id: types.identifier,
   // objectApiName: types.string,
   // fields: types.array(FormFieldModel),
-  mode: types.string, // 'read' | 'edit'
+  mode: types.union(types.string, types.undefined), // 'read' | 'edit'
 }).actions(self => ({
   // note the `({`, we are returning an object literal
   setMode(newMode: string) {
