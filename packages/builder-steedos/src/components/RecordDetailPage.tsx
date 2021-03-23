@@ -1,7 +1,8 @@
 
 import React, { useContext } from "react";
 import _ from 'lodash';
-import { BuilderStoreContext } from '@builder.io/react';
+import { observer } from "mobx-react-lite"
+import { store } from '@steedos/builder-store/src';
 
 export type RecordDetailPageProps = {
   objectApiName?: string,
@@ -9,19 +10,18 @@ export type RecordDetailPageProps = {
   children: any
 } 
 
-export function RecordDetailPage(props:RecordDetailPageProps) {
-  const store = useContext(BuilderStoreContext);
-  // console.log("=RecordDetailPage===store===", store);
+export const RecordDetailPage = observer((props:RecordDetailPageProps) => {
+  // export function RecordDetailPage(props:RecordDetailPageProps) {
   const { children, ...rest } = props;
-  let { currentObjectApiName, currentRecordId } = store.context;
+  let { currentObjectApiName, currentRecordId } = store;
 
   const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
   const recordId = props.recordId ? props.recordId : currentRecordId;
-  // console.log("=RecordDetailPage===objectApiName, recordId===", objectApiName, recordId);
+  console.log("=RecordDetailPage===objectApiName, recordId===", objectApiName, recordId);
 
   return (
       <div>
         {children}
       </div>
   )
-}
+});

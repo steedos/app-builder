@@ -58,18 +58,14 @@ export const getFormFieldProps = (formFieldProps:any, fieldType: string, readonl
 }
 
 export const ObjectField = observer((props: any) => {
-// export function ObjectField(props: ObjectFieldProps) {
-  // const store = useContext(BuilderStoreContext);
-  // console.log("=ObjectField==e==");
+
   const objectContext = useContext(ObjectContext);
-  // const { currentObjectApiName } = store.context;
   let { currentObjectApiName } = store;
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
   if(!objectApiName){
     objectApiName = objectContext.currentObjectApiName as string;
   }
-  // console.log("=ObjectField===objectApiName, fieldName===", objectApiName, fieldName);
   // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
   const {
     isLoading,
@@ -84,7 +80,6 @@ export const ObjectField = observer((props: any) => {
     return (<div>请输入字段名</div>)
 
   const objectSchema: any = data
-  //console.log("==requestObject==data===", data);
 
   if (!objectSchema)
     return (<div>Field Loading...</div>)
@@ -94,16 +89,17 @@ export const ObjectField = observer((props: any) => {
   const field: any = _.find(objectSchema.fields, (field, key) => {
     return fieldName === key;
   })
-  // console.log("==requestObject==field===", field);
+
   if (!field) {
     return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
   }
 
   // 从对象定义中生成字段信息。
   const fieldType: string = field.type;//根据objectApiName及fieldName算出type值
+  let objectFieldMode = props.builderState.state.formMode;
   let formFieldProps: any = {
     name: fieldName,
-    mode: "edit",
+    mode: objectFieldMode,
     label: field.label,
     placeholder: field.help,
     hidden: field.hidden,
@@ -112,15 +108,16 @@ export const ObjectField = observer((props: any) => {
     options: field.options,
     readonly: field.readonly
   }
-
+ 
   if(formFieldProps.mode == "edit"){
 
     if(field.omit){
       formFieldProps.hidden = true
     }
   }else if (formFieldProps.mode == "read"){
-    
-    formFieldProps.readonly = true
+    if(field.omit){
+      formFieldProps.readonly = true
+    }
   }
 
  
@@ -135,6 +132,16 @@ export const ObjectField = observer((props: any) => {
   }else{
     formFieldProps = getFormFieldProps(formFieldProps, fieldType, formFieldProps.readonly);
   }
+
+  if(formFieldProps.required){
+    formFieldProps.rules = [
+      {
+        required: true,
+        message: `请输入${formFieldProps.label}...`,
+      },
+    ]
+  }
+
   // 默认取ProFormText组件
   return (
     <Field

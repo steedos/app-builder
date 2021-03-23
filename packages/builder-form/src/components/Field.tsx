@@ -79,12 +79,12 @@ export const Field = observer((props: any) => {
     };
     const inlineIconOpacity = 0.4
     const inlineIcon = readonly?
-      <LockIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}/>:
-      <EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }} 
-        onClick={()=> {
-            onInlineEdit()
-        }}
-      />
+    <LockIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}/>:
+    <EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }} 
+      onClick={()=> {
+          onInlineEdit()
+      }}
+    />
 
     
     const containerOptions = {
@@ -107,7 +107,7 @@ export const Field = observer((props: any) => {
   const ProFormField = createField<ProFormItemProps<InputProps>>(
     (props: ProFormItemProps<InputProps>) => { 
       return (
-        <ProFieldWrap valueType={valueType} fieldProps={props.fieldProps} {...props.proFieldProps} mode={mode} />
+        <ProFieldWrap valueType={valueType} fieldProps={props.fieldProps} {...props.proFieldProps} mode={mode} readonly={readonly} />
       )
     },
     {

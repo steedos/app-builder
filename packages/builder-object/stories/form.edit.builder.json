@@ -9,7 +9,8 @@
                     "name": "Steedos:ObjectForm",
                     "options": {
                         "objectApiName": "accounts",
-                        "recordId": "F5NXvdmHC5yaZ2qFv"
+                        "recordId": "F5NXvdmHC5yaZ2qFv",
+                        "mode": "read"
                     }
                 },
                 "children": [
@@ -520,26 +521,6 @@
                     {
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
-                        "id": "builder-d3cc0996a1a84740b108bf3f25fcd852",
-                        "component": {
-                            "name": "Steedos:ObjectField",
-                            "options": {
-                                "fieldName": "html__c"
-                            }
-                        },
-                        "responsiveStyles": {
-                            "large": {
-                                "display": "flex",
-                                "flexDirection": "column",
-                                "alignItems": "stretch",
-                                "position": "relative",
-                                "marginTop": "20px"
-                            }
-                        }
-                    },
-                    {
-                        "@type": "@builder.io/sdk:Element",
-                        "@version": 2,
                         "id": "builder-ed51399647e54066ab841e9ab2a4b3ee",
                         "component": {
                             "name": "Steedos:ObjectField",
@@ -575,7 +556,8 @@
                                 "flexDirection": "column",
                                 "alignItems": "stretch",
                                 "position": "relative",
-                                "marginTop": "20px"
+                                "marginTop": "20px",
+                                "marginBottom": "40px"
                             }
                         }
                     }

@@ -13,11 +13,10 @@ import { FormModel, store } from '@steedos/builder-store';
 // mode: edit, read
 
 export const Form = observer((props:any) => {
-
   const {
     name: formId = 'default',
-    mode = 'read', 
-    layout = 'horizontal',
+    mode= 'read', 
+    layout,
     children, 
     ...rest
   } = props

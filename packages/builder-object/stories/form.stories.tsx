@@ -1,6 +1,7 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
+import { store } from '@steedos/builder-store';
 
 import {
   ObjectProvider
@@ -178,7 +179,7 @@ export const Preview = () => {
     initialValues: { name: 'Hello World!' },
     columns: 3,
   }
-  const content ={} //require('./object-field-form.builder.json');
+  const content ={};
   const bcProps = {
     apiKey,
     //content,
@@ -188,28 +189,7 @@ export const Preview = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
-  // const requestObject = async(objectApiName:string) => {
-  //   //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
-  //   if(!objectApiName){
-  //     return;
-  //   }
-  //   const object = await client.sobject(objectApiName).getConfig();
-  //   return object;
-  // }
-
-  // const requestRecords = async( objectApiName:string, filters:any, fields:any , options:any) => {
-  //   const records = await client.sobject(objectApiName).find(filters, fields);
-  //   console.log('-----requestRecords-----', records);
-  //   return records;
-
-  // }
-
-    // const updateRecord = {async (objectApiName, objectRecordId, data) => {
-    //   const result = await client.sobject(objectApiName).update(objectRecordId, data);
-
-    //   return result
-    // }
+  const accountsJson = require('../../account.json');
   return (
     <ObjectProvider
       currentObjectApiName={context.currentObjectApiName}
@@ -239,7 +219,6 @@ export const Preview = () => {
           state : 'SH',
           summary__c : 3,
           website : '123.com',
-          html__c: '这是HTML文本内容',
           annual_revenue: 56123,
           fn__c: 56123
         }]
@@ -247,6 +226,11 @@ export const Preview = () => {
       updateRecord = {async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
         //objectRecordId: recordId
+        //data:表单提交Data
+        return []
+      }}
+      insertRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
         //data:表单提交Data
         return []
       }}
@@ -260,20 +244,12 @@ export const Preview = () => {
   )
 }
 
-const client = new SteedosClient();
-  
-client.setUrl(STEEDOS_ROOT_URL)
-client.setUserId(STEEDOS_TENANT_ID)
-client.setToken(STEEDOS_AUTH_TOKEN);
-client.setSpaceId(STEEDOS_USER_ID);
-
-export const ObjectFormSimple = () => {
+export const FormEdit = () => {
 
   require('../src/builder-widgets');
 
   builder.init(apiKey);
-
-  const fieldSectionContent = require('./form.builder.json');
+  const fieldSectionContent = require('./form.edit.builder.json');
   const data = {
     formMode: 'read',
   }
@@ -285,7 +261,7 @@ export const ObjectFormSimple = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json')
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
@@ -312,7 +288,6 @@ export const ObjectFormSimple = () => {
           state : 'SH',
           summary__c : 3,
           website : '123.com',
-          html__c: '这是HTML文本内容',
           annual_revenue: 56123,
           fn__c: 56123
         }]
@@ -322,6 +297,65 @@ export const ObjectFormSimple = () => {
         //objectRecordId: recordId
         //data:表单提交Data
         return []
+      }}
+      insertRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return []
+      }}
+    >
+      <BuilderComponent {...bcProps}>
+      </BuilderComponent>
+      <br /><br /><br />
+    </ObjectProvider>
+  )
+}
+
+export const FormAdd = () => {
+
+  require('../src/builder-widgets');
+
+  builder.init(apiKey);
+
+  const fieldSectionContent = require('./form.add.builder.json');
+  const data = {
+    formMode: 'add',
+  }
+  const bcProps = {
+    apiKey,
+    content: fieldSectionContent,
+    data,
+    onStateChange: (newData: any) => {
+    }
+  }
+
+  const accountsJson = require('../../account.json')
+  return (
+    <ObjectProvider
+      currentObjectApiName="accounts"
+      requestObject={async (objectApiName) => {
+        //objectApiName:对象api名称
+        //console.log("==in function==", objectApiName);
+        return accountsJson;
+      }}
+      requestRecords={async (objectApiName, filters, fields, options) => {
+        //objectApiName:对象api名称
+        //filters: 过滤条件
+        //fields: 要返回的字段
+        return []
+      }}
+      updateRecord = {async (objectApiName, objectRecordId, data) => {
+        //objectApiName:对象api名称
+        //objectRecordId: recordId
+        //data:表单提交Data
+        return []
+      }}
+      insertRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return [{
+          _id: 'new1'
+        }]
       }}
     >
       <BuilderComponent {...bcProps}>

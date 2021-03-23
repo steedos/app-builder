@@ -14,7 +14,7 @@ export const configObjectTable: Component = {
 export const registerObjectTableComponent = (fieldNames: string[] | { label: string; value: any; helperText?: string }[]) => {
   let configInputs: Input[] = _.clone(configObjectTable.inputs) as Input[];
   configInputs.push({
-    name: 'columns', 
+    name: 'columnFields', 
     type: 'list', 
     subFields: [
       { name: 'fieldName', type: 'string', enum: fieldNames, defaultValue: "name" },

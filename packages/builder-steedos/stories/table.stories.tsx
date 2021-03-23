@@ -6,7 +6,7 @@ import { SteedosProvider } from "../src/index"
 import { store } from '@steedos/builder-store';
 
 export default {
-  title: "Steedos Form",
+  title: "Steedos Table",
 }
 
 
@@ -28,7 +28,7 @@ export const Editor = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-form--preview&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-table--preview&viewMode=story',
   };
   const initialContent = {
     data: {
@@ -65,30 +65,9 @@ export const Editor = () => {
               "@version": 2,
               "id": "builder-56e5834326e840d98d3342efc273166d",
               "component": {
-                "name": "Steedos:ObjectForm",
+                "name": "Steedos:ObjectTable",
                 "options": {}
               },
-              "children": [
-                {
-                  "@type": "@builder.io/sdk:Element",
-                  "@version": 2,
-                  "id": "builder-edb5279810d64ebb996a4c40fce60a66",
-                  "component": {
-                    "name": "Steedos:ObjectField",
-                    "options": {}
-                  },
-                  "responsiveStyles": {
-                    "large": {
-                      "display": "flex",
-                      "flexDirection": "column",
-                      "position": "relative",
-                      "flexShrink": "0",
-                      "boxSizing": "border-box",
-                      "marginTop": "20px"
-                    }
-                  }
-                }
-              ],
               "responsiveStyles": {
                 "large": {
                   "display": "flex",
@@ -180,7 +159,9 @@ export const Preview = () => {
   //   currentObjectApiName: "accounts",
   //   currentRecordId: ""
   // };
+  console.log("====setCurrentObjectApiName==1=");
   store.setCurrentObjectApiName("accounts");
+  console.log("====setCurrentObjectApiName==2=", store.currentObjectApiName);
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
@@ -204,7 +185,7 @@ export const Preview = () => {
   )
 }
 
-export const FormEdit = () => {
+export const TableSimple = () => {
 
   builder.init(apiKey);
 
@@ -217,39 +198,7 @@ export const FormEdit = () => {
     columns: 3,
     formMode: 'read'
   }
-  const content = require('./steedos.object.form.edit.builder.json');
-  const bcProps = {
-    apiKey,
-    content,
-    // context,
-    data,
-    onStateChange: (newData: any) => {
-    }
-  }
-
-  return (
-    <SteedosProvider >
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent>
-      <br /><br /><br />
-    </SteedosProvider>
-  )
-}
-
-export const FormAdd = () => {
-
-  builder.init(apiKey);
-
-  require('../src/builder-widgets');
-  require('@steedos/builder-object/src/builder-widgets');
-
-  store.setCurrentObjectApiName("accounts");
-  const data = {
-    initialValues: { name: 'Hello World!' },
-    columns: 3,
-    formMode: 'add'
-  }
-  const content = require('./steedos.object.form.add.builder.json');
+  const content = require('./table.builder.json');
   const bcProps = {
     apiKey,
     content,

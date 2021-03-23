@@ -36,6 +36,7 @@
     "@jsx-lite/core": "^0.0.17",
     "@steedos/builder-form": "^1.0.0",
     "@steedos/builder-object": "^1.0.0",
+    "@steedos/builder-store": "1.0.0",
     "fs-extra-promise": "^1.0.1",
     "lodash-es": "^4.17.10",
     "next": "^10.0.5",

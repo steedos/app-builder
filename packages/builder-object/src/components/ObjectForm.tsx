@@ -12,26 +12,30 @@ import { registerObjectFieldComponent } from "..";
 import { observer } from "mobx-react-lite"
 import { FormModel, store } from '@steedos/builder-store';
 
+export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
+
 export type FormProps<T = Record<string, any>>  = {
-  mode?: ProFieldFCMode,
+  mode?: ObjectFormFieldMode,
   editable?: boolean,
 } & BaseFormProps
 
 export type ObjectFormProps = {
   objectApiName?: string,
-  recordId?: string,
+  recordId?: string
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
 
   const {
     name: formId = 'default',
-    mode = 'edit', 
+    mode= 'edit', 
     layout = 'vertical',
     ...rest
   } = props;
+ 
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
+  
   const objectContext = useContext(ObjectContext);
   let { currentObjectApiName, currentRecordId } = store;
   if(!currentObjectApiName){
@@ -42,7 +46,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
+
   const recordId = props.recordId ? props.recordId : currentRecordId || '';
+
 
   //TODO fields的确定
   const filter = ['_id', '=', recordId];
@@ -50,7 +56,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
                   'description', 'email', 'industry', 
                   'rating', 'salutation', 'startdate__c', 
                   'datetime__c','state', 'summary__c', 
-                  'website', 'html__c', 'annual_revenue', 'fn__c'];
+                  'website', 'annual_revenue', 'fn__c'];
   const results = useQueries([
     { queryKey: objectApiName, queryFn: async () => {
         return await objectContext.requestObject(objectApiName as string);
@@ -84,16 +90,29 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   registerObjectFieldComponent(_.keys(object.fields));
   
   let initialValues = {};
-  const record = records[0];
-  fields.map((fieldName)=>{
-    initialValues[fieldName] = record[fieldName];
-  })
+  if(records.length > 0){
+    const record = records[0];
+    fields.map((fieldName)=>{
+      initialValues[fieldName] = record[fieldName];
+    })
+  }
   const onFinish = async(values:any) =>{
-    const result = await objectContext.updateRecord(objectApiName, recordId, values);
-    console.log('----onFinish--result--', result);
-    if(result){
-      alert("表单修改成功！");
-    }
+    let result; 
+    if(mode === 'add'){
+      result = await objectContext.insertRecord(objectApiName, values);
+      if(result){
+        alert("添加成功！");
+      }
+    }else{
+      if(!recordId){
+        return;
+      }
+        
+      result = await objectContext.updateRecord(objectApiName, recordId, values);
+      if(result){
+        alert("表单修改成功！");
+      }  
+    } 
   }
   return (
     <Form 

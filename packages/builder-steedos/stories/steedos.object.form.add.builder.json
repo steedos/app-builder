@@ -9,7 +9,7 @@
                     "name": "Steedos:ObjectForm",
                     "options": {
                         "objectApiName": "accounts",
-                        "recordId": "F5NXvdmHC5yaZ2qFv"
+                        "recordId": ""
                     }
                 },
                 "children": [
@@ -505,26 +505,6 @@
                             "name": "Steedos:ObjectField",
                             "options": {
                                 "fieldName": "mobile"
-                            }
-                        },
-                        "responsiveStyles": {
-                            "large": {
-                                "display": "flex",
-                                "flexDirection": "column",
-                                "alignItems": "stretch",
-                                "position": "relative",
-                                "marginTop": "20px"
-                            }
-                        }
-                    },
-                    {
-                        "@type": "@builder.io/sdk:Element",
-                        "@version": 2,
-                        "id": "builder-d3cc0996a1a84740b108bf3f25fcd852",
-                        "component": {
-                            "name": "Steedos:ObjectField",
-                            "options": {
-                                "fieldName": "html__c"
                             }
                         },
                         "responsiveStyles": {

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SteedosContext, ObjectContext } from "@steedos/builder-steedos/src";
+import { ObjectTable } from "@steedos/builder-object/src";
 
 import _ from "lodash";
 import { useQuery } from "react-query";
@@ -30,11 +31,34 @@ export const Test = (props: TestProps) => {
   },[t])
   
   console.log("Test data==", data);
+  const request = async ()=>{
+    const result = await objectContext.requestRecords("space_users", [], ["name"], {
+      pageSize: 10,
+      current: 1,
+      sort: [["name", "asc"]]
+    });
+    console.log(result,'result....');
+    return {
+      data: result.value, 
+      success: true,
+      total: result["@odata.count"]
+    }
+  }
   return (
     <div>
-      {_.map(data, (item) => {
-        return item.name;
-      }).join(",")}
+      <span>
+        {_.map(data, (item)=>{return item.name}).join(",")}
+      </span>
+      <ObjectTable
+        name="test"
+        objectApiName="accounts"
+        request={request}
+        columnFields={[{
+          fieldName: "name"
+        }, {
+          fieldName: "is_customer"
+        }]}
+      />
     </div>
-  );
+  )
 };

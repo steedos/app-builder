@@ -163,7 +163,7 @@ export const Preview = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json')
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
@@ -176,6 +176,17 @@ export const Preview = () => {
         //objectApiName:对象api名称
         //filters: 过滤条件
         //fields: 要返回的字段
+        return []
+      }}
+      updateRecord = {async (objectApiName, objectRecordId, data) => {
+        //objectApiName:对象api名称
+        //objectRecordId: recordId
+        //data:表单提交Data
+        return []
+      }}
+      insertRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
         return []
       }}
     >
@@ -204,7 +215,7 @@ export const ObjectTableSimple = () => {
     }
   }
 
-  const accountsJson = require('../../ui-components/stories/account.json')
+  const accountsJson = require('../../account.json')
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
@@ -260,6 +271,17 @@ export const ObjectTableSimple = () => {
           success: true,
           total: 1
         }
+      }}
+      updateRecord = {async (objectApiName, objectRecordId, data) => {
+        //objectApiName:对象api名称
+        //objectRecordId: recordId
+        //data:表单提交Data
+        return []
+      }}
+      insertRecord = {async (objectApiName, data) => {
+        //objectApiName:对象api名称
+        //data:表单提交Data
+        return []
       }}
     >
       <BuilderComponent {...bcProps}>
