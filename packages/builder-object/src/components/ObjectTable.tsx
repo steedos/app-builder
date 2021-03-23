@@ -211,11 +211,16 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     console.log("====request====filter==", filter);
     // TODO: 这里antd的request请求函数与ObjectTable组件传入的filters,sort等格式不一样，需要转换处理
     const fields = columnFields.map((n) => { return n.fieldName });
-    return objectContext.requestRecords(objectApiName, [], fields, {
+    const result = await objectContext.requestRecords(objectApiName, [], fields, {
       pageSize: params.pageSize as number,
       current: params.current as number,
       sort: sort
     });
+    return {
+      data: result.value, 
+      success: true,
+      total: result["@odata.count"]
+    }
   }
 
   return (

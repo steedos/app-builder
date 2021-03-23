@@ -64,7 +64,7 @@ export default class SObject {
         let params = this.getQueryParams(filters, fields, options);
         let url = this.client.getBaseRoute() + "/api/v4/".concat(this.objectName) + buildQueryString(params);
         let result = await this.client.doFetch(url, {method: 'get'});
-        return result.value
+        return result
     }
 
     /**
