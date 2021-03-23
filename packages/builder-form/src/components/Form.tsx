@@ -13,7 +13,6 @@ import { FormModel, store } from '@steedos/builder-store';
 // mode: edit, read
 
 export const Form = observer((props:any) => {
-  console.log('---Form--props--', props);
   const {
     name: formId = 'default',
     mode= 'read', 
