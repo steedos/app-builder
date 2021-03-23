@@ -556,7 +556,8 @@
                                 "flexDirection": "column",
                                 "alignItems": "stretch",
                                 "position": "relative",
-                                "marginTop": "20px"
+                                "marginTop": "20px",
+                                "marginBottom": "40px"
                             }
                         }
                     }
