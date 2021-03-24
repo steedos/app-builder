@@ -177,11 +177,6 @@ export const ObjectTable = observer((props: ObjectTableProps) => {
 
     if (objectFields) {
       _.forEach(columnFields, (columnItem: ObjectTableColumnProps) => {
-        console.log(
-          objectFields,
-          objectFields[columnItem.fieldName],
-          columnItem.fieldName
-        )
         const proColumn = getObjectTableProColumn(
           objectFields[columnItem.fieldName]
         )
@@ -250,9 +245,9 @@ export const ObjectTable = observer((props: ObjectTableProps) => {
       }
     )
     return {
-      data: result, 
+      data: result.value, 
       success: true,
-      total: result.length//["@odata.count"]
+      total: result["@odata.count"]
     }
   }
 

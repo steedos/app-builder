@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from "..";
 import { TableModel, store } from '@steedos/builder-store';
 import ProCard from "@ant-design/pro-card"
-
+//import styles from './UserPicker.less';
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
@@ -33,6 +33,7 @@ export type ObjectTableColumnProps = {
 
 export type UserPickerProps = {
   name?: string
+  includeSub?:boolean //是否包含其下子子孙孙
   onChange:([any])=>void
     treeProps: ObjectTreeProps
   tableProps:ObjectTableProps
@@ -43,12 +44,13 @@ export type UserPickerProps = {
 function getFilter(ids, key):string {
   return ids.map((id) => (key || "_id") + " eq '" + id + "'").join(" or ");
 }
+function getContainsFilter(ids, key): string {
+  return ids.map((id) => 'contains('+(key || "_id") + ",'" + id + "')").join(" or ")
+}
 
 export const UserPicker = observer((
     props: UserPickerProps
   ) => {
-    // export const UserPicker = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
-    // const store = useContext(BuilderStoreContext);
     const objectContext = useContext(ObjectContext)
     let { currentObjectApiName } = store
     if (!currentObjectApiName) {
@@ -58,20 +60,44 @@ export const UserPicker = observer((
     
     const {
       name: userPickerId = "default",
+      includeSub,
       onChange,
       treeProps,
       tableProps,
       ...rest
-  } = props
+  }:any = props
   
   const [selectedUsers, setSelectedUsers] = useState([])
+  const [selectedOrganizations, setSelectedOrganizations] = useState([])
+  
+  const flatChildren = (node) => {
+    return [
+      node,
+      ...(node.children.length > 0
+        ? _.flatten(node.children.map((c) => flatChildren(c)))
+        : [null]),
+    ].filter((a) => a)};
   const handleOrganizationChange = (selectedNodes) => {
-    let tmpUsers=[]
-    selectedNodes.forEach(({ users }) => { tmpUsers = [...tmpUsers, ...users] });
-    tmpUsers = _.uniq(tmpUsers);
-    setSelectedUsers(tmpUsers);
-    if (tmpUsers.length > 0)
-       ref.current?.reload()
+    //原先是过滤用户ID的。现有调整成过滤组织ID的方式
+    // let tmpUsers=[]
+    // selectedNodes.forEach(({ users }) => { tmpUsers = [...tmpUsers, ...users] });
+    // tmpUsers = _.uniq(tmpUsers);
+    //setSelectedUsers(tmpUsers)
+    
+    let tmpOrgans = [];
+    
+    if (includeSub)
+    {
+      selectedNodes = _.flatten(selectedNodes.map((node) => flatChildren(node)));
+    }
+    
+    selectedNodes.forEach(({ value }) => {
+      tmpOrgans = [...tmpOrgans, value]
+    })
+    tmpOrgans = _.uniq(tmpOrgans)
+setSelectedOrganizations(tmpOrgans)
+    // if (tmpUsers.length > 0)
+    ref.current?.reload()
   }
   
   const handleUserChose = (selectedRowKeys, selectedRows) => {
@@ -83,18 +109,24 @@ export const UserPicker = observer((
   const ref = useRef<ActionType>()
 
     return (
-      <ProCard split="vertical" {...rest}>
+      <ProCard  split="vertical" {...rest}>
         <ProCard colSpan="30%" ghost>
-          <ObjectTree {...treeProps} onChange={handleOrganizationChange} />
+          <ObjectTree  {...treeProps} onChange={handleOrganizationChange} />
         </ProCard>
-        <ProCard>
+        <ProCard ghost>
           <ObjectTable
             {...tableProps}
-            filters={getFilter(selectedUsers, "user")}
+            // filters={getFilter(selectedUsers.length>0?selectedUsers:['__none_exisit__'], "user")}
+            filters={getContainsFilter(
+              selectedOrganizations.length > 0
+                ? selectedOrganizations
+                : ["__none_exisit__"],
+              "organizations_parents"
+            )}
             manualRequest={true}
             actionRef={ref}
             rowKey="name"
-            rowSelection={{ onChange :handleUserChose}}
+            rowSelection={{ onChange: handleUserChose }}
           />
         </ProCard>
       </ProCard>

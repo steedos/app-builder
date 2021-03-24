@@ -105,7 +105,7 @@ export const ObjectTree = observer( (
         let ek: any = []
         let tp: any = {}
         
-          ; (records as any[]).forEach((d) => {
+          ; (records.value as any[]).forEach((d) => {
             let { _id, children, ...rest } = d
             let parent = rest[parentField || "parent"]
             tp[_id] = tp[_id] || {
@@ -130,13 +130,17 @@ export const ObjectTree = observer( (
     return (
       <Tree
         style={{ width: "100%" }}
-        checkable={checkable}
-        expandedKeys={expandedKeys}
+        // checkable={checkable}
+        // expandedKeys={expandedKeys}
         treeData={treeData}
-        onCheck={(values, { checkedNodes }) => {
-          console.log(values, checkedNodes)
-          onChange && onChange(checkedNodes)
+        onSelect={(values, { selectedNodes }) => {
+          console.log(values, selectedNodes)
+          onChange && onChange(selectedNodes)
         }}
+        // onCheck={(values, { checkedNodes }) => {
+        //   console.log(values, checkedNodes)
+        //   onChange && onChange(checkedNodes)
+        // }}
         {...rest}
       ></Tree>
     )

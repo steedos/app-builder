@@ -15,23 +15,23 @@ export const Test = (props: TestProps) => {
   const objectApiName = "space_users";
   const filters: any = [["name", "contains", "t"]];
   const fields: any = ["name"];
-  const { isLoading, error, data, isFetching } = useQuery(
-    objectApiName,
-    async () => {
-      return await objectContext.requestRecords(objectApiName, [], fields);
-    }
-  );
+  // const { isLoading, error, data, isFetching } = useQuery(
+  //   objectApiName,
+  //   async () => {
+  //     return await objectContext.requestRecords(objectApiName, [], fields);
+  //   }
+  // );
   
-  const [t,setT]=useState(0)
-  useEffect(() => {
-    setT(Math.random())
-  }, [data])
-  useEffect(() => {
-     console.log("T", t)
-  },[t])
+  // const [t,setT]=useState(0)
+  // useEffect(() => {
+  //   setT(Math.random())
+  // }, [data])
+  // useEffect(() => {
+  //    console.log("T", t)
+  // },[t])
   
-  console.log("Test data==", data);
-  const request = async ()=>{
+  // console.log("Test data==", data);
+  (async ()=>{
     const result = await objectContext.requestRecords("space_users", [], ["name"], {
       pageSize: 10,
       current: 1,
@@ -43,22 +43,9 @@ export const Test = (props: TestProps) => {
       success: true,
       total: result["@odata.count"]
     }
-  }
+  })()
   return (
     <div>
-      <span>
-        {_.map(data, (item)=>{return item.name}).join(",")}
-      </span>
-      <ObjectTable
-        name="test"
-        objectApiName="accounts"
-        request={request}
-        columnFields={[{
-          fieldName: "name"
-        }, {
-          fieldName: "is_customer"
-        }]}
-      />
     </div>
   )
 };
