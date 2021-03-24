@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import _ from "lodash"
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "../../../builder-steedos/src/"
+import { ObjectContext } from "@steedos/builder-steedos"
 import { useQuery } from "react-query"
 import ProTree, { RequestData } from "@ant-design/pro-table"
 import { SortOrder } from "antd/lib/table/interface"

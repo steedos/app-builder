@@ -2,7 +2,13 @@
 import React, { useContext, useState, useRef } from "react"
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext, ObjectTree, ObjectTable, ObjectTreeProps } from ".."
+import {
+  ObjectContext,
+  ObjectTree,
+  ObjectTable,
+  ObjectTreeProps,
+  ObjectTableProps,
+} from ".."
 import { useQuery } from "react-query";
 import ProTable, { ProTableProps, RequestData } from "@ant-design/pro-table";
 import { SortOrder } from "antd/lib/table/interface";
@@ -11,6 +17,7 @@ import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from "..";
 import { TableModel, store } from '@steedos/builder-store';
 import ProCard from "@ant-design/pro-card"
+import { ActionType } from "react-table";
 //import styles from './UserPicker.less';
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -26,16 +33,12 @@ import ProCard from "@ant-design/pro-card"
 //   defaultClassName: string;
 // }
 
-export type ObjectTableColumnProps = {
-  fieldName: string,
-  wrap?: boolean
-}
 
 export type UserPickerProps = {
   name?: string
   includeSub?:boolean //是否包含其下子子孙孙
   onChange:([any])=>void
-    treeProps: ObjectTreeProps
+  treeProps: ObjectTreeProps
   tableProps:ObjectTableProps
 } & {
     defaultClassName?: string
@@ -115,6 +118,7 @@ setSelectedOrganizations(tmpOrgans)
         </ProCard>
         <ProCard ghost>
           <ObjectTable
+          
             {...tableProps}
             // filters={getFilter(selectedUsers.length>0?selectedUsers:['__none_exisit__'], "user")}
             filters={getContainsFilter(

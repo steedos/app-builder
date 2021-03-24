@@ -9,7 +9,7 @@ import {
 
 import {
   FormProvider
-} from "@steedos/builder-form/src"
+} from "@steedos/builder-form"
 
 export default {
   title: "Object Form",

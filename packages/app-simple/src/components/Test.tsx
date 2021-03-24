@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SteedosContext, ObjectContext } from "@steedos/builder-steedos/src";
-import { ObjectTable } from "@steedos/builder-object/src";
+import { SteedosContext, ObjectContext } from "@steedos/builder-steedos";
+import { ObjectTable } from "@steedos/builder-object";
 
 import _ from "lodash";
 import { useQuery } from "react-query";

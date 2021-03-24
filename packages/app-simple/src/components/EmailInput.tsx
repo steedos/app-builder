@@ -1,12 +1,11 @@
 // @ts-ignore
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { SteedosContext, ObjectContext } from "@steedos/builder-steedos/src";
-import { SteedosProvider } from "@steedos/builder-steedos"
+import { SteedosContext, ObjectContext } from "@steedos/builder-steedos";
 
 import { SendOutlined } from "@ant-design/icons";
 import { Modal, TreeSelect, Select, Input, Button } from "antd";
 // import { ObjectTree } from "./ObjectTree";//"../../../builder-object";
-import { ObjectTree,UserPicker } from "@steedos/builder-object/src"
+import { ObjectTree,UserPicker } from "@steedos/builder-object"
 import _ from "lodash";
 import { useQuery } from "react-query";
 const { Option } = Select;

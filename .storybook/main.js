@@ -41,7 +41,7 @@ module.exports = {
           },
         },
       ],
-      include: [path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
+      // include: [path.resolve(__dirname,"../packages"),path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
       // include: path.resolve(__dirname, '../node_modules/')
     });
 

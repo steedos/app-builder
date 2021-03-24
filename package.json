@@ -19,6 +19,7 @@
     "contributors:gen": "all-contributors generate",
     "prestart": "yarn && yarn bootstrap",
     "boot": "yarn prestart && yarn build",
+    "start:react-demo-app": "lerna --scope react-demo-app run start",
     "start": "yarn build && yarn start-storybook",
     "start:scope": "yarn build:scope && yarn start-storybook",
     "start:all": "yarn build && concurrently \"yarn docs dev\"  \"yarn start-storybook\" ",
@@ -162,5 +163,8 @@
     "typescript": "^4.2.2",
     "uuid": "8.3.2",
     "yarn-deduplicate": "3.1.0"
+  },
+  "devDependencies": {
+    "react-scripts": "4.0.1"
   }
 }
