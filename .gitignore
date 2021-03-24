@@ -102,3 +102,6 @@ yarn-error.log
 
 report.*
 .env
+yarn.lock
+.env
+.env
