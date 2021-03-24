@@ -127,6 +127,7 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
     >
 
       <UserPicker
+        includeSub={true}
         onChange={handleOnChange}
         treeProps={{
           objectApiName: "organizations",
