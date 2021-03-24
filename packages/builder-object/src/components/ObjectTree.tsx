@@ -9,7 +9,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Modal, TreeSelect, Select, Input, Button, Tree } from "antd"
 import { registerObjectTreeComponent } from ".."
-import { store } from "@steedos/builder-store"
+import { store } from "@steedos/builder-store/src"
 
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -33,7 +33,7 @@ export type ObjectTreeProps= ({
       rootNodeValue?: string
       filters?: string|string[]
       checkable?: boolean
-      onChange?: (any) => void
+      onChange?: () => void
     } & {
       defaultClassName: string
     })
@@ -88,8 +88,8 @@ export const ObjectTree = observer( (
         ],//这里以Props里的参数作为useQuery的第一参数，react-query会通过该参数是否发生变化来判断是否要重新进行请求
         async () => {
           const objectFields = Object.values(objectSchema.fields)
-            .filter(({ hidden }) => !hidden)
-            .map(({ name }) => name)
+            .filter((item: any) => !item.hidden)
+            .map((item: any) => item.name)
           return await objectContext.requestRecords(
             objectApiName as string,
             filters,

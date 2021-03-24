@@ -9,7 +9,7 @@ import { SortOrder } from "antd/lib/table/interface";
 import { ParamsType } from "@ant-design/pro-provider";
 import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from "..";
-import { TableModel, store } from '@steedos/builder-store';
+import { TableModel, store } from '@steedos/builder-store/src';
 
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -30,7 +30,7 @@ export type ObjectTableColumnProps = {
   wrap?: boolean
 }
 
-export type ObjectTableProps = {
+export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType, ValueType> = {
   name?: string,
   objectApiName?: string,
   columnFields?: ObjectTableColumnProps[]
@@ -144,7 +144,8 @@ export const getObjectTableProColumn = (field: any) => {
   return proColumnProps;
 }
 
-export const ObjectTable = observer((props: ObjectTableProps) => {
+export const ObjectTable = observer(<T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
+  // export const ObjectTable = observer((props: ObjectTableProps) => {
 // export const ObjectTable = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
   // const store = useContext(BuilderStoreContext);
   const objectContext = useContext(ObjectContext);
@@ -170,7 +171,7 @@ export const ObjectTable = observer((props: ObjectTableProps) => {
   let [proColumns, setProColumns] = useState([]);
   useEffect(() => {
     if (objectSchema) {
-    let tmpProColumns=[]
+    let tmpProColumns: any=[]
     registerObjectTableComponent(_.keys(objectSchema.fields))
 
     const objectFields = objectSchema.fields
