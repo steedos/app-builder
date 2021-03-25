@@ -122,4 +122,5 @@ export const Field = observer((props: any) => {
 Field['propTypes'] = {
   name: PropTypes.string,
   label: PropTypes.string,
+  valueType: PropTypes.string,
 };
