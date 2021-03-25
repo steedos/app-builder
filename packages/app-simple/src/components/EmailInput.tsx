@@ -1,7 +1,7 @@
 // @ts-ignore
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { SteedosContext, ObjectContext } from "@steedos/builder-steedos/src";
-import { SteedosProvider } from "@steedos/builder-steedos"
+import { SteedosProvider } from "@steedos/builder-steedos/src"
 
 import { SendOutlined } from "@ant-design/icons";
 import { Modal, TreeSelect, Select, Input, Button } from "antd";
@@ -17,11 +17,12 @@ interface IDepartment {
   children?: IDepartment[];
 }
 
-function getFilter(ids, key) {
+function getFilter(ids:any[], key: any) {
   return ids.map((id) => (key || "_id") + " eq '" + id + "'").join(" or ");
 }
 const { SHOW_PARENT, SHOW_CHILD } = TreeSelect;
-const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
+const DepartmentChosePanel = (props: any) => {
+  const { openPopup, onClose, onChange } = props;
   const objectContext = useContext(ObjectContext);
 
   const [treeData, setTreeData] = useState([]);
@@ -112,8 +113,8 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
   // }, [allUserIds]);
   const [selectedEmails, setSelectedEmails] = useState([]);
   
-  const handleOnChange = (users) => {
-    setSelectedEmails(users.map(({name,email})=>`${name}<${email}>`))
+  const handleOnChange = (users: any) => {
+    setSelectedEmails(users.map((user: any)=>`${user.name}<${user.email}>`))
   }
   return (
     <Modal
@@ -127,12 +128,13 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
     >
 
       <UserPicker
+        includeSub={true}
         onChange={handleOnChange}
         treeProps={{
           objectApiName: "organizations",
           style: { width: "100%" },
           defaultExpandAll: true,
-          onChange: (values) => {
+          onChange: (values: any) => {
             console.log(values)
           },
         }}
@@ -187,7 +189,7 @@ export const EmailInput = () => {
       <DepartmentChosePanel
         openPopup={openPopup}
         onClose={() => setOpenPopup(false)}
-        onChange={(emails) => {
+        onChange={(emails: any) => {
           setSelectedEmails(_.uniq([...selectedEmails, ...emails]));
         }}
       ></DepartmentChosePanel>

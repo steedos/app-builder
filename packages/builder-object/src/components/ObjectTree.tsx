@@ -9,7 +9,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Modal, TreeSelect, Select, Input, Button, Tree } from "antd"
 import { registerObjectTreeComponent } from ".."
-import { store } from "@steedos/builder-store"
+import { store } from "@steedos/builder-store/src"
 
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -33,7 +33,7 @@ export type ObjectTreeProps= ({
       rootNodeValue?: string
       filters?: string|string[]
       checkable?: boolean
-      onChange?: (any) => void
+      onChange?: () => void
     } & {
       defaultClassName: string
     })
@@ -88,8 +88,8 @@ export const ObjectTree = observer( (
         ],//这里以Props里的参数作为useQuery的第一参数，react-query会通过该参数是否发生变化来判断是否要重新进行请求
         async () => {
           const objectFields = Object.values(objectSchema.fields)
-            .filter(({ hidden }) => !hidden)
-            .map(({ name }) => name)
+            .filter((item: any) => !item.hidden)
+            .map((item: any) => item.name)
           return await objectContext.requestRecords(
             objectApiName as string,
             filters,
@@ -105,7 +105,7 @@ export const ObjectTree = observer( (
         let ek: any = []
         let tp: any = {}
         
-          ; (records as any[]).forEach((d) => {
+          ; (records.value as any[]).forEach((d) => {
             let { _id, children, ...rest } = d
             let parent = rest[parentField || "parent"]
             tp[_id] = tp[_id] || {
@@ -130,13 +130,17 @@ export const ObjectTree = observer( (
     return (
       <Tree
         style={{ width: "100%" }}
-        checkable={checkable}
-        expandedKeys={expandedKeys}
+        // checkable={checkable}
+        // expandedKeys={expandedKeys}
         treeData={treeData}
-        onCheck={(values, { checkedNodes }) => {
-          console.log(values, checkedNodes)
-          onChange && onChange(checkedNodes)
+        onSelect={(values, { selectedNodes }) => {
+          console.log(values, selectedNodes)
+          onChange && onChange(selectedNodes)
         }}
+        // onCheck={(values, { checkedNodes }) => {
+        //   console.log(values, checkedNodes)
+        //   onChange && onChange(checkedNodes)
+        // }}
         {...rest}
       ></Tree>
     )
