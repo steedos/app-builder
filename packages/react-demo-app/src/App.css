@@ -1,10 +1,6 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -35,4 +31,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.ant-pro-card,
+.ant-pro-card-tabs,
+.ant-tabs,
+.ant-tabs-content,
+.ant-pro-table {
+  height: 100%;
+}
+
+.ant-pro-card-tabpane > .ant-pro-card > .ant-pro-card-body {
+  padding: 12px;
 }

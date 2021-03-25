@@ -23,7 +23,19 @@ module.exports = function (api) {
 
   const plugins = [
     "@chakra-ui/babel-plugin",
-    ["@babel/plugin-proposal-class-properties", { "loose": true }]
+    ["@babel/plugin-proposal-class-properties", { loose: true }],
+    // ["import", { libraryName: "antd", style: true }],
+    // [
+    //   "react-css-modules",
+    //   {
+    //     filetypes: {
+    //       ".less": {
+    //         syntax: "postcss-less",
+    //       },
+    //     },
+    //     generateScopedName: "[name]--[local]--[hash:base64:5]",
+    //   },
+    // ],
   ]
 
   return {

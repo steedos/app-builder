@@ -180,4 +180,4 @@ const Field: React.ForwardRefRenderFunction<any, SteedosFieldPropsType> = (
 }
 
 
-export default React.forwardRef(Field) as typeof Field;
+export default React.forwardRef(Field) as unknown as typeof Field;

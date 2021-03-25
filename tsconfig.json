@@ -25,7 +25,7 @@
       "@steedos/builder-locale": ["/packages/builder-locale/src/index.ts"]
     }
   },
-  "include": ["packages", "scripts", "tooling"],
+  "include": ["packages", "scripts", "tooling", "packages/builder-object/rollup.config.js"],
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {

@@ -5,7 +5,7 @@ import { SteedosContext, ObjectContext } from "@steedos/builder-steedos";
 import { SendOutlined } from "@ant-design/icons";
 import { Modal, TreeSelect, Select, Input, Button } from "antd";
 // import { ObjectTree } from "./ObjectTree";//"../../../builder-object";
-import { ObjectTree,UserPicker } from "@steedos/builder-object"
+import { ObjectTree,ObjectTablePicker } from "@steedos/builder-object"
 import _ from "lodash";
 import { useQuery } from "react-query";
 const { Option } = Select;
@@ -125,7 +125,7 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
       }}
     >
 
-      <UserPicker
+      <ObjectTablePicker
         includeSub={true}
         onChange={handleOnChange}
         treeProps={{
@@ -144,7 +144,7 @@ const DepartmentChosePanel = ({ openPopup, onClose, onChange }) => {
           fieldName: "email"
         }]
         }}
-      ></UserPicker>
+      ></ObjectTablePicker>
       {/* <ObjectTree
         objectApiName="organizations"
         style={{ width: "100%" }}
