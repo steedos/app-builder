@@ -19,7 +19,6 @@
     "contributors:gen": "all-contributors generate",
     "prestart": "lerna clean -y && yarn && yarn bootstrap",
     "boot": "yarn prestart && yarn build",
-    "build:scope-simple": "lerna --scope={@steedos/app-simple,@steedos/builder-object} run  build ",
     "start:run": "lerna bootstrap  && yarn build && lerna run start --stream",
     "start": "yarn build && yarn start-storybook",
     "start:scope": "yarn build:scope && yarn start-storybook",
@@ -75,6 +74,7 @@
     "@emotion/styled": "^11.1.5",
     "@jest/types": "26.6.2",
     "@manypkg/cli": "0.17.0",
+    "@rollup/plugin-commonjs": "^17.1.0",
     "@steedos/filters": "^1.23.22",
     "@storybook/addon-a11y": "6.1.11",
     "@storybook/addon-actions": "6.1.10",
@@ -146,6 +146,7 @@
     "nodemon": "2.0.6",
     "pkg-dir": "^4.2.0",
     "plop": "2.7.4",
+    "postcss": "^8.2.8",
     "postcss-less": "^4.0.1",
     "prettier": "^2.2.1",
     "react": "^17.0.2",
@@ -161,6 +162,7 @@
     "react-test-renderer": "^17.0.1",
     "rimraf": "3.0.2",
     "rollup": "^2.42.4",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
@@ -170,22 +172,9 @@
     "tailwindcss": "^2.0.3",
     "ts-jest": "26.4.4",
     "ts-node": "^9.1.1",
+    "tslib": "^2.1.0",
     "typescript": "^4.2.2",
     "uuid": "8.3.2",
     "yarn-deduplicate": "3.1.0"
-  },
-  "babel-loader-lerna-cra": {
-    "imports": "packages/builder-*/src",
-    "apps": "packages/react-*app"
-  },
-  "devDependencies": {
-    "@ovh-ux/rollup-plugin-less-tilde-importer": "^1.0.5",
-    "@rollup/plugin-alias": "^3.1.2",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.2.0",
-    "@rollup/plugin-typescript": "^8.2.0",
-    "postcss": "^8.2.8",
-    "rollup-plugin-babel": "^4.4.0",
-    "tslib": "^2.1.0"
   }
 }
