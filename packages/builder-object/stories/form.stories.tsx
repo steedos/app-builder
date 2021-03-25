@@ -304,8 +304,10 @@ export const FormEdit = () => {
         return []
       }}
     >
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent>
+      <FormProvider locale="zh_CN">
+        <BuilderComponent {...bcProps}>
+        </BuilderComponent>
+      </FormProvider>
       <br /><br /><br />
     </ObjectProvider>
   )
@@ -358,9 +360,11 @@ export const FormAdd = () => {
         }]
       }}
     >
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent>
-      <br /><br /><br />
+      <FormProvider locale="zh_CN">
+        <BuilderComponent {...bcProps}>
+        </BuilderComponent>
+        <br /><br /><br />
+      </FormProvider>
     </ObjectProvider>
   )
 }
