@@ -67,7 +67,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   } = props
 
   const [selectedUsers, setSelectedUsers] = useState([])
-  const [selectedTreeNode, setSelectedTreeNode] = useState([])
+  const [selectedExpandNode, setSelectedExpandNode] = useState([])
 
   // const flatChildren = (node) => {
   //   return [
@@ -90,11 +90,11 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     //   selectedNodes = _.flatten(selectedNodes.map((node) => flatChildren(node)))
     // }
 
-    selectedNodes.forEach(({ value }) => {
-      tmpTreeNodes = [...tmpTreeNodes, value]
+    selectedNodes.forEach(({ _id }) => {
+      tmpTreeNodes = [...tmpTreeNodes, _id]
     })
     tmpTreeNodes = _.uniq(tmpTreeNodes)
-    setSelectedTreeNode(tmpTreeNodes)
+    setSelectedExpandNode(tmpTreeNodes)
     ref.current?.reload()
   }
 
@@ -182,9 +182,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
             filters={
               expandProps &&
               getContainsFilter(
-                selectedTreeNode.length > 0
-                  ? selectedTreeNode
-                  : ["__none_exisit__"],
+                selectedExpandNode.length > 0 ? selectedExpandNode : [], //: ["__none_exisit__"],//本来的意思是,如果不选任何节点,就不能搜到任何人.现有调整成不选任何节点就找到所有人.
                 expandProps.releatedColumnField
                 // "organizations_parents"
               )

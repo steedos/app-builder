@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { AppTest } from "../src/components/AppTest"
 import { SteedosProvider } from "@steedos/builder-steedos"
-
+import { SelectUserInput } from "@steedos/builder-object"
 import "antd/dist/antd.css"
 import "@ant-design/pro-table/dist/table.css"
 import "@ant-design/pro-card/dist/card.css"
@@ -17,7 +17,8 @@ export const App = () => {
     <SteedosProvider>
       {/* <Test /> */}
       {/* <EmailInput /> */}
-      <AppTest />
+      <SelectUserInput />
+      {/* <AppTest /> */}
     </SteedosProvider>
   )
 }

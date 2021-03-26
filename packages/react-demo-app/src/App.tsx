@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import logo from "./logo.svg"
 import "./App.css"
 
@@ -17,18 +17,30 @@ const {
   REACT_APP_STEEDOS_LOCALE = "zh_CN",
 } = process.env
 
-console.log(process.env)
-
 function App() {
   const providerProps = {
     rootUrl: REACT_APP_STEEDOS_ROOT_URL,
-    tenantId: REACT_APP_STEEDOS_TENANT_ID,
+    tenantId: "jMw2tHZe4EBGFKkuZ", //REACT_APP_STEEDOS_TENANT_ID,
     userId: REACT_APP_STEEDOS_USER_ID,
     authToken: REACT_APP_STEEDOS_AUTH_TOKEN,
     locale: REACT_APP_STEEDOS_LOCALE,
   }
 
   const [selectedUser, setSelectedUsers] = useState([])
+  const [selectedUserInTab1, setSelectedUsersInTab1] = useState([])
+  const [selectedUserInTab2, setSelectedUsersInTab2] = useState([])
+
+  const handleOnTab1Change = (users: any) => {
+    setSelectedUsersInTab1(users)
+  }
+  const handleOnTab2Change = (users: any) => {
+    setSelectedUsersInTab2(users)
+  }
+
+  useEffect(() => {
+    setSelectedUsers([...selectedUserInTab1, ...selectedUserInTab2])
+  }, [selectedUserInTab1, selectedUserInTab2])
+
   const handleOnChange = (users: any) => {
     setSelectedUsers(users)
     console.log(users)
@@ -49,9 +61,16 @@ function App() {
               type: "card",
             }}
           >
-            <ProCard.TabPane key="tab1" tab="部门列表">
+            <ProCard.TabPane
+              key="tab1"
+              tab={`用户${
+                selectedUserInTab1.length > 0
+                  ? "(" + selectedUserInTab1.length + ")"
+                  : ""
+              }`}
+            >
               <ObjectExpandTable
-                onChange={handleOnChange}
+                onChange={handleOnTab1Change}
                 objectApiName="space_users"
                 columnFields={[
                   {
@@ -62,7 +81,6 @@ function App() {
                   },
                   {
                     fieldName: "organizations_parents",
-
                     expandType: "tree",
                     expandReference: "organizations",
                     expandNameField: "name",
@@ -72,9 +90,16 @@ function App() {
                 ]}
               />
             </ProCard.TabPane>
-            <ProCard.TabPane key="tab2" tab="联系人">
-              <ObjectTable
-                onChange={handleOnChange}
+            <ProCard.TabPane
+              key="tab2"
+              tab={`联系人${
+                selectedUserInTab2.length > 0
+                  ? "(" + selectedUserInTab2.length + ")"
+                  : ""
+              }`}
+            >
+              <ObjectExpandTable
+                onChange={handleOnTab2Change}
                 rowKey="_id"
                 objectApiName="contacts"
                 columnFields={[
@@ -84,13 +109,13 @@ function App() {
                   {
                     fieldName: "email",
                   },
-                  //  {
-                  //                 fieldName: "space_users",
-                  //                 expandType: 'list',
-                  //                 expandReference: "contacts",
-                  //                 expandNameField: "name",
-                  //                 hideInTable: true,
-                  //               },
+                  {
+                    fieldName: "group__c",
+                    expandType: "list",
+                    expandReference: "contacts_group__c",
+                    expandNameField: "name",
+                    hideInTable: true,
+                  },
                 ]}
               />
             </ProCard.TabPane>

@@ -108,6 +108,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
           key: _id,
           title: d[nameField || "name"],
           children: [],
+          _id,
           ...rest,
         }
         ek.push(_id)
