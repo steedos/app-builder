@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import type { InputProps } from 'antd';
 
 import React, { useContext, useState } from "react";
+import * as PropTypes from 'prop-types';
 import { Flex, Box } from "@chakra-ui/layout"
 import {EditIcon, LockIcon} from '@chakra-ui/icons'
 import { FormContext } from "antd/es/form/context";
@@ -118,3 +119,8 @@ export const Field = observer((props: any) => {
   return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} fieldProps={fieldProps} readonly={readonly}/>)
 })
 
+Field['propTypes'] = {
+  name: PropTypes.string,
+  label: PropTypes.string,
+  valueType: PropTypes.string,
+};
