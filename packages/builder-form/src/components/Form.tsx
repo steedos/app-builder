@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import * as PropTypes from 'prop-types';
+
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 import { Form as AntForm } from 'antd';
 import BaseForm from '@ant-design/pro-form/es/BaseForm';
@@ -71,3 +73,11 @@ export const Form = observer((props:any) => {
       </BaseForm>
   )
 });
+
+
+Form['propTypes'] = {
+  name: PropTypes.string,
+  mode: PropTypes.string,
+  layout: PropTypes.string,
+  initialValues: PropTypes.object,
+};

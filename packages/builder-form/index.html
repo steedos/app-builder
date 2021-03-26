@@ -5,8 +5,9 @@
   </head>
 
   <body>
-    <pro-form>
-      <pro-field name='test' label='test' valueType='text'></pro-field>
+    <pro-form mode='edit' initialValues={test:'111'}>
+      <pro-field name='test' label='test' valueType='switch'></pro-field>
+      <pro-field name='date' label='date' valueType='date'></pro-field>
     </pro-form>
   </body>
 </html>
