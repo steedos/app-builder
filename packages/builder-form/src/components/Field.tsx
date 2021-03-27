@@ -12,7 +12,7 @@ import createField from '@ant-design/pro-form/es/BaseForm/createField'
 
 import { BuilderStoreContext } from "@builder.io/react";
 import { ProFormItemProps } from "@ant-design/pro-form/es/interface";
-import { store } from '@steedos/builder-store';
+import { rootStore as store } from '@steedos/builder-store/src';
 import { observer } from "mobx-react-lite"
 import FieldContext from "@ant-design/pro-form/es/FieldContext";
 

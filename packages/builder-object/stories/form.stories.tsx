@@ -1,7 +1,7 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
-import { store } from '@steedos/builder-store';
+import { rootStore as store } from '@steedos/builder-store';
 
 import {
   ObjectProvider

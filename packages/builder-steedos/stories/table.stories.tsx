@@ -177,8 +177,12 @@ export const Preview = () => {
     }
   }
 
+  let initialState = {
+    currentObjectApiName: "accounts"
+  }
+
   return (
-    <SteedosProvider >
+    <SteedosProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent>
       <br /><br /><br />
@@ -211,8 +215,12 @@ export const TableSimple = () => {
     }
   }
 
+  let initialState = {
+    currentObjectApiName: "accounts"
+  }
+
   return (
-    <SteedosProvider >
+    <SteedosProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent>
       <br /><br /><br />

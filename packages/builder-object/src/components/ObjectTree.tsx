@@ -9,7 +9,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Modal, TreeSelect, Select, Input, Button, Tree } from "antd"
 import { registerObjectTreeComponent } from ".."
-import { store } from "@steedos/builder-store/src"
+import { rootStore as store } from "@steedos/builder-store/src"
 
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,

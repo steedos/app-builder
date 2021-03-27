@@ -9,7 +9,7 @@ import { SortOrder } from "antd/lib/table/interface";
 import { ParamsType } from "@ant-design/pro-provider";
 import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from "..";
-import { TableModel, store } from '@steedos/builder-store/src';
+import { TableModel, rootStore as store } from '@steedos/builder-store/src';
 import ProCard from "@ant-design/pro-card"
 //import styles from './UserPicker.less';
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {

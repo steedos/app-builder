@@ -3,7 +3,7 @@ import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
 
 import { SteedosProvider } from "../src/index"
-import { store } from '@steedos/builder-store';
+import { rootStore as store } from '@steedos/builder-store';
 
 export default {
   title: "Steedos Form",

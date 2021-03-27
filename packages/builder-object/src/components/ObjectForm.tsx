@@ -10,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { registerObjectFieldComponent } from "..";
 import { observer } from "mobx-react-lite"
-import { FormModel, store } from '@steedos/builder-store';
+import { FormModel, rootStore as store } from '@steedos/builder-store/src';
 
 export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
 

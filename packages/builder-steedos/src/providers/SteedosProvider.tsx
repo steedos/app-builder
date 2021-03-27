@@ -5,7 +5,7 @@ import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object/src/index";
 import { FormProvider } from "@steedos/builder-form/src/index";
-import { Provider, store } from "@steedos/builder-store/src";
+import { StoreProvider } from "@steedos/builder-store/src";
 
 const {
   STEEDOS_ROOT_URL,
@@ -31,6 +31,8 @@ export function SteedosProvider(props: any) {
     locale = STEEDOS_LOCALE,
     children,
   } = props;
+
+  let initialState = props.initialState ? props.initialState : {};
 
   const client = new SteedosClient();
 
@@ -83,7 +85,7 @@ export function SteedosProvider(props: any) {
   }
 
   return (
-    <Provider value={store}>
+    <StoreProvider initialState={initialState}>
       <SteedosContext.Provider value={steedosContextValues}>
         <ObjectProvider {...objectProviderProps}>
           <FormProvider locale={locale}>
@@ -91,6 +93,6 @@ export function SteedosProvider(props: any) {
           </FormProvider>
         </ObjectProvider>
       </SteedosContext.Provider>
-    </Provider>
+    </StoreProvider>
   )
 }

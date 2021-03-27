@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import { ObjectContext } from "../";
 import { observer } from "mobx-react-lite"
 
-import { FormModel, store } from '@steedos/builder-store';
+import { FormModel, rootStore as store } from '@steedos/builder-store/src';
 
 export type ObjectFieldProps = {
   objectApiName?: string,
