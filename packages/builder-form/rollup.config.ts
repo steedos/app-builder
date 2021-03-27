@@ -55,18 +55,18 @@ const options = {
 };
 
 export default [
-  // React CJS
-  {
-    ...options,
-    output: [{ file: 'dist/builder-form.react.js', format: 'cjs', sourcemap: true }],
-    plugins: options.plugins.concat([sourceMaps()]),
-  },
-  // ES
-  {
-    ...options,
-    output: [{ file: 'dist/builder-form.esm.js', format: 'es', sourcemap: true }],
-    plugins: options.plugins.concat([sourceMaps()]),
-  },
+  // // React CJS
+  // {
+  //   ...options,
+  //   output: [{ file: 'dist/builder-form.react.js', format: 'cjs', sourcemap: true }],
+  //   plugins: options.plugins.concat([sourceMaps()]),
+  // },
+  // // ES
+  // {
+  //   ...options,
+  //   output: [{ file: 'dist/builder-form.esm.js', format: 'es', sourcemap: true }],
+  //   plugins: options.plugins.concat([sourceMaps()]),
+  // },
   {
     ...options,
     output: [
