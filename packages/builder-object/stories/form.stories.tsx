@@ -14,7 +14,7 @@ export default {
   title: "Object Form",
 }
 
-import { SteedosClient }  from '@steedos/client';
+import { SteedosClient } from '@steedos/client';
 import { result } from "lodash";
 const {
   STEEDOS_ROOT_URL,
@@ -178,7 +178,7 @@ export const Preview = () => {
     initialValues: { name: 'Hello World!' },
     columns: 3,
   }
-  const content ={};
+  const content = {};
   const bcProps = {
     apiKey,
     //content,
@@ -205,30 +205,30 @@ export const Preview = () => {
         //filters: 过滤条件
         //fields: 要返回的字段
         return [{
-          name:'test',
-          type:'Analyst',
+          name: 'test',
+          type: 'Analyst',
           number_of_employees: 10,
           description: '这是描述信息',
           email: '123@qq.com',
           industry: 'Engineering',
-          rating : 'Warm',
-          salutation : 'Female',
-          startdate__c : '2021-03-15',
+          rating: 'Warm',
+          salutation: 'Female',
+          startdate__c: '2021-03-15',
           datetime__c: '2021-03-15 11:30:00',
-          state : 'SH',
-          summary__c : 3,
-          website : '123.com',
+          state: 'SH',
+          summary__c: 3,
+          website: '123.com',
           annual_revenue: 56123,
           fn__c: 56123
         }]
       }}
-      updateRecord = {async (objectApiName, objectRecordId, data) => {
+      updateRecord={async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
         //objectRecordId: recordId
         //data:表单提交Data
         return []
       }}
-      insertRecord = {async (objectApiName, data) => {
+      insertRecord={async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return []
@@ -273,38 +273,44 @@ export const FormEdit = () => {
         //objectApiName:对象api名称
         //filters: 过滤条件
         //fields: 要返回的字段
-        return [{
-          name:'test',
-          type:'Analyst',
-          number_of_employees: 10,
-          description: '这是描述信息',
-          email: '123@qq.com',
-          industry: 'Engineering',
-          rating : 'Warm',
-          salutation : 'Female',
-          startdate__c : '2021-03-15',
-          datetime__c: '2021-03-15 11:30:00',
-          state : 'SH',
-          summary__c : 3,
-          website : '123.com',
-          annual_revenue: 56123,
-          fn__c: 56123
-        }]
+        return {
+          "@odata.count": 1,
+          value: [{
+            name: 'test',
+            type: 'Analyst',
+            number_of_employees: 10,
+            description: '这是描述信息',
+            email: '1234@qq.com',
+            parent_id: '大四',
+            industry: 'Engineering',
+            rating: 'Warm',
+            salutation: 'Female',
+            startdate__c: '2021-03-15',
+            datetime__c: '2021-03-15 11:30:00',
+            state: 'SH',
+            summary__c: 3,
+            website: '123.com',
+            annual_revenue: 56123,
+            fn__c: 56123
+          }]
+        }
       }}
-      updateRecord = {async (objectApiName, objectRecordId, data) => {
+      updateRecord={async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
         //objectRecordId: recordId
         //data:表单提交Data
         return []
       }}
-      insertRecord = {async (objectApiName, data) => {
+      insertRecord={async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return []
       }}
     >
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent>
+      <FormProvider locale="zh_CN">
+        <BuilderComponent {...bcProps}>
+        </BuilderComponent>
+      </FormProvider>
       <br /><br /><br />
     </ObjectProvider>
   )
@@ -343,13 +349,13 @@ export const FormAdd = () => {
         //fields: 要返回的字段
         return []
       }}
-      updateRecord = {async (objectApiName, objectRecordId, data) => {
+      updateRecord={async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
         //objectRecordId: recordId
         //data:表单提交Data
         return []
       }}
-      insertRecord = {async (objectApiName, data) => {
+      insertRecord={async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
         return [{
@@ -357,9 +363,11 @@ export const FormAdd = () => {
         }]
       }}
     >
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent>
-      <br /><br /><br />
+      <FormProvider locale="zh_CN">
+        <BuilderComponent {...bcProps}>
+        </BuilderComponent>
+        <br /><br /><br />
+      </FormProvider>
     </ObjectProvider>
   )
 }

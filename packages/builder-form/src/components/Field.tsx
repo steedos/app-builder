@@ -2,7 +2,12 @@ import ProField from "@ant-design/pro-field"
 import { Form } from "antd"
 import type { InputProps } from "antd"
 
+<<<<<<< HEAD
 import React, { useContext, useState } from "react"
+=======
+import React, { useContext, useState } from "react";
+import * as PropTypes from 'prop-types';
+>>>>>>> 30b7111fa2ffc8a83306c7bc9ca139c777dca84c
 import { Flex, Box } from "@chakra-ui/layout"
 import { EditIcon, LockIcon } from "@chakra-ui/icons"
 import { FormContext } from "antd/es/form/context"
@@ -139,3 +144,12 @@ export const Field = observer((props: any) => {
     />
   )
 })
+<<<<<<< HEAD
+=======
+
+Field['propTypes'] = {
+  name: PropTypes.string,
+  label: PropTypes.string,
+  valueType: PropTypes.string,
+};
+>>>>>>> 30b7111fa2ffc8a83306c7bc9ca139c777dca84c

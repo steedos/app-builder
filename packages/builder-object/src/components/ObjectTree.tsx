@@ -31,7 +31,7 @@ export type ObjectTreeProps =
       rootNodeValue?: string
       filters?: string | string[]
       checkable?: boolean
-      onChange?: (any) => void
+      onChange?: () => void
     } & {
       defaultClassName: string
     })

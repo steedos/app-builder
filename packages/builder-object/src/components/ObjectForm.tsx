@@ -90,15 +90,17 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   registerObjectFieldComponent(_.keys(object.fields));
   
   let initialValues = {};
-  if(records.length > 0){
-    const record = records[0];
+  if(records.value && records.value.length > 0){
+    const record = records.value[0];
     fields.map((fieldName)=>{
       initialValues[fieldName] = record[fieldName];
     })
   }
   const onFinish = async(values:any) =>{
     let result; 
-    if(mode === 'add'){
+    console.log('--ObjectForm-mode----', mode);
+    if(mode === 'add'){     
+      console.log(values);
       result = await objectContext.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");

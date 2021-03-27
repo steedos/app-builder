@@ -25,46 +25,18 @@
       "@steedos/builder-locale": ["/packages/builder-locale/src/index.ts"]
     }
   },
-  "include": ["packages", "scripts", "tooling", "packages/builder-object/rollup.config.js"],
+  "include": [
+    "packages",
+    "scripts",
+    "tooling",
+    "packages/builder-object/rollup.config.js"
+  ],
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
-      "baseUrl": "./",
-      "target": "es5",
-      "module": "esnext",
-      "lib": ["dom", "esnext"],
-      "declaration": true,
-      "sourceMap": true,
-      "moduleResolution": "node",
-      "skipLibCheck": true,
-      "strict": true,
-      "noFallthroughCasesInSwitch": true,
-      "suppressImplicitAnyIndexErrors": true,
-      "noImplicitAny": true,
-      "strictFunctionTypes": true,
-      "strictNullChecks": true,
-      "strictPropertyInitialization": true,
-      "jsx": "react",
-      "esModuleInterop": true,
+      "module": "CommonJS",
       "resolveJsonModule": true,
-      "allowSyntheticDefaultImports": true,
-      "downlevelIteration": true,
-      "paths": {
-        "@steedos/builder-store": ["/packages/builder-store/src/index.tsx"],
-        "@steedos/builder-ant-design": ["/packages/builder-ant-design/src/index.tsx"],
-        "@steedos/builder-form": ["/packages/builder-form/src/index.tsx"],
-        "@steedos/builder-steedos": ["/packages/builder-steedos/src/index.tsx"],
-        "@steedos/builder-object": ["/packages/builder-object/src/index.tsx"],
-        "@steedos/builder-locale": ["/packages/builder-locale/src/index.ts"],
-      }
-    },
-    "include": ["packages", "scripts", "tooling"],
-    "exclude": ["node_modules"],
-    "ts-node": {
-      "compilerOptions": {
-        "module": "CommonJS",
-        "resolveJsonModule": true,
-        "noImplicitAny": false
-      }
+      "noImplicitAny": false
     }
   }
+}
