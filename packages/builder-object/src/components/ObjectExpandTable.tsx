@@ -160,7 +160,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         className={["object-expand-table", rest.className].join(" ")}
       >
         {expandProps && expandProps.type && (
-          <ProCard colSpan="30%" className="expand-part">
+          <ProCard colSpan="30%" className="expand-part" ghost>
             {expandProps.type == "tree" && (
               <ObjectTree
                 {...expandProps}
