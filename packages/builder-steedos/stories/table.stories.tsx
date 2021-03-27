@@ -3,7 +3,7 @@ import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
 
 import { SteedosProvider } from "../src/index"
-import { store } from '@steedos/builder-store';
+import { useMst } from "@steedos/builder-store/src";
 
 export default {
   title: "Steedos Table",
@@ -160,6 +160,7 @@ export const Preview = () => {
   //   currentRecordId: ""
   // };
   console.log("====setCurrentObjectApiName==1=");
+  const store = useMst();
   store.setCurrentObjectApiName("accounts");
   console.log("====setCurrentObjectApiName==2=", store.currentObjectApiName);
   const data = {
@@ -191,8 +192,10 @@ export const TableSimple = () => {
 
   require('../src/builder-widgets');
   require('@steedos/builder-object/src/builder-widgets');
+  // const store = useMst();
+  // const { currentObjectApiName } = useMst();
 
-  store.setCurrentObjectApiName("accounts");
+  // store.setCurrentObjectApiName("accounts");
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
