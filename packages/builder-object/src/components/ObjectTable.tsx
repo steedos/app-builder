@@ -13,7 +13,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from ".."
 import { TableModel, store } from "@steedos/builder-store"
-import "./ObjectTable.less"
+// import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
@@ -296,7 +296,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
       options={false}
       {...rest}
-      className={["object-table",rest.className].join(" ")}
+      className={["object-table", rest.className].join(" ")}
     />
   )
 })

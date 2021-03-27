@@ -14,7 +14,7 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { registerObjectListComponent } from ".."
-import "./ObjectList.less"
+// import "./ObjectList.less"
 export type ObjectListProps =
   | ({
       name?: string
