@@ -13,7 +13,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from ".."
 import { TableModel, store } from "@steedos/builder-store"
-// import "./ObjectTable.less"
+import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
@@ -61,7 +61,8 @@ export const getProColumnProps = (
       proColumnProps.readonly = readonly
       break
     case "email":
-      proColumnProps.valueType = "email"
+      // proColumnProps.valueType = "email"
+      proColumnProps.valueType = "text"
       proColumnProps.readonly = readonly
       break
     case "percent":
@@ -263,11 +264,6 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     const fields = columnFields.map((n) => {
       return n.fieldName
     })
-    console.log(
-      [filters ? "(" + filters + ")" : "", ...tableFilters]
-        .filter((a) => a)
-        .join(" and ")
-    )
     const result = await objectContext.requestRecords(
       objectApiName,
       [filters ? "(" + filters + ")" : "", ...tableFilters]

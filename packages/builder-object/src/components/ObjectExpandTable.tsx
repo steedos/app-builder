@@ -5,7 +5,7 @@
  * @Author: Kent.Wood 
  * @Date: 2021-03-25 22:35:51 
  * @Last Modified by: Kent.Wood
- * @Last Modified time: 2021-03-26 03:34:00
+ * @Last Modified time: 2021-03-27 20:51:52
  */
 
 import ProCard from "@ant-design/pro-card"
@@ -14,8 +14,9 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { ActionType } from "react-table"
-// import "./ObjectExpandTable.less"
+import "./ObjectExpandTable.less"
 // import { BuilderStoreContext } from '@builder.io/react';
+
 import {
   ObjectContext,
   ObjectList,
@@ -105,6 +106,10 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const ref = useRef<ActionType>()
 
+  useEffect(() => {
+    ref.current?.reload()
+  }, [ref.current])
+
   const [expandProps, setExpandProps] = useState<{
     type: string
     objectApiName: string
@@ -160,7 +165,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         className={["object-expand-table", rest.className].join(" ")}
       >
         {expandProps && expandProps.type && (
-          <ProCard colSpan="30%" className="expand-part" ghost>
+          <ProCard colSpan="30%" className="expand-part">
             {expandProps.type == "tree" && (
               <ObjectTree
                 {...expandProps}
@@ -187,7 +192,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
                 // "organizations_parents"
               )
             }
-            manualRequest={true}
+            // manualRequest={true}
             actionRef={ref}
             onChange={handleTableRowChose}
           />

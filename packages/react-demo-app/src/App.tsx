@@ -8,7 +8,7 @@ import { ObjectExpandTable, ObjectTable } from "@steedos/builder-object"
 
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
-
+import queryString from "querystring"
 const {
   REACT_APP_STEEDOS_ROOT_URL,
   REACT_APP_STEEDOS_TENANT_ID,
@@ -17,7 +17,7 @@ const {
   REACT_APP_STEEDOS_LOCALE = "zh_CN",
 } = process.env
 
-function App() {
+function App(props: any) {
   const providerProps = {
     rootUrl: REACT_APP_STEEDOS_ROOT_URL,
     tenantId: "jMw2tHZe4EBGFKkuZ", //REACT_APP_STEEDOS_TENANT_ID,
@@ -25,6 +25,8 @@ function App() {
     authToken: REACT_APP_STEEDOS_AUTH_TOKEN,
     locale: REACT_APP_STEEDOS_LOCALE,
   }
+
+  let queryObject = queryString.parse(window.location.search.slice(1))
 
   const [selectedUser, setSelectedUsers] = useState([])
   const [selectedUserInTab1, setSelectedUsersInTab1] = useState([])
@@ -43,11 +45,13 @@ function App() {
 
   const handleOnChange = (users: any) => {
     setSelectedUsers(users)
-    console.log(users)
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
   const confirmChose = () => {
-    console.log(selectedUser)
+    ;(window.opener || window.parent).postMessage({
+      ...queryObject,
+      selection: selectedUser.map(({ name, email }) => ({ name, email })),
+    })
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
 
@@ -128,7 +132,11 @@ function App() {
               alignItems: "center",
             }}
           >
-            <Button onClick={confirmChose} type="primary">
+            <Button
+              disabled={selectedUser.length <= 0}
+              onClick={confirmChose}
+              type="primary"
+            >
               确定
             </Button>
           </ProCard>
