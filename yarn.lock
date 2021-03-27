@@ -21077,13 +21077,6 @@ rollup@^0.34.7:
   dependencies:
     source-map-support "^0.4.0"
 
-rollup@^2.33.3:
-  version "2.41.4"
-  resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.41.4.tgz#2a674d64db4322482d440699acb060dc6dd9e65f"
-  integrity sha1-KmdNZNtDIkgtRAaZrLBg3G3Z5l8=
-  optionalDependencies:
-    fsevents "~2.3.1"
-
 rollup@^2.42.4:
   version "2.42.4"
   resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.42.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frollup%2Fdownload%2Frollup-2.42.4.tgz#97c910a48bd0db6aaa4271dd48745870cbbbf970"
