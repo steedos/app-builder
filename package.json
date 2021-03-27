@@ -13,7 +13,7 @@
     "check:pkgs": "manypkg check",
     "fix:pkgs": "manypkg fix",
     "version:pkgs": "changeset version",
-    "clean:emotion-types": "shx rm -rf node_modules/@emotion/core/types",
+    "clean:emotion-types": "rm -rf node_modules/@emotion/core/types",
     "postinstall": "yarn clean:emotion-types && yarn check:pkgs",
     "contributors:add": "all-contributors add",
     "contributors:gen": "all-contributors generate",
@@ -21,11 +21,9 @@
     "boot": "yarn prestart && yarn build",
     "start:run": "lerna bootstrap  && yarn build && lerna run start --stream",
     "start": "yarn build && yarn start-storybook",
-    "start:scope": "yarn build:scope && yarn start-storybook",
     "start:all": "yarn build && concurrently \"yarn docs dev\"  \"yarn start-storybook\" ",
     "prebuild.disabled": "yarn pkg babel-plugin build",
     "build": "lerna run build --no-private --stream",
-    "build:scope": "lerna --scope @steedos/app-simple run  build  --no-private --stream --no-bail",
     "build:templates": "ts-node -T scripts/build-templates.ts",
     "test": "lerna run test --no-private --stream",
     "lint": "lerna run lint --no-private --stream",
@@ -46,8 +44,7 @@
     "docs:build": "yarn avatars:gen && yarn search-meta:gen && yarn docs build",
     "docs:dev": "yarn avatars:gen && yarn docs dev",
     "docs:start": "yarn docs start",
-    "dedup": "yarn-deduplicate --strategy highest yarn.lock",
-    "ttt": "mocha packages/client/test/unit/sobject.ts"
+    "dedup": "yarn-deduplicate --strategy highest yarn.lock"
   },
   "resolutions": {
     "**/react": "17.0.1",

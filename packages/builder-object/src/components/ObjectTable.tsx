@@ -32,6 +32,7 @@ export type ObjectTableColumnProps = {
   fieldName: string
 } & ProColumnType
 
+// export type ObjectTableProps<T extends Record<string, any>, U extends ParamsType, ValueType> = {
 export type ObjectTableProps<T extends ObjectTableColumnProps> =
   | ({
       name?: string
@@ -173,7 +174,8 @@ export const getObjectTableProColumn = (field: any) => {
   return proColumnProps
 }
 
-export const ObjectTable = observer((props: ObjectTableProps<any>) => {
+// export const ObjectTable = observer(<T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
+export const ObjectTable = observer((props: ObjectTableProps) => {
   // export const ObjectTable = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
   // const store = useContext(BuilderStoreContext);
   const objectContext = useContext(ObjectContext)
@@ -204,7 +206,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   let [proColumns, setProColumns] = useState([])
   useEffect(() => {
     if (objectSchema) {
-      let tmpProColumns = []
+      let tmpProColumns: any=[]
       registerObjectTableComponent(_.keys(objectSchema.fields))
 
       const objectFields = objectSchema.fields
