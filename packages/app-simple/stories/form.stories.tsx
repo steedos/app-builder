@@ -1,18 +1,24 @@
-import * as React from "react";
+import * as React from "react"
 
-import { Test, EmailInput } from "../src/index";
-import { SteedosProvider } from "@steedos/builder-steedos";
+import { AppTest } from "../src/components/AppTest"
+import { SteedosProvider } from "@steedos/builder-steedos"
+import { SelectUserInput } from "@steedos/builder-object"
+import "antd/dist/antd.css"
+import "@ant-design/pro-table/dist/table.css"
+import "@ant-design/pro-card/dist/card.css"
+import "@ant-design/pro-layout/dist/layout.css"
 
 export default {
   title: "AppSimple",
-};
+}
 
-export const AppTest = () => {
+export const App = () => {
   return (
     <SteedosProvider>
       {/* <Test /> */}
-
-      <EmailInput />
+      {/* <EmailInput /> */}
+      <SelectUserInput />
+      {/* <AppTest /> */}
     </SteedosProvider>
-  );
-};
+  )
+}

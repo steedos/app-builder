@@ -3,8 +3,9 @@ import React from "react";
 
 import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
-import { ObjectProvider } from "@steedos/builder-object/src/index";
-import { FormProvider } from "@steedos/builder-form/src/index";
+import { ObjectProvider } from "@steedos/builder-object";
+import { FormProvider } from "@steedos/builder-form";
+import { Provider, store } from "@steedos/builder-store";
 
 const {
   STEEDOS_ROOT_URL,
@@ -20,7 +21,7 @@ const {
 
 */
 export function SteedosProvider(props: any) {
-  
+
   const {
     rootUrl = STEEDOS_ROOT_URL,
     tenantId = STEEDOS_TENANT_ID,
@@ -70,7 +71,7 @@ export function SteedosProvider(props: any) {
   }
 
   const insertRecord = async (objectApiName: string, data: any) => {
-    const result= await client.sobject(objectApiName).insert(data);
+    const result = await client.sobject(objectApiName).insert(data);
     return result;
   }
 
@@ -82,12 +83,14 @@ export function SteedosProvider(props: any) {
   }
 
   return (
-    <SteedosContext.Provider value={steedosContextValues}>
-      <ObjectProvider {...objectProviderProps}>
-        <FormProvider locale={locale}>
-          {children}
-        </FormProvider>
-      </ObjectProvider>
-    </SteedosContext.Provider>
+    <Provider value={store}>
+      <SteedosContext.Provider value={steedosContextValues}>
+        <ObjectProvider {...objectProviderProps}>
+          <FormProvider locale={locale}>
+            {children}
+          </FormProvider>
+        </ObjectProvider>
+      </SteedosContext.Provider>
+    </Provider>
   )
 }

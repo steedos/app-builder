@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 
-export { ObjectContext } from "@steedos/builder-object/src/index";
+export { ObjectContext } from "@steedos/builder-object";
 
 export const SteedosContext = React.createContext<any>(null);
 

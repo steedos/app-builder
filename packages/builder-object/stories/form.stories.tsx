@@ -1,7 +1,6 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
-import { store } from '@steedos/builder-store';
 
 import {
   ObjectProvider
@@ -9,7 +8,7 @@ import {
 
 import {
   FormProvider
-} from "@steedos/builder-form/src"
+} from '@steedos/builder-form'
 
 export default {
   title: "Object Form",

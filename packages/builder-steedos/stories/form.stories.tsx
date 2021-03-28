@@ -180,7 +180,9 @@ export const Preview = () => {
   //   currentObjectApiName: "accounts",
   //   currentRecordId: ""
   // };
+  console.log("====setCurrentObjectApiName==1=");
   store.setCurrentObjectApiName("accounts");
+  console.log("====setCurrentObjectApiName==2=", store.currentObjectApiName);
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,

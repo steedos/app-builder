@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 // import { BuilderStoreContext } from '@builder.io/react';
 
-import { Field } from '@steedos/builder-form/src/index'
+import { Field } from '@steedos/builder-form'
 import _ from 'lodash';
 import { useQuery } from "react-query";
 import { ObjectContext } from "../";
 import { observer } from "mobx-react-lite"
 
-import { FormModel, store } from '@steedos/builder-store';
+import { FormModel, store } from "@steedos/builder-store";
 
 export type ObjectFieldProps = {
   objectApiName?: string,
