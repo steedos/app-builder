@@ -48,10 +48,15 @@ function App(props: any) {
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
   const confirmChose = () => {
-    ;(window.opener || window.parent).postMessage({
-      ...queryObject,
-      selection: selectedUser.map(({ name, email }) => ({ name, email })),
-    })
+    ;(window.opener || window.parent).postMessage(
+      {
+        ...queryObject,
+        selection: selectedUser.map(({ name, email }) => ({ name, email })),
+      },
+      "*"
+    )
+
+    window.close()
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
 
