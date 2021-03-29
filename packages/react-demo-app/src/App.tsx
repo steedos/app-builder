@@ -63,9 +63,8 @@ function App(props: any) {
   return (
     <SteedosProvider {...providerProps}>
       <div className="App">
-        <ProCard title="选择联系人" split="horizontal" bordered headerBordered>
+        <ProCard title="" split="horizontal" bordered headerBordered>
           <ProCard
-            ghost
             tabs={{
               type: "card",
             }}

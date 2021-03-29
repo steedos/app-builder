@@ -51,6 +51,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
     objectApiName,
     nameField,
     parentField,
+    releatedColumnField,
     rootNodeValue,
     filters,
     checkable,
@@ -99,7 +100,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       let td: any = []
       let ek: any = []
       let tp: any = {}
-
+      let _rootNodeValue = rootNodeValue
       ;(records.value as any[]).forEach((d) => {
         let { _id, children, ...rest } = d
         let parent = rest[parentField || "parent"]
@@ -112,13 +113,19 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
           ...rest,
         }
         ek.push(_id)
-        tp[parent] ? tp[parent].children.push(tp[_id]) : (td = [tp[_id]])
+        if (tp[parent]) {
+          tp[parent].children.push(tp[_id])
+        } else {
+          td = [tp[_id]]
+          _rootNodeValue = _id
+        }
       })
-      if (rootNodeValue) {
-        td = (tp[rootNodeValue] && [tp[rootNodeValue]]) || []
+      if (_rootNodeValue) {
+        td = (tp[_rootNodeValue] && [tp[_rootNodeValue]]) || []
       }
       setTreeData(td)
-      setExpandedKeys(ek)
+      // setExpandedKeys(ek)
+      setExpandedKeys([_rootNodeValue])
     }
   }, [records])
 
@@ -126,10 +133,12 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
     <Tree
       style={{ width: "100%" }}
       // checkable={checkable}
-      // expandedKeys={expandedKeys}
+      expandedKeys={expandedKeys}
       treeData={treeData}
+      onExpand={(expandedKeys, { expanded, node }) => {
+        setExpandedKeys(expandedKeys)
+      }}
       onSelect={(values, { selectedNodes }) => {
-        console.log(values, selectedNodes)
         onChange && onChange(selectedNodes)
       }}
       // onCheck={(values, { checkedNodes }) => {

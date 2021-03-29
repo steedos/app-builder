@@ -5,7 +5,7 @@
  * @Author: Kent.Wood 
  * @Date: 2021-03-25 22:35:51 
  * @Last Modified by: Kent.Wood
- * @Last Modified time: 2021-03-27 20:51:52
+ * @Last Modified time: 2021-03-29 20:56:02
  */
 
 import ProCard from "@ant-design/pro-card"
@@ -174,7 +174,14 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
             )}
             {expandProps.type == "list" && (
               <ObjectList
-                {...expandProps}
+                {...(() => {
+                  let {
+                    parentField,
+                    releatedColumnField,
+                    ...expandPropsRest
+                  } = expandProps
+                  return expandPropsRest
+                })()}
                 onChange={handleExpandContentChange}
               />
             )}
