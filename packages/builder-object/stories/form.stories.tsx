@@ -2,6 +2,7 @@ import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
 import { store } from '@steedos/builder-store';
+import valueTypes from '../src/valueTypes'
 
 import {
   ObjectProvider
@@ -262,39 +263,68 @@ export const FormEdit = () => {
   }
 
   const accountsJson = require('../../account.json')
+  const companyJson = require('../../company.json')
+  
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
+        
         //objectApiName:对象api名称
         //console.log("==in function==", objectApiName);
-        return accountsJson;
+        if (objectApiName == 'company') {
+          return companyJson;
+        } else {
+          return accountsJson;
+        }
       }}
       requestRecords={async (objectApiName, filters, fields, options) => {
         //objectApiName:对象api名称
         //filters: 过滤条件
         //fields: 要返回的字段
-        return {
-          "@odata.count": 1,
-          value: [{
-            name: 'test',
-            type: 'Analyst',
-            number_of_employees: 10,
-            description: '这是描述信息',
-            email: '1234@qq.com',
-            parent_id: '大四',
-            industry: 'Engineering',
-            rating: 'Warm',
-            salutation: 'Female',
-            startdate__c: '2021-03-15',
-            datetime__c: '2021-03-15 11:30:00',
-            state: 'SH',
-            summary__c: 3,
-            website: '123.com',
-            annual_revenue: 56123,
-            fn__c: 56123
-          }]
+        if (objectApiName == 'company') {          
+          return{
+           " @odata.count": 4,
+           value:[{
+            name: "axin",
+            _id: "zoWD68wETiXv7nvSt"
+           },{
+            name: "bbb",
+            _id: "7GPcKFLBJMnd2jeAk"
+           },{
+            name: "ccc",
+            _id: "sQATfDePmCFfq7QqC"
+           },{
+            name: "ddd",
+            _id: "RX6ANucYjPcrDKZF7"
+           }]
+          }
+        }else{
+          return {
+            "@odata.count": 1,
+            value: [{
+              name: 'test',
+              type: 'Analyst',
+              number_of_employees: 10,
+              description: '这是描述信息',
+              email: '1234@qq.com',
+              parent_id: '大学',
+              company_id: 'sad',
+              industry: 'Engineering',
+              rating: 'Warm',
+              salutation: 'Female',
+              startdate__c: '2021-03-15',
+              datetime__c: '2021-03-15 11:30:00',
+              state: 'SH',
+              summary__c: 3,
+              website: '123.com',
+              annual_revenue: 56123,
+              fn__c: 56123
+            }]
+          }
         }
+
+        
       }}
       updateRecord={async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
@@ -308,12 +338,12 @@ export const FormEdit = () => {
         return []
       }}
     >
-      <FormProvider locale="zh_CN">
+      <FormProvider locale="zh_CN" valueTypeMap={valueTypes}>
         <BuilderComponent {...bcProps}>
         </BuilderComponent>
       </FormProvider>
       <br /><br /><br />
-    </ObjectProvider>
+    </ObjectProvider >
   )
 }
 
