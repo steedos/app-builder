@@ -20,7 +20,7 @@ const {
 function App(props: any) {
   const providerProps = {
     rootUrl: REACT_APP_STEEDOS_ROOT_URL,
-    tenantId: "jMw2tHZe4EBGFKkuZ", //REACT_APP_STEEDOS_TENANT_ID,
+    tenantId: REACT_APP_STEEDOS_TENANT_ID, //REACT_APP_STEEDOS_TENANT_ID,
     userId: REACT_APP_STEEDOS_USER_ID,
     authToken: REACT_APP_STEEDOS_AUTH_TOKEN,
     locale: REACT_APP_STEEDOS_LOCALE,
