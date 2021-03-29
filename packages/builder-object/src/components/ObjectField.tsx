@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import { ObjectContext } from "../";
 import { observer } from "mobx-react-lite"
 
-import { FormModel, rootStore as store } from '@steedos/builder-store/src';
+import { FormModel, useMst } from '@steedos/builder-store/src';
 
 export type ObjectFieldProps = {
   objectApiName?: string,
@@ -58,7 +58,7 @@ export const getFormFieldProps = (formFieldProps:any, fieldType: string, readonl
 }
 
 export const ObjectField = observer((props: any) => {
-
+  const store = useMst();
   const objectContext = useContext(ObjectContext);
   let { currentObjectApiName } = store;
   const { fieldName, required, readonly } = props

@@ -3,7 +3,8 @@ import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
 
 import { SteedosProvider } from "../src/index"
-import { rootStore as store } from '@steedos/builder-store';
+// import { rootStore as store } from '@steedos/builder-store';
+import { useMst } from "@steedos/builder-store/src";
 
 export default {
   title: "Steedos Form",
@@ -158,7 +159,6 @@ export const Fiddle = () => {
 
 
 export const Preview = () => {
-
   builder.init(apiKey);
 
   // Builder.register('editor.settings', {
@@ -181,8 +181,8 @@ export const Preview = () => {
   //   currentRecordId: ""
   // };
   console.log("====setCurrentObjectApiName==1=");
-  store.setCurrentObjectApiName("accounts");
-  console.log("====setCurrentObjectApiName==2=", store.currentObjectApiName);
+  // store.setCurrentObjectApiName("accounts");
+  // console.log("文件form.stories.tsx输出====setCurrentObjectApiName==2=", currentObjectApiName);
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
@@ -207,13 +207,12 @@ export const Preview = () => {
 }
 
 export const FormEdit = () => {
-
   builder.init(apiKey);
 
   require('../src/builder-widgets');
   require('@steedos/builder-object/src/builder-widgets');
 
-  store.setCurrentObjectApiName("accounts");
+  //console.log("文件form.stories==> "+ '111')
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
@@ -228,9 +227,12 @@ export const FormEdit = () => {
     onStateChange: (newData: any) => {
     }
   }
-
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
-    <SteedosProvider >
+    <SteedosProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent>
       <br /><br /><br />
@@ -239,13 +241,13 @@ export const FormEdit = () => {
 }
 
 export const FormAdd = () => {
-
+  // const store = useMst();
   builder.init(apiKey);
 
   require('../src/builder-widgets');
   require('@steedos/builder-object/src/builder-widgets');
 
-  store.setCurrentObjectApiName("accounts");
+  // store.setCurrentObjectApiName("accounts");
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
@@ -260,9 +262,12 @@ export const FormAdd = () => {
     onStateChange: (newData: any) => {
     }
   }
-
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
-    <SteedosProvider >
+    <SteedosProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent>
       <br /><br /><br />

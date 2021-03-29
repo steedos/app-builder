@@ -10,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { registerObjectFieldComponent } from "..";
 import { observer } from "mobx-react-lite"
-import { FormModel, rootStore as store } from '@steedos/builder-store/src';
+import { FormModel, useMst } from '@steedos/builder-store/src';
 
 export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
 
@@ -25,6 +25,7 @@ export type ObjectFormProps = {
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
+  const store = useMst();
 
   const {
     name: formId = 'default',
@@ -38,6 +39,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   
   const objectContext = useContext(ObjectContext);
   let { currentObjectApiName, currentRecordId } = store;
+  // console.log("=ObjectForm===objectApiName, recordId===", currentObjectApiName, currentRecordId);
   if(!currentObjectApiName){
     currentObjectApiName = objectContext.currentObjectApiName;
   }

@@ -159,10 +159,6 @@ export const Preview = () => {
   //   currentObjectApiName: "accounts",
   //   currentRecordId: ""
   // };
-  console.log("====setCurrentObjectApiName==1=");
-  const store = useMst();
-  store.setCurrentObjectApiName("accounts");
-  console.log("====setCurrentObjectApiName==2=", store.currentObjectApiName);
   const data = {
     initialValues: { name: 'Hello World!' },
     columns: 3,
@@ -216,7 +212,8 @@ export const TableSimple = () => {
   }
 
   let initialState = {
-    currentObjectApiName: "accounts"
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
   }
 
   return (
