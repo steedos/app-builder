@@ -1,7 +1,7 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
-
+import { SteedosProvider } from "@steedos/builder-steedos";
 import {
   ObjectProvider,
   ObjectTable
@@ -216,7 +216,12 @@ export const ObjectTableSimple = () => {
   }
 
   const accountsJson = require('../../account.json')
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <SteedosProvider initialState={initialState}>
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
@@ -288,6 +293,7 @@ export const ObjectTableSimple = () => {
       </BuilderComponent>
       <br /><br /><br />
     </ObjectProvider>
+    </SteedosProvider>
   )
 }
 
