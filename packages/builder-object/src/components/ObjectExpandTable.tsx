@@ -96,7 +96,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     })
     tmpTreeNodes = _.uniq(tmpTreeNodes)
     setSelectedExpandNode(tmpTreeNodes)
-    ref.current?.reload()
+    tableRef.current?.reload()
   }
 
   const handleTableRowChose = (selectedRowKeys, selectedRows) => {
@@ -104,11 +104,11 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     onChange && onChange(selectedRows)
   }
 
-  const ref = useRef<ActionType>()
+  const tableRef = useRef<ActionType>()
 
   useEffect(() => {
-    ref.current?.reload()
-  }, [ref.current])
+    tableRef.current?.reload()
+  }, [tableRef.current])
 
   const [expandProps, setExpandProps] = useState<{
     type: string
@@ -200,7 +200,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
               )
             }
             // manualRequest={true}
-            actionRef={ref}
+            actionRef={tableRef}
             onChange={handleTableRowChose}
           />
         </ProCard>

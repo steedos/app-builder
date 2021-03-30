@@ -102,7 +102,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       let tp: any = {}
       let _rootNodeValue = rootNodeValue
       ;(records.value as any[]).forEach((d) => {
-        let { _id, children, ...rest } = d
+        let { _id, ...rest } = d
         let parent = rest[parentField || "parent"]
         tp[_id] = tp[_id] || {
           value: _id,

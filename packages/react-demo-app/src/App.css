@@ -1,6 +1,8 @@
 .App {
   text-align: center;
-  height: 100%;
+}
+.main-container {
+  position: absolute;
 }
 
 @media (prefers-reduced-motion: no-preference) {

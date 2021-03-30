@@ -273,7 +273,12 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       {
         pageSize: params.pageSize as number,
         current: params.current as number,
-        sort: sort,
+        sort: sort
+          ? Object.keys(sort).map((sk) => [
+              sk,
+              sort[sk] == "ascend" ? "asc" : "desc",
+            ])
+          : [],
       }
     )
     return {
@@ -283,6 +288,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     }
   }
 
+  const selfTableRef = useRef(null)
+
   return (
     <ProTable
       request={request}
@@ -291,7 +298,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       rowSelection={rest.rowSelection || { onChange }}
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
       options={false}
+      actionRef={rest.actionRef || selfTableRef}
       {...rest}
+      onChange={() => {
+        ;(rest.actionRef || selfTableRef).current.reload()
+      }}
       className={["object-table", rest.className].join(" ")}
     />
   )

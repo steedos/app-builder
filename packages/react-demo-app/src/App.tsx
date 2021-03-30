@@ -65,7 +65,13 @@ function App(props: any) {
   return (
     <SteedosProvider {...providerProps}>
       <div className="App">
-        <ProCard title="" split="horizontal" bordered headerBordered>
+        <ProCard
+          className="main-container"
+          title=""
+          split="horizontal"
+          bordered
+          headerBordered
+        >
           <ProCard
             tabs={{
               type: "card",
@@ -85,6 +91,7 @@ function App(props: any) {
                 columnFields={[
                   {
                     fieldName: "name",
+                    sorter: true,
                   },
                   {
                     fieldName: "email",
@@ -115,6 +122,7 @@ function App(props: any) {
                 columnFields={[
                   {
                     fieldName: "name",
+                    sorter: true,
                   },
                   {
                     fieldName: "email",

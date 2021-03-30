@@ -8,11 +8,7 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
   }
 }
-
-declare global {
-  interface Window { Meteor: any, Accounts: any }
-}
-
+interface Window { Meteor: any, Accounts: any, Steedos: any }
 declare module '*.avif' {
   const src: string;
   export default src;

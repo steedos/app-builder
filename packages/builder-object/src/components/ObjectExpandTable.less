@@ -1,7 +1,14 @@
 .object-expand-table {
+  > .ant-pro-card-body {
+    position: relative;
+  }
   .expand-part {
     margin-right: 12px;
     background-color: rgb(240, 240, 240);
+    height: 100%;
+    overflow-x: hidden;
+    display: inlin;
+    position: absolute;
     .ant-tree {
       background: transparent;
     }
@@ -12,6 +19,8 @@
   }
 
   .table-part {
+    padding-left: 12px;
+    margin-left: 30%;
     .ant-pro-table-search {
       margin-bottom: 0;
       padding-left: 0;
