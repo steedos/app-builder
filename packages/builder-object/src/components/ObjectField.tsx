@@ -12,10 +12,13 @@ export type ObjectFieldProps = {
   objectApiName?: string,
   fieldName: string,
   required: boolean,
-  readonly: boolean
+  readonly: boolean,
 }
 
-export const getFormFieldProps = (formFieldProps: any, fieldType: string, readonly: boolean) => {
+export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boolean) => {
+  const fieldType = field.type;
+  // console.log("field===================",field);
+  
   switch (fieldType) {
 
     case 'datetime':
@@ -50,8 +53,7 @@ export const getFormFieldProps = (formFieldProps: any, fieldType: string, readon
       // )
       formFieldProps.valueType = 'lookup';
       formFieldProps.readonly = false;
-      formFieldProps.xyz = "aaa";
-      // formFieldProps.fieldProps = {xxx:"222"};
+      formFieldProps.referenceTo = field.reference_to;
       break;
     case 'master_detail':
       return (
@@ -69,6 +71,8 @@ export const ObjectField = observer((props: any) => {
   let { currentObjectApiName } = store;
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
+  // console.log("props=========",props);
+  
   if (!objectApiName) {
     objectApiName = objectContext.currentObjectApiName as string;
   }
@@ -81,7 +85,6 @@ export const ObjectField = observer((props: any) => {
   } = useQuery(objectApiName, async () => {
     return await objectContext.requestObject(objectApiName);
   });
-
   if (!objectApiName || !fieldName)
     return (<div>请输入字段名</div>)
 
@@ -113,7 +116,6 @@ export const ObjectField = observer((props: any) => {
     required: field.required,
     options: field.options,
     readonly: field.readonly,
-    referenceTo: field.referenceTo
   }
 
   if (formFieldProps.mode == "edit") {
@@ -127,17 +129,24 @@ export const ObjectField = observer((props: any) => {
     }
   }
 
+  // let fieldProps = {
 
+  // };
   if (fieldType === 'formula') {
 
-    formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+    let fieldProps = {
+      fieldType: field.data_type, 
+      readonl: true
+    };
+    // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+    formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, field, {type:field.data_type}), true);
 
   } else if (fieldType === 'summary') {
 
     formFieldProps = getFormFieldProps(formFieldProps, field.summary_type, true);
 
   } else {
-    formFieldProps = getFormFieldProps(formFieldProps, fieldType, formFieldProps.readonly);
+    formFieldProps = getFormFieldProps(formFieldProps, field, formFieldProps.readonly);
   }
 
   if (formFieldProps.required) {
@@ -148,7 +157,7 @@ export const ObjectField = observer((props: any) => {
       },
     ]
   }
-console.log("formFieldProps===============",formFieldProps);
+// console.log("formFieldProps===============",formFieldProps);
 
   // 默认取ProFormText组件
   return (
