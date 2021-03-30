@@ -8,7 +8,7 @@ import {
 } from "../src/index"
 
 export default {
-  title: "Object Table",
+  title: "Object Tree",
 }
 
 
@@ -30,7 +30,7 @@ export const Editor = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-table--preview&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=object-tree--editor&viewMode=story',
   };
   const initialContent = {
     data: {
@@ -56,7 +56,7 @@ export const Editor = () => {
         "@version": 2,
         "id": "builder-93a4e25cb18f469dbe013967acc94946",
         "component": {
-          "name": "Steedos:ObjectTable",
+          "name": "Steedos:ObjectTree",
           "options": {
             "objectApiName": "accounts",
             "columns": [
@@ -111,7 +111,7 @@ export const Fiddle = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-table--preview&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=object-tree--fiddle&viewMode=story',
   };
   const builderData = {}
   return (
@@ -174,7 +174,7 @@ export const Preview = () => {
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
         //objectApiName:对象api名称
-        // console.log("==in function==", objectApiName);
+        console.log("==in function==", objectApiName);
         return accountsJson;
       }}
       requestRecords={async (objectApiName, filters, fields, options) => {
@@ -203,7 +203,7 @@ export const Preview = () => {
   )
 }
 
-export const ObjectTableSimple = () => {
+export const ObjectTreeSimple = () => {
 
   require('../src/builder-widgets');
 

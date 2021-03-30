@@ -9,7 +9,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Modal, TreeSelect, Select, Input, Button, Tree } from "antd"
 import { registerObjectTreeComponent } from ".."
-import { rootStore as store } from "@steedos/builder-store/src"
+import { useMst } from "@steedos/builder-store/src"
 
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -45,11 +45,12 @@ export const ObjectTree = observer( (
     // export const ObjectTree = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTreeProps<T, U, ValueType>) => {
     // const store = useContext(BuilderStoreContext);
     const objectContext = useContext(ObjectContext)
+    const store = useMst();
     let { currentObjectApiName } = store
     if (!currentObjectApiName) {
       currentObjectApiName = objectContext.currentObjectApiName
     }
-
+    // console.log("=ObjectTree===objectApiName,", currentObjectApiName);
     let {
       name: treeId = "default",
       objectApiName,
