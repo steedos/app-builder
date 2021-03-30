@@ -8,13 +8,14 @@ import { BuilderStoreContext } from '@builder.io/react';
 import { observer } from "mobx-react-lite"
 import _ from 'lodash'
 
-import { FormModel, rootStore as store } from '@steedos/builder-store/src';
+import { FormModel, useMst } from '@steedos/builder-store/src';
 
 // 在 ProForm的基础上扩展属性
 // colSpan: 每一列默认占几栅格，总共12栅格
 // mode: edit, read
 
 export const Form = observer((props:any) => {
+  const store = useMst();
   const {
     name: formId = 'default',
     mode= 'read', 
