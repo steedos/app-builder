@@ -1,8 +1,7 @@
 import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
-import { rootStore as store } from '@steedos/builder-store';
-
+import { StoreProvider } from "@steedos/builder-store/src";
 import {
   ObjectProvider
 } from "../src/index"
@@ -262,7 +261,12 @@ export const FormEdit = () => {
   }
 
   const accountsJson = require('../../account.json')
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <StoreProvider initialState={initialState}>
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
@@ -314,6 +318,7 @@ export const FormEdit = () => {
       </FormProvider>
       <br /><br /><br />
     </ObjectProvider>
+    </StoreProvider>
   )
 }
 
@@ -336,7 +341,12 @@ export const FormAdd = () => {
   }
 
   const accountsJson = require('../../account.json')
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <StoreProvider initialState={initialState}>
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
@@ -370,6 +380,7 @@ export const FormAdd = () => {
         <br /><br /><br />
       </FormProvider>
     </ObjectProvider>
+    </StoreProvider>
   )
 }
 

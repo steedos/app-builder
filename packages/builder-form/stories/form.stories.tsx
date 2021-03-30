@@ -12,7 +12,7 @@ import { useContext } from "react";
 import {
   FormProvider
 } from "../src/"
-
+import { StoreProvider } from "@steedos/builder-store/src";
 export default {
   title: "Builder Form",
 }
@@ -143,14 +143,19 @@ export const FormFieldSection = () => {
     onStateChange: (newData: any) => {
     }
   }
-  
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <StoreProvider initialState={initialState}>
     <Form initialValues={{name: 'Hello World'}} onFinish={(values)=>{
       console.log(values)
     }}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent> 
     </Form>
+    </StoreProvider>
   )
 }
 
@@ -176,8 +181,12 @@ export const FormVertical= () => {
   const initialValues = {
     href: "http://www.baidu.com"
   };
-  
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <StoreProvider initialState={initialState}>
     <FormProvider locale="zh_CN">
       <Form layout='vertical' name='test' initialValues={initialValues} onFinish={(values)=>{
         console.log(values)
@@ -190,7 +199,7 @@ export const FormVertical= () => {
         </BuilderComponent> 
       </Form>
     </FormProvider>
-    
+    </StoreProvider>
   )
 }
 
@@ -214,10 +223,15 @@ export const TableSimple = () => {
     onStateChange: (newData: any) => {
     }
   }
-  
+  let initialState = {
+    currentObjectApiName: "accounts",
+    currentRecordId:'111'
+  }
   return (
+    <StoreProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent> 
+    </StoreProvider>
   )
 }
 
