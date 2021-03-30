@@ -21,9 +21,9 @@ export const lookup = {
         return (<a href={link}>{text}</a>)
     },
     renderFormItem: (_: any, props: any) => {
-        console.log("props====lookup", props);
+        // console.log("props====lookup", props);
         return (
-            <ObjectFieldLookup  referenceTo={props.fieldProps} {...props} />
+            <ObjectFieldLookup  referenceTo={props.fieldProps.reference_to} {...props} />
             // <a href="www.baidu.com">2342423</a>
         )
     }
