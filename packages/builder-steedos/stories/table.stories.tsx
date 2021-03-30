@@ -120,7 +120,7 @@ export const Fiddle = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-form--preview&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-table--preview&viewMode=story',
   };
   const builderData = {}
   return (

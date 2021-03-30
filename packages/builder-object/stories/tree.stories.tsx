@@ -30,7 +30,7 @@ export const Editor = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-tree--editor&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story',
   };
   const initialContent = {
     data: {
@@ -111,7 +111,7 @@ export const Fiddle = () => {
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-tree--fiddle&viewMode=story',
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story',
   };
   const builderData = {}
   return (
