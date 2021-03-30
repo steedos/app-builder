@@ -296,7 +296,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       columns={proColumns}
       rowKey={rest.rowKey || "_id"}
       rowSelection={rest.rowSelection || { onChange }}
-      pagination={{ ...rest.pagination, hideOnSinglePage: true }}
+      pagination={{ ...rest.pagination }}
       options={false}
       actionRef={rest.actionRef || selfTableRef}
       {...rest}

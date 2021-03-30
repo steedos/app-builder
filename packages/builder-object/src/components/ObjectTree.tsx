@@ -104,18 +104,24 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       ;(records.value as any[]).forEach((d) => {
         let { _id, ...rest } = d
         let parent = rest[parentField || "parent"]
-        tp[_id] = tp[_id] || {
+        tp[_id] = { 
           value: _id,
           key: _id,
           title: d[nameField || "name"],
           children: [],
           _id,
           ...rest,
+          ...(tp[_id]||{})
         }
         ek.push(_id)
-        if (tp[parent]) {
+        if (parent) {
+          if(tp[parent]){
           tp[parent].children.push(tp[_id])
-        } else {
+        }
+          else
+          tp[parent]={children:[tp[_id]]}
+        }
+         else if(!parent) {
           td = [tp[_id]]
           _rootNodeValue = _id
         }
