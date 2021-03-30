@@ -13,47 +13,56 @@ export type ObjectFieldProps = {
   objectApiName?: string,
   fieldName: string,
   required: boolean,
-  readonly: boolean
+  readonly: boolean,
 }
 
-export const getFormFieldProps = (formFieldProps:any, fieldType: string, readonly: boolean) =>{
+export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boolean) => {
+  const fieldType = field.type;
+  // console.log("field===================",field);
+  
   switch (fieldType) {
-    
+
     case 'datetime':
-      formFieldProps.valueType='dateTime';
+      formFieldProps.valueType = 'dateTime';
       formFieldProps.readonly = readonly;
       break;
 
     case 'boolean':
-      formFieldProps.valueType='switch';
+      formFieldProps.valueType = 'switch';
       formFieldProps.readonly = readonly;
       break;
 
     case 'number':
-      formFieldProps.valueType='digit';
+      formFieldProps.valueType = 'digit';
       formFieldProps.readonly = readonly;
       break;
 
     case 'currency':
-      formFieldProps.valueType='money';
+      formFieldProps.valueType = 'money';
       formFieldProps.readonly = readonly;
       break;
     case 'autonumber':
-      formFieldProps.valueType='index';
+      formFieldProps.valueType = 'index';
       formFieldProps.readonly = readonly;
       break;
     case 'url':
-      formFieldProps.valueType='href';
+      formFieldProps.valueType = 'href';
       break;
     case 'lookup':
-      return (
-        <div>{`未实现字段类型${fieldType}的组件`}</div>
-      )
+      // return (
+      //   <div>{`未实现字段类型${fieldType}的组件`}</div>
+      // )
+      formFieldProps.valueType = 'lookup';
+      formFieldProps.readonly = false;
+      formFieldProps.referenceTo = field.reference_to;
+      break;
     case 'master_detail':
       return (
         <div>{`未实现字段类型${fieldType}的组件`}</div>
       )
   }
+    // console.log('啊实打实打算+++++++',formFieldProps);
+    
   return formFieldProps;
 }
 
@@ -63,7 +72,9 @@ export const ObjectField = observer((props: any) => {
   let { currentObjectApiName } = store;
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
-  if(!objectApiName){
+  // console.log("props=========",props);
+  
+  if (!objectApiName) {
     objectApiName = objectContext.currentObjectApiName as string;
   }
   // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
@@ -75,7 +86,6 @@ export const ObjectField = observer((props: any) => {
   } = useQuery(objectApiName, async () => {
     return await objectContext.requestObject(objectApiName);
   });
-
   if (!objectApiName || !fieldName)
     return (<div>请输入字段名</div>)
 
@@ -106,34 +116,41 @@ export const ObjectField = observer((props: any) => {
     valueType: fieldType,
     required: field.required,
     options: field.options,
-    readonly: field.readonly
+    readonly: field.readonly,
   }
- 
-  if(formFieldProps.mode == "edit"){
 
-    if(field.omit){
+  if (formFieldProps.mode == "edit") {
+
+    if (field.omit) {
       formFieldProps.hidden = true
     }
-  }else if (formFieldProps.mode == "read"){
-    if(field.omit){
+  } else if (formFieldProps.mode == "read") {
+    if (field.omit) {
       formFieldProps.readonly = true
     }
   }
 
- 
-  if(fieldType === 'formula'){
+  // let fieldProps = {
 
-    formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+  // };
+  if (fieldType === 'formula') {
 
-  }else if (fieldType === 'summary'){
+    let fieldProps = {
+      fieldType: field.data_type, 
+      readonl: true
+    };
+    // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+    formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, field, {type:field.data_type}), true);
+
+  } else if (fieldType === 'summary') {
 
     formFieldProps = getFormFieldProps(formFieldProps, field.summary_type, true);
 
-  }else{
-    formFieldProps = getFormFieldProps(formFieldProps, fieldType, formFieldProps.readonly);
+  } else {
+    formFieldProps = getFormFieldProps(formFieldProps, field, formFieldProps.readonly);
   }
 
-  if(formFieldProps.required){
+  if (formFieldProps.required) {
     formFieldProps.rules = [
       {
         required: true,
@@ -141,6 +158,7 @@ export const ObjectField = observer((props: any) => {
       },
     ]
   }
+// console.log("formFieldProps===============",formFieldProps);
 
   // 默认取ProFormText组件
   return (

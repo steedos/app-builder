@@ -32,6 +32,7 @@ export const Field = observer((props: any) => {
     // placeholder,
     // required,
     readonly, 
+    // referenceTo,
     // disabled,
     mode: fieldMode,
     valueType, 
@@ -42,7 +43,6 @@ export const Field = observer((props: any) => {
     options,
     ...rest
   } = props  
-
   const mode = store.forms[formId].mode
 
   const formItemProps ={
@@ -66,6 +66,7 @@ export const Field = observer((props: any) => {
   const ProFieldWrap = observer((props:any) => {
     const store = useMst();
 
+    // console.log("第一个++++",props);
     const { readonly, mode, ...rest } = props
     
     const proFieldProps = {
@@ -73,9 +74,16 @@ export const Field = observer((props: any) => {
       emptyText: '',
       ...rest
     }
+    // console.log("第二个++++rest",rest);
+    
+    if (!readonly && mode === 'edit'){
+      // proFieldProps.name = "company_id"
+      // proFieldProps.referenceTo= "company"
 
-    if (!readonly && mode === 'edit')
+      // console.log('proFieldProps=====',proFieldProps);
       return <ProField mode='edit' {...proFieldProps}/>
+      
+    }
 
     const onInlineEdit = () => {
       store.forms[formId].setMode('edit')
@@ -94,7 +102,8 @@ export const Field = observer((props: any) => {
       // borderBottom: (mode=='read')?'1px solid #dddbda':'',
       // pb: 1,
     }
-
+    // console.log('proFieldProps+++++++++++++++++++第二个',rest);
+    
     return (
       <Flex 
         {...containerOptions}
@@ -108,17 +117,21 @@ export const Field = observer((props: any) => {
   })
 
   const ProFormField = createField<ProFormItemProps<InputProps>>(
+    
     (props: ProFormItemProps<InputProps>) => { 
+      // console.log("props========",props);
+      // console.log("props===fieldProps=====",props.fieldProps);
+      // const newProps = Object.assign({}, props, props.fieldProps)
       return (
-        <ProFieldWrap valueType={valueType} fieldProps={props.fieldProps} {...props.proFieldProps} mode={mode} readonly={readonly} />
-      )
+        <ProFieldWrap valueType={valueType} fieldProps={props.fieldProps} {...props} mode={mode} readonly={readonly}/>
+        )
     },
     {
       valueType,
     },
   );
-  
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} fieldProps={fieldProps} readonly={readonly}/>)
+  Object.assign(fieldProps, rest)
+  return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} fieldProps={fieldProps}/>)
 })
 
 Field['propTypes'] = {

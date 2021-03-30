@@ -1,0 +1,386 @@
+{
+    "name": "company",
+    "fields": {
+        "name": {
+            "label": "分部名称",
+            "type": "text",
+            "sort_no": 10,
+            "name": "name"
+        },
+        "code": {
+            "label": "分部代码",
+            "type": "text",
+            "sort_no": 20,
+            "name": "code"
+        },
+        "parent": {
+            "label": "上级分部",
+            "type": "lookup",
+            "reference_to": "company",
+            "hidden": true,
+            "sort_no": 30,
+            "name": "parent"
+        },
+        "organization": {
+            "label": "关联部门",
+            "type": "lookup",
+            "reference_to": "organizations",
+            "omit": false,
+            "sort_no": 40,
+            "name": "organization"
+        },
+        "currency_type": {
+            "label": "本位币",
+            "type": "text",
+            "sort_no": 50,
+            "name": "currency_type"
+        },
+        "admins": {
+            "label": "管理员",
+            "type": "lookup",
+            "reference_to": "users",
+            "multiple": true,
+            "name": "admins",
+            "filterable": true,
+            "sort_no": 60
+        },
+        "description": {
+            "label": "备注",
+            "type": "textarea",
+            "is_wide": true,
+            "sort_no": 70,
+            "name": "description"
+        },
+        "sort_no": {
+            "label": "排序号",
+            "type": "number",
+            "defaultValue": 100,
+            "sortable": true,
+            "omit": true,
+            "sort_no": 80,
+            "name": "sort_no"
+        },
+        "company_id": {
+            "omit": true,
+            "hidden": true,
+            "sort_no": 90,
+            "label": "主分部",
+            "type": "lookup",
+            "reference_to": "company",
+            "sortable": true,
+            "index": true,
+            "name": "company_id",
+            "_optionsFunction": "function anonymous(\n) {\n\n  /* 主分部 company_id / 所属分部 company_ids 业务逻辑 #170 忽略base.object.yml中的defaultValue、optionsFunction脚本 */\n\n}",
+            "_defaultValue": "function anonymous(\n) {\n\n  /* 主分部 company_id / 所属分部 company_ids 业务逻辑 #170 忽略base.object.yml中的defaultValue、optionsFunction脚本 */\n\n}"
+        },
+        "company_ids": {
+            "omit": true,
+            "hidden": true,
+            "sort_no": 100,
+            "label": "所属分部",
+            "type": "lookup",
+            "reference_to": "company",
+            "sortable": true,
+            "index": true,
+            "multiple": true,
+            "name": "company_ids",
+            "_optionsFunction": "function anonymous(\n) {\n\n  /* 主分部 company_id / 所属分部 company_ids 业务逻辑 #170 忽略base.object.yml中的defaultValue、optionsFunction脚本 */\n\n}",
+            "_defaultValue": "function anonymous(\n) {\n\n  /* 主分部 company_id / 所属分部 company_ids 业务逻辑 #170 忽略base.object.yml中的defaultValue、optionsFunction脚本 */\n\n}"
+        },
+        "owner": {
+            "label": "所有者",
+            "type": "lookup",
+            "reference_to": "users",
+            "sortable": true,
+            "index": true,
+            "defaultValue": "{userId}",
+            "omit": true,
+            "hidden": true,
+            "name": "owner"
+        },
+        "space": {
+            "type": "text",
+            "label": "所属工作区",
+            "reference_to": "spaces",
+            "index": true,
+            "hidden": true,
+            "defaultValue": "{spaceId}",
+            "name": "space"
+        },
+        "created": {
+            "type": "datetime",
+            "label": "创建时间",
+            "readonly": true,
+            "sortable": true,
+            "omit": true,
+            "name": "created"
+        },
+        "created_by": {
+            "label": "创建人",
+            "type": "lookup",
+            "readonly": true,
+            "reference_to": "users",
+            "disabled": true,
+            "index": true,
+            "omit": true,
+            "name": "created_by"
+        },
+        "modified": {
+            "label": "修改时间",
+            "type": "datetime",
+            "readonly": true,
+            "sortable": true,
+            "index": true,
+            "omit": true,
+            "name": "modified"
+        },
+        "modified_by": {
+            "label": "修改人",
+            "type": "lookup",
+            "readonly": true,
+            "reference_to": "users",
+            "disabled": true,
+            "omit": true,
+            "name": "modified_by"
+        },
+        "is_deleted": {
+            "type": "boolean",
+            "label": "已删除",
+            "omit": true,
+            "index": true,
+            "hidden": true,
+            "name": "is_deleted"
+        },
+        "deleted": {
+            "label": "删除时间",
+            "type": "datetime",
+            "readonly": true,
+            "sortable": true,
+            "index": true,
+            "omit": true,
+            "hidden": true,
+            "name": "deleted"
+        },
+        "deleted_by": {
+            "label": "删除人",
+            "type": "lookup",
+            "readonly": true,
+            "reference_to": "users",
+            "disabled": true,
+            "omit": true,
+            "hidden": true,
+            "name": "deleted_by"
+        },
+        "instances": {
+            "label": "申请单",
+            "type": "grid",
+            "omit": true,
+            "hidden": true,
+            "name": "instances"
+        },
+        "instances.$._id": {
+            "label": "申请单ID",
+            "type": "text",
+            "omit": true,
+            "hidden": true,
+            "name": "instances.$._id"
+        },
+        "instances.$.state": {
+            "label": "申请单状态",
+            "type": "text",
+            "omit": true,
+            "hidden": true,
+            "name": "instances.$.state"
+        },
+        "sharing": {
+            "label": "记录级权限",
+            "type": "grid",
+            "omit": true,
+            "hidden": true,
+            "blackbox": true,
+            "name": "sharing"
+        },
+        "sharing.$": {
+            "label": "授权条件",
+            "blackbox": true,
+            "omit": true,
+            "hidden": true,
+            "name": "sharing.$"
+        },
+        "sharing.$.u": {
+            "label": "授权用户",
+            "type": "[text]",
+            "omit": true,
+            "hidden": true,
+            "name": "sharing.$.u"
+        },
+        "sharing.$.o": {
+            "label": "授权组织",
+            "type": "[text]",
+            "omit": true,
+            "hidden": true,
+            "name": "sharing.$.o"
+        },
+        "sharing.$.r": {
+            "label": "来自规则",
+            "type": "text",
+            "omit": true,
+            "hidden": true,
+            "name": "sharing.$.r"
+        },
+        "message_count": {
+            "label": "留言数",
+            "type": "number",
+            "omit": true,
+            "hidden": true,
+            "name": "message_count"
+        },
+        "locked": {
+            "label": "已锁定",
+            "type": "boolean",
+            "omit": true,
+            "hidden": true,
+            "name": "locked"
+        },
+        "instance_state": {
+            "label": "审批状态",
+            "type": "select",
+            "options": [
+                {
+                    "label": "草稿",
+                    "value": "draft"
+                },
+                {
+                    "label": "进行中",
+                    "value": "pending"
+                },
+                {
+                    "label": "已完成",
+                    "value": "completed"
+                },
+                {
+                    "label": "已核准",
+                    "value": "approved"
+                },
+                {
+                    "label": "已驳回",
+                    "value": "rejected"
+                },
+                {
+                    "label": "已取消",
+                    "value": "terminated"
+                }
+            ],
+            "omit": true,
+            "hidden": true,
+            "name": "instance_state"
+        },
+        "_table": {
+            "label": "记录对象流程映射功能中表单中表格行信息",
+            "type": "object",
+            "omit": true,
+            "hidden": true,
+            "name": "_table"
+        },
+        "_table._id": {
+            "type": "text",
+            "label": "Object Workflow Related Form Table Item ID",
+            "omit": true,
+            "hidden": true,
+            "name": "_table._id"
+        },
+        "_table._code": {
+            "type": "text",
+            "label": "Object Workflow Related Form Table Code",
+            "omit": true,
+            "hidden": true,
+            "name": "_table._code"
+        }
+    },
+    "actions": {
+        "updateOrgs": {
+            "label": "更新组织",
+            "on": "record",
+            "_todo": "function (object_name, record_id, fields) {\r\n            if (!this.record.organization) {\r\n                toastr.warning(\"该分部的关联组织未设置，未更新任何数据\");\r\n                return;\r\n            }\r\n\r\n            var doUpdate = function () {\r\n                $(\"body\").addClass(\"loading\");\r\n                var userSession = Creator.USER_CONTEXT;\r\n                var spaceId = userSession.spaceId;\r\n                var authToken = userSession.authToken ? userSession.authToken : userSession.user.authToken;\r\n                var url = \"/api/v4/company/\" + record_id + \"/updateOrgs\";\r\n                url = Steedos.absoluteUrl(url);\r\n                try {\r\n                    var authorization = \"Bearer \" + spaceId + \",\" + authToken;\r\n                    var fetchParams = {};\r\n                    var headers = [{\r\n                        name: 'Content-Type',\r\n                        value: 'application/json'\r\n                    }, {\r\n                        name: 'Authorization',\r\n                        value: authorization\r\n                    }];\r\n                    $.ajax({\r\n                        type: \"POST\",\r\n                        url: url,\r\n                        data: fetchParams,\r\n                        dataType: \"json\",\r\n                        contentType: 'application/json',\r\n                        beforeSend: function (XHR) {\r\n                            if (headers && headers.length) {\r\n                                return headers.forEach(function (header) {\r\n                                    return XHR.setRequestHeader(header.name, header.value);\r\n                                });\r\n                            }\r\n                        },\r\n                        success: function (data) {\r\n                            console.log(data);\r\n                            $(\"body\").removeClass(\"loading\");\r\n                            var logInfo = \"已成功更新\" + data.updatedOrgs + \"条组织信息及\" + data.updatedSus + \"条用户信息\";\r\n                            console.log(logInfo);\r\n                            toastr.success(logInfo);\r\n                            /* 更新组织后刷新分部列表，直接显示新的关联组织、排序号等列表信息 */\r\n                            $(\".slds-page-header--object-home .btn-refresh\").trigger(\"click\");\r\n                        },\r\n                        error: function (XMLHttpRequest, textStatus, errorThrown) {\r\n                            $(\"body\").removeClass(\"loading\");\r\n                            console.error(XMLHttpRequest.responseJSON);\r\n                            if (XMLHttpRequest.responseJSON && XMLHttpRequest.responseJSON.error) {\r\n                                toastr.error(XMLHttpRequest.responseJSON.error.message)\r\n                            }\r\n                            else {\r\n                                toastr.error(XMLHttpRequest.responseJSON)\r\n                            }\r\n                        }\r\n                    });\r\n                } catch (err) {\r\n                    console.error(err);\r\n                    toastr.error(err);\r\n                    $(\"body\").removeClass(\"loading\");\r\n                }\r\n            }\r\n\r\n            var text = \"此操作将把组织结构中对应节点（及所有下属节点）的组织所属分部更新为本分部，组织中的人员所属分部也都更新为本分部。是否继续\";\r\n            swal({\r\n                title: \"更新“\" + this.record.name + \"”组织信息\",\r\n                text: \"<div>\" + text + \"？</div>\",\r\n                html: true,\r\n                showCancelButton: true,\r\n                confirmButtonText: t('YES'),\r\n                cancelButtonText: t('NO')\r\n            }, function (option) {\r\n                if (option) {\r\n                    doUpdate();\r\n                }\r\n            });\r\n        }",
+            "_visible": "function (object_name, record_id, record_permissions) {\r\n            var perms, record;\r\n            perms = {};\r\n            if (record_permissions) {\r\n                perms = record_permissions;\r\n            } else {\r\n                record = Creator.getObjectRecord(object_name, record_id);\r\n                record_permissions = Creator.getRecordPermissions(object_name, record, Meteor.userId());\r\n                if (record_permissions) {\r\n                    perms = record_permissions;\r\n                }\r\n            }\r\n            return perms[\"allowEdit\"];\r\n        }"
+        }
+    },
+    "permission_set": {
+        "none": {
+            "allowCreate": false,
+            "allowDelete": false,
+            "allowEdit": false,
+            "allowRead": false,
+            "modifyAllRecords": false,
+            "name": "none"
+        },
+        "user": {
+            "allowCreate": false,
+            "allowDelete": false,
+            "allowEdit": false,
+            "allowRead": true,
+            "modifyAllRecords": false,
+            "viewAllRecords": true,
+            "modifyCompanyRecords": false,
+            "viewCompanyRecords": true,
+            "name": "user"
+        },
+        "admin": {
+            "allowCreate": true,
+            "allowDelete": true,
+            "allowEdit": true,
+            "allowRead": true,
+            "modifyAllRecords": true,
+            "viewAllRecords": true,
+            "name": "admin"
+        }
+    },
+    "datasource": "default",
+    "triggers": {
+        "before.insert.server.company": {
+            "on": "server",
+            "when": "before.insert"
+        },
+        "after.insert.server.company": {
+            "on": "server",
+            "when": "after.insert"
+        },
+        "before.remove.server.company": {
+            "on": "server",
+            "when": "before.remove"
+        },
+        "before.update.server.company": {
+            "on": "server",
+            "when": "before.update"
+        },
+        "after.update.server.company": {
+            "on": "server",
+            "when": "after.update"
+        }
+    },
+    "listeners": {
+        "99914b932bd37a50b983c5e7c90ae93b": {
+            "name": "99914b932bd37a50b983c5e7c90ae93b"
+        }
+    },
+    "label": "分部",
+    "icon": "account",
+    "enable_api": true,
+    "hidden": true,
+    "list_views": {
+        "all": {
+            "label": "所有",
+            "columns": [
+                "name",
+                "code",
+                "organization",
+                "modified"
+            ],
+            "filter_scope": "space"
+        }
+    },
+    "fields_serial_number": 110,
+    "methods": {},
+    "permissions": {},
+    "description": ""
+}

@@ -102,7 +102,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
-                                "fieldName": "state"
+                                "fieldName": "company_id"
                             }
                         },
                         "responsiveStyles": {
@@ -275,7 +275,6 @@
                             }
                         }
                     },
-                    
                     {
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
@@ -316,7 +315,6 @@
                             }
                         }
                     },
-                    
                     {
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
@@ -497,7 +495,6 @@
                             }
                         }
                     },
-                    
                     {
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
