@@ -17,6 +17,8 @@ import { observer } from "mobx-react-lite"
 import FieldContext from "@ant-design/pro-form/es/FieldContext"
 
 export const Field = observer((props: any) => {
+  console.log("props=========1==========", props)
+
   const context = React.useContext(FormContext)
   const formId = context.name ? context.name : "default"
   const {
@@ -28,6 +30,7 @@ export const Field = observer((props: any) => {
     // placeholder,
     // required,
     readonly,
+    referenceTo,
     // disabled,
     mode: fieldMode,
     valueType,
@@ -60,16 +63,24 @@ export const Field = observer((props: any) => {
   }
 
   const ProFieldWrap = observer((props: any) => {
-    const { readonly, mode, ...rest } = props
+    console.log("第一个++++", props)
+    const { readonly, mode, referenceTo, ...rest } = props
 
     const proFieldProps = {
       readonly,
       emptyText: "",
+      referenceTo,
       ...rest,
     }
+    console.log("第二个++++rest", rest)
 
-    if (!readonly && mode === "edit")
+    if (!readonly && mode === "edit") {
+      // proFieldProps.name = "company_id"
+      proFieldProps.referenceTo = "company"
+
+      // console.log('proFieldProps=====',proFieldProps);
       return <ProField mode="edit" {...proFieldProps} />
+    }
 
     const onInlineEdit = () => {
       store.forms[formId].setMode("edit")
@@ -96,6 +107,7 @@ export const Field = observer((props: any) => {
       // borderBottom: (mode=='read')?'1px solid #dddbda':'',
       // pb: 1,
     }
+    // console.log('proFieldProps+++++++++++++++++++第二个',rest);
 
     return (
       <Flex
@@ -115,13 +127,15 @@ export const Field = observer((props: any) => {
 
   const ProFormField = createField<ProFormItemProps<InputProps>>(
     (props: ProFormItemProps<InputProps>) => {
+      console.log("props========", props)
       return (
         <ProFieldWrap
           valueType={valueType}
           fieldProps={props.fieldProps}
-          {...props.proFieldProps}
+          {...props}
           mode={mode}
           readonly={readonly}
+          referenceTo={referenceTo}
         />
       )
     },
@@ -129,7 +143,7 @@ export const Field = observer((props: any) => {
       valueType,
     }
   )
-
+  console.log("rest===========2334=============", rest)
   return (
     <ProFormField
       {...rest}
@@ -137,6 +151,7 @@ export const Field = observer((props: any) => {
       formItemProps={formItemProps}
       fieldProps={fieldProps}
       readonly={readonly}
+      referenceTo={referenceTo}
     />
   )
 })

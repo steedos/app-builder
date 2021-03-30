@@ -1,113 +1,110 @@
 import * as React from "react"
-import { adapt } from "webcomponents-in-react";
-import { BuilderComponent, builder } from '@builder.io/react';
+import { adapt } from "webcomponents-in-react"
+import { BuilderComponent, builder } from "@builder.io/react"
+import { store } from "@steedos/builder-store"
+import valueTypes from "../src/valueTypes"
 
-import {
-  ObjectProvider
-} from "../src/index"
+import { ObjectProvider } from "../src/index"
 
-import {
-  FormProvider
-} from '@steedos/builder-form'
+import { FormProvider } from "@steedos/builder-form"
 
 export default {
   title: "Object Form",
 }
 
-import { SteedosClient } from '@steedos/client';
-import { result } from "lodash";
+import { SteedosClient } from "@steedos/client"
+import { result } from "lodash"
 const {
   STEEDOS_ROOT_URL,
   STEEDOS_TENANT_ID,
   STEEDOS_USER_ID,
   STEEDOS_AUTH_TOKEN,
-  STEEDOS_LOCALE = 'zh_CN'
+  STEEDOS_LOCALE = "zh_CN",
 } = process.env
 
+declare var window
 
-declare var window;
-
-const apiKey = 'e9ada5daeb6a4627bc2560d29916c080';
+const apiKey = "e9ada5daeb6a4627bc2560d29916c080"
 
 export const Editor = () => {
-
   if (!window.hasEditor) {
-    const script = document.createElement("script");
-    script.src = "https://cdn.builder.io/js/editor";
-    script.async = true;
-    document.body.appendChild(script);
-    window.hasEditor = true;
+    const script = document.createElement("script")
+    script.src = "https://cdn.builder.io/js/editor"
+    script.async = true
+    document.body.appendChild(script)
+    window.hasEditor = true
   }
 
-  const BuilderEditor = adapt("builder-editor");
+  const BuilderEditor = adapt("builder-editor")
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story',
-  };
+    previewUrl:
+      "http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story",
+  }
   const initialContent = {
-    "data": {
-      "blocks": [
+    data: {
+      blocks: [
         {
           "@type": "@builder.io/sdk:Element",
           "@version": 2,
-          "id": "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
-          "component": {
-            "name": "Text",
-            "options": {
-              "text": "<p>Steedos App Builder</p>"
-            }
+          id: "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
+          component: {
+            name: "Text",
+            options: {
+              text: "<p>Steedos App Builder</p>",
+            },
           },
-          "responsiveStyles": {
-            "large": {
-              "marginLeft": "auto",
-              "marginRight": "auto",
-              "fontSize": "20px"
-            }
-          }
+          responsiveStyles: {
+            large: {
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontSize: "20px",
+            },
+          },
         },
         {
           "@type": "@builder.io/sdk:Element",
           "@version": 2,
-          "id": "builder-7d8f884ed829464e9b6e88e0a23c556b",
-          "component": {
-            "name": "Steedos:ObjectForm",
-            "options": {}
+          id: "builder-7d8f884ed829464e9b6e88e0a23c556b",
+          component: {
+            name: "Steedos:ObjectForm",
+            options: {},
           },
-          "children": [
+          children: [
             {
               "@type": "@builder.io/sdk:Element",
               "@version": 2,
-              "id": "builder-bf7ec9fe2dde409fbd422490900c5aa4",
-              "component": {
-                "name": "Steedos:ObjectField",
-                "options": {}
+              id: "builder-bf7ec9fe2dde409fbd422490900c5aa4",
+              component: {
+                name: "Steedos:ObjectField",
+                options: {},
               },
-              "responsiveStyles": {
-                "large": {
-                  "display": "flex",
-                  "flexDirection": "column",
-                  "position": "relative",
-                  "flexShrink": "0",
-                  "boxSizing": "border-box",
-                  "marginTop": "20px"
-                }
-              }
-            }
+              responsiveStyles: {
+                large: {
+                  display: "flex",
+                  flexDirection: "column",
+                  position: "relative",
+                  flexShrink: "0",
+                  boxSizing: "border-box",
+                  marginTop: "20px",
+                },
+              },
+            },
           ],
-          "responsiveStyles": {
-            "large": {
-              "display": "flex",
-              "flexDirection": "column",
-              "position": "relative",
-              "flexShrink": "0",
-              "boxSizing": "border-box",
-              "marginTop": "20px"
-            }
-          }
-        }
-      ]
-    }
+          responsiveStyles: {
+            large: {
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              flexShrink: "0",
+              boxSizing: "border-box",
+              marginTop: "20px",
+            },
+          },
+        },
+      ],
+    },
   }
   return (
     <BuilderEditor
@@ -116,27 +113,28 @@ export const Editor = () => {
         console.log(e)
       }}
       data={initialContent}
-      env='production'
-      options={builderOptions} />
+      env="production"
+      options={builderOptions}
+    />
   )
 }
 
 export const Fiddle = () => {
-
   if (!window.hasFiddle) {
-    const script = document.createElement("script");
-    script.src = "https://cdn.builder.io/js/fiddle";
-    script.async = true;
-    document.body.appendChild(script);
-    window.hasFiddle = true;
+    const script = document.createElement("script")
+    script.src = "https://cdn.builder.io/js/fiddle"
+    script.async = true
+    document.body.appendChild(script)
+    window.hasFiddle = true
   }
 
-  const BuilderFiddle = adapt("builder-fiddle");
+  const BuilderFiddle = adapt("builder-fiddle")
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story',
-  };
+    previewUrl:
+      "http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story",
+  }
   const builderData = {}
   return (
     <BuilderFiddle
@@ -145,15 +143,14 @@ export const Fiddle = () => {
         console.log(e)
       }}
       data={{}}
-      env='production'
-      options={builderOptions} />
+      env="production"
+      options={builderOptions}
+    />
   )
 }
 
-
 export const Preview = () => {
-
-  builder.init(apiKey);
+  builder.init(apiKey)
 
   // Builder.register('editor.settings', {
   //   hideStyleTab: false, // Hide the style tab
@@ -168,27 +165,26 @@ export const Preview = () => {
   //   hideTargeting: false, // Hide the targeting UI
   // });
 
-  require('../src/builder-widgets');
+  require("../src/builder-widgets")
 
   const context = {
     currentObjectApiName: "accounts",
-    currentRecordId: ""
-  };
+    currentRecordId: "",
+  }
   const data = {
-    initialValues: { name: 'Hello World!' },
+    initialValues: { name: "Hello World!" },
     columns: 3,
   }
-  const content = {};
+  const content = {}
   const bcProps = {
     apiKey,
     //content,
     context,
     data,
-    onStateChange: (newData: any) => {
-    }
+    onStateChange: (newData: any) => {},
   }
 
-  const accountsJson = require('../../account.json');
+  const accountsJson = require("../../account.json")
   return (
     <ObjectProvider
       currentObjectApiName={context.currentObjectApiName}
@@ -197,30 +193,32 @@ export const Preview = () => {
       // updateRecord={updateRecord}
       requestObject={async (objectApiName) => {
         //objectApiName:对象api名称
-        console.log("==in function==", objectApiName);
-        return accountsJson;
+        console.log("==in function==", objectApiName)
+        return accountsJson
       }}
       requestRecords={async (objectApiName, filters, fields, options) => {
         //objectApiName:对象api名称
         //filters: 过滤条件
         //fields: 要返回的字段
-        return [{
-          name: 'test',
-          type: 'Analyst',
-          number_of_employees: 10,
-          description: '这是描述信息',
-          email: '123@qq.com',
-          industry: 'Engineering',
-          rating: 'Warm',
-          salutation: 'Female',
-          startdate__c: '2021-03-15',
-          datetime__c: '2021-03-15 11:30:00',
-          state: 'SH',
-          summary__c: 3,
-          website: '123.com',
-          annual_revenue: 56123,
-          fn__c: 56123
-        }]
+        return [
+          {
+            name: "test",
+            type: "Analyst",
+            number_of_employees: 10,
+            description: "这是描述信息",
+            email: "123@qq.com",
+            industry: "Engineering",
+            rating: "Warm",
+            salutation: "Female",
+            startdate__c: "2021-03-15",
+            datetime__c: "2021-03-15 11:30:00",
+            state: "SH",
+            summary__c: 3,
+            website: "123.com",
+            annual_revenue: 56123,
+            fn__c: 56123,
+          },
+        ]
       }}
       updateRecord={async (objectApiName, objectRecordId, data) => {
         //objectApiName:对象api名称
@@ -235,64 +233,96 @@ export const Preview = () => {
       }}
     >
       <FormProvider locale="zh_CN">
-        <BuilderComponent {...bcProps}>
-        </BuilderComponent>
+        <BuilderComponent {...bcProps}></BuilderComponent>
       </FormProvider>
-      <br /><br /><br />
+      <br />
+      <br />
+      <br />
     </ObjectProvider>
   )
 }
 
 export const FormEdit = () => {
+  require("../src/builder-widgets")
 
-  require('../src/builder-widgets');
-
-  builder.init(apiKey);
-  const fieldSectionContent = require('./form.edit.builder.json');
+  builder.init(apiKey)
+  const fieldSectionContent = require("./form.edit.builder.json")
   const data = {
-    formMode: 'read',
+    formMode: "read",
   }
   const bcProps = {
     apiKey,
     content: fieldSectionContent,
     data,
-    onStateChange: (newData: any) => {
-    }
+    onStateChange: (newData: any) => {},
   }
 
-  const accountsJson = require('../../account.json')
+  const accountsJson = require("../../account.json")
+  const companyJson = require("../../company.json")
+
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
         //objectApiName:对象api名称
         //console.log("==in function==", objectApiName);
-        return accountsJson;
+        if (objectApiName == "company") {
+          return companyJson
+        } else {
+          return accountsJson
+        }
       }}
       requestRecords={async (objectApiName, filters, fields, options) => {
         //objectApiName:对象api名称
         //filters: 过滤条件
         //fields: 要返回的字段
-        return {
-          "@odata.count": 1,
-          value: [{
-            name: 'test',
-            type: 'Analyst',
-            number_of_employees: 10,
-            description: '这是描述信息',
-            email: '1234@qq.com',
-            parent_id: '大四',
-            industry: 'Engineering',
-            rating: 'Warm',
-            salutation: 'Female',
-            startdate__c: '2021-03-15',
-            datetime__c: '2021-03-15 11:30:00',
-            state: 'SH',
-            summary__c: 3,
-            website: '123.com',
-            annual_revenue: 56123,
-            fn__c: 56123
-          }]
+        if (objectApiName == "company") {
+          return {
+            " @odata.count": 4,
+            value: [
+              {
+                name: "axin",
+                _id: "zoWD68wETiXv7nvSt",
+              },
+              {
+                name: "bbb",
+                _id: "7GPcKFLBJMnd2jeAk",
+              },
+              {
+                name: "ccc",
+                _id: "sQATfDePmCFfq7QqC",
+              },
+              {
+                name: "ddd",
+                _id: "RX6ANucYjPcrDKZF7",
+              },
+            ],
+          }
+        } else {
+          return {
+            "@odata.count": 1,
+            value: [
+              {
+                name: "test",
+                type: "Analyst",
+                number_of_employees: 10,
+                description: "这是描述信息",
+                email: "1234@qq.com",
+                parent_id: "大学",
+                company_id: "sad",
+                industry: "Engineering",
+                rating: "Warm",
+                salutation: "Female",
+                startdate__c: "2021-03-15",
+                datetime__c: "2021-03-15 11:30:00",
+                state: "SH",
+                summary__c: 3,
+                website: "123.com",
+                annual_revenue: 56123,
+                fn__c: 56123,
+              },
+            ],
+          }
         }
       }}
       updateRecord={async (objectApiName, objectRecordId, data) => {
@@ -307,41 +337,40 @@ export const FormEdit = () => {
         return []
       }}
     >
-      <FormProvider locale="zh_CN">
-        <BuilderComponent {...bcProps}>
-        </BuilderComponent>
+      <FormProvider locale="zh_CN" valueTypeMap={valueTypes}>
+        <BuilderComponent {...bcProps}></BuilderComponent>
       </FormProvider>
-      <br /><br /><br />
+      <br />
+      <br />
+      <br />
     </ObjectProvider>
   )
 }
 
 export const FormAdd = () => {
+  require("../src/builder-widgets")
 
-  require('../src/builder-widgets');
+  builder.init(apiKey)
 
-  builder.init(apiKey);
-
-  const fieldSectionContent = require('./form.add.builder.json');
+  const fieldSectionContent = require("./form.add.builder.json")
   const data = {
-    formMode: 'add',
+    formMode: "add",
   }
   const bcProps = {
     apiKey,
     content: fieldSectionContent,
     data,
-    onStateChange: (newData: any) => {
-    }
+    onStateChange: (newData: any) => {},
   }
 
-  const accountsJson = require('../../account.json')
+  const accountsJson = require("../../account.json")
   return (
     <ObjectProvider
       currentObjectApiName="accounts"
       requestObject={async (objectApiName) => {
         //objectApiName:对象api名称
         //console.log("==in function==", objectApiName);
-        return accountsJson;
+        return accountsJson
       }}
       requestRecords={async (objectApiName, filters, fields, options) => {
         //objectApiName:对象api名称
@@ -358,17 +387,19 @@ export const FormAdd = () => {
       insertRecord={async (objectApiName, data) => {
         //objectApiName:对象api名称
         //data:表单提交Data
-        return [{
-          _id: 'new1'
-        }]
+        return [
+          {
+            _id: "new1",
+          },
+        ]
       }}
     >
       <FormProvider locale="zh_CN">
-        <BuilderComponent {...bcProps}>
-        </BuilderComponent>
-        <br /><br /><br />
+        <BuilderComponent {...bcProps}></BuilderComponent>
+        <br />
+        <br />
+        <br />
       </FormProvider>
     </ObjectProvider>
   )
 }
-
