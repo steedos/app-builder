@@ -9,6 +9,7 @@ import { ObjectExpandTable, ObjectTable } from "@steedos/builder-object"
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
+import { getAuthToken, getSpaceId, getUserId } from "./accounts"
 const {
   REACT_APP_STEEDOS_ROOT_URL,
   REACT_APP_STEEDOS_TENANT_ID,
@@ -18,15 +19,16 @@ const {
 } = process.env
 
 function App(props: any) {
+  let queryObject = queryString.parse(window.location.search.slice(1))
   const providerProps = {
-    rootUrl: REACT_APP_STEEDOS_ROOT_URL,
-    tenantId: REACT_APP_STEEDOS_TENANT_ID, //REACT_APP_STEEDOS_TENANT_ID,
-    userId: REACT_APP_STEEDOS_USER_ID,
-    authToken: REACT_APP_STEEDOS_AUTH_TOKEN,
+    rootUrl: queryObject.rooturl || REACT_APP_STEEDOS_ROOT_URL || "/",
+    tenantId:
+      queryObject.spaceid || getSpaceId() || REACT_APP_STEEDOS_TENANT_ID, //REACT_APP_STEEDOS_TENANT_ID,
+    userId: queryObject.userid || getUserId() || REACT_APP_STEEDOS_USER_ID,
+    authToken:
+      queryObject.authtoken || getAuthToken() || REACT_APP_STEEDOS_AUTH_TOKEN,
     locale: REACT_APP_STEEDOS_LOCALE,
   }
-
-  let queryObject = queryString.parse(window.location.search.slice(1))
 
   const [selectedUser, setSelectedUsers] = useState([])
   const [selectedUserInTab1, setSelectedUsersInTab1] = useState([])
