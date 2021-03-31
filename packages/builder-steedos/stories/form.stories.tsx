@@ -206,7 +206,7 @@ export const Preview = () => {
   )
 }
 
-export const FormEdit = () => {
+export const BuilderFormEdit = () => {
   builder.init(apiKey);
 
   require('../src/builder-widgets');
@@ -235,12 +235,11 @@ export const FormEdit = () => {
     <SteedosProvider initialState={initialState}>
       <BuilderComponent {...bcProps}>
       </BuilderComponent>
-      <br /><br /><br />
     </SteedosProvider>
   )
 }
 
-export const FormAdd = () => {
+export const BuilderFormAdd = () => {
   // const store = useMst();
   builder.init(apiKey);
 
