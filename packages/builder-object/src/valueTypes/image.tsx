@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const imageValueType = {
+export const image = {
   render: (text: any, { fieldProps }: any) => {
     return (<div>image display</div>)
   },

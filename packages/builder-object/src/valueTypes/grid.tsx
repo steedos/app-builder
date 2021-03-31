@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const gridValueType = {
+export const grid = {
   render: (text: any, { fieldProps }: any) => {
     return (<div>grid display</div>)
   },

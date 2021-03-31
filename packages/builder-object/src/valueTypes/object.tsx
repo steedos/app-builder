@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const objectValueType = {
+export const object = {
   render: (text: any, { fieldProps }: any) => {
     return (<div>object display</div>)
   },

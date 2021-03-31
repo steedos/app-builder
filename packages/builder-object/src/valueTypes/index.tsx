@@ -1,11 +1,11 @@
 import { lookup } from './lookup';
-import { objectValueType } from './object';
-import { gridValueType } from './grid';
-import { imageValueType } from './image';
+import { object } from './object';
+import { grid } from './grid';
+import { image } from './image';
 
 export default {
     lookup,
-    imageValueType,
-    objectValueType,
-    gridValueType
+    image,
+    object,
+    grid
 };
