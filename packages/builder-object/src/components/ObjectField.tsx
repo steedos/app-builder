@@ -67,7 +67,6 @@ export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boo
 }
 
 export const ObjectField = observer((props: any) => {
-  const store = useMst();
   const objectContext = useContext(ObjectContext);
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName;
