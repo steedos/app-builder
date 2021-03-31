@@ -8,26 +8,16 @@ export default {
 
 
 export const FormTest = () => {
-
-  const rootUrl = 'http://localhost:5000';
-  const tenantId = '';
-  const userId = '';
-  const authToken = '';
-
   const initialState = {
     currentObjectApiName: "accounts",
     currentRecordId:'111'
   }
   const providerProps = {
-    rootUrl,
-    tenantId,
-    userId,
-    authToken,
     initialState
   }
   return (
     <SteedosProvider {...providerProps}>
-      <ObjectForm objectApiName='accounts' recordId='111'>
+      <ObjectForm objectApiName='accounts' recordId='xBTfaMb7vXtxyXxrg'>
       </ObjectForm>
     </SteedosProvider>
   )
