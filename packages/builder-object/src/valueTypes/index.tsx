@@ -1,4 +1,9 @@
 import { lookup } from './lookup';
+import { objectValueType } from './object';
+import { gridValueType } from './grid';
+
 export default {
-    lookup
+    lookup,
+    objectValueType,
+    gridValueType
 };
