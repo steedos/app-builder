@@ -1,5 +1,6 @@
 import React from 'react';
 
+// 公式类型字段，编辑时只读。显示为文本
 export const formula = {
   render: (text: any, props: any) => {
     return (<div>formula display</div>)

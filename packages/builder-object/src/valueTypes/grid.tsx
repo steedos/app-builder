@@ -1,7 +1,7 @@
 import React from 'react';
 
-// 编辑表格类型的数据，value格式：
-// gridField: [{subField1: 666, subField2: 'yyy'}]
+// 表格类型字段，
+// value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
 
 export const grid = {
   render: (text: any, props: any) => {

@@ -1,10 +1,10 @@
 import React from 'react';
 
+// 自动编号类型字段，编辑时只读。显示为文本
 export const autonumber = {
   render: (text: any, props: any) => {
     return (<div>autonumber display</div>)
   },
-  // 公式类型字段不需要编辑，显示为只读样式或隐藏。
   renderFormItem: (_: any, props: any) => {
     return (<div>autonumber edit</div>)
   }
