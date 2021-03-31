@@ -45,11 +45,6 @@ export const ObjectTree = observer( (
     // export const ObjectTree = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTreeProps<T, U, ValueType>) => {
     // const store = useContext(BuilderStoreContext);
     const objectContext = useContext(ObjectContext)
-    const store = useMst();
-    let { currentObjectApiName } = store
-    if (!currentObjectApiName) {
-      currentObjectApiName = objectContext.currentObjectApiName
-    }
     // console.log("=ObjectTree===objectApiName,", currentObjectApiName);
     let {
       name: treeId = "default",
@@ -65,7 +60,6 @@ export const ObjectTree = observer( (
     if (checkable == undefined)
       checkable = true;
     
-    objectApiName = objectApiName || (currentObjectApiName as string)
     const { isLoading, error, data: objectSchema, isFetching } = useQuery<any>(
       objectApiName+'_schema',
       async () => {

@@ -69,16 +69,11 @@ export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boo
 export const ObjectField = observer((props: any) => {
   const store = useMst();
   const objectContext = useContext(ObjectContext);
-  let { currentObjectApiName } = store;
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
   const { fieldName, required, readonly } = props
-  let objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
+  let objectApiName = props.objectApiName;
   // console.log("props=========",props);
-  
-  if (!objectApiName) {
-    objectApiName = objectContext.currentObjectApiName as string;
-  }
   // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
   const {
     isLoading,
@@ -89,7 +84,7 @@ export const ObjectField = observer((props: any) => {
     return await objectContext.requestObject(objectApiName);
   });
   if (!objectApiName || !fieldName)
-    return (<div>请输入字段名</div>)
+    return (<div>请输入对象名和字段名</div>)
 
   const objectSchema: any = data
 

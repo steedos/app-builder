@@ -150,17 +150,15 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
   // const store = useContext(BuilderStoreContext);
   const objectContext = useContext(ObjectContext);
   const store = useMst();
-  let { currentObjectApiName } = store;
   // console.log("=RecordDetailPage===currentObjectApiName", currentObjectApiName);
-  if (!currentObjectApiName) {
-    currentObjectApiName = objectContext.currentObjectApiName;
-  }
 
   const { name: tableId = 'default', columnFields = [],filters, ...rest } = props
 
   if (!store.forms[tableId])
     store.forms[tableId] = TableModel.create({id: tableId});
-  const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
+
+  let objectApiName: any = props.objectApiName;
+
   const {
     isLoading,
     error,
@@ -202,7 +200,6 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
     current?: number;
     keyword?: string;
   }, sort: Record<string, SortOrder>, filter: Record<string, React.ReactText[]>): Promise<Partial<RequestData<T>>> => {
-    
     console.log(params)
     
     
