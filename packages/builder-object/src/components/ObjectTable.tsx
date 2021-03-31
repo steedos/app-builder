@@ -152,9 +152,6 @@ export const ObjectTable = observer(<T extends Record<string, any>, U extends Pa
   const store = useMst();
   let { currentObjectApiName } = store;
   // console.log("=RecordDetailPage===currentObjectApiName", currentObjectApiName);
-  if (!currentObjectApiName) {
-    currentObjectApiName = objectContext.currentObjectApiName;
-  }
 
   const { name: tableId = 'default', columnFields = [],filters, ...rest } = props
 
