@@ -43,7 +43,11 @@
                                     {
                                         "fieldName": "is_customer"
                                     }
-                                ]
+                                ],
+                                "pagination":{
+                                    "pageSize": 2,
+                                    "current": 1
+                                }
                             }
                         },
                         "responsiveStyles": {

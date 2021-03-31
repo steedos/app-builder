@@ -1,12 +1,12 @@
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "@steedos/builder-steedos"
-import { store } from "@steedos/builder-store"
+import { ObjectContext } from ".."
 import { Tree } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { registerObjectTreeComponent } from ".."
+import { useMst } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -41,10 +41,6 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   // export const ObjectTree = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTreeProps<T, U, ValueType>) => {
   // const store = useContext(BuilderStoreContext);
   const objectContext: any = useContext(ObjectContext)
-  let { currentObjectApiName } = store
-  if (!currentObjectApiName) {
-    currentObjectApiName = objectContext.currentObjectApiName
-  }
 
   let {
     name: treeId = "default",
@@ -60,7 +56,6 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   } = props
   if (checkable == undefined) checkable = true
 
-  objectApiName = objectApiName || (currentObjectApiName as string)
   const { isLoading, error, data: objectSchema, isFetching } = useQuery<any>(
     objectApiName + "_schema",
     async () => {
@@ -104,24 +99,21 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       ;(records.value as any[]).forEach((d) => {
         let { _id, ...rest } = d
         let parent = rest[parentField || "parent"]
-        tp[_id] = { 
+        tp[_id] = {
           value: _id,
           key: _id,
           title: d[nameField || "name"],
           children: [],
           _id,
           ...rest,
-          ...(tp[_id]||{})
+          ...(tp[_id] || {}),
         }
         ek.push(_id)
         if (parent) {
-          if(tp[parent]){
-          tp[parent].children.push(tp[_id])
-        }
-          else
-          tp[parent]={children:[tp[_id]]}
-        }
-         else if(!parent) {
+          if (tp[parent]) {
+            tp[parent].children.push(tp[_id])
+          } else tp[parent] = { children: [tp[_id]] }
+        } else if (!parent) {
           td = [tp[_id]]
           _rootNodeValue = _id
         }

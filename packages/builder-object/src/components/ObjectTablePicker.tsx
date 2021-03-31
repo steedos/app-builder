@@ -7,7 +7,7 @@
  * @Last Modified time: 2021-03-25 22:39:59
  */
 import React, { useState } from "react"
-import { ObjectExpandTableProps } from "src"
+import { ObjectExpandTableProps } from ".."
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import { ObjectExpandTable } from ".."
 

@@ -6,8 +6,8 @@
  * @Last Modified time: 2021-03-26 20:52:23
  */
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "@steedos/builder-steedos"
-import { store } from "@steedos/builder-store"
+import { ObjectContext } from ".."
+import { useMst } from "@steedos/builder-store"
 import { List, Button, Checkbox } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
@@ -30,6 +30,7 @@ export type ObjectListProps =
 
 export const ObjectList = observer((props: ObjectListProps) => {
   const objectContext: any = useContext(ObjectContext)
+  let store = useMst()
   let { currentObjectApiName } = store
   if (!currentObjectApiName) {
     currentObjectApiName = objectContext.currentObjectApiName

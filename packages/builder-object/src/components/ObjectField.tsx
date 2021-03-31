@@ -6,7 +6,8 @@ import _ from "lodash"
 import { useQuery } from "react-query"
 import { ObjectContext } from "../"
 import { observer } from "mobx-react-lite"
-import { FormModel, store } from "@steedos/builder-store"
+import { FormContext } from "antd/es/form/context"
+import { FormModel, useMst } from "@steedos/builder-store"
 
 export type ObjectFieldProps = {
   objectApiName?: string
@@ -17,9 +18,12 @@ export type ObjectFieldProps = {
 
 export const getFormFieldProps = (
   formFieldProps: any,
-  fieldType: string,
+  field: any,
   readonly: boolean
 ) => {
+  const fieldType = field.type
+  // console.log("field===================",field);
+
   switch (fieldType) {
     case "datetime":
       formFieldProps.valueType = "dateTime"
@@ -53,8 +57,7 @@ export const getFormFieldProps = (
       // )
       formFieldProps.valueType = "lookup"
       formFieldProps.readonly = false
-      formFieldProps.xyz = "aaa"
-      // formFieldProps.fieldProps = {xxx:"222"};
+      formFieldProps.referenceTo = field.reference_to
       break
     case "master_detail":
       return <div>{`未实现字段类型${fieldType}的组件`}</div>
@@ -65,15 +68,13 @@ export const getFormFieldProps = (
 }
 
 export const ObjectField = observer((props: any) => {
+  const store = useMst()
   const objectContext = useContext(ObjectContext)
-  let { currentObjectApiName } = store
+  const context = useContext(FormContext)
+  const formId = context.name ? context.name : "default"
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName
-    ? props.objectApiName
-    : (currentObjectApiName as string)
-  if (!objectApiName) {
-    objectApiName = objectContext.currentObjectApiName as string
-  }
+  // console.log("props=========",props);
   // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
   const { isLoading, error, data, isFetching } = useQuery(
     objectApiName,
@@ -81,8 +82,7 @@ export const ObjectField = observer((props: any) => {
       return await objectContext.requestObject(objectApiName)
     }
   )
-
-  if (!objectApiName || !fieldName) return <div>请输入字段名</div>
+  if (!objectApiName || !fieldName) return <div>请输入对象名和字段名</div>
 
   const objectSchema: any = data
 
@@ -100,7 +100,7 @@ export const ObjectField = observer((props: any) => {
 
   // 从对象定义中生成字段信息。
   const fieldType: string = field.type //根据objectApiName及fieldName算出type值
-  let objectFieldMode = props.builderState.state.formMode
+  let objectFieldMode = store.forms[formId].mode
   let formFieldProps: any = {
     name: fieldName,
     mode: objectFieldMode,
@@ -111,7 +111,6 @@ export const ObjectField = observer((props: any) => {
     required: field.required,
     options: field.options,
     readonly: field.readonly,
-    referenceTo: field.referenceTo,
   }
 
   if (formFieldProps.mode == "edit") {
@@ -124,14 +123,26 @@ export const ObjectField = observer((props: any) => {
     }
   }
 
+  // let fieldProps = {
+
+  // };
   if (fieldType === "formula") {
-    formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true)
+    let fieldProps = {
+      fieldType: field.data_type,
+      readonl: true,
+    }
+    // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+    formFieldProps = getFormFieldProps(
+      formFieldProps,
+      Object.assign({}, field, { type: field.data_type }),
+      true
+    )
   } else if (fieldType === "summary") {
     formFieldProps = getFormFieldProps(formFieldProps, field.summary_type, true)
   } else {
     formFieldProps = getFormFieldProps(
       formFieldProps,
-      fieldType,
+      field,
       formFieldProps.readonly
     )
   }
@@ -144,7 +155,7 @@ export const ObjectField = observer((props: any) => {
       },
     ]
   }
-  console.log("formFieldProps===============", formFieldProps)
+  // console.log("formFieldProps===============",formFieldProps);
 
   // 默认取ProFormText组件
   return <Field {...formFieldProps} />

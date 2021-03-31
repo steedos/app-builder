@@ -44,7 +44,7 @@ export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
 
     let newOptions: any = []
     if (!options || options.length == 0) {
-        console.log(1);
+        // console.log(1);
 
         _.forEach(data.value, (item: any) => {
             // console.log("data=======================", data.value);
@@ -54,23 +54,23 @@ export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
             })
         })
 
-        console.log(newOptions);
+        // console.log(newOptions);
         setOptions(newOptions);
     }
-    // const handleSearch = (value: any) => {
-    //     console.log(1111);
-    //     setOptions([])
-    //     console.log("setOptions([])========",options);
-    //     console.log(value);
-    //     setSearchKey(value)
-    //     console.log("setSearchKey(value)=========", searchKey);
-    //     // if (value) {
-    //     //     setOptions([])
-    //     //     setSearchKey(value);
-    //     // }else{
+    const handleSearch = (value: any) => {
+        // console.log(1111);
+        setOptions([])
+        // console.log("setOptions([])========",options);
+        setSearchKey(value)
+        // console.log(value);
+        // console.log("setSearchKey(value)=========", searchKey);
+        // if (value) {
+        //     setOptions([])
+        //     setSearchKey(value);
+        // }else{
 
-    //     // }
-    // };
+        // }
+    };
 
 
     return (
@@ -80,10 +80,10 @@ export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
             showSearch={true}
             notFoundContent={fetching ? <Spin size="small" /> : null}
             showArrow={true}
-            filterOption={true}
+            filterOption={false}
             defaultActiveFirstOption={true}
             value={value}
-            // onSearch={handleSearch}
+            onSearch={handleSearch}
             onChange={(newValue) => {
                 setValue(newValue);
             }}

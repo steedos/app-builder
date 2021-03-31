@@ -12,7 +12,7 @@ import { SortOrder } from "antd/lib/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { registerObjectTableComponent } from ".."
-import { TableModel, store } from "@steedos/builder-store"
+import { TableModel, useMst } from "@steedos/builder-store"
 import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -178,10 +178,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   // export const ObjectTable = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTableProps<T, U, ValueType>) => {
   // const store = useContext(BuilderStoreContext);
   const objectContext = useContext(ObjectContext)
-  let { currentObjectApiName } = store
-  if (!currentObjectApiName) {
-    currentObjectApiName = objectContext.currentObjectApiName
-  }
+  const store = useMst()
+  // console.log("=RecordDetailPage===currentObjectApiName", currentObjectApiName);
 
   const {
     name: tableId = "default",
@@ -195,6 +193,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   if (!store.forms[tableId])
     store.forms[tableId] = TableModel.create({ id: tableId })
+
   const { isLoading, error, data, isFetching } = useQuery(
     objectApiName + "_schema",
     async () => {
@@ -228,7 +227,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   }, [objectSchema])
 
   const request = async (
-    params: {
+    params: any & {
       pageSize?: number
       current?: number
       keyword?: string
@@ -236,6 +235,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     sort: Record<string, SortOrder>,
     filter: Record<string, React.ReactText[]>
   ): Promise<any> => {
+    console.log(params)
+
     // 第一个参数 params 查询表单和 params 参数的结合
     // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化

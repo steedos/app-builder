@@ -2,25 +2,11 @@ import * as React from "react"
 import { adapt } from "webcomponents-in-react"
 import { BuilderComponent, builder } from "@builder.io/react"
 import { StoreProvider } from "@steedos/builder-store"
-import valueTypes from "../src/valueTypes"
-
-import { ObjectProvider } from "../src/index"
-
-import { FormProvider } from "@steedos/builder-form"
+import { ObjectProvider, ObjectTable } from "../src/index"
 
 export default {
-  title: "Object Form",
+  title: "Object Tree",
 }
-
-import { SteedosClient } from "@steedos/client"
-import { result } from "lodash"
-const {
-  STEEDOS_ROOT_URL,
-  STEEDOS_TENANT_ID,
-  STEEDOS_USER_ID,
-  STEEDOS_AUTH_TOKEN,
-  STEEDOS_LOCALE = "zh_CN",
-} = process.env
 
 declare var window
 
@@ -40,7 +26,7 @@ export const Editor = () => {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
     previewUrl:
-      "http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story",
+      "http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story",
   }
   const initialContent = {
     data: {
@@ -66,32 +52,24 @@ export const Editor = () => {
         {
           "@type": "@builder.io/sdk:Element",
           "@version": 2,
-          id: "builder-7d8f884ed829464e9b6e88e0a23c556b",
+          id: "builder-93a4e25cb18f469dbe013967acc94946",
           component: {
-            name: "Steedos:ObjectForm",
-            options: {},
-          },
-          children: [
-            {
-              "@type": "@builder.io/sdk:Element",
-              "@version": 2,
-              id: "builder-bf7ec9fe2dde409fbd422490900c5aa4",
-              component: {
-                name: "Steedos:ObjectField",
-                options: {},
-              },
-              responsiveStyles: {
-                large: {
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                  flexShrink: "0",
-                  boxSizing: "border-box",
-                  marginTop: "20px",
+            name: "Steedos:ObjectTree",
+            options: {
+              objectApiName: "accounts",
+              columns: [
+                {
+                  fieldName: "name",
                 },
-              },
+                {
+                  fieldName: "is_customer",
+                },
+                {
+                  fieldName: "type",
+                },
+              ],
             },
-          ],
+          },
           responsiveStyles: {
             large: {
               display: "flex",
@@ -133,7 +111,7 @@ export const Fiddle = () => {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
     previewUrl:
-      "http://localhost:6006/iframe.html?id=object-form--preview&viewMode=story",
+      "http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story",
   }
   const builderData = {}
   return (
@@ -169,13 +147,12 @@ export const Preview = () => {
 
   const context = {
     currentObjectApiName: "accounts",
-    currentRecordId: "",
   }
   const data = {
     initialValues: { name: "Hello World!" },
     columns: 3,
   }
-  const content = {}
+  const content = {} //require('./object-field-table.builder.json');
   const bcProps = {
     apiKey,
     //content,
@@ -185,150 +162,24 @@ export const Preview = () => {
   }
 
   const accountsJson = require("../../account.json")
-  return (
-    <ObjectProvider
-      currentObjectApiName={context.currentObjectApiName}
-      // requestObject={requestObject}
-      // requestRecords={requestRecords}
-      // updateRecord={updateRecord}
-      requestObject={async (objectApiName) => {
-        //objectApiName:对象api名称
-        console.log("==in function==", objectApiName)
-        return accountsJson
-      }}
-      requestRecords={async (objectApiName, filters, fields, options) => {
-        //objectApiName:对象api名称
-        //filters: 过滤条件
-        //fields: 要返回的字段
-        return [
-          {
-            name: "test",
-            type: "Analyst",
-            number_of_employees: 10,
-            description: "这是描述信息",
-            email: "123@qq.com",
-            industry: "Engineering",
-            rating: "Warm",
-            salutation: "Female",
-            startdate__c: "2021-03-15",
-            datetime__c: "2021-03-15 11:30:00",
-            state: "SH",
-            summary__c: 3,
-            website: "123.com",
-            annual_revenue: 56123,
-            fn__c: 56123,
-          },
-        ]
-      }}
-      updateRecord={async (objectApiName, objectRecordId, data) => {
-        //objectApiName:对象api名称
-        //objectRecordId: recordId
-        //data:表单提交Data
-        return []
-      }}
-      insertRecord={async (objectApiName, data) => {
-        //objectApiName:对象api名称
-        //data:表单提交Data
-        return []
-      }}
-    >
-      <FormProvider locale="zh_CN">
-        <BuilderComponent {...bcProps}></BuilderComponent>
-      </FormProvider>
-      <br />
-      <br />
-      <br />
-    </ObjectProvider>
-  )
-}
-
-export const FormEdit = () => {
-  require("../src/builder-widgets")
-
-  builder.init(apiKey)
-  const fieldSectionContent = require("./form.edit.builder.json")
-  const data = {
-    formMode: "read",
-  }
-  const bcProps = {
-    apiKey,
-    content: fieldSectionContent,
-    data,
-    onStateChange: (newData: any) => {},
-  }
-
-  const accountsJson = require("../../account.json")
   let initialState = {
     currentObjectApiName: "accounts",
     currentRecordId: "111",
   }
-  const companyJson = require("../../company.json")
-
   return (
     <StoreProvider initialState={initialState}>
       <ObjectProvider
         currentObjectApiName="accounts"
         requestObject={async (objectApiName) => {
           //objectApiName:对象api名称
-          //console.log("==in function==", objectApiName);
-          if (objectApiName == "company") {
-            return companyJson
-          } else {
-            return accountsJson
-          }
+          console.log("==in function==", objectApiName)
+          return accountsJson
         }}
         requestRecords={async (objectApiName, filters, fields, options) => {
           //objectApiName:对象api名称
           //filters: 过滤条件
           //fields: 要返回的字段
-          if (objectApiName == "company") {
-            return {
-              " @odata.count": 4,
-              value: [
-                {
-                  name: "axin",
-                  _id: "zoWD68wETiXv7nvSt",
-                },
-                {
-                  name: "bbb",
-                  _id: "7GPcKFLBJMnd2jeAk",
-                },
-                {
-                  name: "ccc",
-                  _id: "sQATfDePmCFfq7QqC",
-                },
-                {
-                  name: "ddd",
-                  _id: "RX6ANucYjPcrDKZF7",
-                },
-              ],
-            }
-          } else {
-            return {
-              "@odata.count": 1,
-              value: [
-                {
-                  name: "test",
-                  type: "Analyst",
-                  number_of_employees: 10,
-                  description: "这是描述信息",
-                  email: "1234@qq.com",
-                  parent_id: "大学",
-                  company_id: "sad",
-                  industry: "Engineering",
-                  rating: "Warm",
-                  salutation: "Female",
-                  startdate__c: "2021-03-15",
-                  datetime__c: "2021-03-15 11:30:00",
-                  state: "SH",
-                  summary__c: 3,
-                  website: "123.com",
-                  annual_revenue: 56123,
-                  fn__c: 56123,
-                },
-              ],
-            }
-          }
+          return []
         }}
         updateRecord={async (objectApiName, objectRecordId, data) => {
           //objectApiName:对象api名称
@@ -342,9 +193,7 @@ export const FormEdit = () => {
           return []
         }}
       >
-        <FormProvider locale="zh_CN" valueTypeMap={valueTypes}>
-          <BuilderComponent {...bcProps}></BuilderComponent>
-        </FormProvider>
+        <BuilderComponent {...bcProps}></BuilderComponent>
         <br />
         <br />
         <br />
@@ -353,14 +202,14 @@ export const FormEdit = () => {
   )
 }
 
-export const FormAdd = () => {
+export const ObjectTreeSimple = () => {
   require("../src/builder-widgets")
 
   builder.init(apiKey)
 
-  const fieldSectionContent = require("./form.add.builder.json")
+  const fieldSectionContent = require("./table.builder.json")
   const data = {
-    formMode: "add",
+    formMode: "read",
   }
   const bcProps = {
     apiKey,
@@ -387,7 +236,50 @@ export const FormAdd = () => {
           //objectApiName:对象api名称
           //filters: 过滤条件
           //fields: 要返回的字段
-          return []
+          const result: any = [
+            {
+              _id: "1",
+              auto_num__c: 1,
+              name: "张三",
+              is_customer: true,
+              type: "Analyst",
+              description: "asdbisbvaiufvks kufgksfjbbaigf",
+              number_of_employees: 3,
+              annual_revenue: 562.5,
+              birthdate: "2001-02-25",
+              created: "2021-02-25 05:34:14",
+            },
+            {
+              _id: "2",
+              auto_num__c: 2,
+              name: "李四",
+              is_customer: false,
+              type: "Competitor",
+              description: "电视机柜kfisdbjkcbkush",
+              number_of_employees: 8,
+              annual_revenue: 5515462.5,
+              birthdate: "1991-02-25",
+              created: "2020-02-25 05:34:14",
+            },
+            {
+              _id: "3",
+              auto_num__c: 3,
+              name: "王五",
+              is_customer: true,
+              type: "Reseller",
+              description: "asdbisbv技术部kvkashaiufvks kufgksfjbbaigf",
+              number_of_employees: 15,
+              annual_revenue: 5862.5,
+              birthdate: "2001-02-25",
+              created: "2021-02-25 05:34:14",
+            },
+          ]
+          //console.log("===request===table===", result);
+          return {
+            data: result,
+            success: true,
+            total: 1,
+          }
         }}
         updateRecord={async (objectApiName, objectRecordId, data) => {
           //objectApiName:对象api名称
@@ -398,19 +290,13 @@ export const FormAdd = () => {
         insertRecord={async (objectApiName, data) => {
           //objectApiName:对象api名称
           //data:表单提交Data
-          return [
-            {
-              _id: "new1",
-            },
-          ]
+          return []
         }}
       >
-        <FormProvider locale="zh_CN">
-          <BuilderComponent {...bcProps}></BuilderComponent>
-          <br />
-          <br />
-          <br />
-        </FormProvider>
+        <BuilderComponent {...bcProps}></BuilderComponent>
+        <br />
+        <br />
+        <br />
       </ObjectProvider>
     </StoreProvider>
   )
