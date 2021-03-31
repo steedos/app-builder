@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { useQuery } from "react-query";
 import { ObjectContext } from "../";
 import { observer } from "mobx-react-lite"
-
+import { FormContext } from "antd/es/form/context";
 import { FormModel, useMst } from '@steedos/builder-store/src';
 
 export type ObjectFieldProps = {
@@ -67,7 +67,10 @@ export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boo
 }
 
 export const ObjectField = observer((props: any) => {
+  const store = useMst();
   const objectContext = useContext(ObjectContext);
+  const context = useContext(FormContext);
+  const formId = context.name?context.name:'default';
   const { fieldName, required, readonly } = props
   let objectApiName = props.objectApiName;
   // console.log("props=========",props);
@@ -97,10 +100,10 @@ export const ObjectField = observer((props: any) => {
   if (!field) {
     return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
   }
-
+  
   // 从对象定义中生成字段信息。
   const fieldType: string = field.type;//根据objectApiName及fieldName算出type值
-  let objectFieldMode = props.builderState.state.formMode;
+  let objectFieldMode = store.forms[formId].mode;
   let formFieldProps: any = {
     name: fieldName,
     mode: objectFieldMode,

@@ -8,7 +8,7 @@ import { useQueries } from 'react-query'
 import { Form } from '@steedos/builder-form/src/index';
 import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
-import { registerObjectFieldComponent } from "..";
+import { registerObjectFieldComponent, ObjectField } from "..";
 import { observer } from "mobx-react-lite"
 import { FormModel, useMst } from '@steedos/builder-store/src';
 
@@ -112,6 +112,27 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       }  
     } 
   }
+
+  let fieldsChildrenDom = props.children;
+  if(!fieldsChildrenDom){
+    const fieldMode = mode === "add" ? "edit" : mode;
+    fieldsChildrenDom = (
+      <React.Fragment>
+          {_.map(object.fields, (field, key)=>{
+            const fieldItemProps = {
+              key,
+              objectApiName,
+              fieldName: key,
+              required: field.required,
+              readonly: field.readonly,
+              mode: fieldMode,
+            };
+            return (<ObjectField {...fieldItemProps} />)
+          })}
+      </React.Fragment>
+    );
+  }
+
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -120,6 +141,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       layout={layout}
       onFinish={onFinish}
       {...rest}
-    />
+    >
+      {fieldsChildrenDom}
+    </Form>
   )
 });
