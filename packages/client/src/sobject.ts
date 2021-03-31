@@ -1,6 +1,6 @@
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { buildQueryString } from './utils/helpers';
-import { Filters, Fields, Options, Record } from './types/sobject';
+import { Filters, Fields, Options, Record, ODataQuery } from './types/sobject';
 
 const _ = require('underscore');
 
@@ -28,7 +28,7 @@ export default class SObject {
     }
 
     private getQueryParams(filters: Filters, fields: Fields, options: Options){
-        let params = Object.assign({}, options);
+        let params: ODataQuery = {};
         const $filter = this.getFilter(filters);
         if($filter){
             params.$filter = $filter
@@ -37,6 +37,24 @@ export default class SObject {
         if($select){
             params.$select = $select
         }
+        if(options){
+            if(options.pageSize){
+                params.$top = options.pageSize;
+            }
+            if(options.current){
+                params.$skip = options.current * options.pageSize;
+            }
+            if(typeof options.sort === 'string'){
+                params.$orderby = options.sort;
+            }
+        }
+        // $top?: Number,
+        // $skip?: Number,
+        // $orderby?: Number,
+
+        //   pageSize: number,
+        //   current: number,
+        //   sort: any
         return params;
     }
 
