@@ -22,6 +22,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "name"
                             }
                         },
@@ -42,6 +43,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "type"
                             }
                         },
@@ -62,6 +64,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "website"
                             }
                         },
@@ -82,6 +85,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "number_of_employees"
                             }
                         },
@@ -102,6 +106,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "company_id"
                             }
                         },
@@ -122,6 +127,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "startdate__c"
                             }
                         },
@@ -142,6 +148,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "datetime__c"
                             }
                         },
@@ -162,6 +169,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "message_count"
                             }
                         },
@@ -182,6 +190,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "email"
                             }
                         },
@@ -202,6 +211,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "salutation"
                             }
                         },
@@ -222,6 +232,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "summary__c"
                             }
                         },
@@ -242,6 +253,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "industry"
                             }
                         },
@@ -262,6 +274,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "credit_code"
                             }
                         },
@@ -282,6 +295,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "phone"
                             }
                         },
@@ -302,6 +316,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "fax"
                             }
                         },
@@ -322,6 +337,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "description"
                             }
                         },
@@ -342,6 +358,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "billing_address"
                             }
                         },
@@ -362,6 +379,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "shipping_address"
                             }
                         },
@@ -382,6 +400,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "rating"
                             }
                         },
@@ -402,6 +421,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "invoice_address"
                             }
                         },
@@ -422,6 +442,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "invoice_phone"
                             }
                         },
@@ -442,6 +463,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "invoice_bank"
                             }
                         },
@@ -462,6 +484,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "invoice_combinenum"
                             }
                         },
@@ -482,6 +505,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "department"
                             }
                         },
@@ -502,6 +526,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "mobile"
                             }
                         },
@@ -522,6 +547,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "annual_revenue"
                             }
                         },
@@ -542,6 +568,7 @@
                         "component": {
                             "name": "Steedos:ObjectField",
                             "options": {
+                                "objectApiName": "accounts",
                                 "fieldName": "fn__c",
                                 "required": false,
                                 "readonly": false

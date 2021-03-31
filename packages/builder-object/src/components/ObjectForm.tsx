@@ -38,18 +38,13 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     store.forms[formId] = FormModel.create({id: formId, mode});
   
   const objectContext = useContext(ObjectContext);
-  let { currentObjectApiName, currentRecordId } = store;
-  // console.log("=ObjectForm===objectApiName, recordId===", currentObjectApiName, currentRecordId);
-  if(!currentObjectApiName){
-    currentObjectApiName = objectContext.currentObjectApiName;
-  }
-  if(!currentRecordId){
-    currentRecordId = objectContext.currentRecordId;
+
+  const objectApiName = props.objectApiName;
+  if(!objectApiName){
+    return (<div>请输入对象名</div>)
   }
 
-  const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
-
-  const recordId = props.recordId ? props.recordId : currentRecordId || '';
+  const recordId = props.recordId || '';
 
 
   //TODO fields的确定
@@ -100,7 +95,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
   const onFinish = async(values:any) =>{
     let result; 
-    console.log('--ObjectForm-mode----', mode);
     if(mode === 'add'){     
       console.log(values);
       result = await objectContext.insertRecord(objectApiName, values);
