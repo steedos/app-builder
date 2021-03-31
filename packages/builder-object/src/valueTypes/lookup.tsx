@@ -16,7 +16,7 @@ import { ObjectFieldLookup } from '../components/ObjectFieldLookup'
 // }
 
 export const lookup = {
-    render: (text: any, { fieldProps }: any) => {
+    render: (text: any, props: any) => {
         const link = "lookupto:" + text;
         return (<a href={link}>{text}</a>)
     },
