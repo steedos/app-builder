@@ -14,10 +14,12 @@ import IconSettings from '@salesforce/design-system-react/components/icon-settin
 import ProProvider, {zhCNIntl} from '@ant-design/pro-provider';
 import { Input, Space, Tag } from 'antd';
 
-import {SteedosProvider} from '../packages/ui-components/src/';
+import {SteedosProvider} from '@steedos/builder-steedos';
 
-import '../packages/ui-components/src/styles.less';
-
+import "antd/dist/antd.css";
+import "@ant-design/pro-table/dist/table.css";
+import "@ant-design/pro-card/dist/card.css";
+import "@ant-design/pro-layout/dist/layout.css";
 
 /**
  * Add global context for RTL-LTR switching

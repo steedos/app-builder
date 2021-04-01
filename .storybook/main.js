@@ -1,4 +1,5 @@
 const path = require("path")
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 require('dotenv-flow').config(process.cwd());
 const toPath = (_path) => path.join(process.cwd(), _path)
@@ -18,6 +19,11 @@ module.exports = {
   },
   webpackFinal: async (config) => {
 
+    if (config.resolve.plugins) {
+      config.resolve.plugins.push(new TsconfigPathsPlugin());
+    } else {
+        config.resolve.plugins = [new TsconfigPathsPlugin()];
+    }
     //Make whatever fine-grained changes you need
     config.module.rules.push({
       test: /\.less$/,
@@ -41,7 +47,7 @@ module.exports = {
           },
         },
       ],
-      include: [path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
+      include: [path.resolve(__dirname,"../packages"),path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
       // include: path.resolve(__dirname, '../node_modules/')
     });
 
@@ -52,6 +58,7 @@ module.exports = {
     //         path.join(__dirname, '../node_modules/@salesforce/design-system-react'),
     //     ]
     // })
+
     config.node = {
       module: 'empty',
       dgram: 'empty',

@@ -2,8 +2,8 @@
 import React, { useContext } from "react";
 import _ from 'lodash';
 import { observer } from "mobx-react-lite"
-// import { store } from '@steedos/builder-store/src';
-import { useMst } from "@steedos/builder-store/src";
+// import { store } from '@steedos/builder-store';
+import { useMst } from "@steedos/builder-store";
 
 export type RecordDetailPageProps = {
   objectApiName?: string,

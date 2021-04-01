@@ -5,12 +5,12 @@ import _ from 'lodash';
 import { ObjectContext } from "../";
 import { useQueries } from 'react-query'
 
-import { Form } from '@steedos/builder-form/src/index';
+import { Form } from '@steedos/builder-form';
 import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { registerObjectFieldComponent, ObjectField } from "..";
 import { observer } from "mobx-react-lite"
-import { FormModel, useMst } from '@steedos/builder-store/src';
+import { FormModel, useMst } from '@steedos/builder-store';
 
 export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
 
