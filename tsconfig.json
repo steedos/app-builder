@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "paths": {
+      "@steedos/client": ["packages/client/src/index.ts"],
       "@steedos/builder-store": ["packages/builder-store/src/index.tsx"],
       "@steedos/builder-ant-design": [
         "packages/builder-ant-design/src/index.tsx"
