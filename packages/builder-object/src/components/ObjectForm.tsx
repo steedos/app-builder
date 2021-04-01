@@ -1,14 +1,14 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
 import { ObjectContext } from "../";
-import { useQueries } from 'react-query'
+import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
 import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
-import { registerObjectFieldComponent, ObjectField } from "..";
+import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import { FormModel, useMst } from '@steedos/builder-store';
 
@@ -19,8 +19,13 @@ export type FormProps<T = Record<string, any>>  = {
   editable?: boolean,
 } & BaseFormProps
 
+/*
+  fields: 字段定义数组，格式同YML
+*/
 export type ObjectFormProps = {
-  objectApiName?: string,
+  objectApiName: string,
+  fields?: any[],
+  initialValues?: any,
   recordId?: string
 } & FormProps
 
@@ -28,8 +33,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const store = useMst();
 
   const {
+    objectApiName,
+    initialValues = {},
+    fields = [],
+    recordId = '',
     name: formId = 'default',
-    mode= 'edit', 
+    mode = 'edit', 
     layout = 'vertical',
     ...rest
   } = props;
@@ -39,61 +48,56 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   
   const objectContext = useContext(ObjectContext);
 
-  const objectApiName = props.objectApiName;
-  if(!objectApiName){
-    return (<div>请输入对象名</div>)
-  }
-
-  const recordId = props.recordId || '';
-
-
-  //TODO fields的确定
-  const filter = ['_id', '=', recordId];
-  const fields = ['name', 'type', 'number_of_employees', 
-                  'description', 'email', 'industry', 
-                  'rating', 'salutation', 'startdate__c', 
-                  'datetime__c','state', 'summary__c', 
-                  'website', 'annual_revenue', 'fn__c', 'imgs__c'];
-  // console.log('fields1:'+ fields)
-  const results = useQueries([
-    { queryKey: objectApiName, queryFn: async () => {
-        return await objectContext.requestObject(objectApiName as string);
-      }
-    },
-    { queryKey: [objectApiName, filter, fields] , queryFn: async () => {
-      return await objectContext.requestRecords(objectApiName, filter, fields);
-      } 
-    }
-  ])
   const { 
     isLoading: isLoadingObject, 
     error: errorObject, 
-    data: data1, 
+    data: objectSchema, 
     isFetching: isFetchingObject
-  } = results[0];
+  } = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
+    return await objectContext.requestObject(objectApiName as string);
+  }});
+  // if (isLoadingObject) return (<div>Loading object ...</div>)
+
+  useEffect(() => {
+    if (!objectSchema) return;
+    if (fields.length == 0) {
+      _.mapKeys(objectSchema.fields, (field, fieldName) => {
+        if (!field.hidden)
+          fields.push(_.defaults({name: fieldName}, [field]))
+      })
+    }
+  }, [objectSchema]);
+
+  const fieldNames = []
+  _.forEach(fields, (field:any)=>{
+    fieldNames.push(field.name)
+  })
+
+
+  const filter = recordId? ['_id', '=', recordId]:[];
+
   const { 
     isLoading: isLoadingRecord, 
     error: errorRecord, 
-    data: data2, 
+    data: records, 
     isFetching: isFetchingRecord
-  } = results[1];
+  } = useQuery<any>( [objectApiName, filter, fieldNames], async () => {
+      return await objectContext.requestRecords(objectApiName, filter, fieldNames);
+    },
+    { enabled: !!objectSchema } //只有上边的schema加载好了，才启用下边的记录查询
+  );
 
-  const isLoadings = isLoadingObject || isLoadingRecord;
+  useEffect(() => { 
+    if(records && records.value && records.value.length > 0){
+      const record = records.value[0];
+      _.forEach(fieldNames, (fieldName:any)=>{
+        initialValues[fieldName] = record[fieldName];
+      })
+    }  
+  }, [records]);
 
-  if (isLoadings) return (<div>Object Loading...</div>)
+  if (isLoadingRecord) return (<div>Loading record ...</div>)
 
-  const object:any = data1;
-  const records:any = data2;
-
-  registerObjectFieldComponent(_.keys(object.fields));
-  
-  let initialValues = {};
-  if(records.value && records.value.length > 0){
-    const record = records.value[0];
-    fields.map((fieldName)=>{
-      initialValues[fieldName] = record[fieldName];
-    })
-  }
   const onFinish = async(values:any) =>{
     let result; 
     if(mode === 'add'){     
@@ -119,11 +123,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const fieldMode = mode === "add" ? "edit" : mode;
     fieldsChildrenDom = (
       <React.Fragment>
-          {_.map(object.fields, (field, key)=>{
+          {_.map(fields, (field:any)=>{
             const fieldItemProps = {
-              key,
+              name: field.name,
               objectApiName,
-              fieldName: key,
+              fieldName: field.name,
               required: field.required,
               readonly: field.readonly,
               mode: fieldMode,
