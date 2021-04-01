@@ -2,8 +2,8 @@ import * as React from "react"
 import { adapt } from "webcomponents-in-react";
 import { BuilderComponent, builder } from '@builder.io/react';
 
-import { SteedosProvider } from "../src/index"
-import { useMst } from "@steedos/builder-store/src";
+import { SteedosProvider } from "@steedos/builder-steedos"
+import { useMst } from "@steedos/builder-store";
 
 export default {
   title: "Steedos Table Builder",
