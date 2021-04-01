@@ -4,7 +4,7 @@ import React from 'react';
 // value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
 // 编辑时调用 editable protable，要求行可拖拉调整顺序
 // 显示时调用只读 protable
-
+// props.fields [] 列数组
 export const grid = {
   render: (text: any, props: any) => {
     return (<div>调用 protable 的显示界面</div>)
