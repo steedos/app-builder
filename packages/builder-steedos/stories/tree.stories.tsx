@@ -1,97 +1,98 @@
 import * as React from "react"
-import { adapt } from "webcomponents-in-react"
-import { BuilderComponent, builder } from "@builder.io/react"
+import { adapt } from "webcomponents-in-react";
+import { BuilderComponent, builder } from '@builder.io/react';
 
 import { SteedosProvider } from "../src/index"
-import { useMst } from "@steedos/builder-store"
+import { useMst } from "@steedos/builder-store/src";
 
 export default {
   title: "Steedos Tree",
 }
 
-declare var window
 
-const apiKey = "e9ada5daeb6a4627bc2560d29916c080"
+declare var window;
+
+const apiKey = 'e9ada5daeb6a4627bc2560d29916c080';
 
 export const Editor = () => {
+
   if (!window.hasEditor) {
-    const script = document.createElement("script")
-    script.src = "https://cdn.builder.io/js/editor"
-    script.async = true
-    document.body.appendChild(script)
-    window.hasEditor = true
+    const script = document.createElement("script");
+    script.src = "https://cdn.builder.io/js/editor";
+    script.async = true;
+    document.body.appendChild(script);
+    window.hasEditor = true;
   }
 
-  const BuilderEditor = adapt("builder-editor")
+  const BuilderEditor = adapt("builder-editor");
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl:
-      "http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story",
-  }
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story',
+  };
   const initialContent = {
     data: {
       blocks: [
         {
           "@type": "@builder.io/sdk:Element",
           "@version": 2,
-          id: "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
-          component: {
-            name: "Text",
-            options: {
-              text: "<p>Steedos App Builder</p>",
-            },
+          "id": "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
+          "component": {
+            "name": "Text",
+            "options": {
+              "text": "<p>Steedos App Builder</p>"
+            }
           },
-          responsiveStyles: {
-            large: {
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontSize: "20px",
-            },
-          },
+          "responsiveStyles": {
+            "large": {
+              "marginLeft": "auto",
+              "marginRight": "auto",
+              "fontSize": "20px"
+            }
+          }
         },
         {
           "@type": "@builder.io/sdk:Element",
           "@version": 2,
-          id: "builder-7618a5cbfea2481e83915ec8e0b6232a",
-          component: {
-            name: "Steedos:RecordDetailPage",
-            options: {},
+          "id": "builder-7618a5cbfea2481e83915ec8e0b6232a",
+          "component": {
+            "name": "Steedos:RecordDetailPage",
+            "options": {}
           },
-          children: [
+          "children": [
             {
               "@type": "@builder.io/sdk:Element",
               "@version": 2,
-              id: "builder-56e5834326e840d98d3342efc273166d",
-              component: {
-                name: "Steedos:ObjectTree",
-                options: {},
+              "id": "builder-56e5834326e840d98d3342efc273166d",
+              "component": {
+                "name": "Steedos:ObjectTree",
+                "options": {}
               },
-              responsiveStyles: {
-                large: {
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                  flexShrink: "0",
-                  boxSizing: "border-box",
-                  marginTop: "20px",
-                },
-              },
-            },
+              "responsiveStyles": {
+                "large": {
+                  "display": "flex",
+                  "flexDirection": "column",
+                  "position": "relative",
+                  "flexShrink": "0",
+                  "boxSizing": "border-box",
+                  "marginTop": "20px"
+                }
+              }
+            }
           ],
-          responsiveStyles: {
-            large: {
-              display: "flex",
-              flexDirection: "column",
-              position: "relative",
-              flexShrink: "0",
-              boxSizing: "border-box",
-              marginTop: "20px",
-            },
-          },
-        },
-      ],
-    },
+          "responsiveStyles": {
+            "large": {
+              "display": "flex",
+              "flexDirection": "column",
+              "position": "relative",
+              "flexShrink": "0",
+              "boxSizing": "border-box",
+              "marginTop": "20px"
+            }
+          }
+        }
+      ]
+    }
   }
   return (
     <BuilderEditor
@@ -100,28 +101,27 @@ export const Editor = () => {
         console.log(e)
       }}
       data={initialContent}
-      env="production"
-      options={builderOptions}
-    />
+      env='production'
+      options={builderOptions} />
   )
 }
 
 export const Fiddle = () => {
+
   if (!window.hasFiddle) {
-    const script = document.createElement("script")
-    script.src = "https://cdn.builder.io/js/fiddle"
-    script.async = true
-    document.body.appendChild(script)
-    window.hasFiddle = true
+    const script = document.createElement("script");
+    script.src = "https://cdn.builder.io/js/fiddle";
+    script.async = true;
+    document.body.appendChild(script);
+    window.hasFiddle = true;
   }
 
-  const BuilderFiddle = adapt("builder-fiddle")
+  const BuilderFiddle = adapt("builder-fiddle");
   const builderOptions = {
     // useDefaultStyles: true,
     // hideAnimateTab: true,
-    previewUrl:
-      "http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story",
-  }
+    previewUrl: 'http://localhost:6006/iframe.html?id=steedos-tree--preview&viewMode=story',
+  };
   const builderData = {}
   return (
     <BuilderFiddle
@@ -130,14 +130,15 @@ export const Fiddle = () => {
         console.log(e)
       }}
       data={{}}
-      env="production"
-      options={builderOptions}
-    />
+      env='production'
+      options={builderOptions} />
   )
 }
 
+
 export const Preview = () => {
-  builder.init(apiKey)
+
+  builder.init(apiKey);
 
   // Builder.register('editor.settings', {
   //   hideStyleTab: false, // Hide the style tab
@@ -152,14 +153,14 @@ export const Preview = () => {
   //   hideTargeting: false, // Hide the targeting UI
   // });
 
-  require("../src/builder-widgets")
-  require("@steedos/builder-object/src/builder-widgets")
+  require('../src/builder-widgets');
+  require('@steedos/builder-object/src/builder-widgets');
   // const context = {
   //   currentObjectApiName: "accounts",
   //   currentRecordId: ""
   // };
   const data = {
-    initialValues: { name: "Hello World!" },
+    initialValues: { name: 'Hello World!' },
     columns: 3,
   }
   const content = {} //require('./contract.form.builder.json');
@@ -168,57 +169,60 @@ export const Preview = () => {
     // content,
     // context,
     data,
-    onStateChange: (newData: any) => {},
+    onStateChange: (newData: any) => {
+    }
   }
 
   let initialState = {
-    currentObjectApiName: "accounts",
+    currentObjectApiName: "accounts"
   }
 
   return (
     <SteedosProvider initialState={initialState}>
-      <BuilderComponent {...bcProps}></BuilderComponent>
-      <br />
-      <br />
-      <br />
+      <BuilderComponent {...bcProps}>
+      </BuilderComponent>
+      <br /><br /><br />
     </SteedosProvider>
   )
 }
 
 export const TableSimple = () => {
-  builder.init(apiKey)
 
-  require("../src/builder-widgets")
-  require("@steedos/builder-object/src/builder-widgets")
+  builder.init(apiKey);
+
+  require('../src/builder-widgets');
+  require('@steedos/builder-object/src/builder-widgets');
   // const store = useMst();
   // const { currentObjectApiName } = useMst();
 
   // store.setCurrentObjectApiName("accounts");
   const data = {
-    initialValues: { name: "Hello World!" },
+    initialValues: { name: 'Hello World!' },
     columns: 3,
-    formMode: "read",
+    formMode: 'read'
   }
-  const content = require("./table.builder.json")
+  const content = require('./table.builder.json');
   const bcProps = {
     apiKey,
     content,
     // context,
     data,
-    onStateChange: (newData: any) => {},
+    onStateChange: (newData: any) => {
+    }
   }
 
   let initialState = {
     currentObjectApiName: "accounts",
-    currentRecordId: "111",
+    currentRecordId:'111'
   }
 
   return (
     <SteedosProvider initialState={initialState}>
-      <BuilderComponent {...bcProps}></BuilderComponent>
-      <br />
-      <br />
-      <br />
+      <BuilderComponent {...bcProps}>
+      </BuilderComponent>
+      <br /><br /><br />
     </SteedosProvider>
   )
 }
+
+

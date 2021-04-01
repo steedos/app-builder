@@ -1,17 +1,18 @@
-import React from "react"
 
-import { SteedosClient } from "@steedos/client"
-import { SteedosContext } from ".."
-import { ObjectProvider } from "@steedos/builder-object"
-import { FormProvider } from "@steedos/builder-form"
-import { StoreProvider } from "@steedos/builder-store"
+import React from "react";
+
+import { SteedosClient } from '@steedos/client';
+import { SteedosContext } from '..';
+import { ObjectProvider } from "@steedos/builder-object/src/index";
+import { FormProvider } from "@steedos/builder-form/src/index";
+import { StoreProvider } from "@steedos/builder-store/src";
 
 const {
   STEEDOS_ROOT_URL,
   STEEDOS_TENANT_ID,
   STEEDOS_USER_ID,
   STEEDOS_AUTH_TOKEN,
-  STEEDOS_LOCALE = "zh_CN",
+  STEEDOS_LOCALE = 'zh_CN'
 } = process.env
 
 /*
@@ -20,6 +21,7 @@ const {
 
 */
 export function SteedosProvider(props: any) {
+
   const {
     rootUrl = STEEDOS_ROOT_URL,
     tenantId = STEEDOS_TENANT_ID,
@@ -28,16 +30,16 @@ export function SteedosProvider(props: any) {
     user = {},
     locale = STEEDOS_LOCALE,
     children,
-  } = props
+  } = props;
 
-  let initialState = props.initialState ? props.initialState : {}
+  let initialState = props.initialState ? props.initialState : {};
 
-  const client = new SteedosClient()
+  const client = new SteedosClient();
 
   client.setUrl(rootUrl)
   client.setUserId(userId)
-  client.setToken(authToken)
-  client.setSpaceId(tenantId)
+  client.setToken(authToken);
+  client.setSpaceId(tenantId);
 
   const steedosContextValues = {
     rootUrl,
@@ -52,51 +54,43 @@ export function SteedosProvider(props: any) {
   const requestObject = async (objectApiName: string) => {
     //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
     if (!objectApiName) {
-      return
+      return;
     }
-    const object = await client.sobject(objectApiName).getConfig()
-    return object
+    const object = await client.sobject(objectApiName).getConfig();
+    return object;
   }
 
-  const requestRecords = async (
-    objectApiName: string,
-    filters: any,
-    fields: any,
-    options: any
-  ) => {
-    const records = await client.sobject(objectApiName).find(filters, fields)
-    return records
+  const requestRecords = async (objectApiName: string, filters: any, fields: any, options: any) => {
+    const records = await client.sobject(objectApiName).find(filters, fields);
+    return records;
+
   }
 
-  const updateRecord = async (
-    objectApiName: string,
-    objectRecordId: string,
-    data: any
-  ) => {
-    const result = await client
-      .sobject(objectApiName)
-      .update(objectRecordId, data)
+  const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
+    const result = await client.sobject(objectApiName).update(objectRecordId, data);
 
-    return result
+    return result;
   }
 
   const insertRecord = async (objectApiName: string, data: any) => {
-    const result = await client.sobject(objectApiName).insert(data)
-    return result
+    const result = await client.sobject(objectApiName).insert(data);
+    return result;
   }
 
   const objectProviderProps = {
     requestObject,
     requestRecords,
     updateRecord,
-    insertRecord,
+    insertRecord
   }
 
   return (
     <StoreProvider initialState={initialState}>
       <SteedosContext.Provider value={steedosContextValues}>
         <ObjectProvider {...objectProviderProps}>
-          <FormProvider locale={locale}>{children}</FormProvider>
+          <FormProvider locale={locale}>
+            {children}
+          </FormProvider>
         </ObjectProvider>
       </SteedosContext.Provider>
     </StoreProvider>

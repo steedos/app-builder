@@ -1,5 +1,5 @@
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from ".."
+import { ObjectContext } from "../"
 import { Tree } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"

@@ -6,7 +6,7 @@
  * @Last Modified time: 2021-03-26 20:52:23
  */
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from ".."
+import { ObjectContext } from "../"
 import { useMst } from "@steedos/builder-store"
 import { List, Button, Checkbox } from "antd"
 import _ from "lodash"
