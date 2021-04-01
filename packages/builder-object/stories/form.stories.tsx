@@ -6,18 +6,18 @@ export default {
   title: "Builder Object",
 }
 
-
 export const Form = () => {
-  const initialState = {
-    currentObjectApiName: "accounts",
-    currentRecordId:'111'
-  }
-  const providerProps = {
-    initialState
+  const objectApiName = 'space_users';
+  const fields = []
+  const recordId = '';
+  const objectFormProps = {
+    objectApiName,
+    fields,
+    recordId
   }
   return (
-    <SteedosProvider {...providerProps}>
-      <ObjectForm objectApiName='accounts' recordId='xBTfaMb7vXtxyXxrg'>
+    <SteedosProvider>
+      <ObjectForm {...objectFormProps}>
       </ObjectForm>
     </SteedosProvider>
   )
