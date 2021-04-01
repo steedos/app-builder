@@ -48,18 +48,18 @@ export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boo
     case 'url':
       formFieldProps.valueType = 'href';
       break;
-    case 'lookup':
-      // return (
-      //   <div>{`未实现字段类型${fieldType}的组件`}</div>
-      // )
-      formFieldProps.valueType = 'lookup';
-      formFieldProps.readonly = false;
-      formFieldProps.referenceTo = field.reference_to;
-      break;
-    case 'master_detail':
-      return (
-        <div>{`未实现字段类型${fieldType}的组件`}</div>
-      )
+    // case 'lookup':
+    //   // return (
+    //   //   <div>{`未实现字段类型${fieldType}的组件`}</div>
+    //   // )
+    //   formFieldProps.valueType = 'lookup';
+    //   formFieldProps.readonly = false;
+    //   formFieldProps.referenceTo = field.reference_to;
+    //   break;
+    // case 'master_detail':
+    //   return (
+    //     <div>{`未实现字段类型${fieldType}的组件`}</div>
+    //   )
   }
     // console.log('啊实打实打算+++++++',formFieldProps);
     
@@ -115,6 +115,8 @@ export const ObjectField = observer((props: any) => {
     options: field.options,
     readonly: field.readonly,
   }
+
+  formFieldProps.objectFieldProps = field;
 
   if (formFieldProps.mode == "edit") {
 

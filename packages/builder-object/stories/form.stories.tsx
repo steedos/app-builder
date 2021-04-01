@@ -343,10 +343,8 @@ export const FormEdit = () => {
         return []
       }}
     >
-      <FormProvider locale="zh_CN" valueTypeMap={valueTypes}>
-        <BuilderComponent {...bcProps}>
-        </BuilderComponent>
-      </FormProvider>
+      <BuilderComponent {...bcProps}>
+      </BuilderComponent>
       <br /><br /><br />
     </ObjectProvider>
     </StoreProvider>
@@ -405,11 +403,9 @@ export const FormAdd = () => {
         }]
       }}
     >
-      <FormProvider locale="zh_CN">
         <BuilderComponent {...bcProps}>
         </BuilderComponent>
         <br /><br /><br />
-      </FormProvider>
     </ObjectProvider>
     </StoreProvider>
   )

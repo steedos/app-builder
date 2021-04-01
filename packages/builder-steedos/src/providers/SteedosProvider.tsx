@@ -4,7 +4,6 @@ import React from "react";
 import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object/src/index";
-import { FormProvider } from "@steedos/builder-form/src/index";
 import { StoreProvider } from "@steedos/builder-store/src";
 
 const {
@@ -78,6 +77,7 @@ export function SteedosProvider(props: any) {
   }
 
   const objectProviderProps = {
+    locale,
     requestObject,
     requestRecords,
     updateRecord,
@@ -88,9 +88,7 @@ export function SteedosProvider(props: any) {
     <StoreProvider initialState={initialState}>
       <SteedosContext.Provider value={steedosContextValues}>
         <ObjectProvider {...objectProviderProps}>
-          <FormProvider locale={locale}>
-            {children}
-          </FormProvider>
+          {children}
         </ObjectProvider>
       </SteedosContext.Provider>
     </StoreProvider>

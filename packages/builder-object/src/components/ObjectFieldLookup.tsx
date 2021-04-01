@@ -42,21 +42,21 @@ export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
         return (<div>Loading...</div>)
 
 
-    let newOptions: any = []
-    if (!options || options.length == 0) {
-        // console.log(1);
+    // let newOptions: any = []
+    // if (!options || options.length == 0) {
+    //     // console.log(1);
 
-        _.forEach(data.value, (item: any) => {
-            // console.log("data=======================", data.value);
-            newOptions.push({
-                label: item.name,
-                value: item._id
-            })
-        })
+    //     _.forEach(data.value, (item: any) => {
+    //         // console.log("data=======================", data.value);
+    //         newOptions.push({
+    //             label: item.name,
+    //             value: item._id
+    //         })
+    //     })
 
-        // console.log(newOptions);
-        setOptions(newOptions);
-    }
+    //     // console.log(newOptions);
+    //     setOptions(newOptions);
+    // }
     const handleSearch = (value: any) => {
         // console.log(1111);
         setOptions([])

@@ -19,7 +19,7 @@ import { en_US, zh_CN } from '@steedos/builder-locale';
 
 /* 通过 valueTypeMap，支持给Form传入第三方自定义控件 */
 type FormProviderProps = {
-  locale: string,
+  locale?: string,
   valueTypeMap?: object,
   children: any,
 }
@@ -67,7 +67,7 @@ export const getAntdLocale:any = (locale: string)=> {
   }
 }
 
-export const getProLocale = (locale: string)=> {
+export const getProLocale = (locale?: string)=> {
   switch (locale) {
     case 'en_US': return pro_enUS
     case 'zh_CN': return pro_zhCN
@@ -117,7 +117,7 @@ const createSteedosIntl = (locale: string, localeMap: Record<string, any>): Intl
 const zhCNIntl = createSteedosIntl('zh_CN', zh_CN);
 const enUSIntl = createSteedosIntl('en_US', en_US);
 
-const getSteedosIntl = (locale: string) => {
+const getSteedosIntl = (locale?: string) => {
   switch (locale) {
     case 'en_US': return enUSIntl
     case 'zh_CN': return zhCNIntl

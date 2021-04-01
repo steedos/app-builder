@@ -26,6 +26,7 @@ const defaultInsertRecord = async (objectApiName:string, formData:any) =>{
 }
 
 export type ObjectContextValueType = {
+  locale?: string,
   currentObjectApiName?: string,
   currentRecordId?: string,
   queryClient?: any,
