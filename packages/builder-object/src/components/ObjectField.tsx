@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { Field } from '@steedos/builder-form/src/index'
 import _ from 'lodash';
 import { useQuery } from "react-query";
-import { ObjectContext } from "../";
+import { ObjectContext, getFieldProps } from "../";
 import { observer } from "mobx-react-lite"
 import { FormContext } from "antd/es/form/context";
 import { FormModel, useMst } from '@steedos/builder-store/src';
@@ -93,9 +93,7 @@ export const ObjectField = observer((props: any) => {
 
   //TODO  fields['name', 'type']不为空
 
-  const field: any = _.find(objectSchema.fields, (field, key) => {
-    return fieldName === key;
-  })
+  const field: any = getFieldProps(fieldName, objectSchema)
 
   if (!field) {
     return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
