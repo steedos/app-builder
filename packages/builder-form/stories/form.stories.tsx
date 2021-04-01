@@ -12,7 +12,7 @@ import { useContext } from "react";
 import {
   FormProvider
 } from "../src/"
-import { StoreProvider } from "@steedos/builder-store/src";
+import { StoreProvider } from "@steedos/builder-store";
 export default {
   title: "Builder Form",
 }
