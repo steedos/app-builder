@@ -6,7 +6,7 @@ import { adapt } from "webcomponents-in-react";
 import { Builder, BuilderComponent, builder, withChildren } from '@builder.io/react';
 
 export default {
-  title: "Pro Form",
+  title: "Ant Design",
 }
 
 declare var window;
