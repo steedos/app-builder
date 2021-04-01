@@ -31,7 +31,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@ant-design/pro-form": "^1.16.3",
+    "@ant-design/pro-form": "^1.19.1",
     "@chakra-ui/react": "^1.4.2",
     "@emotion/core": ">=10",
     "@emotion/styled": "^11.1.5",
@@ -50,6 +50,7 @@
     "react-dom": "^17.0.2",
     "react-loadable": "^5.5.0",
     "react-slick": "^0.23.2",
+    "rollup-plugin-uglify": "^6.0.4",
     "tslib": "^2.1.0",
     "webcomponents-in-react": "^1.0.1"
   },

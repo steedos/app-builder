@@ -30,7 +30,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@ant-design/pro-form": "^1.16.3",
+    "@ant-design/pro-form": "^1.19.1",
     "@emotion/core": ">=10",
     "@emotion/styled": "^11.1.5",
     "@jsx-lite/core": "^0.0.17",
