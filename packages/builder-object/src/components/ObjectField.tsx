@@ -17,7 +17,7 @@ export type ObjectFieldProps = {
 }
 
 export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boolean) => {
-  const fieldType = field.type;
+  const fieldType = field && field.type;
   // console.log("field===================",field);
   
   switch (fieldType) {

@@ -10,7 +10,7 @@ export function getFieldProps(fieldName: string, objectConfig: any) {
   const field: any = _.find(objectConfig.fields, (field, key) => {
     return fieldName === key;
   });
-  const fieldType = field.type;
+  const fieldType = field && field.type;
   let result: any;
   switch(fieldType){
     case "object":
