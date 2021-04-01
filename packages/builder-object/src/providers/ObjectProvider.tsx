@@ -1,7 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ObjectContext, ObjectContextValueType, RecordQueryRequestParams } from "./ObjectContext";
-import { FormProvider } from "@steedos/builder-form/src/index";
+import { FormProvider } from "@steedos/builder-form";
 import {valueTypes} from '../valueTypes'
 
 /* 通过 valueTypeMap，支持给Form传入第三方自定义控件 */

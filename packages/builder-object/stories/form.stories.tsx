@@ -1,4 +1,4 @@
-import { ObjectForm } from "@steedos/builder-object/src/components/ObjectForm";
+import { ObjectForm } from "@steedos/builder-object";
 import * as React from "react"
 import { SteedosProvider } from "@steedos/builder-steedos"
 
