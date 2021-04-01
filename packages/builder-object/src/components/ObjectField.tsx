@@ -12,12 +12,13 @@ import { FormModel, useMst } from '@steedos/builder-store/src';
 export type ObjectFieldProps = {
   objectApiName?: string,
   fieldName: string,
+  fieldSchema: any,
   required: boolean,
   readonly: boolean,
 }
 
-export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boolean) => {
-  const fieldType = field.type;
+export const getFormFieldProps = (formFieldProps: any, fieldSchema: any, readonly: boolean) => {
+  const fieldType = fieldSchema.type;
   // console.log("field===================",field);
   
   switch (fieldType) {
@@ -54,7 +55,7 @@ export const getFormFieldProps = (formFieldProps: any, field: any, readonly: boo
       // )
       formFieldProps.valueType = 'lookup';
       formFieldProps.readonly = false;
-      formFieldProps.referenceTo = field.reference_to;
+      formFieldProps.referenceTo = fieldSchema.reference_to;
       break;
     case 'master_detail':
       return (
@@ -71,58 +72,61 @@ export const ObjectField = observer((props: any) => {
   const objectContext = useContext(ObjectContext);
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
-  const { fieldName, required, readonly } = props
+  const { fieldName, fieldSchema, required, readonly } = props
   let objectApiName = props.objectApiName;
-  // console.log("props=========",props);
-  // 请注意所有的react use函数必须放在最前面，不可以放在if等判断逻辑后面
-  const {
-    isLoading,
-    error,
-    data,
-    isFetching
-  } = useQuery(objectApiName, async () => {
-    return await objectContext.requestObject(objectApiName);
-  });
-  if (!objectApiName || !fieldName)
-    return (<div>请输入对象名和字段名</div>)
+  
+  /*
+    fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。
+  */
+ 
+  // const {
+  //   isLoading,
+  //   error,
+  //   data,
+  //   isFetching
+  // } = useQuery(objectApiName, async () => {
+  //   return await objectContext.requestObject(objectApiName);
+  // });
+  // if (!objectApiName || !fieldName)
+  //   return (<div>请输入对象名和字段名</div>)
 
-  const objectSchema: any = data
+  // const objectSchema: any = data
 
-  if (!objectSchema)
-    return (<div>Field Loading...</div>)
+  // if (!objectSchema)
+  //   return (<div>Field Loading...</div>)
 
-  //TODO  fields['name', 'type']不为空
+  // //TODO  fields['name', 'type']不为空
 
-  const field: any = _.find(objectSchema.fields, (field, key) => {
-    return fieldName === key;
-  })
+  // const field: any = _.find(objectSchema.fields, (field, key) => {
+  //   return fieldName === key;
+  // })
 
-  if (!field) {
-    return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
-  }
+  // if (!field) {
+  //   return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
+  // }
   
   // 从对象定义中生成字段信息。
-  const fieldType: string = field.type;//根据objectApiName及fieldName算出type值
+  const fieldType: string = fieldSchema.type;//根据objectApiName及fieldName算出type值
   let objectFieldMode = store.forms[formId].mode;
   let formFieldProps: any = {
     name: fieldName,
     mode: objectFieldMode,
-    label: field.label,
-    placeholder: field.help,
-    hidden: field.hidden,
+    label: fieldSchema.label,
+    placeholder: fieldSchema.help,
+    hidden: fieldSchema.hidden,
     valueType: fieldType,
-    required: field.required,
-    options: field.options,
-    readonly: field.readonly,
+    required: fieldSchema.required,
+    options: fieldSchema.options,
+    readonly: fieldSchema.readonly,
   }
 
   if (formFieldProps.mode == "edit") {
 
-    if (field.omit) {
+    if (fieldSchema.omit) {
       formFieldProps.hidden = true
     }
   } else if (formFieldProps.mode == "read") {
-    if (field.omit) {
+    if (fieldSchema.omit) {
       formFieldProps.readonly = true
     }
   }
@@ -133,18 +137,18 @@ export const ObjectField = observer((props: any) => {
   if (fieldType === 'formula') {
 
     let fieldProps = {
-      fieldType: field.data_type, 
+      fieldType: fieldSchema.data_type, 
       readonl: true
     };
     // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
-    formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, field, {type:field.data_type}), true);
+    formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, fieldSchema, {type:fieldSchema.data_type}), true);
 
   } else if (fieldType === 'summary') {
 
-    formFieldProps = getFormFieldProps(formFieldProps, field.summary_type, true);
+    formFieldProps = getFormFieldProps(formFieldProps, fieldSchema.summary_type, true);
 
   } else {
-    formFieldProps = getFormFieldProps(formFieldProps, field, formFieldProps.readonly);
+    formFieldProps = getFormFieldProps(formFieldProps, fieldSchema, formFieldProps.readonly);
   }
 
   if (formFieldProps.required) {

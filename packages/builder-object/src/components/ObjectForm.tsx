@@ -63,7 +63,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     if (fields.length == 0) {
       _.mapKeys(objectSchema.fields, (field, fieldName) => {
         if (!field.hidden)
-          fields.push(_.defaults({name: fieldName}, [field]))
+          fields.push(_.defaults({name: fieldName}, field))
       })
     }
   }, [objectSchema]);
@@ -128,6 +128,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
               name: field.name,
               objectApiName,
               fieldName: field.name,
+              label: field.label,
+              fieldSchema: field,
               required: field.required,
               readonly: field.readonly,
               mode: fieldMode,

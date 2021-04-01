@@ -6,6 +6,7 @@ import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
 import { FormProvider } from "@steedos/builder-form";
 import { StoreProvider } from "@steedos/builder-store";
+import { valueTypes } from "@steedos/builder-object";
 
 const {
   STEEDOS_ROOT_URL,
@@ -88,7 +89,7 @@ export function SteedosProvider(props: any) {
     <StoreProvider initialState={initialState}>
       <SteedosContext.Provider value={steedosContextValues}>
         <ObjectProvider {...objectProviderProps}>
-          <FormProvider locale={locale}>
+          <FormProvider locale={locale} valueTypeMap={valueTypes}>
             {children}
           </FormProvider>
         </ObjectProvider>
