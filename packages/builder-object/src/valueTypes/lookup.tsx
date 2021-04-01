@@ -3,7 +3,7 @@ import { ObjectFieldLookup } from '../components/ObjectFieldLookup'
 
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
-// 参数
+// 参数 props.reference_to:
 
 export const lookup = {
     render: (text: any, props: any) => {
