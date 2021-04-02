@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input } from 'antd';
+import ProField from "@ant-design/pro-field";
 
 export const email = {
   render: (text: any, { fieldProps }: any)=> {
@@ -7,7 +7,7 @@ export const email = {
     return (<a href={link}>{text}</a>)
   },
   renderFormItem: (_: any, props: any) => (
-    <Input placeholder="请输入邮箱地址" {...props?.fieldProps} />
+    <ProField mode='edit' valueType='text' {...props} />
   ),
 }
 
