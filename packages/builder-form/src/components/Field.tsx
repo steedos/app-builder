@@ -59,9 +59,9 @@ export const Field = observer((props: any) => {
     fieldProps['showArrow'] = true
   }
 
-  if (valueType != 'switch') {
-    fieldProps['style'] = { width: '100%' }
-  }
+  // if (valueType != 'switch') {
+  //   fieldProps['style'] = { width: '100%' }
+  // }
 
   const ProFieldWrap = observer((props: any) => {
     const store = useMst();
