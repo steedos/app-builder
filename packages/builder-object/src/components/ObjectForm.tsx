@@ -52,65 +52,35 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     store.forms[formId] = FormModel.create({id: formId, mode});
   
 
-  const { 
-    isLoading: isLoadingObject, 
-    error: errorObject, 
-    data: objectSchema, 
-    isFetching: isFetchingObject
-  } = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
-    return await objectContext.requestObject(objectApiName as string);
-  }});
-  // if (isLoadingObject) return (<div>Loading object ...</div>)
-
-  useEffect(() => {
-    if (!objectSchema) return;
-    if (fields.length == 0) {
-      console.log("==objectSchema.fields=useEffect=", objectSchema.fields);
-      _.mapKeys(objectSchema.fields, (field, fieldName) => {
-        if (!field.hidden)
-          fields.push(_.defaults({name: fieldName}, field))
-      })
-    }
-    console.log("==fields=useEffect=", fields);
+  const objectQuery = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
+    const data = await objectContext.requestObject(objectApiName as string);
+    _.mapKeys(data.fields, (field, fieldName) => {
+      if (!field.hidden)
+        fields.push(_.defaults({name: fieldName}, field))
+    })
     _.forEach(fields, (field:any)=>{
       fieldNames.push(field.name)
     })
     setFieldNames(fieldNames)
-    console.log("==fieldNames=useEffect===objectSchema==", fieldNames);
-  }, [objectSchema]);
-
+    return data
+  }});
 
 
   const filter = recordId? ['_id', '=', recordId]:[];
-
-  const { 
-    isLoading: isLoadingRecord, 
-    error: errorRecord, 
-    data: records, 
-    isFetching: isFetchingRecord
-  } = useQuery<any>( [objectApiName, filter, fieldNames], async () => {
-      return await objectContext.requestRecords(objectApiName, filter, fieldNames);
+  
+  const recordsQuery = useQuery<any>( [objectApiName, filter, fieldNames], async () => {
+      const records = await objectContext.requestRecords(objectApiName, filter, fieldNames);
+      if(records && records.value && records.value.length > 0){
+        const record = records.value[0];
+        _.forEach(fieldNames, (fieldName:any)=>{
+          initialValues[fieldName] = record[fieldName];
+        })
+      }
     },
-    { enabled: !!objectSchema } //只有上边的schema加载好了，才启用下边的记录查询
+    { enabled: objectQuery.isSuccess } //只有上边的schema加载好了，才启用下边的记录查询
   );
 
-  useEffect(() => { 
-    console.log("==fieldNames=useEffect=", fieldNames);
-    console.log("==records=useEffect=", records);
-    if(records && records.value && records.value.length > 0){
-      const record = records.value[0];
-      const fieldValues = {};
-      _.forEach(fieldNames, (fieldName:any)=>{
-        fieldValues[fieldName] = record[fieldName];
-      })
-      console.log("==fieldValues=useEffect=", fieldValues);
-    //   setFieldValues(fieldValues);
-
-      form.setFieldsValue(fieldValues);
-    }  
-  }, [records, fieldNames]);
-
-  if (isLoadingRecord) return (<div>Loading record ...</div>)
+  if (!objectQuery.isSuccess || !recordsQuery.isSuccess) return (<div>Loading record ...</div>)
 
   const onFinish = async(values:any) =>{
     let result; 
@@ -155,6 +125,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     );
   }
 
+  console.log('=====FORM')
+  console.log(initialValues.name)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
