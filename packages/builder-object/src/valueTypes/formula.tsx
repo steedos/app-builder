@@ -5,9 +5,9 @@ import React from 'react';
 // 编辑时只读。显示时直接显示 value
 export const formula = {
   render: (text: any, props: any) => {
-    return (<div>formula display</div>)
+    return (<span>{text}</span>)
   },
   renderFormItem: (_: any, props: any) => {
-    return (<div>formula edit</div>)
+    return (<span></span>)
   }
 }
