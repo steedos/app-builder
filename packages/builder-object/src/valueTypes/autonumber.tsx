@@ -5,9 +5,9 @@ import React from 'react';
 // 编辑时只读。显示时直接显示 value
 export const autonumber = {
   render: (text: any, props: any) => {
-    return (<div>autonumber display</div>)
+    return (<span>{text}</span>)
   },
   renderFormItem: (_: any, props: any) => {
-    return (<div>autonumber edit</div>)
+    return (<span></span>)
   }
 }

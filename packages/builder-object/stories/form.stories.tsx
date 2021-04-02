@@ -14,6 +14,7 @@ export const Form = () => {
   const initialValues = {
     boolean__c: true,
     datetime__c: new Date(),
+    autonumber__c: '2001-00001',
     name: 'xxx'
   };
   const objectFormProps = {
