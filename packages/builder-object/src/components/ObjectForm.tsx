@@ -125,8 +125,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     );
   }
 
-  console.log('=====FORM')
-  console.log(initialValues.name)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
