@@ -12,6 +12,7 @@ import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import { FormModel, useMst } from '@steedos/builder-store';
+import { FieldSection } from "@steedos/builder-form";
 
 export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
 
@@ -39,6 +40,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     name: formId = 'default',
     mode = 'edit', 
     layout = 'vertical',
+    children,
     ...rest
   } = props;
  
@@ -57,7 +59,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     fieldSchemas.length = 0
     _.mapKeys(data.fields, (field, fieldName) => {
       if (!field.hidden)
-        fieldSchemas.push(_.defaults({name: fieldName}, field))
+        fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
     })
     _.forEach(fieldSchemas, (field:any)=>{
       fieldNames.push(field.name)
@@ -127,6 +129,37 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     );
   }
 
+  const getSection = (sectionName) => {
+    const fieldMode = mode === "add" ? "edit" : mode;
+    const sectionFields = _.filter(fieldSchemas, { 'group': sectionName });
+    return (
+      <FieldSection title={sectionName}>
+        {_.map(sectionFields, (field:any)=>{
+          const fieldItemProps = {
+            name: field.name,
+            objectApiName,
+            fieldName: field.name,
+            label: field.label,
+            fieldSchema: field,
+            required: field.required,
+            readonly: field.readonly,
+            mode: fieldMode,
+          };
+          return (<ObjectField {...fieldItemProps} />)
+        })}
+      </FieldSection>
+    )
+  }
+
+  const getSections = () => {
+     const sections = _.groupBy(fieldSchemas, 'group');
+     const dom = [];
+     _.forEach(sections, (value, key) => {
+      dom.push(getSection(key))
+    })
+    return dom;
+  }
+
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -137,7 +170,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       {...rest}
       form={form}
     >
-      {fieldsChildrenDom}
+      {children}
+      {getSections()}
     </Form>
   )
 });
