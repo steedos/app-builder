@@ -2,6 +2,7 @@ import { boolean } from './boolean';
 import { datetime } from './datetime';
 import { email } from './email';
 import { number } from './number';
+import { percent } from './percent';
 import { url } from './url';
 import { lookup } from './lookup';
 import { master_detail } from './master_detail';
@@ -17,6 +18,7 @@ export const valueTypes = {
     datetime,
     email,
     number,
+    percent,
     url,
     lookup,
     master_detail,

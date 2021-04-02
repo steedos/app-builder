@@ -15,6 +15,7 @@ export const Form = () => {
     boolean__c: true,
     datetime__c: new Date(),
     autonumber__c: '2001-00001',
+    percent__c: 0.55,
     name: 'xxx'
   };
   const objectFormProps = {
