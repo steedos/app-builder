@@ -1,5 +1,4 @@
 
-import { Form as AntForm} from 'antd';
 import React, { useContext, useEffect, useState } from "react";
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
@@ -48,8 +47,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const objectContext = useContext(ObjectContext);
   const [fieldSchemas, setFieldSchemas] = useState([]);
   const [fieldNames, setFieldNames] = useState([]);
-//   const [fieldValues, setFieldValues] = useState(initialValues);
-  const [form] = AntForm.useForm();
 
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
@@ -168,7 +165,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       layout={layout}
       onFinish={onFinish}
       {...rest}
-      form={form}
     >
       {children}
       {getSections()}
