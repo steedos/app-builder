@@ -44,6 +44,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
  
   const store = useMst();
   const objectContext = useContext(ObjectContext);
+  const [fieldSchemas, setFieldSchemas] = useState([]);
   const [fieldNames, setFieldNames] = useState([]);
 //   const [fieldValues, setFieldValues] = useState(initialValues);
   const [form] = AntForm.useForm();
@@ -51,17 +52,18 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   
-
   const objectQuery = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
     const data = await objectContext.requestObject(objectApiName as string);
+    fieldSchemas.length = 0
     _.mapKeys(data.fields, (field, fieldName) => {
       if (!field.hidden)
-        fields.push(_.defaults({name: fieldName}, field))
+        fieldSchemas.push(_.defaults({name: fieldName}, field))
     })
-    _.forEach(fields, (field:any)=>{
+    _.forEach(fieldSchemas, (field:any)=>{
       fieldNames.push(field.name)
     })
     setFieldNames(fieldNames)
+    setFieldSchemas(fieldSchemas)
     return data
   }});
 
@@ -108,7 +110,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     
     fieldsChildrenDom = (
       <React.Fragment>
-          {_.map(fields, (field:any)=>{
+          {_.map(fieldSchemas, (field:any)=>{
             const fieldItemProps = {
               name: field.name,
               objectApiName,
