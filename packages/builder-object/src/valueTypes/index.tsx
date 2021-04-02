@@ -1,6 +1,7 @@
 import { boolean } from './boolean';
 import { datetime } from './datetime';
 import { email } from './email';
+import { number } from './number';
 import { url } from './url';
 import { lookup } from './lookup';
 import { master_detail } from './master_detail';
@@ -15,6 +16,7 @@ export const valueTypes = {
     boolean,
     datetime,
     email,
+    number,
     url,
     lookup,
     master_detail,
