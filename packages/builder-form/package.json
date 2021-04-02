@@ -18,7 +18,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "start": "nodemon --watch src --exec yarn build -e ts,tsx",
-    "build": "concurrently yarn:build:*",
+    "build": "concurrently yarn:build:* && yarn copy-less",
+    "copy-less": "cp src/components/*.less dist/esm/components",
     "test": "jest --env=jsdom --passWithNoTests",
     "lint": "concurrently yarn:lint:*",
     "version": "yarn build",
