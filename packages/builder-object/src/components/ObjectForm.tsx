@@ -52,7 +52,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     store.forms[formId] = FormModel.create({id: formId, mode});
   
   const objectQuery = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
-    const data = await objectContext.requestObject(objectApiName as string);
+    const data: any = await objectContext.requestObject(objectApiName as string);
     fieldSchemas.length = 0
     _.mapKeys(data.fields, (field, fieldName) => {
       if (!field.hidden && (!fields.length || fields.includes(fieldName)))
