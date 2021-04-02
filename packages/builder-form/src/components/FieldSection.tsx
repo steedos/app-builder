@@ -46,7 +46,8 @@ export const FieldSection = observer((props: any) => {
         </Box>
         <AccordionPanel py={2} px={4}>
           <Grid {...boxOptions}>
-            {renderChildren(children)}
+            {/* {renderChildren(children)} */}
+            {children}
           </Grid>
         </AccordionPanel>
       </AccordionItem>

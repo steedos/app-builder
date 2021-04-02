@@ -42,11 +42,17 @@ export const FormWithChildren = () => {
     fields,
     recordId,
   }
+  const nameFieldSchema = {
+    type: 'text',
+    name: 'name',
+    label: 'Name'
+  }
   return (
     <SteedosProvider>
       <ObjectForm {...objectFormProps}>
         <FieldSection title='Section'>
-          {/* <ObjectField fieldName='name'/> */}
+          <ObjectField objectApiName={objectApiName} fieldName='name' fieldSchema={nameFieldSchema}/>
+          {/* <span>111</span> */}
         </FieldSection> 
       </ObjectForm>
     </SteedosProvider>
