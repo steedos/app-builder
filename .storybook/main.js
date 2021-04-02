@@ -22,11 +22,11 @@ module.exports = {
   },
   webpackFinal: async (config) => {
 
-    // if (config.resolve.plugins) {
-    //   config.resolve.plugins.push(new TsconfigPathsPlugin());
-    // } else {
-    //   config.resolve.plugins = [new TsconfigPathsPlugin()];
-    // }
+    if (config.resolve.plugins) {
+      config.resolve.plugins.push(new TsconfigPathsPlugin());
+    } else {
+      config.resolve.plugins = [new TsconfigPathsPlugin()];
+    }
     //Make whatever fine-grained changes you need
     // config.module.rules.push({
     //   test: /\.less$/,
@@ -79,11 +79,11 @@ module.exports = {
         ...config.resolve,
         alias: {
           ...config.resolve.alias,
-          "@steedos/builder-form": toPath("packages/builder-form/src/index.tsx"),
-          "@steedos/builder-locale": toPath("packages/builder-locale/src/index.tsx"),
-          "@steedos/builder-object": toPath("packages/builder-object/src/index.tsx"),
-          "@steedos/builder-steedos": toPath("packages/builder-steedos/src/index.tsx"),
-          "@steedos/builder-store": toPath("packages/builder-store/src/index.tsx"),
+          // "@steedos/builder-form": toPath("packages/builder-form/src/index.tsx"),
+          // "@steedos/builder-locale": toPath("packages/builder-locale/src/index.tsx"),
+          // "@steedos/builder-object": toPath("packages/builder-object/src/index.tsx"),
+          // "@steedos/builder-steedos": toPath("packages/builder-steedos/src/index.tsx"),
+          // "@steedos/builder-store": toPath("packages/builder-store/src/index.tsx"),
           "@emotion/core": toPath("node_modules/@emotion/react"),
           "emotion-theming": toPath("node_modules/@emotion/react"),
         },
