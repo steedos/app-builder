@@ -5,7 +5,6 @@ import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
 import { StoreProvider } from "@steedos/builder-store";
-import { valueTypes } from "@steedos/builder-object";
 
 const {
   STEEDOS_ROOT_URL,

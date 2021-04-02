@@ -1,12 +1,12 @@
 import React from 'react'
-import { Input } from 'antd';
+import { Field } from "@steedos/builder-form";
 
-export const href = {
+export const url = {
   render: (text: any, { fieldProps }: any)=> {
     return (<a href={text}>{text}</a>)
   },
   renderFormItem: (_: any, props: any) => (
-    <Input placeholder="请输入链接" {...props?.fieldProps} />
+    <Field type='text' {...props} />
   ),
 }
 

@@ -1,5 +1,5 @@
 import { email } from './email';
-import { href } from './href';
+import { url } from './url';
 import { lookup } from './lookup';
 import { master_detail } from './master_detail';
 import { object } from './object';
@@ -11,7 +11,7 @@ import { autonumber } from './autonumber';
 
 export const valueTypes = {
     email,
-    href,
+    url,
     lookup,
     master_detail,
     image,

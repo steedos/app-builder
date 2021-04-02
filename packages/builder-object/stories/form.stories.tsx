@@ -7,13 +7,13 @@ export default {
 }
 
 export const Form = () => {
-  const objectApiName = 'space_users';
+  const objectApiName = 'accounts';
   const fields = []
-  const recordId = '';
+  const recordId = 'RBdciox55Niu5BueS';
   const objectFormProps = {
     objectApiName,
     fields,
-    recordId
+    // recordId
   }
   return (
     <SteedosProvider>

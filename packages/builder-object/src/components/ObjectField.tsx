@@ -17,55 +17,55 @@ export type ObjectFieldProps = {
   readonly: boolean,
 }
 
-export const getFormFieldProps = (formFieldProps: any, fieldSchema: any, readonly: boolean) => {
-  const fieldType = fieldSchema.type;
-  // console.log("field===================",field);
+// export const getFormFieldProps = (formFieldProps: any, fieldSchema: any, readonly: boolean) => {
+//   const fieldType = fieldSchema.type;
+//   // console.log("field===================",field);
   
-  switch (fieldType) {
+//   switch (fieldType) {
 
-    case 'datetime':
-      formFieldProps.valueType = 'dateTime';
-      formFieldProps.readonly = readonly;
-      break;
+//     case 'datetime':
+//       formFieldProps.valueType = 'dateTime';
+//       formFieldProps.readonly = readonly;
+//       break;
 
-    case 'boolean':
-      formFieldProps.valueType = 'switch';
-      formFieldProps.readonly = readonly;
-      break;
+//     case 'boolean':
+//       formFieldProps.valueType = 'switch';
+//       formFieldProps.readonly = readonly;
+//       break;
 
-    case 'number':
-      formFieldProps.valueType = 'digit';
-      formFieldProps.readonly = readonly;
-      break;
+//     case 'number':
+//       formFieldProps.valueType = 'digit';
+//       formFieldProps.readonly = readonly;
+//       break;
 
-    case 'currency':
-      formFieldProps.valueType = 'money';
-      formFieldProps.readonly = readonly;
-      break;
-    case 'autonumber':
-      formFieldProps.valueType = 'index';
-      formFieldProps.readonly = readonly;
-      break;
-    case 'url':
-      formFieldProps.valueType = 'href';
-      break;
-    // case 'lookup':
-    //   // return (
-    //   //   <div>{`未实现字段类型${fieldType}的组件`}</div>
-    //   // )
-    //   formFieldProps.valueType = 'lookup';
-    //   formFieldProps.readonly = false;
-    //   formFieldProps.referenceTo = field.reference_to;
-    //   break;
-    // case 'master_detail':
-    //   return (
-    //     <div>{`未实现字段类型${fieldType}的组件`}</div>
-    //   )
-  }
-    // console.log('啊实打实打算+++++++',formFieldProps);
+//     case 'currency':
+//       formFieldProps.valueType = 'money';
+//       formFieldProps.readonly = readonly;
+//       break;
+//     case 'autonumber':
+//       formFieldProps.valueType = 'index';
+//       formFieldProps.readonly = readonly;
+//       break;
+//     case 'url':
+//       formFieldProps.valueType = 'href';
+//       break;
+//     // case 'lookup':
+//     //   // return (
+//     //   //   <div>{`未实现字段类型${fieldType}的组件`}</div>
+//     //   // )
+//     //   formFieldProps.valueType = 'lookup';
+//     //   formFieldProps.readonly = false;
+//     //   formFieldProps.referenceTo = field.reference_to;
+//     //   break;
+//     // case 'master_detail':
+//     //   return (
+//     //     <div>{`未实现字段类型${fieldType}的组件`}</div>
+//     //   )
+//   }
+//     // console.log('啊实打实打算+++++++',formFieldProps);
     
-  return formFieldProps;
-}
+//   return formFieldProps;
+// }
 
 export const ObjectField = observer((props: any) => {
   const store = useMst();
@@ -76,34 +76,8 @@ export const ObjectField = observer((props: any) => {
   let objectApiName = props.objectApiName;
   
   /*
-    fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。
+    TODO: fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。
   */
- 
-  // const {
-  //   isLoading,
-  //   error,
-  //   data,
-  //   isFetching
-  // } = useQuery(objectApiName, async () => {
-  //   return await objectContext.requestObject(objectApiName);
-  // });
-  // if (!objectApiName || !fieldName)
-  //   return (<div>请输入对象名和字段名</div>)
-
-  // const objectSchema: any = data
-
-  // if (!objectSchema)
-  //   return (<div>Field Loading...</div>)
-
-  // //TODO  fields['name', 'type']不为空
-
-  // const field: any = _.find(objectSchema.fields, (field, key) => {
-  //   return fieldName === key;
-  // })
-
-  // if (!field) {
-  //   return (<div>{`对象${objectApiName}上未定义字段${fieldName}`}</div>)
-  // }
   
   // 从对象定义中生成字段信息。
   const fieldType: string = fieldSchema.type;//根据objectApiName及fieldName算出type值
@@ -136,22 +110,22 @@ export const ObjectField = observer((props: any) => {
   // let fieldProps = {
 
   // };
-  if (fieldType === 'formula') {
+  // if (fieldType === 'formula') {
 
-    let fieldProps = {
-      fieldType: fieldSchema.data_type, 
-      readonl: true
-    };
-    // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
-    formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, fieldSchema, {type:fieldSchema.data_type}), true);
+  //   let fieldProps = {
+  //     fieldType: fieldSchema.data_type, 
+  //     readonl: true
+  //   };
+  //   // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
+  //   formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, fieldSchema, {type:fieldSchema.data_type}), true);
 
-  } else if (fieldType === 'summary') {
+  // } else if (fieldType === 'summary') {
 
-    formFieldProps = getFormFieldProps(formFieldProps, fieldSchema.summary_type, true);
+  //   formFieldProps = getFormFieldProps(formFieldProps, fieldSchema.summary_type, true);
 
-  } else {
-    formFieldProps = getFormFieldProps(formFieldProps, fieldSchema, formFieldProps.readonly);
-  }
+  // } else {
+  //   formFieldProps = getFormFieldProps(formFieldProps, fieldSchema, formFieldProps.readonly);
+  // }
 
   if (formFieldProps.required) {
     formFieldProps.rules = [
@@ -169,24 +143,4 @@ export const ObjectField = observer((props: any) => {
       {...formFieldProps}
     />
   )
-  // if (fieldType === 'lookup') {
-  //   return (
-  //     <div></div>
-  //     // <ObjectFieldLookup
-  //     //   {...rest}
-  //     //   label={props.label}
-  //     //   name={fieldName}
-  //     //   referenceTo={reference_to}
-  //     //   enableAdd={true}
-  //     //   placeholder={`请搜索${props.label}...`}
-  //     //   readonly={readonly}
-  //     // />
-  //   )
-  // } else {
-  //   return (
-  //     <ProField
-  //       {...formFieldProps}
-  //     />
-  //   )
-  // }
 });

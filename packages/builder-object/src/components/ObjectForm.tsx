@@ -58,6 +58,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }});
   // if (isLoadingObject) return (<div>Loading object ...</div>)
 
+  const fieldNames = []
   useEffect(() => {
     if (!objectSchema) return;
     if (fields.length == 0) {
@@ -66,12 +67,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
           fields.push(_.defaults({name: fieldName}, field))
       })
     }
+    _.forEach(fields, (field:any)=>{
+      fieldNames.push(field.name)
+    })
   }, [objectSchema]);
 
-  const fieldNames = []
-  _.forEach(fields, (field:any)=>{
-    fieldNames.push(field.name)
-  })
 
 
   const filter = recordId? ['_id', '=', recordId]:[];
@@ -121,6 +121,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   let fieldsChildrenDom = props.children;
   if(!fieldsChildrenDom){
     const fieldMode = mode === "add" ? "edit" : mode;
+    
     fieldsChildrenDom = (
       <React.Fragment>
           {_.map(fields, (field:any)=>{
