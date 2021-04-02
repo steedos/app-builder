@@ -80,6 +80,7 @@
     "@storybook/addon-knobs": "6.1.11",
     "@storybook/addon-toolbars": "^6.1.11",
     "@storybook/cli": "6.1.11",
+    "@storybook/preset-ant-design": "^0.0.2",
     "@storybook/react": "6.1.11",
     "@types/imagemin": "7.0.0",
     "@types/imagemin-jpegtran": "5.0.0",

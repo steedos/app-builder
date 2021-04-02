@@ -13,6 +13,8 @@ import { observer } from "mobx-react-lite"
 import { FormModel, useMst } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
+import './ObjectForm.less'
+
 export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
 
 export type FormProps<T = Record<string, any>>  = {
@@ -138,6 +140,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   return (
     <Form 
       // formFieldComponent = {ObjectField}
+      className='object-form'
       initialValues={initialValues}
       mode={mode}
       layout={layout}
