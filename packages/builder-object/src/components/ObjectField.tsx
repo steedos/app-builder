@@ -13,8 +13,6 @@ export type ObjectFieldProps = {
   objectApiName?: string,
   fieldName: string,
   fieldSchema: any,
-  required: boolean,
-  readonly: boolean,
 }
 
 // export const getFormFieldProps = (formFieldProps: any, fieldSchema: any, readonly: boolean) => {
@@ -72,7 +70,7 @@ export const ObjectField = observer((props: any) => {
   const objectContext = useContext(ObjectContext);
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
-  const { fieldName, fieldSchema, required, readonly } = props
+  const { fieldName, fieldSchema } = props
   let objectApiName = props.objectApiName;
   
   /*
@@ -92,6 +90,7 @@ export const ObjectField = observer((props: any) => {
     required: fieldSchema.required,
     options: fieldSchema.options,
     readonly: fieldSchema.readonly,
+    fieldSchema,
   }
 
   // formFieldProps.objectFieldProps = field;

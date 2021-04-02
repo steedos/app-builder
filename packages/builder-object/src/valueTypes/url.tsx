@@ -6,7 +6,7 @@ export const url = {
     return (<a href={text}>{text}</a>)
   },
   renderFormItem: (_: any, props: any) => (
-    <Field type='text' {...props} />
+    <Field mode='edit' type='text' {...props} />
   ),
 }
 
