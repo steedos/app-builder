@@ -11,10 +11,15 @@ export const Form = () => {
   const objectApiName = 'accounts';
   const fields = []
   const recordId = 'RBdciox55Niu5BueS';
+  const initialValues = {
+    boolean__c: true,
+    name: 'xxx'
+  };
   const objectFormProps = {
     objectApiName,
     fields,
-    recordId
+    recordId,
+    initialValues
   }
   return (
     <SteedosProvider>
@@ -32,7 +37,7 @@ export const FormWithChildren = () => {
   const objectFormProps = {
     objectApiName,
     fields,
-    recordId
+    recordId,
   }
   return (
     <SteedosProvider>

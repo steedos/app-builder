@@ -1,11 +1,13 @@
 import React from 'react'
 import { Field } from "@steedos/builder-form";
+import { CheckIcon } from '@chakra-ui/icons'
 
 export const boolean = {
   render: (text: any, props: any)=> {
-    return (
-      <span>{text}</span>
-    )
+    if (text) 
+      return (<CheckIcon/>)
+    else 
+      return (<span></span>);    
   },
   renderFormItem: (_: any, props: any) => {
     return (
