@@ -15,56 +15,6 @@ export type ObjectFieldProps = {
   fieldSchema: any,
 }
 
-// export const getFormFieldProps = (formFieldProps: any, fieldSchema: any, readonly: boolean) => {
-//   const fieldType = fieldSchema.type;
-//   // console.log("field===================",field);
-  
-//   switch (fieldType) {
-
-//     case 'datetime':
-//       formFieldProps.valueType = 'dateTime';
-//       formFieldProps.readonly = readonly;
-//       break;
-
-//     case 'boolean':
-//       formFieldProps.valueType = 'switch';
-//       formFieldProps.readonly = readonly;
-//       break;
-
-//     case 'number':
-//       formFieldProps.valueType = 'digit';
-//       formFieldProps.readonly = readonly;
-//       break;
-
-//     case 'currency':
-//       formFieldProps.valueType = 'money';
-//       formFieldProps.readonly = readonly;
-//       break;
-//     case 'autonumber':
-//       formFieldProps.valueType = 'index';
-//       formFieldProps.readonly = readonly;
-//       break;
-//     case 'url':
-//       formFieldProps.valueType = 'href';
-//       break;
-//     // case 'lookup':
-//     //   // return (
-//     //   //   <div>{`未实现字段类型${fieldType}的组件`}</div>
-//     //   // )
-//     //   formFieldProps.valueType = 'lookup';
-//     //   formFieldProps.readonly = false;
-//     //   formFieldProps.referenceTo = field.reference_to;
-//     //   break;
-//     // case 'master_detail':
-//     //   return (
-//     //     <div>{`未实现字段类型${fieldType}的组件`}</div>
-//     //   )
-//   }
-//     // console.log('啊实打实打算+++++++',formFieldProps);
-    
-//   return formFieldProps;
-// }
-
 export const ObjectField = observer((props: any) => {
   const store = useMst();
   const objectContext = useContext(ObjectContext);
@@ -78,7 +28,6 @@ export const ObjectField = observer((props: any) => {
   */
   
   // 从对象定义中生成字段信息。
-  const fieldType: string = fieldSchema.type;//根据objectApiName及fieldName算出type值
   let objectFieldMode = store.forms[formId].mode;
   let formFieldProps: any = {
     name: fieldName,
@@ -86,7 +35,7 @@ export const ObjectField = observer((props: any) => {
     label: fieldSchema.label,
     placeholder: fieldSchema.help,
     hidden: fieldSchema.hidden,
-    valueType: fieldType,
+    valueType: fieldSchema.type,
     required: fieldSchema.required,
     options: fieldSchema.options,
     readonly: fieldSchema.readonly,
@@ -106,26 +55,6 @@ export const ObjectField = observer((props: any) => {
     }
   }
 
-  // let fieldProps = {
-
-  // };
-  // if (fieldType === 'formula') {
-
-  //   let fieldProps = {
-  //     fieldType: fieldSchema.data_type, 
-  //     readonl: true
-  //   };
-  //   // formFieldProps = getFormFieldProps(formFieldProps, field.data_type, true);
-  //   formFieldProps = getFormFieldProps(formFieldProps, Object.assign({}, fieldSchema, {type:fieldSchema.data_type}), true);
-
-  // } else if (fieldType === 'summary') {
-
-  //   formFieldProps = getFormFieldProps(formFieldProps, fieldSchema.summary_type, true);
-
-  // } else {
-  //   formFieldProps = getFormFieldProps(formFieldProps, fieldSchema, formFieldProps.readonly);
-  // }
-
   if (formFieldProps.required) {
     formFieldProps.rules = [
       {
@@ -134,7 +63,6 @@ export const ObjectField = observer((props: any) => {
       },
     ]
   }
-// console.log("formFieldProps===============",formFieldProps);
 
   // 默认取ProFormText组件
   return (
