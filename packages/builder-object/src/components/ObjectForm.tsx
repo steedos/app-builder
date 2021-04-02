@@ -103,29 +103,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  let fieldsChildrenDom = props.children;
-  if(!fieldsChildrenDom){
-    const fieldMode = mode === "add" ? "edit" : mode;
-    
-    fieldsChildrenDom = (
-      <React.Fragment>
-          {_.map(fieldSchemas, (field:any)=>{
-            const fieldItemProps = {
-              name: field.name,
-              objectApiName,
-              fieldName: field.name,
-              label: field.label,
-              fieldSchema: field,
-              required: field.required,
-              readonly: field.readonly,
-              mode: fieldMode,
-            };
-            return (<ObjectField {...fieldItemProps} />)
-          })}
-      </React.Fragment>
-    );
-  }
-
   const getSection = (sectionName) => {
     const fieldMode = mode === "add" ? "edit" : mode;
     const sectionFields = _.filter(fieldSchemas, { 'group': sectionName });
