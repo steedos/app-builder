@@ -55,7 +55,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const data = await objectContext.requestObject(objectApiName as string);
     fieldSchemas.length = 0
     _.mapKeys(data.fields, (field, fieldName) => {
-      if (!field.hidden)
+      if (!field.hidden && (!fields.length || fields.includes(fieldName)))
         fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
     })
     _.forEach(fieldSchemas, (field:any)=>{
