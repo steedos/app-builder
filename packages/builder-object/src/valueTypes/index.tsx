@@ -1,4 +1,5 @@
 import { boolean } from './boolean';
+import { datetime } from './datetime';
 import { email } from './email';
 import { url } from './url';
 import { lookup } from './lookup';
@@ -12,6 +13,7 @@ import { autonumber } from './autonumber';
 
 export const valueTypes = {
     boolean,
+    datetime,
     email,
     url,
     lookup,

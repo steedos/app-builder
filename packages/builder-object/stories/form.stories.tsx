@@ -13,6 +13,7 @@ export const Form = () => {
   const recordId = 'RBdciox55Niu5BueS';
   const initialValues = {
     boolean__c: true,
+    datetime__c: new Date(),
     name: 'xxx'
   };
   const objectFormProps = {

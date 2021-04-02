@@ -1,5 +1,5 @@
 import React from 'react'
-import { Field } from "@steedos/builder-form";
+import ProField from "@ant-design/pro-field";
 import { CheckIcon } from '@chakra-ui/icons'
 
 export const boolean = {
@@ -11,7 +11,7 @@ export const boolean = {
   },
   renderFormItem: (_: any, props: any) => {
     return (
-      <Field mode='edit' valueType='switch' {...props} />
+      <ProField mode='edit' valueType='switch' {...props} />
     )
   },
 }
