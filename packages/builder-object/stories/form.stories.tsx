@@ -22,7 +22,8 @@ export const Form = () => {
     objectApiName,
     fields,
     recordId,
-    initialValues
+    initialValues,
+    mode: 'read'
   }
   return (
     <SteedosProvider>
