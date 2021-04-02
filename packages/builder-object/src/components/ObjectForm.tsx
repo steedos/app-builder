@@ -1,5 +1,6 @@
 
-import React, { useContext, useEffect } from "react";
+import { Form as AntForm} from 'antd';
+import React, { useContext, useEffect, useState } from "react";
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
 import { ObjectContext } from "../";
@@ -30,8 +31,6 @@ export type ObjectFormProps = {
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
-  const store = useMst();
-
   const {
     objectApiName,
     initialValues = {},
@@ -43,10 +42,15 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
  
+  const store = useMst();
+  const objectContext = useContext(ObjectContext);
+  const [fieldNames, setFieldNames] = useState([]);
+//   const [fieldValues, setFieldValues] = useState(initialValues);
+  const [form] = AntForm.useForm();
+
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   
-  const objectContext = useContext(ObjectContext);
 
   const { 
     isLoading: isLoadingObject, 
@@ -58,18 +62,21 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }});
   // if (isLoadingObject) return (<div>Loading object ...</div>)
 
-  const fieldNames = []
   useEffect(() => {
     if (!objectSchema) return;
     if (fields.length == 0) {
+      console.log("==objectSchema.fields=useEffect=", objectSchema.fields);
       _.mapKeys(objectSchema.fields, (field, fieldName) => {
         if (!field.hidden)
           fields.push(_.defaults({name: fieldName}, field))
       })
     }
+    console.log("==fields=useEffect=", fields);
     _.forEach(fields, (field:any)=>{
       fieldNames.push(field.name)
     })
+    setFieldNames(fieldNames)
+    console.log("==fieldNames=useEffect===objectSchema==", fieldNames);
   }, [objectSchema]);
 
 
@@ -88,13 +95,20 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   );
 
   useEffect(() => { 
+    console.log("==fieldNames=useEffect=", fieldNames);
+    console.log("==records=useEffect=", records);
     if(records && records.value && records.value.length > 0){
       const record = records.value[0];
+      const fieldValues = {};
       _.forEach(fieldNames, (fieldName:any)=>{
-        initialValues[fieldName] = record[fieldName];
+        fieldValues[fieldName] = record[fieldName];
       })
+      console.log("==fieldValues=useEffect=", fieldValues);
+    //   setFieldValues(fieldValues);
+
+      form.setFieldsValue(fieldValues);
     }  
-  }, [records]);
+  }, [records, fieldNames]);
 
   if (isLoadingRecord) return (<div>Loading record ...</div>)
 
@@ -149,6 +163,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       layout={layout}
       onFinish={onFinish}
       {...rest}
+      form={form}
     >
       {fieldsChildrenDom}
     </Form>
