@@ -23,7 +23,8 @@ export const Form = () => {
     fields,
     recordId,
     initialValues,
-    mode: 'read'
+    mode: 'read',
+    layout: 'horizontal' 
   }
   return (
     <SteedosProvider>
