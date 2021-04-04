@@ -6,20 +6,18 @@ import { ObjectContext } from "../";
 import { useQuery } from "react-query";
 import _ from 'lodash';
 
-export type ObjectFieldLookupProps = {
-    name: string,
-    referenceTo: string,
-};
-export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
+export const ObjectFieldLookup = (props: any) => {
 
     const objectContext = React.useContext(ObjectContext);
     const [value, setValue] = React.useState([]);
     const {
         name,
-        referenceTo,
+        fieldSchema = {},
         ...rest
     } = props
-    // console.log("Objloopup=============",props);
+    let { reference_to } = fieldSchema
+    if ( reference_to ==='users' )
+        reference_to = 'space_users'
 
     const [fetching, setFetching] = React.useState(false);
     const [options, setOptions] = React.useState([]);
@@ -34,7 +32,7 @@ export function ObjectFieldLookup(props: ObjectFieldLookupProps) {
     } = useQuery(searchKey, async () => {
         const filters = [['name']];
         const fields = ['_id', 'name'];
-        return await objectContext.requestRecords(referenceTo, filters, fields);
+        return await objectContext.requestRecords(reference_to, filters, fields);
     });
     // console.log("objectContext.requestRecords---", data);
     // const objectData: any = data
