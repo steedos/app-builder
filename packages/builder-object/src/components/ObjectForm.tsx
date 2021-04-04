@@ -53,21 +53,24 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   
-  const objectQuery = useQuery<any>({ queryKey: objectApiName, queryFn: async () => {
-    const data: any = await objectContext.requestObject(objectApiName as string);
-    fieldSchemas.length = 0
-    _.mapKeys(data.fields, (field, fieldName) => {
-      let isObjectField = /\w+\.\w+/.test(fieldName)
-      if (!field.hidden && !isObjectField && (!fields.length || fields.includes(fieldName)))
-        fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
-    })
-    _.forEach(fieldSchemas, (field:any)=>{
-      fieldNames.push(field.name)
-    })
-    setFieldNames(fieldNames)
-    setFieldSchemas(fieldSchemas)
-    return data
-  }});
+  const objectQuery = useQuery<any>(objectApiName, async () => {
+      const data: any = await objectContext.requestObject(objectApiName as string);
+      fieldSchemas.length = 0
+      _.mapKeys(data.fields, (field, fieldName) => {
+        let isObjectField = /\w+\.\w+/.test(fieldName)
+        if (!field.hidden && !isObjectField && (!fields.length || fields.includes(fieldName)))
+          fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+      })
+      _.forEach(fieldSchemas, (field:any)=>{
+        fieldNames.push(field.name)
+      })
+      setFieldNames(fieldNames)
+      setFieldSchemas(fieldSchemas)
+      return data
+    }, {
+      refetchOnWindowFocus: false,
+    }
+  );
 
 
   const filter = recordId? ['_id', '=', recordId]:[];
@@ -81,7 +84,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         })
       }
     },
-    { enabled: objectQuery.isSuccess } //只有上边的schema加载好了，才启用下边的记录查询
+    { 
+      enabled: objectQuery.isSuccess,  //只有上边的schema加载好了，才启用下边的记录查询
+      refetchOnWindowFocus: false,
+    } 
   );
 
   if (!objectQuery.isSuccess || !recordsQuery.isSuccess) return (<div>Loading record ...</div>)
