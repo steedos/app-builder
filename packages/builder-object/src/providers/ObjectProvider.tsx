@@ -9,8 +9,15 @@ type ObjectProviderProps = ObjectContextValueType & {
   children: any,
 }
 
-export function ObjectProvider(props: ObjectProviderProps) {
+const defaultQueryClientConfig: any = {
+  defaultOptions: {
+    queries:{
+      refetchOnWindowFocus: false
+    }
+  }
+}
 
+export function ObjectProvider(props: ObjectProviderProps) {
   const {
     locale,
     currentObjectApiName,
@@ -19,7 +26,7 @@ export function ObjectProvider(props: ObjectProviderProps) {
     requestRecords,
     updateRecord,
     insertRecord,
-    queryClient = new QueryClient(),
+    queryClient = new QueryClient(defaultQueryClientConfig),
     children,
   } = props;
 
