@@ -43,9 +43,11 @@ const TableField = (props) => {
   if (mode=='read')
     return (
       <ProTable<any>
-        value={value}
+        search={false}
+        defaultData={value}
         rowKey="_id"
         toolBarRender={false}
+        pagination={false}
         columns={columns}
       />
     )
