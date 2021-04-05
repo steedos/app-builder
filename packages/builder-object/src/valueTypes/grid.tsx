@@ -62,6 +62,11 @@ export const grid = {
   renderFormItem: (_: any, props: any) => {
     const {text =[], fieldSchema={}} = props;
     const {label, name} = fieldSchema;
+    const formItemProps = {
+      trigger: "onValuesChange",
+      shouldUpdate: true,
+      initialValue: text,
+    }
     return (
       // <ProForm.Item
       //   label={label}
@@ -69,7 +74,7 @@ export const grid = {
       //   initialValue={text}
       //   trigger="onValuesChange"
       // >
-        <TableField {...props}/>
+        <TableField formItemProps={formItemProps} {...props}/>
       // </ProForm.Item>
     )
   }

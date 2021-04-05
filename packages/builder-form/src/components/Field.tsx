@@ -36,7 +36,7 @@ export const Field = observer((props: any) => {
     // disabled,
     mode: fieldMode,
     valueType,
-    ignoreFormItem,
+    formItemProps,
     // type,
     // count,
     // defaultValue,
@@ -45,10 +45,13 @@ export const Field = observer((props: any) => {
     ...rest
   } = props
   const mode = store.forms[formId].mode
+  console.log(`Field ${props.name} formItemProps`)
+  console.log(formItemProps)
 
-  const formItemProps = {
+  const formItemPropsMerge = {
     ...attributes,
     style: { borderBottom: (mode == 'read') ? '1px solid #dddbda' : '' },
+    ...formItemProps,
   }
 
   // const fieldProps = {
@@ -132,7 +135,7 @@ export const Field = observer((props: any) => {
     },
   );
   // Object.assign(fieldProps, rest)
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} />)
+  return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerge} />)
 })
 
 Field['propTypes'] = {
