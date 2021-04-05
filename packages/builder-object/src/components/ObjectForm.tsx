@@ -81,7 +81,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       if(records && records.value && records.value.length > 0){
         const record = records.value[0];
         _.forEach(fieldNames, (fieldName:any)=>{
-          initialValues[fieldName] = record[fieldName];
+          if (record[fieldName])
+            initialValues[fieldName] = record[fieldName];
         })
       }
     },

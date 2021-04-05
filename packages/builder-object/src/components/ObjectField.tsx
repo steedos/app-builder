@@ -67,12 +67,12 @@ export const ObjectField = observer((props: any) => {
   let formItemProps = {
   }
 
-  if (fieldSchema.type === 'grid' || fieldSchema.type === 'object') {
-    formItemProps = {
-      trigger: "onValuesChange",
-      shouldUpdate: true,
-    }
-  }
+  // if (fieldSchema.type === 'grid' || fieldSchema.type === 'object') {
+  //   formItemProps = {
+  //     trigger: "onValuesChange",
+  //     shouldUpdate: true,
+  //   }
+  // }
 
   // 默认取ProFormText组件
   return (

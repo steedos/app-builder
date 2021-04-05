@@ -10,17 +10,17 @@ import { Select } from 'antd';
 const SteedosSelect = (props, mode) => {
   console.log(props)
   const {text, fieldSchema={}, onChange, ...rest} = props;
-  const [selectedRecords, setSelectedRecords] = useState<any>(text)
+  const [value, setValue] = useState<any>(text)
   const {options = []} = fieldSchema;
   
   if (mode === 'read')
-    return (<span>{selectedRecords}</span>)
+    return (<span>{value}</span>)
   else
     return (
       <Select {...rest} options={options} mode={mode} 
-        value={selectedRecords}
+        value={value}
         onChange={(value, optionList, ...rest) => {
-          setSelectedRecords(value)
+          setValue(value)
           onChange?.(value, optionList, ...rest);
           return;
         }}
