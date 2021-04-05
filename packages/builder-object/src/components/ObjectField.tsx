@@ -32,7 +32,7 @@ export const ObjectField = observer((props: any) => {
   let formFieldProps: any = {
     name: fieldName,
     mode: objectFieldMode,
-    label: fieldSchema.label,
+    label: fieldSchema.label? fieldSchema.label: fieldName,
     placeholder: fieldSchema.help,
     hidden: fieldSchema.hidden,
     valueType: fieldSchema.type,

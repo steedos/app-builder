@@ -28,8 +28,11 @@ export const Form = () => {
       label: 'object',
       is_wide: true,
       subFields: {
-        name: {
+        sub1: {
           type: 'text'
+        },
+        sub2: {
+          type: 'boolean'
         },
       }
     }
@@ -44,7 +47,11 @@ export const Form = () => {
     grid: [{
       _id: '111',
       name: '111',
-    }]
+    }],
+    object: {
+      sub1: 'sub1',
+      sub2: true,
+    }
   };
   const objectFormProps = {
     objectApiName,

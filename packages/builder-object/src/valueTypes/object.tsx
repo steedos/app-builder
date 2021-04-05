@@ -1,4 +1,9 @@
-import React from 'react';
+import _ from 'lodash';
+import React, { useState } from 'react';
+
+import { ObjectField } from '../components/ObjectField';
+import BaseForm from '@ant-design/pro-form/lib/BaseForm';
+import { Form as AntForm } from 'antd';
 
 /**
  * 对象字段类型组件
@@ -45,12 +50,58 @@ import React from 'react';
       multiple: true
     }]
  */
+const FieldObject = (props:any) => {
+  console.log(props)
+  const [form] = AntForm.useForm();
+
+  const {mode='read', text =[], objectApiName, fieldSchema={}, fieldProps={}} = props;
+  const {value:initialValues, onChange} = fieldProps;
+  const {subFields=[]} = fieldSchema;
+  const [value, setValue] = useState<any>(initialValues && _.isArray(initialValues)? initialValues : [])
+
+  const getFields = ()=> {
+    return _.map(subFields, (field:any, fieldName)=>{
+      const fieldItemProps = {
+        name: fieldName,
+        objectApiName,
+        fieldName: field.name,
+        label: field.label,
+        fieldSchema: field,
+        required: field.required,
+        readonly: field.readonly,
+      };
+      return (<ObjectField {...fieldItemProps} />)
+    })
+  }
+
+  return (
+    <BaseForm 
+      // formFieldComponent = {ObjectField}
+      className='object-form'
+      initialValues={initialValues}
+      mode={mode}
+      form={form}
+      submitter={false}
+      onValuesChange = {(changedValues:any, allValues:any)=>{
+        if (onChange) onChange(allValues)
+      }} 
+      // layout={layout}
+      // onFinish={onFinish}
+    >
+      {getFields()}
+    </BaseForm>
+  )
+}
+
 export const object = {
   render: (text: any, props: any) => {
-    return (<div>object display</div>)
+    return (
+        <FieldObject {...props} mode='read'/>
+    )
   },
   renderFormItem: (_: any, props: any) => {
-    // 通过props.objectFieldProps.subFields能取到subFields属性值
-    return (<div>object field</div>)
+    return (
+        <FieldObject {...props} mode='edit'/>
+    )
   }
 }

@@ -36,7 +36,7 @@ export const Field = observer((props: any) => {
     // disabled,
     mode: fieldMode,
     valueType,
-    formItemProps,
+    formItemProps = {},
     // type,
     // count,
     // defaultValue,
