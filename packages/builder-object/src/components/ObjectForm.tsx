@@ -27,7 +27,7 @@ export type FormProps<T = Record<string, any>>  = {
 */
 export type ObjectFormProps = {
   objectApiName: string,
-  fields?: any[],
+  fields?: any,
   initialValues?: any,
   recordId?: string
 } & FormProps

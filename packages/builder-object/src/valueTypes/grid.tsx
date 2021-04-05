@@ -31,7 +31,7 @@ const TableField = (props) => {
     })
   });
   
-  const editable = {
+  const editable: any = {
     type: 'multiple',
     editableKeys,
     onChange: setEditableRowKeys,
