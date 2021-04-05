@@ -7,9 +7,8 @@ import FieldSelect, {
 import { Select } from 'antd';
 
 // 需要处理只读样式和多选效果
-const SteedosSelect = (props, mode) => {
-  console.log(props)
-  const {text, fieldSchema={}, onChange, ...rest} = props;
+const SteedosSelect = (props) => {
+  const {mode, text, fieldSchema={}, onChange, ...rest} = props;
   const [value, setValue] = useState<any>(text)
   const {options = []} = fieldSchema;
   

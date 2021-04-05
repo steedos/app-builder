@@ -8,9 +8,9 @@ import React, { useState } from 'react';
 // 编辑时调用 editable protable，要求行可拖拉调整顺序
 // 显示时调用只读 protable
 // props.fields [] 列数组
-const TableField = (props, mode) => {
+const TableField = (props) => {
   
-  const {text =[], fieldSchema={}, fieldProps={}} = props;
+  const {mode='read', text =[], fieldSchema={}, fieldProps={}} = props;
   const {value:initialValue, onChange} = fieldProps;
   const {subFields=[]} = fieldSchema;
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
