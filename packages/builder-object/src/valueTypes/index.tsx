@@ -4,6 +4,7 @@ import { datetime } from './datetime';
 import { email } from './email';
 import { number } from './number';
 import { percent } from './percent';
+import { select } from './select';
 import { toggle } from './toggle';
 import { url } from './url';
 import { lookup } from './lookup';
@@ -22,6 +23,7 @@ export const valueTypes = {
     email,
     number,
     percent,
+    select,
     toggle,
     url,
     lookup,

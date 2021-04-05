@@ -36,11 +36,12 @@ export const Field = observer((props: any) => {
     // disabled,
     mode: fieldMode,
     valueType,
+    ignoreFormItem,
     // type,
     // count,
     // defaultValue,
     // defaultChecked,
-    options,
+    // options,
     ...rest
   } = props
   const mode = store.forms[formId].mode
@@ -50,14 +51,14 @@ export const Field = observer((props: any) => {
     style: { borderBottom: (mode == 'read') ? '1px solid #dddbda' : '' },
   }
 
-  const fieldProps = {
-    options
-  }
+  // const fieldProps = {
+  //   options
+  // }
 
-  if (valueType == 'select') {
-    fieldProps['showSearch'] = true
-    fieldProps['showArrow'] = true
-  }
+  // if (valueType == 'select') {
+  //   fieldProps['showSearch'] = true
+  //   fieldProps['showArrow'] = true
+  // }
 
   // if (valueType != 'switch') {
   //   fieldProps['style'] = { width: '100%' }
@@ -123,15 +124,15 @@ export const Field = observer((props: any) => {
       // console.log("props===fieldProps=====",props.fieldProps);
       // const newProps = Object.assign({}, props, props.fieldProps)
       return (
-        <ProFieldWrap valueType={valueType} fieldProps={props.fieldProps} {...props} mode={mode} readonly={readonly} />
+        <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} />
       )
     },
     {
       valueType,
     },
   );
-  Object.assign(fieldProps, rest)
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} fieldProps={fieldProps} />)
+  // Object.assign(fieldProps, rest)
+  return (<ProFormField {...rest} mode={mode} formItemProps={formItemProps} />)
 })
 
 Field['propTypes'] = {

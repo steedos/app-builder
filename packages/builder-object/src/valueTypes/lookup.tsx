@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import ProField from "@ant-design/pro-field";
 import { Tag } from 'antd';
 
 import _ from 'lodash';
 
 import { ObjectContext } from "../providers/ObjectContext";
-import { ObjectFieldLookup } from '../components/ObjectFieldLookup'
+
+import FieldSelect, {
+    proFieldParsingText,
+    proFieldParsingValueEnumToArray,
+  } from '@ant-design/pro-field/es/components/Select';
 
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
@@ -57,7 +60,6 @@ const renderFormItem = (_: any, props: any, formMode) => {
 
     const proFieldProps = {
         mode: formMode,
-        valueType: 'select',
         showSearch: true,
         showArrow: true,
         optionFilterProp: 'label',
@@ -68,7 +70,7 @@ const renderFormItem = (_: any, props: any, formMode) => {
     }
 
     return (
-        <ProField {...proFieldProps} />
+        <FieldSelect {...proFieldProps} />
     )
 }
 

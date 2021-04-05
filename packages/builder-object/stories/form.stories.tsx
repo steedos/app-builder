@@ -40,7 +40,11 @@ export const Form = () => {
     datetime__c: new Date(),
     autonumber__c: '2001-00001',
     percent__c: 0.55,
-    name: 'xxx'
+    name: 'xxx',
+    grid: [{
+      _id: '111',
+      name: '111',
+    }]
   };
   const objectFormProps = {
     objectApiName,
