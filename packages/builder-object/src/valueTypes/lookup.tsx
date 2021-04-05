@@ -16,16 +16,22 @@ export const lookup = {
         return (<a href={link}>{text}</a>)
     },
     renderFormItem: (_: any, props: any) => {
-        console.log("props====lookup", props);
         console.log(props)
+        
         const objectContext = useContext(ObjectContext);
-        const { fieldSchema={}, mode, valueType, ...rest } = props;
-        const { reference_to } = fieldSchema;
+        const { fieldSchema={}, mode, valueType, fieldProps, ...rest } = props;
+        const { reference_to, multiple } = fieldSchema;
 
         // 注意，request 里面的代码不会抛异常，包括编译错误。
         const request = async (params, props) => {
             console.log(params)
-            const filters = [] //[['name']];
+            let filters = [];
+            if (params.keyWords && props.text)
+                filters = [['name', 'contains', params.keyWords], 'or', ['_id', '=', props.text]]
+            else if ( props.text)
+                filters = [['_id', '=', props.text]]
+            else if (params.keyWords)
+                filters = [['name', 'contains', params.keyWords]]
             const fields = ['_id', 'name'];
             const data = await objectContext.requestRecords(reference_to, filters, fields);
             console.log(data)
@@ -41,17 +47,21 @@ export const lookup = {
             return options
         }
 
-        const fieldProps = {
+        if (multiple)
+            fieldProps.mode =  'multiple';
+        const proFieldProps = {
             mode: 'edit',
             valueType: 'select',
             showSearch: true,
             showArrow: true,
+            optionFilterProp: 'label',
+            fieldProps,
             request,
             ...rest
         }
 
         return (
-            <ProField {...fieldProps} />
+            <ProField {...proFieldProps} />
         )
     }
 }
