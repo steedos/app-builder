@@ -79,7 +79,7 @@ const FieldObject = (props:any) => {
       // formFieldComponent = {ObjectField}
       className='object-form'
       initialValues={initialValues}
-      mode={mode}
+      // mode={mode}
       form={form}
       submitter={false}
       onValuesChange = {(changedValues:any, allValues:any)=>{
