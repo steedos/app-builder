@@ -67,12 +67,13 @@ export const ObjectField = observer((props: any) => {
   let formItemProps = {
   }
 
-  // if (fieldSchema.type === 'grid' || fieldSchema.type === 'object') {
-  //   formItemProps = {
-  //     trigger: "onValuesChange",
-  //     shouldUpdate: true,
-  //   }
-  // }
+  if (fieldSchema.is_wide) {
+    formItemProps = {
+      style: {gridColumn: 'span 2/span 2'},
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
+    }
+  }
 
   // 默认取ProFormText组件
   return (

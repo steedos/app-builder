@@ -45,13 +45,11 @@ export const Field = observer((props: any) => {
     ...rest
   } = props
   const mode = store.forms[formId].mode
-  console.log(`Field ${props.name} formItemProps`)
-  console.log(formItemProps)
-
+  const {style} = formItemProps
   const formItemPropsMerge = {
     ...attributes,
-    style: { borderBottom: (mode == 'read') ? '1px solid #dddbda' : '' },
     ...formItemProps,
+    style: { borderBottom: (mode == 'read') ? '1px solid #dddbda' : '', ...style},
   }
 
   // const fieldProps = {
