@@ -9,7 +9,31 @@ export default {
 
 export const Form = () => {
   const objectApiName = 'accounts';
-  const fields = []
+  const fields = {
+    grid: {
+      type: 'grid',
+      label: 'grid',
+      is_wide: true,
+      subFields: {
+        _id: {
+          type: 'text'
+        },
+        name: {
+          type: 'text'
+        },
+      }
+    },
+    object: {
+      type: 'object',
+      label: 'object',
+      is_wide: true,
+      subFields: {
+        name: {
+          type: 'text'
+        },
+      }
+    }
+  }
   const recordId = 'RBdciox55Niu5BueS';
   const initialValues = {
     boolean__c: true,

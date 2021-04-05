@@ -56,6 +56,8 @@ export function SteedosProvider(props: any) {
       return;
     }
     const object = await client.sobject(objectApiName).getConfig();
+    
+    // TODO： 转换 object, grid 类型字段，生成 subFields 属性
     return object;
   }
 

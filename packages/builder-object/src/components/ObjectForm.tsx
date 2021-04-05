@@ -36,7 +36,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
     objectApiName,
     initialValues = {},
-    fields = [],
+    fields = {}, // 和对象定义中的fields格式相同，merge之后 render。
     recordId = '',
     name: formId = 'default',
     mode = 'edit', 
@@ -56,9 +56,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const objectQuery = useQuery<any>(objectApiName, async () => {
       const data: any = await objectContext.requestObject(objectApiName as string);
       fieldSchemas.length = 0
-      _.mapKeys(data.fields, (field, fieldName) => {
+      const mergedFields = _.defaultsDeep({}, data.fields, fields);
+      _.mapKeys(mergedFields, (field, fieldName) => {
         let isObjectField = /\w+\.\w+/.test(fieldName)
-        if (!field.hidden && !isObjectField && (!fields.length || fields.includes(fieldName)))
+        if (!field.hidden && !isObjectField)
           fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
       })
       _.forEach(fieldSchemas, (field:any)=>{
