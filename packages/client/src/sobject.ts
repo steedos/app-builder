@@ -59,11 +59,8 @@ export default class SObject {
     }
 
     async getConfig(){
-        if(!this.config){
-            const url = `${this.client.getBootstrapRoute()}/${this.objectName}`;
-            this.config = await this.client.doFetch(url, {method: 'get'});
-        }
-        return this.config;
+        const url = `${this.client.getBootstrapRoute()}/${this.objectName}`;
+        return await this.client.doFetch(url, {method: 'get'});
     }
 
     /**
