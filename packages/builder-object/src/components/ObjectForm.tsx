@@ -97,7 +97,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const onFinish = async(values:any) =>{
     let result; 
     if(mode === 'add'){     
-      console.log(values);
       result = await objectContext.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");
@@ -127,11 +126,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
             fieldName: field.name,
             label: field.label,
             fieldSchema: field,
-            required: field.required,
-            readonly: field.readonly,
             mode: fieldMode,
           };
-          console.log(fieldItemProps)
           return (<ObjectField {...fieldItemProps} />)
         })}
       </FieldSection>

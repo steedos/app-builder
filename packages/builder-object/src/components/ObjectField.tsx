@@ -28,10 +28,10 @@ export const ObjectField = observer((props: any) => {
   */
   
   // 从对象定义中生成字段信息。
-  let objectFieldMode = store.forms[formId].mode;
+  let mode = store.forms[formId].mode;
   let formFieldProps: any = {
     name: fieldName,
-    mode: objectFieldMode,
+    mode,
     label: fieldSchema.label? fieldSchema.label: fieldName,
     placeholder: fieldSchema.help,
     hidden: fieldSchema.hidden,
@@ -39,15 +39,16 @@ export const ObjectField = observer((props: any) => {
     required: fieldSchema.required,
     options: fieldSchema.options,
     readonly: fieldSchema.readonly,
+    isWide: fieldSchema.is_wide,
     fieldSchema,
   }
 
-  if (formFieldProps.mode == "edit") {
+  if (mode == "edit") {
 
     if (fieldSchema.omit) {
       formFieldProps.hidden = true
     }
-  } else if (formFieldProps.mode == "read") {
+  } else if (mode == "read") {
     if (fieldSchema.omit) {
       formFieldProps.readonly = true
     }
@@ -64,12 +65,6 @@ export const ObjectField = observer((props: any) => {
 
   const formItemProps:any = {
     colon: false,
-  }
-
-  if (fieldSchema.is_wide) {
-    formItemProps.style = {gridColumn: 'span 2/span 2'};
-    formItemProps.labelCol = { span: 4 };
-    formItemProps.wrapperCol = { span: 20 };
   }
 
   return (

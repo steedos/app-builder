@@ -36,6 +36,8 @@ export const Field = observer((props: any) => {
     // disabled,
     mode: fieldMode,
     valueType,
+    isWide = false,
+    showInlineIcon = valueType != 'object' && valueType != 'grid',
     formItemProps = {},
     // type,
     // count,
@@ -45,14 +47,25 @@ export const Field = observer((props: any) => {
     ...rest
   } = props
   const mode = store.forms[formId].mode
-  const {style} = formItemProps
-  const formItemPropsMerge = {
+  const formItemPropsMerged = {
     ...attributes,
     ...formItemProps,
-    className: `field field-${valueType} ${mode}`,
-    style,
+    className: `field type-${valueType} mode-${mode}`,
   }
 
+  if (valueType == 'object') {
+    formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
+    formItemPropsMerged.labelCol = { span: 0 };
+    formItemPropsMerged.wrapperCol = { span: 24 };
+  } else if (valueType == 'grid') {
+    formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
+    formItemPropsMerged.labelCol = { span: 0 };
+    formItemPropsMerged.wrapperCol = { span: 24 };
+  } else if (isWide) {
+    formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
+    formItemPropsMerged.labelCol = { span: 4 };
+    formItemPropsMerged.wrapperCol = { span: 20 };
+  }
 
   const ProFieldWrap = observer((props: any) => {
     const store = useMst();
@@ -93,7 +106,7 @@ export const Field = observer((props: any) => {
         onDoubleClick={() => { if (!readonly) onInlineEdit(); }}
       >
         <Box flex="1"><ProField mode='read' {...proFieldProps} /></Box>
-        <Box width="16px">{inlineIcon}</Box>
+        {showInlineIcon && (<Box width="16px">{inlineIcon}</Box>)}
       </Flex>
     )
   })
@@ -109,7 +122,7 @@ export const Field = observer((props: any) => {
       valueType,
     },
   );
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerge} />)
+  return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {

@@ -53,7 +53,6 @@ import { FieldSection } from '@steedos/builder-form';
     }]
  */
 export const ObjectFieldObject = (props:any) => {
-  console.log(props)
   const [form] = AntForm.useForm();
 
   const {mode='read', text =[], objectApiName, fieldSchema={}, fieldProps={}} = props;
@@ -72,7 +71,6 @@ export const ObjectFieldObject = (props:any) => {
         label: field.label?field.label:fieldName,
         fieldSchema: field,
       };
-      console.log(fieldItemProps)
       fields.push(<ObjectField {...fieldItemProps} />)
     })
     return fields;
