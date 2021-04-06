@@ -12,6 +12,11 @@ export const ObjectFieldGrid = (props) => {
   
   const {mode='read', text =[], fieldSchema={}, fieldProps={}} = props;
   const {value:initialValue, onChange} = fieldProps;
+  
+  _.forEach(initialValue, (row)=>{
+    if (!row._id)
+      row._id=_.uniqueId()
+  })
   const {subFields=[]} = fieldSchema;
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() =>
@@ -30,6 +35,23 @@ export const ObjectFieldGrid = (props) => {
       hideInForm: field.hidden | field.omit,
     })
   });
+  if (mode == 'edit'){
+    columns.push({
+      title: '',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="delete"
+          onClick={() => {
+            setValue(value.filter((item) => item._id !== record._id));
+          }}
+        >
+          删除
+        </a>,
+      ],
+    })
+  }
   
   const editable: any = {
     type: 'multiple',
@@ -64,9 +86,9 @@ export const ObjectFieldGrid = (props) => {
         columns={columns}
         recordCreatorProps={{
           newRecordType: 'dataSource',
-          position: 'top',
+          position: 'bottom',
           record: () => ({
-            _id: Date.now(),
+            _id: _.uniqueId(),
           }),
         }}
         editable={editable}
