@@ -150,7 +150,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   return (
     <Form 
       // formFieldComponent = {ObjectField}
-      className='object-form'
+      className='builder-form object-form'
       initialValues={initialValues}
       mode={mode}
       layout={layout}
