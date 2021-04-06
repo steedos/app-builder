@@ -60,6 +60,7 @@ export const Form = observer((props:any) => {
 
   const formProps = {
     name: formId,
+    className: 'builder-form',
     mode: store.forms[formId].mode, 
     layout,
     ...formItemLayout,

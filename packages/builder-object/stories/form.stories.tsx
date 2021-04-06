@@ -13,6 +13,7 @@ export const Form = () => {
     grid: {
       type: 'grid',
       label: 'grid',
+      group: 'grid',
       is_wide: true,
       subFields: {
         _id: {
@@ -23,9 +24,13 @@ export const Form = () => {
         },
       }
     },
+    test: {
+      type: 'text'
+    },
     object: {
       type: 'object',
       label: 'object',
+      group: 'object',
       is_wide: true,
       subFields: {
         sub1: {
