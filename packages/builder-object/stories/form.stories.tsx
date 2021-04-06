@@ -16,10 +16,10 @@ export const Form = () => {
       group: 'grid',
       is_wide: true,
       subFields: {
-        grid1: {
+        col1: {
           type: 'text'
         },
-        grid2: {
+        col2: {
           type: 'boolean'
         },
       }
@@ -50,8 +50,8 @@ export const Form = () => {
     percent__c: 0.55,
     name: 'xxx',
     grid: [{
-      grid1: '111',
-      grid2: true,
+      col1: '111',
+      col2: true,
     }],
     object: {
       sub1: 'sub1',

@@ -1,6 +1,8 @@
 import ProTable, { EditableProTable } from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
 import React, { useState } from 'react';
 
 // 表格类型字段，
@@ -15,7 +17,7 @@ export const ObjectFieldGrid = (props) => {
   
   _.forEach(initialValue, (row)=>{
     if (!row._id)
-      row._id=_.uniqueId()
+      row._id=uuidv4()
   })
   const {subFields=[]} = fieldSchema;
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
@@ -88,7 +90,7 @@ export const ObjectFieldGrid = (props) => {
           newRecordType: 'dataSource',
           position: 'bottom',
           record: () => ({
-            _id: _.uniqueId(),
+            _id: uuidv4(),
           }),
         }}
         editable={editable}
