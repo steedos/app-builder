@@ -1,6 +1,16 @@
-.ant-form-item {
+.ant-form-item.field {
   margin-bottom: 0;
+  &.read {
+    border-bottom: 1px solid #dddbda;
+    &.field-object {
+      border-bottom: 0
+    }
+    &.field-grid {
+      border-bottom: 0
+    }
+  }
 }
+
 .ant-form-vertical .ant-form-item-label {
   padding: 0;
 }

@@ -121,6 +121,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       <FieldSection title={sectionName}>
         {_.map(sectionFields, (field:any)=>{
           const fieldItemProps = {
+            key: field.name,
             name: field.name,
             objectApiName,
             fieldName: field.name,
@@ -130,6 +131,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
             readonly: field.readonly,
             mode: fieldMode,
           };
+          console.log(fieldItemProps)
           return (<ObjectField {...fieldItemProps} />)
         })}
       </FieldSection>

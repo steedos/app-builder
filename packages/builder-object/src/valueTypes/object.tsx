@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
+import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 
 import { ObjectField } from '../components/ObjectField';
 import BaseForm from '@ant-design/pro-form/lib/BaseForm';
 import { Form as AntForm } from 'antd';
+import { FieldSection } from '@steedos/builder-form';
 
 /**
  * 对象字段类型组件
@@ -50,37 +52,46 @@ import { Form as AntForm } from 'antd';
       multiple: true
     }]
  */
-const FieldObject = (props:any) => {
+export const ObjectFieldObject = (props:any) => {
   console.log(props)
   const [form] = AntForm.useForm();
 
   const {mode='read', text =[], objectApiName, fieldSchema={}, fieldProps={}} = props;
   const {value:initialValues, onChange} = fieldProps;
-  const {subFields=[]} = fieldSchema;
-  const [value, setValue] = useState<any>(initialValues && _.isArray(initialValues)? initialValues : [])
+  const {subFields={}, columns = 2} = fieldSchema;
+  const label = fieldSchema.label? fieldSchema.label: fieldSchema.name
 
   const getFields = ()=> {
-    return _.map(subFields, (field:any, fieldName)=>{
+    const fields = [];
+    _.forEach(subFields, (field:any, fieldName)=>{
       const fieldItemProps = {
+        key: fieldName,
         name: fieldName,
         objectApiName,
-        fieldName: field.name,
-        label: field.label,
+        fieldName: fieldName,
+        label: field.label?field.label:fieldName,
         fieldSchema: field,
-        required: field.required,
-        readonly: field.readonly,
       };
-      return (<ObjectField {...fieldItemProps} />)
+      console.log(fieldItemProps)
+      fields.push(<ObjectField {...fieldItemProps} />)
     })
+    return fields;
+  }
+
+  const boxOptions = {
+    templateColumns: [`repeat(1, 1fr)`, `repeat(${columns}, 1fr)`],
+    gridColumn: 'span 2/span 2',
+    gap: '0.5rem 2rem',
   }
 
   return (
     <BaseForm 
       // formFieldComponent = {ObjectField}
-      className='object-form'
+      className='object-sub-form'
       initialValues={initialValues}
       // mode={mode}
       form={form}
+      component={false}  //子表单不创建 html form tag
       submitter={false}
       onValuesChange = {(changedValues:any, allValues:any)=>{
         if (onChange) onChange(allValues)
@@ -88,7 +99,9 @@ const FieldObject = (props:any) => {
       // layout={layout}
       // onFinish={onFinish}
     >
-      {getFields()}
+      <Grid {...boxOptions}>
+        {getFields()}
+      </Grid>
     </BaseForm>
   )
 }
@@ -96,12 +109,12 @@ const FieldObject = (props:any) => {
 export const object = {
   render: (text: any, props: any) => {
     return (
-        <FieldObject {...props} mode='read'/>
+        <ObjectFieldObject {...props} mode='read'/>
     )
   },
   renderFormItem: (_: any, props: any) => {
     return (
-        <FieldObject {...props} mode='edit'/>
+        <ObjectFieldObject {...props} mode='edit'/>
     )
   }
 }

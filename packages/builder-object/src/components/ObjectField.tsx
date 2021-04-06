@@ -42,8 +42,6 @@ export const ObjectField = observer((props: any) => {
     fieldSchema,
   }
 
-  // formFieldProps.objectFieldProps = field;
-
   if (formFieldProps.mode == "edit") {
 
     if (fieldSchema.omit) {
@@ -64,18 +62,16 @@ export const ObjectField = observer((props: any) => {
     ]
   }
 
-  let formItemProps = {
+  const formItemProps:any = {
+    colon: false,
   }
 
   if (fieldSchema.is_wide) {
-    formItemProps = {
-      style: {gridColumn: 'span 2/span 2'},
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
-    }
+    formItemProps.style = {gridColumn: 'span 2/span 2'};
+    formItemProps.labelCol = { span: 4 };
+    formItemProps.wrapperCol = { span: 20 };
   }
 
-  // 默认取ProFormText组件
   return (
     <Field
       formItemProps = {formItemProps}

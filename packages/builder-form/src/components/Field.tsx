@@ -49,26 +49,14 @@ export const Field = observer((props: any) => {
   const formItemPropsMerge = {
     ...attributes,
     ...formItemProps,
-    style: { borderBottom: (mode == 'read') ? '1px solid #dddbda' : '', ...style},
+    className: `field field-${valueType} ${mode}`,
+    style,
   }
 
-  // const fieldProps = {
-  //   options
-  // }
-
-  // if (valueType == 'select') {
-  //   fieldProps['showSearch'] = true
-  //   fieldProps['showArrow'] = true
-  // }
-
-  // if (valueType != 'switch') {
-  //   fieldProps['style'] = { width: '100%' }
-  // }
 
   const ProFieldWrap = observer((props: any) => {
     const store = useMst();
 
-    // console.log("第一个++++",props);
     const { readonly, mode, ...rest } = props
 
     const proFieldProps = {
@@ -76,13 +64,8 @@ export const Field = observer((props: any) => {
       emptyText: '',
       ...rest
     }
-    // console.log("第二个++++rest",rest);
 
     if (!readonly && mode === 'edit') {
-      // proFieldProps.name = "company_id"
-      // proFieldProps.referenceTo= "company"
-
-      // console.log('proFieldProps=====',proFieldProps);
       return <ProField mode='edit' {...proFieldProps} />
 
     }
@@ -101,10 +84,7 @@ export const Field = observer((props: any) => {
 
 
     const containerOptions = {
-      // borderBottom: (mode=='read')?'1px solid #dddbda':'',
-      // pb: 1,
     }
-    // console.log('proFieldProps+++++++++++++++++++第二个',rest);
 
     return (
       <Flex
@@ -121,9 +101,6 @@ export const Field = observer((props: any) => {
   const ProFormField = createField<ProFormItemProps<InputProps>>(
 
     (props: ProFormItemProps<InputProps>) => {
-      // console.log("props========",props);
-      // console.log("props===fieldProps=====",props.fieldProps);
-      // const newProps = Object.assign({}, props, props.fieldProps)
       return (
         <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} />
       )
@@ -132,7 +109,6 @@ export const Field = observer((props: any) => {
       valueType,
     },
   );
-  // Object.assign(fieldProps, rest)
   return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerge} />)
 })
 

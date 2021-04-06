@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 // 编辑时调用 editable protable，要求行可拖拉调整顺序
 // 显示时调用只读 protable
 // props.fields [] 列数组
-const TableField = (props) => {
+export const ObjectFieldGrid = (props) => {
   
   const {mode='read', text =[], fieldSchema={}, fieldProps={}} = props;
   const {value:initialValue, onChange} = fieldProps;
@@ -77,12 +77,12 @@ const TableField = (props) => {
 export const grid = {
   render: (text: any, props: any) => {
     return (
-        <TableField {...props} mode='read'/>
+        <ObjectFieldGrid {...props} mode='read'/>
     )
   },
   renderFormItem: (_: any, props: any) => {
     return (
-        <TableField {...props} mode='edit'/>
+        <ObjectFieldGrid {...props} mode='edit'/>
     )
   }
 }
