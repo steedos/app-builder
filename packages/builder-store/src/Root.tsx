@@ -1,7 +1,7 @@
 import { types, Instance, onSnapshot } from "mobx-state-tree";
 import { FormModel } from "./Form";
 import { TableModel } from "./Table";
-import { ObjectModel } from "./Object";
+import { ObjectModel, ObjectStore } from "./Object";
 
 // Define a store just like a model
 export const RootModel = types.model({
@@ -10,6 +10,9 @@ export const RootModel = types.model({
   forms: types.optional(types.map(FormModel), {}),
   tables: types.optional(types.map(TableModel), {}),
   objects: types.optional(types.map(ObjectModel), {}),
+  objectStore: types.optional(ObjectStore, {
+      objects: {}
+  }),
 }).actions(self => ({
   setCurrentObjectApiName(name: string) {
     self.currentObjectApiName = name;

@@ -10,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { FormModel, useMst } from '@steedos/builder-store';
+import { FormModel, useMst, rootStore } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -47,52 +47,45 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
  
   const store = useMst();
   const objectContext = useContext(ObjectContext);
-  const [fieldSchemas, setFieldSchemas] = useState([]);
-  const [fieldNames, setFieldNames] = useState([]);
+  // const [fieldSchemas, setFieldSchemas] = useState([]);
+  // const [fieldNames, setFieldNames] = useState([]);
+  const fieldNames = [];
+  const fieldSchemas = [];
 
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   
-  const objectQuery = useQuery<any>(objectApiName, async () => {
-      const data: any = await objectContext.requestObject(objectApiName as string);
-      fieldSchemas.length = 0
-      const mergedFields = _.defaultsDeep({}, data.fields, fields);
-      _.mapKeys(mergedFields, (field, fieldName) => {
-        let isObjectField = /\w+\.\w+/.test(fieldName)
-        if (!field.hidden && !isObjectField)
-          fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
-      })
-      _.forEach(fieldSchemas, (field:any)=>{
-        fieldNames.push(field.name)
-      })
-      setFieldNames(fieldNames)
-      setFieldSchemas(fieldSchemas)
-      return data
-    }, {
-      refetchOnWindowFocus: false,
-    }
-  );
+  const object = rootStore.objectStore.getObject(objectApiName);
+  if (object.isLoading) return (<div>Loading object ...</div>)
 
-
-  const filter = recordId? ['_id', '=', recordId]:[];
+  if (object.schema) {
+    fieldSchemas.length = 0
+    const mergedFields = _.defaultsDeep({}, object.schema.fields, fields);
+    _.mapKeys(mergedFields, (field, fieldName) => {
+      let isObjectField = /\w+\.\w+/.test(fieldName)
+      if (!field.hidden && !isObjectField)
+        fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+    })
+    _.forEach(fieldSchemas, (field:any)=>{
+      console.log(field)
+      fieldNames.push(field.name)
+    })
   
-  const recordsQuery = useQuery<any>( [objectApiName, filter, fieldNames], async () => {
-      const records = await objectContext.requestRecords(objectApiName, filter, fieldNames);
-      if(records && records.value && records.value.length > 0){
-        const record = records.value[0];
-        _.forEach(fieldNames, (fieldName:any)=>{
-          if (record[fieldName])
-            initialValues[fieldName] = record[fieldName];
-        })
-      }
-    },
-    { 
-      enabled: objectQuery.isSuccess,  //只有上边的schema加载好了，才启用下边的记录查询
-      refetchOnWindowFocus: false,
-    } 
-  );
+    const recordCache = object.getRecord(recordId, fieldNames)
+    if (recordCache.isLoading)
+      return (<div>Loading record ...</div>)
 
-  if (!objectQuery.isSuccess || !recordsQuery.isSuccess) return (<div>Loading record ...</div>)
+    if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
+      const record = recordCache.data.value[0];
+      _.forEach(fieldNames, (fieldName:any)=>{
+        if (record[fieldName])
+          initialValues[fieldName] = record[fieldName];
+      })
+    } else {
+    }
+  }
+  
+
 
   const onFinish = async(values:any) =>{
     let result; 
