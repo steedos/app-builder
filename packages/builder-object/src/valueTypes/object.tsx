@@ -12,7 +12,7 @@ import { FieldSection } from '@steedos/builder-form';
  * 定义对象的key,value键值对结构，可在界面编辑该对象结构的数据并保存到数据库中
  * 组件支持属性
  * - name: string
- * - subFields: [{name: xx, type: xx, reference_to: xx, multiple: xx, ...}, ...], 字段数组,其元素是每个字段的字义
+ * - sub_fields: [{name: xx, type: xx, reference_to: xx, multiple: xx, ...}, ...], 字段数组,其元素是每个字段的字义
  * 比如华炎魔方cms_posts对象中有一个members字段，其yml文件定义如下：
  *   members:
       type: object
@@ -40,7 +40,7 @@ import { FieldSection } from '@steedos/builder-form';
         ]
     }
  * 在这里对应的组件属性为：
-    subFields: [{
+    sub_fields: [{
       name: "members.organizations",
       type: "lookup",
       reference_to: "organizations",
@@ -57,12 +57,12 @@ export const ObjectFieldObject = (props:any) => {
 
   const {mode='read', text =[], objectApiName, fieldSchema={}, fieldProps={}} = props;
   const {value:initialValues, onChange} = fieldProps;
-  const {subFields={}, columns = 2} = fieldSchema;
+  const {sub_fields={}, columns = 2} = fieldSchema;
   const label = fieldSchema.label? fieldSchema.label: fieldSchema.name
 
   const getFields = ()=> {
     const fields = [];
-    _.forEach(subFields, (field:any, fieldName)=>{
+    _.forEach(sub_fields, (field:any, fieldName)=>{
       const fieldItemProps = {
         key: fieldName,
         name: fieldName,

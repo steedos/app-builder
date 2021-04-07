@@ -22,7 +22,7 @@ export const ObjectFieldGrid = (props) => {
     if (!row._id)
       row._id=uuidv4()
   })
-  const {subFields=[]} = fieldSchema;
+  const {sub_fields=[]} = fieldSchema;
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() =>
     value.map((item) => item._id),
@@ -36,7 +36,7 @@ export const ObjectFieldGrid = (props) => {
     render: () => <DragHandle />,
     renderFormItem: () => <span />,
   }];
-  _.forEach(subFields, (field, fieldName)=>{
+  _.forEach(sub_fields, (field, fieldName)=>{
     columns.push({
       key: fieldName,
       dataIndex: fieldName,
