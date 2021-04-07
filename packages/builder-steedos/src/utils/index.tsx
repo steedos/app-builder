@@ -20,10 +20,9 @@ export function convertFieldsSchema(objectConfig: any) {
         sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.`)){
-            let arr = field.name.match(/.(\w+)/g);
+            let arr = key.match(/.(\w+)/g);
             let lastEle = arr[arr.length - 1].replace(".", "")
-            field.name=lastEle;
-            sub_fields[key]=field;
+            sub_fields[lastEle]=field;                           
           }
         });
         fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
@@ -33,10 +32,9 @@ export function convertFieldsSchema(objectConfig: any) {
         sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.$.`)){
-            let arr = field.name.match(/.(\w+)/g);
+            let arr = key.match(/.(\w+)/g);
             let lastEle = arr[arr.length - 1].replace(".", "")
-            field.name=lastEle;
-            sub_fields[key]=field;
+            sub_fields[lastEle]=field;
           }
         });
         fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});

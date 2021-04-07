@@ -15,7 +15,7 @@ export const Form = () => {
       label: 'grid',
       group: 'grid',
       is_wide: true,
-      subFields: {
+      sub_fields: {
         col1: {
           type: 'text'
         },
@@ -32,7 +32,7 @@ export const Form = () => {
       label: 'object',
       group: 'object',
       is_wide: true,
-      subFields: {
+      sub_fields: {
         sub1: {
           type: 'text'
         },
