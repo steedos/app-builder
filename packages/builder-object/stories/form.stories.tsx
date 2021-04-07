@@ -52,6 +52,9 @@ export const Form = () => {
     grid: [{
       col1: '111',
       col2: true,
+    }, {
+      col1: '222',
+      col2: true,
     }],
     object: {
       sub1: 'sub1',

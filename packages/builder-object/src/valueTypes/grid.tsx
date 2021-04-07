@@ -2,6 +2,9 @@ import ProTable, { EditableProTable } from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import { MenuOutlined } from '@ant-design/icons';
+import arrayMove from 'array-move';
 
 import React, { useState } from 'react';
 
@@ -24,7 +27,15 @@ export const ObjectFieldGrid = (props) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() =>
     value.map((item) => item._id),
   );
-  const columns = [];
+
+  const columns:any[] = [{
+    title: '',
+    dataIndex: 'sort',
+    width: 30,
+    className: 'drag-visible',
+    render: () => <DragHandle />,
+    renderFormItem: () => <span />,
+  }];
   _.forEach(subFields, (field, fieldName)=>{
     columns.push({
       key: fieldName,
@@ -41,7 +52,7 @@ export const ObjectFieldGrid = (props) => {
     columns.push({
       title: '',
       valueType: 'option',
-      width: 200,
+      width: 50,
       render: (text, record, _, action) => [
         <a
           key="delete"
@@ -55,6 +66,36 @@ export const ObjectFieldGrid = (props) => {
     })
   }
   
+
+  const TableSortableItem = SortableElement(props => <tr {...props} />);
+  const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />);
+
+  const onDragEnd = ({ oldIndex, newIndex }) => {
+    if (oldIndex !== newIndex) {
+      const newData = arrayMove([].concat(value), oldIndex, newIndex).filter(el => !!el);
+      console.log('Sorted items: ', newData);
+      setValue(newData);
+    }
+    // TODO: 拖动结果需要单独出发 form 保存事件。
+  };
+
+  const TableSortableContainer = SortableContainer(props => <tbody {...props} />);
+  const DraggableContainer = props => (
+    <TableSortableContainer
+      useDragHandle
+      disableAutoscroll
+      helperClass="row-dragging"
+      onSortEnd={onDragEnd}
+      {...props}
+    />
+  );
+
+  const DraggableBodyRow = ({ className, style, ...restProps }) => {
+    // function findIndex base on Table rowKey props and should always be a right array index
+    const index = value.findIndex(x => x._id === restProps['data-row-key']);
+    return <TableSortableItem index={index} {...restProps} />;
+  };
+
   const editable: any = {
     type: 'multiple',
     editableKeys,
@@ -69,7 +110,14 @@ export const ObjectFieldGrid = (props) => {
       <ProTable<any>
         search={false}
         defaultData={value}
+        size="small"
         rowKey="_id"
+        components={{
+          body: {
+            wrapper: DraggableContainer,
+            row: DraggableBodyRow,
+          },
+        }}
         toolBarRender={false}
         pagination={false}
         columns={columns}
@@ -83,6 +131,7 @@ export const ObjectFieldGrid = (props) => {
           onChange?.(value);
           setValue(value)
         }}
+        size="small"
         rowKey="_id"
         toolBarRender={false}
         columns={columns}
