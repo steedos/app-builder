@@ -9,7 +9,7 @@ export function convertFieldsSchema(objectConfig: any) {
   let fieldsSchema: any = {}
   _.each(objectConfig.fields, (field, fieldName) => {
     if(/\w+\.($\.)?(\w+)?/.test(fieldName)){
-      // 所有的members.users、instances.$._id、sharing.$之类的复合字段会根据需要自动加到subFields中，所以不用再加到fieldsSchema中
+      // 所有的members.users、instances.$._id、sharing.$之类的复合字段会根据需要自动加到sub_fields中，所以不用再加到fieldsSchema中
       return;
     }
     const fieldType = field && field.type;
