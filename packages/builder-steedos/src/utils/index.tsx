@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 /**
- * 转换传入的objectConfig中的 object, grid 类型字段，生成 subFields 属性
+ * 转换传入的objectConfig中的 object, grid 类型字段，生成 sub_fields 属性
  * @param objectConfig 对象配置文件中该字段所属对象的配置
  * @returns 转换后的对象
  */
@@ -13,27 +13,33 @@ export function convertFieldsSchema(objectConfig: any) {
       return;
     }
     const fieldType = field && field.type;
-    let subFields: any[]
+    let sub_fields: any;
     switch(fieldType){
       case "object":
         // 根据对象的子表字段信息，返回子表配置属性
-        subFields = [];
+        sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.`)){
-            subFields.push(field);
+            let arr = field.name.match(/.(\w+)/g);
+            let lastEle = arr[arr.length - 1].replace(".", "")
+            field.name=lastEle;
+            sub_fields[key]=field;
           }
         });
-        fieldsSchema[fieldName] = Object.assign({}, field, {subFields});
+        fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
         break;
       case "grid":
         // 根据对象的子表字段信息，返回子表配置属性
-        subFields = [];
+        sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.$.`)){
-            subFields.push(field);
+            let arr = field.name.match(/.(\w+)/g);
+            let lastEle = arr[arr.length - 1].replace(".", "")
+            field.name=lastEle;
+            sub_fields[key]=field;
           }
         });
-        fieldsSchema[fieldName] = Object.assign({}, field, {subFields});
+        fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
         break;
       default:
         fieldsSchema[fieldName] = field;
