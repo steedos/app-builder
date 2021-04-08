@@ -3,7 +3,8 @@ import {Input} from 'antd';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Image } from "antd";
-const { STEEDOS_ROOT_URL } = process.env
+const { STEEDOS_ROOT_URL,STEEDOS_USER_ID,STEEDOS_TENANT_ID ,STEEDOS_AUTH_TOKEN } = process.env
+import FieldImage from '@ant-design/pro-field/es/components/Image';
 
 /*
  * 对象字段类型组件
@@ -24,19 +25,63 @@ const { STEEDOS_ROOT_URL } = process.env
  *    "imgs__c": "iHXH3SrYP5ZcarQbX"
 */
 
+const renderFormItem = (text: any, props: any, formMode) => {
+    const { fieldProps={} } = props;
+    let { onChange } = fieldProps;
+
+    if (formMode === 'read') {
+        let url = STEEDOS_ROOT_URL + '/api/files/images/' + text;
+        const proFieldProps = {
+            mode: formMode
+        }
+        return (<Image alt="图片" width={32} src={url} />)
+        // return (<FieldImage {...proFieldProps} />)
+    }
+    if (formMode === 'edit') {
+        // console.log('进入eidt',props)
+        props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
+        const propsOther = {
+            // http://127.0.0.1:5080/s3/images
+            action: STEEDOS_ROOT_URL+'/s3/images',
+            type: 'file',
+            method: 'post',
+            accept: 'image/png, image/jpeg, image/jpg, image/gif',
+            maxCount: '1',
+            data:{
+                record_id: "KFon27jRaw5N7Q8fJ",//TODO: 暂时获取不到 此值，所以写死了。 "cv9eHrkq9HdNZ4YYC"
+                object_name: props.fieldSchema.object,  // props.fieldSchema.object
+                space: STEEDOS_TENANT_ID,
+                owner: STEEDOS_USER_ID,
+                owner_name: ""
+            },
+            headers:{
+                'X-User-Id':STEEDOS_USER_ID,
+                'X-Auth-Token':STEEDOS_AUTH_TOKEN
+            },
+            onChange: (options: any)=>{
+                const { file } = options;
+                if(file.status==="done"){
+                    onChange(file.response._id)
+                }
+            }
+        }
+        return (
+            <Upload {...props} {...propsOther} >
+                <Button icon={<UploadOutlined />} title="上传图片">Upload png only</Button>
+            </Upload>
+        );
+  }
+  
+}
+
 export const image = {
     render: (text : any, props : any) => {
-        // console.log('图片进入readonly状态',props)
-        let url = STEEDOS_ROOT_URL+'/api/files/images/'+text ;
-        url= url ? url : 'https://avatars.githubusercontent.com/u/3104826?s=200&v=4';
-        return (<Image alt="图片" width={50} src={url} />)
+        // console.log('图片1进入readonly状态',props)
+        return renderFormItem(text,props,'read')
     },
-    renderFormItem: (_ : any, props : any) => {
-        // console.log('图片进入edit状态',props)
-        return (
-          <Upload {...props} type="file" method="post" accept="image/png, image/jpeg, image/gif" action="http://192.168.0.98:5066/s3" maxCount="1"> 
-            <Button icon={<UploadOutlined />} title="上传图片">Upload png only</Button>
-          </Upload>
-        );
+
+    renderFormItem: (text: any, props : any) => {
+        //console.log('图片1进入edit状态',props)
+        return renderFormItem(text,props,'edit')
     }
 }
