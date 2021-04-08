@@ -51,7 +51,7 @@ export const RecordCache = types.model({
   objectApiName: types.string,
   fields: types.array(types.string),
   recordJson: types.string,
-  isLoading: true
+  isLoading: true,
 })
 .views((self) => ({
   get data() {

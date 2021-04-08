@@ -9,7 +9,7 @@
  */
 
 import ProCard from "@ant-design/pro-card"
-import { useMst } from "@steedos/builder-store"
+import { useStore } from "@steedos/builder-store"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useRef, useState } from "react"
@@ -55,7 +55,7 @@ function getContainsFilter(ids, key): string {
 
 export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   const objectContext = useContext(ObjectContext)
-  let store = useMst()
+  let store = useStore()
   let { currentObjectApiName } = store
   if (!currentObjectApiName) {
     currentObjectApiName = objectContext.currentObjectApiName

@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { registerObjectTreeComponent } from ".."
-import { useMst } from "@steedos/builder-store"
+import { useStore } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,

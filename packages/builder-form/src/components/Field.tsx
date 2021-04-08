@@ -12,7 +12,7 @@ import createField from '@ant-design/pro-form/es/BaseForm/createField'
 
 import { BuilderStoreContext } from "@builder.io/react";
 import { ProFormItemProps } from "@ant-design/pro-form/es/interface";
-import { useMst } from '@steedos/builder-store';
+import { useStore } from '@steedos/builder-store';
 
 import { observer } from "mobx-react-lite"
 import FieldContext from "@ant-design/pro-form/es/FieldContext";
@@ -20,7 +20,7 @@ import FieldContext from "@ant-design/pro-form/es/FieldContext";
 import './Field.less'
 
 export const Field = observer((props: any) => {
-  const store = useMst();
+  const store = useStore();
   const context = React.useContext(FormContext);
   const formId = context.name ? context.name : 'default';
   const {
@@ -68,7 +68,7 @@ export const Field = observer((props: any) => {
   }
 
   const ProFieldWrap = observer((props: any) => {
-    const store = useMst();
+    const store = useStore();
 
     const { readonly, mode, ...rest } = props
 
