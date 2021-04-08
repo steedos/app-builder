@@ -67,7 +67,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
     })
     _.forEach(fieldSchemas, (field:any)=>{
-      console.log(field)
       fieldNames.push(field.name)
     })
   
