@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from 'react-query'
+import { formatFiltersToODataQuery } from '@steedos/filters';
 
 import { Tag } from 'antd';
 
@@ -48,7 +49,7 @@ const render = (text: any, props: any) => {
     )}))
 }
 
-const renderFormItem = (_: any, props: any, formMode: any) => {
+const renderFormItem = (text: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
     const { reference_to, multiple, filters: fieldFilters = [] } = fieldSchema;
@@ -70,21 +71,34 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
     // 注意，request 里面的代码不会抛异常，包括编译错误。
     const request = async (params: any, props: any) => {
         // console.log("===request===params, props==", params, props);
-        let filters = [], textFilters = [], keyFilters = [];
+        // console.log("===request===reference_to==", reference_to);
+        let filters: any = [], textFilters: any = [], keyFilters: any = [];
         if (props.text)
-            textFilters = [['_id', '=', props.text]]
+            textFilters = ['_id', '=', props.text]
         if (params.keyWords)
-            keyFilters = [['name', 'contains', params.keyWords]]
+            keyFilters = ['name', 'contains', params.keyWords]
         if(fieldFilters.length){
             if(keyFilters.length){
-                keyFilters = [fieldFilters, keyFilters]
+                if(_.isArray(fieldFilters)){
+                    keyFilters = [fieldFilters, keyFilters]
+                }
+                else{
+                    const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+                    keyFilters = `(${fieldFilters}) and (${odataKeyFilters})`;
+                }
             }
             else{
                 keyFilters = fieldFilters;
             }
         }
         if(textFilters.length && keyFilters.length){
-            filters = [textFilters, 'or', keyFilters]
+            if(_.isArray(keyFilters)){
+                filters = [textFilters, 'or', keyFilters]
+            }
+            else{
+                const odataTextFilters = formatFiltersToODataQuery(textFilters);
+                filters = `(${odataTextFilters}) or (${keyFilters})`;
+            }
         }
         else if(textFilters.length){
             filters = textFilters;
@@ -93,6 +107,7 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
             filters = keyFilters;
         }
         const fields = ['_id', 'name'];
+        // console.log("===filters===", filters);
         const data = await objectContext.requestRecords(reference_to, filters, fields);
 
         const options = data.value.map((item) => {
