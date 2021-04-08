@@ -51,7 +51,7 @@ const render = (text: any, props: any) => {
 const renderFormItem = (_: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
-    const { reference_to, multiple } = fieldSchema;
+    const { reference_to, multiple, filters: fieldFilters = [] } = fieldSchema;
     const [params, setParams] = useState({open: false,openTag: null});
     if (multiple)
         fieldProps.mode = 'multiple';
@@ -69,13 +69,29 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
 
     // 注意，request 里面的代码不会抛异常，包括编译错误。
     const request = async (params: any, props: any) => {
-        let filters = [];
-        if (params.keyWords && props.text)
-            filters = [['name', 'contains', params.keyWords], 'or', ['_id', '=', props.text]]
-        else if (props.text && !params.open)
-            filters = [['_id', '=', props.text]]
-        else if (params.keyWords)
-            filters = [['name', 'contains', params.keyWords]]
+        // console.log("===request===params, props==", params, props);
+        let filters = [], textFilters = [], keyFilters = [];
+        if (props.text)
+            textFilters = [['_id', '=', props.text]]
+        if (params.keyWords)
+            keyFilters = [['name', 'contains', params.keyWords]]
+        if(fieldFilters.length){
+            if(keyFilters.length){
+                keyFilters = [fieldFilters, keyFilters]
+            }
+            else{
+                keyFilters = fieldFilters;
+            }
+        }
+        if(textFilters.length && keyFilters.length){
+            filters = [textFilters, 'or', keyFilters]
+        }
+        else if(textFilters.length){
+            filters = textFilters;
+        }
+        else if(keyFilters.length){
+            filters = keyFilters;
+        }
         const fields = ['_id', 'name'];
         const data = await objectContext.requestRecords(reference_to, filters, fields);
 
