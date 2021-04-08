@@ -52,6 +52,7 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
     const { reference_to, multiple } = fieldSchema;
+    const [params, setParams] = useState({open: false,openTag: null});
     if (multiple)
         fieldProps.mode = 'multiple';
 
@@ -71,7 +72,7 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
         let filters = [];
         if (params.keyWords && props.text)
             filters = [['name', 'contains', params.keyWords], 'or', ['_id', '=', props.text]]
-        else if (props.text)
+        else if (props.text && !params.open)
             filters = [['_id', '=', props.text]]
         else if (params.keyWords)
             filters = [['name', 'contains', params.keyWords]]
@@ -88,6 +89,12 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
         return options
     }
 
+    const onDropdownVisibleChange = (open: boolean)=>{
+        if(open){
+            setParams({open, openTag: new Date()});
+        }
+    }
+
     const proFieldProps = {
         mode: formMode,
         showSearch: true,
@@ -96,6 +103,8 @@ const renderFormItem = (_: any, props: any, formMode: any) => {
         fieldProps,
         tagRender,
         request,
+        params,
+        onDropdownVisibleChange,
         ...rest
     }
 
