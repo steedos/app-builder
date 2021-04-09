@@ -109,9 +109,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const fieldMode = mode === "add" ? "edit" : mode;
     const sectionFields = _.filter(fieldSchemas, { 'group': sectionName });
     return (
-      <FieldSection title={sectionName}>
+      <FieldSection title={sectionName} key={sectionName}>
         {_.map(sectionFields, (field:any)=>{
-          const fieldItemProps = {
+          const fieldProps = {
             key: field.name,
             name: field.name,
             objectApiName,
@@ -120,7 +120,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
             fieldSchema: field,
             mode: fieldMode,
           };
-          return (<ObjectField {...fieldItemProps} />)
+          return (<ObjectField {...fieldProps} />)
         })}
       </FieldSection>
     )
