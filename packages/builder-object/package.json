@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build-rollup": "rollup -c",
+    "build-rollup": "rollup -c rollup.config.ts",
     "build": "concurrently yarn:build:*",
     "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
@@ -59,6 +59,8 @@
     "react-query": "^3.13.3",
     "react-slick": "^0.23.2",
     "react-sortable-hoc": "^2.0.0",
+    "react-to-webcomponent": "^1.5.1",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "tslib": "^2.1.0",
     "webcomponents-in-react": "^1.0.1"
   },

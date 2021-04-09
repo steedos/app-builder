@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from 'react-query'
 import { formatFiltersToODataQuery } from '@steedos/filters';
-
 import { Tag } from 'antd';
-
 import _ from 'lodash';
-
+import { useStore } from '@steedos/builder-store';
 import { ObjectContext } from "../providers/ObjectContext";
-
+import { observer } from "mobx-react-lite";
+import { Form } from '@steedos/builder-form';
 import FieldSelect, {
     proFieldParsingText,
     proFieldParsingValueEnumToArray,
@@ -17,42 +16,44 @@ import FieldSelect, {
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
 
-const render = (text: any, props: any) => {
-    const objectContext = useContext(ObjectContext);
+const LookupReadonly = observer((props:any) => {
+
+    const store = useStore();
     const { fieldSchema = {}, valueType, fieldProps, ...rest } = props;
     const { reference_to, multiple } = fieldSchema;
     const value = fieldProps.value;
-    const [tags, setTags] = useState([]);
+    let tags:any[] = [];
     const hrefPrefix = `/app/-/${reference_to}/view/`
 
-    const filter = value ? [['_id', '=', value]] : [];
-    const fields = ['_id', 'name'];
-
-    const recordsQuery = useQuery<any>([reference_to, filter, fields], async () => {
-        const records = await objectContext.requestRecords(reference_to, filter, fields);
-        if (records && records.value && records.value.length > 0) {
-            let recordTags = records.value.map((recordItem: any)=>{return {value: recordItem._id, label: recordItem.name }});
-            setTags(recordTags);
+    if(value){
+        const filter = value ? [['_id', '=', value]] : [];
+        const fields = ['_id', 'name'];
+    
+        const object = store.objectStore.getObject(reference_to);
+        if (object.isLoading) return (<div>Loading object ...</div>);
+        const records: any = object.getRecords(filter, fields);
+        if (records.isLoading) return (<div>Loading records ...</div>);
+        const recordsData = records.data;
+        if (recordsData && recordsData.value && recordsData.value.length > 0) {
+            tags = recordsData.value.map((recordItem: any)=>{return {value: recordItem._id, label: recordItem.name }});
         }
-    },
-        {
-            enabled: !!value
-        }
-    );
-
-    if (!recordsQuery.isSuccess) return (<div>Loading record ...</div>)
-    return (tags.map((tagItem, index)=>{return (
+    }
+    return (<React.Fragment>{tags.map((tagItem, index)=>{return (
         <React.Fragment key={tagItem.value}>
             {index > 0 && ', '}
             <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>
         </React.Fragment>
-    )}))
-}
+    )})}</React.Fragment>)
+});
+
+const render = (text: any, props: any) => {
+    return (<LookupReadonly {...props}></LookupReadonly>)
+};
 
 const renderFormItem = (text: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
-    const { reference_to, multiple, filters: fieldFilters = [] } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, multiple, filters: fieldFilters = [] } = fieldSchema;
     const [params, setParams] = useState({open: false,openTag: null});
     if (multiple)
         fieldProps.mode = 'multiple';
@@ -108,7 +109,13 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         }
         const fields = ['_id', 'name'];
         // console.log("===filters===", filters);
-        const data = await objectContext.requestRecords(reference_to, filters, fields);
+        let order = _.map(reference_sort,(value,key)=>{return `${key}${value==1? '' :' desc' }`}).join(",")
+        const option:any = {
+            'sort': order,
+            'pageSize': reference_limit,
+
+        }
+        const data = await objectContext.requestRecords(reference_to, filters, fields, option);
 
         const options = data.value.map((item) => {
             return {

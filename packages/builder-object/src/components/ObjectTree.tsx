@@ -5,7 +5,6 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { registerObjectTreeComponent } from ".."
 import { useStore } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
@@ -56,13 +55,9 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   } = props
   if (checkable == undefined) checkable = true
 
-  const { isLoading, error, data: objectSchema, isFetching } = useQuery<any>(
-    objectApiName + "_schema",
-    async () => {
-      return await objectContext.requestObject(objectApiName as string)
-    }
-  )
-  if (objectSchema) registerObjectTreeComponent(_.keys(objectSchema.fields))
+  const store = useStore()
+  const object = store.objectStore.getObject(objectApiName);
+
   //上边都是schema相关的操作
   //下边才是去请求数据
 
@@ -78,16 +73,17 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       checkable,
     ], //这里以Props里的参数作为useQuery的第一参数，react-query会通过该参数是否发生变化来判断是否要重新进行请求
     async () => {
-      const objectFields = Object.values(objectSchema.fields)
-        .filter(({ hidden }) => !hidden)
-        .map(({ name }) => name)
+      // const objectFields = Object.values(object.schema.fields)
+      //   .filter(({ hidden }) => !hidden)
+      //   .map(({ name }) => name)
+      const objectFields = [nameField, parentField]
       return await objectContext.requestRecords(
         objectApiName as string,
         filters,
         objectFields
       )
     },
-    { enabled: !!objectSchema } //只有上边的schema加载好了，才启用下边的记录查询
+    { enabled: !object.isLoading } //只有上边的schema加载好了，才启用下边的记录查询
   )
 
   useEffect(() => {
@@ -127,6 +123,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
     }
   }, [records])
 
+  if (object.isLoading) return (<div>Loading object ...</div>)
   return (
     <Tree
       style={{ width: "100%" }}
