@@ -48,7 +48,7 @@ const insertRecord = async (objectApiName: string, data: any) => {
 }
 
 export const RecordCache = types.model({
-  id: types.identifier, 
+  id: types.identifier, //记录ID
   objectApiName: types.string,
   fields: types.array(types.string),
   recordJson: types.string,
@@ -79,10 +79,45 @@ export const RecordCache = types.model({
   }
 });
 
+export const RecordListCache = types.model({
+  id: types.identifier, //请求的filters, fields
+  objectApiName: types.string,
+  filters: types.string,
+  fields: types.array(types.string),
+  options: types.union(types.string, types.undefined),
+  recordsJson: types.string,
+  isLoading: true,
+})
+.views((self) => ({
+  get data() {
+    if (!self.recordsJson)
+      return null
+    return JSON.parse(self.recordsJson)
+  },
+}))
+.actions((self) => {
+  const loadRecords = flow(function* loadRecords() {
+    try {
+      const filters = JSON.parse(self.filters);
+      const options = self.options ? JSON.parse(self.options) : undefined;
+      const json = yield requestRecords(self.objectApiName, filters, self.fields, options)
+      self.recordsJson = JSON.stringify(json)
+      self.isLoading = false
+    } catch (err) {
+      console.error(`Failed to load record ${self.id} `, err)
+    }
+  })
+
+  return {
+    loadRecords,
+  }
+});
+
 export const ObjectModel = types.model({
   id: types.identifier, // object_api_name
   schemaJson: types.string,
   recordCaches: types.map(RecordCache),
+  recordListCaches: types.map(RecordListCache),
   isLoading: true
 })
 .views((self) => ({
@@ -95,6 +130,7 @@ export const ObjectModel = types.model({
 .actions((self) => {
 
   const loadObject = flow(function* loadObject() {
+    console.log("===loadObject===", self.id);
     try {
       const json = yield requestObject(self.id)
       self.schemaJson = JSON.stringify(json)
@@ -122,14 +158,28 @@ export const ObjectModel = types.model({
     return newRecord
   }
 
-  const getRecords = flow(function* getRecords(filters, fields, options) {
-    try {
-      const json = yield requestRecords(self.id, filters, fields, options)
-      return json
-    } catch (err) {
-      console.error(`Failed to load object ${self.id} `, err)
-    }
-  })
+  const getRecords = (filters: any, fields: any, options?) => {
+    const stringifyFilters = JSON.stringify(filters);
+    const stringifyFields = JSON.stringify(fields);
+    const stringifyOptions = options ? JSON.stringify(options) : "";
+    const recordListId = stringifyFilters;
+    const recordList = self.recordListCaches.get(recordListId)
+    if (recordList)
+      return recordList
+    
+    const newRecordList = RecordListCache.create({
+      id: recordListId,
+      objectApiName: self.id,
+      filters: stringifyFilters,
+      fields,
+      options: stringifyOptions,
+      recordsJson: '',
+      isLoading: true
+    })
+    self.recordListCaches.put(newRecordList);
+    newRecordList.loadRecords();
+    return newRecordList
+  }
 
   return {
     loadObject,
