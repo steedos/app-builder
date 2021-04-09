@@ -1,6 +1,7 @@
 import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
 import { SteedosClient } from '@steedos/client';
+import { convertFieldsSchema } from './utils';
 
 const {
   STEEDOS_ROOT_URL,
@@ -25,7 +26,7 @@ const requestObject = async (objectApiName: string) => {
   const object = await client.sobject(objectApiName).getConfig();
   
   // TODO： 转换 object, grid 类型字段，生成 subFields 属性
-  // convertFieldsSchema(object);
+  convertFieldsSchema(object);
   return object;
 }
 
