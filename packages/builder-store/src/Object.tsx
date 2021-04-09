@@ -105,7 +105,7 @@ export const ObjectModel = types.model({
     }
   })
 
-  const getRecord = (recordId, fields) => {
+  const getRecord = (recordId: string, fields: string[]) => {
     const record = self.recordCaches.get(recordId)
     if (record)
       return record
@@ -142,7 +142,7 @@ export const ObjectStore = types.model({
   objects: types.map(ObjectModel)
 })
 .actions((self) => {
-  const getObject = (objectApiName)=>{
+  const getObject = (objectApiName: string)=>{
     const object = self.objects.get(objectApiName) 
     if (object) {
       return object
@@ -156,7 +156,13 @@ export const ObjectStore = types.model({
     newObject.loadObject();
     return newObject
   }
+  const getRecord = (objectApiName:string , recordId: string, fields: string[])=>{
+    return getObject(objectApiName).getRecord(recordId, fields);
+  }
   return {
-    getObject
+    getObject,
+    getRecord,
+    updateRecord,
+    insertRecord
   }
 })
