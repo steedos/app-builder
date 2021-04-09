@@ -35,8 +35,7 @@ let initialState = RootModel.create({
   currentObjectApiName: null, 
   currentRecordId: null, 
   forms: {},
-  tables: {},
-  objects: {}
+  tables: {}
 });
 
 // const data = localStorage.getItem('rootState');

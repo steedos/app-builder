@@ -57,7 +57,6 @@ const renderFormItem = (text: any, props: any, formMode) => {
             const imgWindow = window.open(src);
             imgWindow.document.write(image.outerHTML);
         };
-        
         const propsOther = {
             // http://127.0.0.1:5080/s3/images
             action: STEEDOS_ROOT_URL + '/s3/images',
@@ -69,11 +68,9 @@ const renderFormItem = (text: any, props: any, formMode) => {
             accept: 'image/png, image/jpeg, image/jpg, image/gif',
             // maxCount: '1',
             data: {
-                record_id: "KFon27jRaw5N7Q8fJ",//TODO: 暂时获取不到 此值，所以写死了。 "cv9eHrkq9HdNZ4YYC"
-                object_name: props.fieldSchema.object,  // props.fieldSchema.object
+                // TODO: 暂时获取不能灵活获取 space 和 owner 值
                 space: STEEDOS_TENANT_ID,
-                owner: STEEDOS_USER_ID,
-                owner_name: ""
+                owner: STEEDOS_USER_ID
             },
             headers: {
                 'X-User-Id': STEEDOS_USER_ID,

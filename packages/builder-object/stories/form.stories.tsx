@@ -25,7 +25,11 @@ export const Form = () => {
       }
     },
     test: {
-      type: 'text'
+      type: 'text',
+    },
+    testImage: {
+      type: 'image',
+      label: '照片'
     },
     object: {
       type: 'object',
@@ -42,7 +46,7 @@ export const Form = () => {
       }
     }
   }
-  const recordId = 'RBdciox55Niu5BueS';
+  const recordId = 'KFon27jRaw5N7Q8fJ';
   const initialValues = {
     boolean__c: true,
     datetime__c: new Date(),
