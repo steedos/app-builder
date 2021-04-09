@@ -36,6 +36,10 @@ export const Form = () => {
       type: 'lookup',
       label: '合同',
       multiple: true,
+      reference_sort: {
+        name: 1
+      },
+      reference_limit: 15,
     },
     object: {
       type: 'object',
