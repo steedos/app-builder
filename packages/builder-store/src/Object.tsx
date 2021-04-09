@@ -122,7 +122,7 @@ export const ObjectModel = types.model({
     return newRecord
   }
 
-  const loadRecords = flow(function* loadRecords(filters, fields, options) {
+  const getRecords = flow(function* getRecords(filters, fields, options) {
     try {
       const json = yield requestRecords(self.id, filters, fields, options)
       return json
@@ -134,7 +134,7 @@ export const ObjectModel = types.model({
   return {
     loadObject,
     getRecord,
-    loadRecords
+    getRecords
   }
 })
 
@@ -156,13 +156,7 @@ export const ObjectStore = types.model({
     newObject.loadObject();
     return newObject
   }
-  const getRecord = (objectApiName:string , recordId: string, fields: string[])=>{
-    return getObject(objectApiName).getRecord(recordId, fields);
-  }
   return {
     getObject,
-    getRecord,
-    updateRecord,
-    insertRecord
   }
 })
