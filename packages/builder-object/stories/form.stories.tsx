@@ -42,7 +42,8 @@ export const Form = () => {
       label: '合同',
       multiple: true,
       reference_sort: {
-        name: 1
+        create_date: -1,
+        amount: -1,
       },
       reference_limit: 15,
     },
