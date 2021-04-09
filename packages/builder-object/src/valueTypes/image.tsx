@@ -1,9 +1,11 @@
-import React from 'react';
-import {Input} from 'antd';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
+import { Input } from 'antd';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Image } from "antd";
-const { STEEDOS_ROOT_URL,STEEDOS_USER_ID,STEEDOS_TENANT_ID ,STEEDOS_AUTH_TOKEN } = process.env
+const { STEEDOS_ROOT_URL, STEEDOS_USER_ID, STEEDOS_TENANT_ID, STEEDOS_AUTH_TOKEN } = process.env
 import FieldImage from '@ant-design/pro-field/es/components/Image';
 
 /*
@@ -26,7 +28,7 @@ import FieldImage from '@ant-design/pro-field/es/components/Image';
 */
 
 const renderFormItem = (text: any, props: any, formMode) => {
-    const { fieldProps={} } = props;
+    const { fieldProps = {} } = props;
     let { onChange } = fieldProps;
 
     if (formMode === 'read') {
@@ -38,50 +40,70 @@ const renderFormItem = (text: any, props: any, formMode) => {
         // return (<FieldImage {...proFieldProps} />)
     }
     if (formMode === 'edit') {
-        // console.log('进入eidt',props)
         props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
+        
+        const [fileList, setFileList] = useState([]);
+        const onPreview = async file => {
+            let src = file.url;
+            if (!src) {
+                src = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file.originFileObj);
+                    reader.onload = () => resolve(reader.result);
+                });
+            }
+            const image = new window.Image();
+            image.src = src;
+            const imgWindow = window.open(src);
+            imgWindow.document.write(image.outerHTML);
+        };
+        
         const propsOther = {
             // http://127.0.0.1:5080/s3/images
-            action: STEEDOS_ROOT_URL+'/s3/images',
+            action: STEEDOS_ROOT_URL + '/s3/images',
+            listType: 'picture-card',
+            fileList,
+            onPreview,
             type: 'file',
             method: 'post',
             accept: 'image/png, image/jpeg, image/jpg, image/gif',
-            maxCount: '1',
-            data:{
+            // maxCount: '1',
+            data: {
                 record_id: "KFon27jRaw5N7Q8fJ",//TODO: 暂时获取不到 此值，所以写死了。 "cv9eHrkq9HdNZ4YYC"
                 object_name: props.fieldSchema.object,  // props.fieldSchema.object
                 space: STEEDOS_TENANT_ID,
                 owner: STEEDOS_USER_ID,
                 owner_name: ""
             },
-            headers:{
-                'X-User-Id':STEEDOS_USER_ID,
-                'X-Auth-Token':STEEDOS_AUTH_TOKEN
+            headers: {
+                'X-User-Id': STEEDOS_USER_ID,
+                'X-Auth-Token': STEEDOS_AUTH_TOKEN
             },
-            onChange: (options: any)=>{
-                const { file } = options;
-                if(file.status==="done"){
+            onChange: (options: any) => {
+                const { file, fileList: newFileList } = options;
+                setFileList(newFileList);
+                if (file.status === "done") {
                     onChange(file.response._id)
                 }
             }
         }
+        
         return (
-            <Upload {...props} {...propsOther} >
-                <Button icon={<UploadOutlined />} title="上传图片">Upload png only</Button>
+            <Upload {...props} {...propsOther}>
+                {fileList.length < 1 && '+ Upload'}
             </Upload>
         );
-  }
-  
+    }
 }
 
 export const image = {
-    render: (text : any, props : any) => {
+    render: (text: any, props: any) => {
         // console.log('图片1进入readonly状态',props)
-        return renderFormItem(text,props,'read')
+        return renderFormItem(text, props, 'read')
     },
 
-    renderFormItem: (text: any, props : any) => {
-        //console.log('图片1进入edit状态',props)
-        return renderFormItem(text,props,'edit')
+    renderFormItem: (text: any, props: any) => {
+        // console.log('图片1进入edit状态',props)
+        return renderFormItem(text, props, 'edit')
     }
 }
