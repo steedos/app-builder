@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectField } from "@steedos/builder-object";
+import { ObjectForm, ObjectField, ObjectTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { SteedosProvider } from "@steedos/builder-steedos"
@@ -100,6 +100,32 @@ export const FormWithChildren = () => {
           {/* <span>111</span> */}
         </FieldSection> 
       </ObjectForm>
+    </SteedosProvider>
+  )
+}
+
+
+export const Table = () => {
+  return (
+    <SteedosProvider>
+      <ObjectTable objectApiName='accounts' columnFields={
+        [
+          {
+            fieldName: 'name'
+          },
+          // {
+          //   fieldName: 'parent_id'
+          // },
+          // {
+          //   fieldName: 'type'
+          // },
+          // {
+          //   fieldName: 'rating'
+          // }
+        ]
+      }>
+        
+      </ObjectTable>
     </SteedosProvider>
   )
 }
