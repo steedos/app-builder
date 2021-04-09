@@ -39,6 +39,17 @@ export function convertFieldsSchema(objectConfig: any) {
         });
         fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
         break;
+      case "lookup":
+        if(field.reference_to === "users"){
+          fieldsSchema[fieldName] = Object.assign({}, field, {
+            reference_to: "space_users",
+            reference_to_field: "user"
+          });
+        }
+        else{
+          fieldsSchema[fieldName] = field;
+        }
+        break;
       default:
         fieldsSchema[fieldName] = field;
         break;

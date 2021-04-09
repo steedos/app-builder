@@ -20,14 +20,14 @@ const LookupReadonly = observer((props:any) => {
 
     const store = useStore();
     const { fieldSchema = {}, valueType, fieldProps, ...rest } = props;
-    const { reference_to, multiple } = fieldSchema;
+    let { reference_to, multiple, reference_to_field = "_id" } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
     const hrefPrefix = `/app/-/${reference_to}/view/`
 
     if(value){
-        const filter = value ? [['_id', '=', value]] : [];
-        const fields = ['_id', 'name'];
+        const filter = value ? [[reference_to_field, '=', value]] : [];
+        const fields = [reference_to_field, 'name'];
     
         const object = store.objectStore.getObject(reference_to);
         if (object.isLoading) return (<div>Loading object ...</div>);
@@ -35,7 +35,7 @@ const LookupReadonly = observer((props:any) => {
         if (records.isLoading) return (<div>Loading records ...</div>);
         const recordsData = records.data;
         if (recordsData && recordsData.value && recordsData.value.length > 0) {
-            tags = recordsData.value.map((recordItem: any)=>{return {value: recordItem._id, label: recordItem.name }});
+            tags = recordsData.value.map((recordItem: any)=>{return {value: recordItem[reference_to_field], label: recordItem.name }});
         }
     }
     return (<React.Fragment>{tags.map((tagItem, index)=>{return (
@@ -53,7 +53,7 @@ const render = (text: any, props: any) => {
 const renderFormItem = (text: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
-    const { reference_to, reference_sort,reference_limit, multiple, filters: fieldFilters = [] } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [] } = fieldSchema;
     const [params, setParams] = useState({open: false,openTag: null});
     if (multiple)
         fieldProps.mode = 'multiple';
@@ -75,7 +75,7 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         // console.log("===request===reference_to==", reference_to);
         let filters: any = [], textFilters: any = [], keyFilters: any = [];
         if (props.text)
-            textFilters = ['_id', '=', props.text]
+            textFilters = [reference_to_field, '=', props.text]
         if (params.keyWords)
             keyFilters = ['name', 'contains', params.keyWords]
         if(fieldFilters.length){
@@ -107,7 +107,7 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         else if(keyFilters.length){
             filters = keyFilters;
         }
-        const fields = ['_id', 'name'];
+        const fields = [reference_to_field, 'name'];
         // console.log("===filters===", filters);
         let option: any = {};
         if(reference_sort){
@@ -121,7 +121,7 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         const options = data.value.map((item) => {
             return {
                 label: item.name,
-                value: item._id
+                value: item[reference_to_field]
             }
         })
 
