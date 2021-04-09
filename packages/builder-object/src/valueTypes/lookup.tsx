@@ -109,11 +109,12 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         }
         const fields = ['_id', 'name'];
         // console.log("===filters===", filters);
-        let order = _.map(reference_sort,(value,key)=>{return `${key}${value==1? '' :' desc' }`}).join(",")
-        const option:any = {
-            'sort': order,
-            'pageSize': reference_limit,
-
+        let option: any = {};
+        if(reference_sort){
+            option.sort = _.map(reference_sort,(value,key)=>{return `${key}${value==1? '' :' desc' }`}).join(",")
+        }
+        if(reference_limit){
+            option.pageSize = reference_limit
         }
         const data = await objectContext.requestRecords(reference_to, filters, fields, option);
 
