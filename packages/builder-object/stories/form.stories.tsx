@@ -31,6 +31,12 @@ export const Form = () => {
       type: 'image',
       label: '照片'
     },
+    contracts: {
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: '合同',
+      multiple: true,
+    },
     object: {
       type: 'object',
       label: 'object',
