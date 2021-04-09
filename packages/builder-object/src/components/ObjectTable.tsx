@@ -44,89 +44,6 @@ export type ObjectTableProps<T extends ObjectTableColumnProps> =
     })
   | any
 
-// export const getProColumnProps = (
-//   proColumnProps: any,
-//   fieldType: string,
-//   readonly: boolean,
-//   field: any
-// ) => {
-//   switch (fieldType) {
-//     case "text":
-//       proColumnProps.valueType = "text"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "password":
-//       proColumnProps.valueType = "password"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "email":
-//       // proColumnProps.valueType = "email"
-//       proColumnProps.valueType = "text"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "percent":
-//       proColumnProps.valueType = "percent"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "avatar":
-//       proColumnProps.valueType = "avatar"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "select":
-//       proColumnProps.valueType = "select"
-//       proColumnProps.fieldProps.options = field.options
-//       proColumnProps.readonly = readonly
-//       break
-//     case "textarea":
-//       proColumnProps.valueType = "textarea"
-//       proColumnProps.hideInSearch = true
-//       proColumnProps.copyable = true
-//       proColumnProps.ellipsis = true
-//       proColumnProps.readonly = readonly
-//       break
-//     case "date":
-//       proColumnProps.valueType = "date"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "datetime":
-//       proColumnProps.valueType = "dateTime"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "boolean":
-//       proColumnProps.valueType = "switch"
-//       proColumnProps.hideInSearch = true
-//       proColumnProps.readonly = readonly
-//       break
-//     case "number":
-//       proColumnProps.valueType = "digit"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "currency":
-//       proColumnProps.valueType = "money"
-//       proColumnProps.readonly = readonly
-//       break
-//     case "autonumber":
-//       proColumnProps.valueType = "index"
-//       proColumnProps.hideInSearch = true
-//       proColumnProps.readonly = readonly
-//       break
-//     case "url":
-//       proColumnProps.valueType = "href"
-//       break
-//     case "lookup":
-//       proColumnProps.render = () => (
-//         <div>{`未实现字段类型${fieldType}的组件`}</div>
-//       )
-//       break
-//     case "master_detail":
-//       proColumnProps.render = () => (
-//         <div>{`未实现字段类型${fieldType}的组件`}</div>
-//       )
-//       break
-//   }
-//   return proColumnProps
-// }
-
 export const getObjectTableProColumn = (field: any) => {
   // 把yml中的某个字段field转成ant的ProTable中的columns属性项
   if (!field) {
@@ -150,28 +67,6 @@ export const getObjectTableProColumn = (field: any) => {
 
   proColumnProps.valueType = fieldType
   
-  // if (fieldType === "formula") {
-  //   proColumnProps = getProColumnProps(
-  //     proColumnProps,
-  //     field.data_type,
-  //     true,
-  //     field
-  //   )
-  // } else if (fieldType === "summary") {
-  //   proColumnProps = getProColumnProps(
-  //     proColumnProps,
-  //     field.summary_type,
-  //     true,
-  //     field
-  //   )
-  // } else {
-  //   proColumnProps = getProColumnProps(
-  //     proColumnProps,
-  //     fieldType,
-  //     field.readonly || false,
-  //     field
-  //   )
-  // }
   return proColumnProps
 }
 
@@ -195,15 +90,13 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   const object = store.objectStore.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
 
-  let proColumns = []
-  const objectFields = object.schema.fields
-
-  if (objectFields) {
+  const proColumns = []
+  if (object.schema && object.schema.fields) {
     _.forEach(
       columnFields,
       ({ fieldName, ...columnItem }: ObjectTableColumnProps) => {
         if (columnItem.hideInTable) return
-        const proColumn = getObjectTableProColumn(objectFields[fieldName])
+        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName])
 
         if (proColumn) {
           proColumns.push({ ...proColumn, ...columnItem })
