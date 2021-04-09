@@ -46,7 +46,7 @@ export const Form = () => {
       }
     }
   }
-  const recordId = 'KFon27jRaw5N7Q8fJ';
+  const recordId = process.env.STEEDOS_CURRENT_RECORD_ID; //'KFon27jRaw5N7Q8fJ';
   const initialValues = {
     boolean__c: true,
     datetime__c: new Date(),
@@ -85,7 +85,7 @@ export const Form = () => {
 export const FormWithChildren = () => {
   const objectApiName = 'accounts';
   const fields = []
-  const recordId = 'RBdciox55Niu5BueS';
+  const recordId = process.env.STEEDOS_CURRENT_RECORD_ID;
   const objectFormProps = {
     objectApiName,
     fields,
