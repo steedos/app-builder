@@ -9,7 +9,6 @@ export const RootModel = types.model({
   currentRecordId: types.union(types.string, types.undefined, types.null), 
   forms: types.optional(types.map(FormModel), {}),
   tables: types.optional(types.map(TableModel), {}),
-  objects: types.optional(types.map(ObjectModel), {}),
   objectStore: types.optional(ObjectStore, {
       objects: {}
   }),
