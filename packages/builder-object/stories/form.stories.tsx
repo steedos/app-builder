@@ -29,8 +29,7 @@ export const Form = () => {
     },
     testImage: {
       type: 'image',
-      label: '照片',
-      max: 1
+      label: '照片'
     },
     object: {
       type: 'object',
