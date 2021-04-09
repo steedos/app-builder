@@ -52,7 +52,7 @@ const render = (text: any, props: any) => {
 const renderFormItem = (text: any, props: any, formMode: any) => {
     const objectContext = useContext(ObjectContext);
     const { fieldSchema = {}, mode, valueType, fieldProps, ...rest } = props;
-    const { reference_to, multiple, filters: fieldFilters = [] } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, multiple, filters: fieldFilters = [] } = fieldSchema;
     const [params, setParams] = useState({open: false,openTag: null});
     if (multiple)
         fieldProps.mode = 'multiple';
@@ -108,7 +108,13 @@ const renderFormItem = (text: any, props: any, formMode: any) => {
         }
         const fields = ['_id', 'name'];
         // console.log("===filters===", filters);
-        const data = await objectContext.requestRecords(reference_to, filters, fields);
+        let order = _.map(reference_sort,(value,key)=>{return `${key}${value==1? '' :' desc' }`}).join(",")
+        const option:any = {
+            'sort': order,
+            'pageSize': reference_limit,
+
+        }
+        const data = await objectContext.requestRecords(reference_to, filters, fields, option);
 
         const options = data.value.map((item) => {
             return {
