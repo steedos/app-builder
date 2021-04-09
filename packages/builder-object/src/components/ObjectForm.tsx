@@ -1,5 +1,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
+import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
 import { ObjectContext } from "../";
@@ -150,3 +151,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     </Form>
   )
 });
+
+
+
+Form['propTypes'] = {
+  objectApiName: PropTypes.string,
+};
