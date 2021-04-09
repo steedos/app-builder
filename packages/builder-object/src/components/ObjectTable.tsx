@@ -193,13 +193,10 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   const selfTableRef = useRef(null)
   const object = store.objectStore.getObject(objectApiName);
-  if (object.isLoading) return null; // (<div>Loading object ...</div>)
-
-  const objectSchema: any = object.schema;
+  if (object.isLoading) return (<div>Loading object ...</div>)
 
   let proColumns = []
-
-  const objectFields = objectSchema.fields
+  const objectFields = object.schema.fields
 
   if (objectFields) {
     _.forEach(

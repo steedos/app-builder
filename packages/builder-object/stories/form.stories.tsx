@@ -117,9 +117,15 @@ export const Table = () => {
           {
             fieldName: 'name'
           },
-          // {
-          //   fieldName: 'parent_id'
-          // },
+          {
+            fieldName: 'parent_id'
+          },
+          {
+            fieldName: 'created'
+          },
+          {
+            fieldName: 'created_by'
+          },
           // {
           //   fieldName: 'type'
           // },
