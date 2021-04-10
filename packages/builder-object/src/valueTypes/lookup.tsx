@@ -31,11 +31,11 @@ const LookupReadonly = observer((props:any) => {
     
         const object = store.objectStore.getObject(reference_to);
         if (object.isLoading) return (<div>Loading object ...</div>);
-        const records: any = object.getRecords(filter, fields);
-        if (records.isLoading) return (<div>Loading records ...</div>);
-        const recordsData = records.data;
-        if (recordsData && recordsData.value && recordsData.value.length > 0) {
-            tags = recordsData.value.map((recordItem: any)=>{return {value: recordItem[reference_to_field], label: recordItem.name }});
+        const recordList: any = object.getRecordList(filter, fields);
+        if (recordList.isLoading) return (<div>Loading recordList ...</div>);
+        const recordListData = recordList.data;
+        if (recordListData && recordListData.value && recordListData.value.length > 0) {
+            tags = recordListData.value.map((recordItem: any)=>{return {value: recordItem[reference_to_field], label: recordItem.name }});
         }
     }
     return (<React.Fragment>{tags.map((tagItem, index)=>{return (

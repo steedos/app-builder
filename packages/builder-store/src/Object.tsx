@@ -158,7 +158,7 @@ export const ObjectModel = types.model({
     return newRecord
   }
 
-  const getRecords = (filters: any, fields: any, options?) => {
+  const getRecordList = (filters: any, fields: any, options?) => {
     const stringifyFilters = JSON.stringify(filters);
     const stringifyFields = JSON.stringify(fields);
     const stringifyOptions = options ? JSON.stringify(options) : "";
@@ -184,7 +184,7 @@ export const ObjectModel = types.model({
   return {
     loadObject,
     getRecord,
-    getRecords
+    getRecordList
   }
 })
 
