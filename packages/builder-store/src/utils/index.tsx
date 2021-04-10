@@ -20,9 +20,12 @@ export function convertFieldsSchema(objectConfig: any) {
         sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.`)){
-            let arr = key.match(/.(\w+)/g);
-            let lastEle = arr[arr.length - 1].replace(".", "")
-            sub_fields[lastEle]=field;                           
+            // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
+            let matches = key.match(/.(\w+)$/g);
+            let lastFieldKey = matches && matches[0].replace(".", "");
+            if(lastFieldKey){
+              sub_fields[lastFieldKey] = field;                           
+            }
           }
         });
         fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
@@ -32,9 +35,12 @@ export function convertFieldsSchema(objectConfig: any) {
         sub_fields = {};
         _.each(objectConfig.fields, (field, key) => {
           if(key.startsWith(`${fieldName}.$.`)){
-            let arr = key.match(/.(\w+)/g);
-            let lastEle = arr[arr.length - 1].replace(".", "")
-            sub_fields[lastEle]=field;
+            // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
+            let matches = key.match(/.(\w+)$/g);
+            let lastFieldKey = matches && matches[0].replace(".", "");
+            if(lastFieldKey){
+              sub_fields[lastFieldKey] = field;                           
+            }
           }
         });
         fieldsSchema[fieldName] = Object.assign({}, field, {sub_fields});
