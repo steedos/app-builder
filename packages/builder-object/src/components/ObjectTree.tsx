@@ -5,7 +5,7 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { useStore, Objects } from "@steedos/builder-store"
+import { useStore, Objects, API } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -77,7 +77,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
       //   .filter(({ hidden }) => !hidden)
       //   .map(({ name }) => name)
       const objectFields = [nameField, parentField]
-      return await objectContext.requestRecords(
+      return await API.requestRecords(
         objectApiName as string,
         filters,
         objectFields

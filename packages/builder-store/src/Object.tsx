@@ -8,23 +8,15 @@ export const RecordCache = types.model({
   id: types.identifier, //记录ID
   objectApiName: types.string,
   fields: types.array(types.string),
-  recordJson: types.string,
+  data: types.frozen(),
   isLoading: true,
 })
-.views((self) => ({
-  get data() {
-    if (!self.recordJson)
-      return null
-    return JSON.parse(self.recordJson)
-  },
-}))
 .actions((self) => {
 
   const loadRecord = flow(function* loadRecord() {
     try {
       const filters = ['_id', '=', self.id]
-      const json = yield API.requestRecords(self.objectApiName, filters, self.fields)
-      self.recordJson = JSON.stringify(json)
+      self.data = yield API.requestRecords(self.objectApiName, filters, self.fields)
       self.isLoading = false
     } catch (err) {
       console.error(`Failed to load record ${self.id} `, err)
@@ -72,25 +64,16 @@ export const RecordListCache = types.model({
 
 export const ObjectModel = types.model({
   id: types.identifier, // object_api_name
-  schemaJson: types.string,
+  schema: types.frozen(),
   recordCaches: types.map(RecordCache),
   recordListCaches: types.map(RecordListCache),
   isLoading: true
 })
-.views((self) => ({
-  get schema() {
-    if (!self.schemaJson)
-      return null
-    return JSON.parse(self.schemaJson)
-  },
-}))
 .actions((self) => {
 
   const loadObject = flow(function* loadObject() {
-    console.log("===loadObject===", self.id);
     try {
-      const json = yield API.requestObject(self.id)
-      self.schemaJson = JSON.stringify(json)
+      self.schema = yield API.requestObject(self.id)
       self.isLoading = false
       return self
     } catch (err) {
@@ -107,7 +90,7 @@ export const ObjectModel = types.model({
       id: recordId,
       objectApiName: self.id,
       fields,
-      recordJson: '',
+      data: {},
       isLoading: true
     })
     self.recordCaches.put(newRecord);
@@ -150,13 +133,15 @@ export const Objects = types.model({
 })
 .actions((self) => {
   const getObject = (objectApiName: string)=>{
+    if (!objectApiName)
+      return null;
     const object = self.objects.get(objectApiName) 
     if (object) {
       return object
     }
     const newObject = ObjectModel.create({
       id: objectApiName,
-      schemaJson: '',
+      schema: {},
       isLoading: true
     })
     self.objects.put(newObject);

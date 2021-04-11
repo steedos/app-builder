@@ -7,7 +7,7 @@
  */
 // import { BuilderStoreContext } from '@builder.io/react';
 import { ObjectContext } from "../"
-import { useStore } from "@steedos/builder-store"
+import { useStore, API } from "@steedos/builder-store"
 import { List, Button, Checkbox } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
@@ -51,7 +51,7 @@ export const ObjectList = observer((props: ObjectListProps) => {
   const { isLoading, error, data: objectSchema, isFetching } = useQuery<any>(
     objectApiName + "_schema",
     async () => {
-      return await objectContext.requestObject(objectApiName as string)
+      return await API.requestObject(objectApiName as string)
     }
   )
   if (objectSchema) registerObjectListComponent(_.keys(objectSchema.fields))
@@ -68,7 +68,7 @@ export const ObjectList = observer((props: ObjectListProps) => {
       const objectFields = Object.values(objectSchema.fields)
         .filter(({ hidden }) => !hidden)
         .map(({ name }) => name)
-      return await objectContext.requestRecords(
+      return await API.requestRecords(
         objectApiName as string,
         filters,
         objectFields

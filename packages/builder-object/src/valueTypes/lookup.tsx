@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag } from 'antd';
 import _ from 'lodash';
-import { useStore, Objects } from '@steedos/builder-store';
+import { useStore, Objects, API } from '@steedos/builder-store';
 import { ObjectContext } from "../providers/ObjectContext";
 import { observer } from "mobx-react-lite";
 import { Form } from '@steedos/builder-form';
@@ -108,7 +108,7 @@ const Lookup = observer((props:any) => {
             if (reference_limit) {
                 option.pageSize = reference_limit
             }
-            const data = await objectContext.requestRecords(reference_to, filters, fields, option);
+            const data = await API.requestRecords(reference_to, filters, fields, option);
 
             const options = data.value.map((item) => {
                 return {

@@ -11,7 +11,7 @@ import ProTable, {
 import { SortOrder } from "antd/lib/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
-import { TableModel, useStore, Objects } from "@steedos/builder-store"
+import { TableModel, useStore, Objects, API } from "@steedos/builder-store"
 import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -86,8 +86,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     ...rest
   } = props
 
-  const selfTableRef = useRef(null)
   const object = Objects.getObject(objectApiName);
+  const selfTableRef = useRef(null)
   if (object.isLoading) return (<div>Loading object ...</div>)
 
   const proColumns = []
@@ -114,7 +114,6 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     sort: Record<string, SortOrder>,
     filter: Record<string, React.ReactText[]>
   ): Promise<any> => {
-    console.log(params)
 
     // 第一个参数 params 查询表单和 params 参数的结合
     // 第一个参数中一定会有 pageSize 和  current ，这两个参数是 antd 的规范
@@ -144,7 +143,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     const fields = columnFields.map((n) => {
       return n.fieldName
     })
-    const result = await objectContext.requestRecords(
+    const result = await API.requestRecords(
       objectApiName,
       [filters ? "(" + filters + ")" : "", ...tableFilters]
         .filter((a) => a)
