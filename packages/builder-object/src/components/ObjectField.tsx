@@ -4,10 +4,9 @@ import React, { useContext } from "react";
 import { Field } from '@steedos/builder-form'
 import _ from 'lodash';
 import { useQuery } from "react-query";
-import { ObjectContext } from "../providers/ObjectContext";
 import { observer } from "mobx-react-lite"
 import { FormContext } from "antd/es/form/context";
-import { FormModel, useStore } from '@steedos/builder-store';
+import { FormModel, Forms } from '@steedos/builder-store';
 
 export type ObjectFieldProps = {
   objectApiName?: string,
@@ -16,8 +15,6 @@ export type ObjectFieldProps = {
 }
 
 export const ObjectField = observer((props: any) => {
-  const store = useStore();
-  const objectContext = useContext(ObjectContext);
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
   const { fieldName, fieldSchema } = props
@@ -28,7 +25,7 @@ export const ObjectField = observer((props: any) => {
   */
   
   // 从对象定义中生成字段信息。
-  let mode = store.forms[formId].mode;
+  let mode = Forms.loadById(formId).mode;
   let formFieldProps: any = {
     name: fieldName,
     mode,

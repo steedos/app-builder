@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "../";
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
@@ -11,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { FormModel, useStore, Objects } from '@steedos/builder-store';
+import { FormModel, Objects, Forms, API } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -46,16 +45,14 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
  
-  const store = useStore();
-  const objectContext = useContext(ObjectContext);
+  const form = Forms.loadById(formId)
+  form.setMode(mode);
+
   // const [fieldSchemas, setFieldSchemas] = useState([]);
   // const [fieldNames, setFieldNames] = useState([]);
   const fieldNames = [];
   const fieldSchemas = [];
 
-  if (!store.forms[formId])
-    store.forms[formId] = FormModel.create({id: formId, mode});
-  
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
 
@@ -90,7 +87,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const onFinish = async(values:any) =>{
     let result; 
     if(mode === 'add'){     
-      result = await objectContext.insertRecord(objectApiName, values);
+      result = await API.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");
       }
@@ -99,7 +96,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         return;
       }
         
-      result = await objectContext.updateRecord(objectApiName, recordId, values);
+      result = await API.updateRecord(objectApiName, recordId, values);
       if(result){
         alert("表单修改成功！");
       }  
