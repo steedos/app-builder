@@ -93,7 +93,7 @@ const Lookup = observer((props:any) => {
                     filters = `(${odataTextFilters}) or (${keyFilters})`;
                 }
             }
-            else if (textFilters.length) {
+            else if (textFilters.length && !open) {
                 filters = textFilters;
             }
             else if (keyFilters.length) {
