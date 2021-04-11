@@ -5,7 +5,7 @@ import { getSnapshot } from "mobx-state-tree";
 import { SteedosClient } from '@steedos/client';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
-import { Settings, requestObject, requestRecords, updateRecord, insertRecord } from "@steedos/builder-store";
+import { Settings, API } from "@steedos/builder-store";
 import { convertFieldsSchema } from '../utils';
 
 /*
@@ -33,10 +33,10 @@ export function SteedosProvider(props: any) {
 
   const objectProviderProps = {
     locale,
-    requestObject,
-    requestRecords,
-    updateRecord,
-    insertRecord
+    requestObject: API.requestObject,
+    requestRecords: API.requestRecords,
+    updateRecord: API.updateRecord,
+    insertRecord: API.insertRecord
   }
 
   return (

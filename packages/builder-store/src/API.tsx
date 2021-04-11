@@ -6,7 +6,7 @@ import { SteedosClient } from '@steedos/client';
 import { convertFieldsSchema } from './utils';
 import { Settings } from './Settings';
 
-export const client = new SteedosClient();
+const client = new SteedosClient();
 
 client.setUrl(Settings.rootUrl)
 client.setUserId(Settings.userId)
@@ -20,7 +20,7 @@ onSnapshot(Settings, () => {
   client.setSpaceId(Settings.tenantId);
 })
 
-export const requestObject = async (objectApiName: string) => {
+const requestObject = async (objectApiName: string) => {
   //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
   if (!objectApiName) {
     return;
@@ -32,19 +32,27 @@ export const requestObject = async (objectApiName: string) => {
   return object;
 }
 
-export const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
+const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
   const records = await client.sobject(objectApiName).find(filters, fields);
   return records;
 
 }
 
-export const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
+const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
   const result = await client.sobject(objectApiName).update(objectRecordId, data);
 
   return result;
 }
 
-export const insertRecord = async (objectApiName: string, data: any) => {
+const insertRecord = async (objectApiName: string, data: any) => {
   const result = await client.sobject(objectApiName).insert(data);
   return result;
+}
+
+export const API = {
+  client,
+  requestObject,
+  requestRecords,
+  updateRecord,
+  insertRecord,
 }

@@ -1,7 +1,7 @@
 import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
 import { convertFieldsSchema } from './utils';
-import { requestObject, requestRecords } from './API';
+import { API } from './API';
 
 
 export const RecordCache = types.model({
@@ -23,7 +23,7 @@ export const RecordCache = types.model({
   const loadRecord = flow(function* loadRecord() {
     try {
       const filters = ['_id', '=', self.id]
-      const json = yield requestRecords(self.objectApiName, filters, self.fields)
+      const json = yield API.requestRecords(self.objectApiName, filters, self.fields)
       self.recordJson = JSON.stringify(json)
       self.isLoading = false
     } catch (err) {
@@ -57,7 +57,7 @@ export const RecordListCache = types.model({
     try {
       const filters = JSON.parse(self.filters);
       const options = self.options ? JSON.parse(self.options) : undefined;
-      const json = yield requestRecords(self.objectApiName, filters, self.fields, options)
+      const json = yield API.requestRecords(self.objectApiName, filters, self.fields, options)
       self.recordsJson = JSON.stringify(json)
       self.isLoading = false
     } catch (err) {
@@ -89,7 +89,7 @@ export const ObjectModel = types.model({
   const loadObject = flow(function* loadObject() {
     console.log("===loadObject===", self.id);
     try {
-      const json = yield requestObject(self.id)
+      const json = yield API.requestObject(self.id)
       self.schemaJson = JSON.stringify(json)
       self.isLoading = false
       return self
