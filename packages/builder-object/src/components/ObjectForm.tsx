@@ -25,7 +25,7 @@ export type FormProps<T = Record<string, any>>  = {
 */
 export type ObjectFormProps = {
   objectApiName: string,
-  fields?: any,
+  objectSchema?: any,
   initialValues?: any,
   recordId?: string
 } & FormProps
@@ -34,7 +34,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
     objectApiName,
     initialValues = {},
-    fields = {}, // 和对象定义中的fields格式相同，merge之后 render。
+    objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     recordId = '',
     name: formId = 'default',
     mode = 'edit', 
@@ -49,20 +49,20 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // const [fieldSchemas, setFieldSchemas] = useState([]);
   // const [fieldNames, setFieldNames] = useState([]);
   const fieldNames = [];
-  const fieldSchemas = [];
+  const fieldSchemaArray = [];
 
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
 
   if (object.schema) {
-    fieldSchemas.length = 0
-    const mergedFields = _.defaultsDeep({}, object.schema.fields, fields);
-    _.mapKeys(mergedFields, (field, fieldName) => {
+    const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
+    fieldSchemaArray.length = 0
+    _.mapKeys(mergedSchema.fields, (field, fieldName) => {
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (!field.hidden && !isObjectField)
-        fieldSchemas.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: 'General'}))
     })
-    _.forEach(fieldSchemas, (field:any)=>{
+    _.forEach(fieldSchemaArray, (field:any)=>{
       fieldNames.push(field.name)
     })
   
@@ -99,7 +99,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const getSection = (sectionName) => {
-    const sectionFields = _.filter(fieldSchemas, { 'group': sectionName });
+    const sectionFields = _.filter(fieldSchemaArray, { 'group': sectionName });
     return (
       <FieldSection title={sectionName} key={sectionName}>
         {_.map(sectionFields, (field:any)=>{
@@ -119,7 +119,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const getSections = () => {
-     const sections = _.groupBy(fieldSchemas, 'group');
+     const sections = _.groupBy(fieldSchemaArray, 'group');
      const dom = [];
      _.forEach(sections, (value, key) => {
       dom.push(getSection(key))

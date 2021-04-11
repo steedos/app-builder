@@ -82,14 +82,14 @@ export const Form = () => {
   };
   const objectFormProps = {
     objectApiName,
-    fields,
+    objectSchema: {
+      fields,
+    },
     recordId,
     initialValues,
-    mode: 'read',
-    layout: 'horizontal' 
   }
   return (
-      <ObjectForm {...objectFormProps}>
+      <ObjectForm mode='read' layout='horizontal' {...objectFormProps}>
       </ObjectForm>
   )
 }
