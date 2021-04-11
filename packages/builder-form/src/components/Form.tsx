@@ -8,14 +8,13 @@ import { BuilderStoreContext } from '@builder.io/react';
 import { observer } from "mobx-react-lite"
 import _ from 'lodash'
 
-import { FormModel, useStore } from '@steedos/builder-store';
+import { FormModel, Forms } from '@steedos/builder-store';
 
 // 在 ProForm的基础上扩展属性
 // colSpan: 每一列默认占几栅格，总共12栅格
 // mode: edit, read
 
 export const Form = observer((props:any) => {
-  const store = useStore();
   const {
     name: formId = 'default',
     mode= 'read', 
@@ -24,9 +23,8 @@ export const Form = observer((props:any) => {
     ...rest
   } = props
 
-  if (!store.forms[formId])
-    store.forms[formId] = FormModel.create({id: formId, mode});
- 
+  const form = Forms.loadById(formId);
+
   const formItemLayout =
     layout === 'horizontal'
       ? {
@@ -36,7 +34,7 @@ export const Form = observer((props:any) => {
         }
       : null;
 
-  const submitter = store.forms[formId].mode ==='read'? false : {
+  const submitter = form.mode ==='read'? false : {
     // 配置按钮文本
     searchConfig: {
       resetText: '取消',
@@ -44,7 +42,7 @@ export const Form = observer((props:any) => {
     },
     resetButtonProps: {
       onClick: () => {
-        store.forms[formId].setMode('read')
+        form.setMode('read')
       },
     },
   }
@@ -61,7 +59,7 @@ export const Form = observer((props:any) => {
   const formProps = {
     name: formId,
     className: 'builder-form',
-    mode: store.forms[formId].mode, 
+    mode: form.mode, 
     layout,
     ...formItemLayout,
     ...rest,

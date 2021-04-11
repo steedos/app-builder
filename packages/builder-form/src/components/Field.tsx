@@ -12,7 +12,7 @@ import createField from '@ant-design/pro-form/es/BaseForm/createField'
 
 import { BuilderStoreContext } from "@builder.io/react";
 import { ProFormItemProps } from "@ant-design/pro-form/es/interface";
-import { useStore } from '@steedos/builder-store';
+import { Forms } from '@steedos/builder-store';
 
 import { observer } from "mobx-react-lite"
 import FieldContext from "@ant-design/pro-form/es/FieldContext";
@@ -20,7 +20,6 @@ import FieldContext from "@ant-design/pro-form/es/FieldContext";
 import './Field.less'
 
 export const Field = observer((props: any) => {
-  const store = useStore();
   const context = React.useContext(FormContext);
   const formId = context.name ? context.name : 'default';
   const {
@@ -46,7 +45,7 @@ export const Field = observer((props: any) => {
     // options,
     ...rest
   } = props
-  const mode = store.forms[formId].mode
+  const mode = Forms.loadById(formId).mode
   const formItemPropsMerged = {
     ...attributes,
     ...formItemProps,
@@ -68,7 +67,6 @@ export const Field = observer((props: any) => {
   }
 
   const ProFieldWrap = observer((props: any) => {
-    const store = useStore();
 
     const { readonly, mode, ...rest } = props
 
@@ -84,7 +82,7 @@ export const Field = observer((props: any) => {
     }
 
     const onInlineEdit = () => {
-      store.forms[formId].setMode('edit')
+      Forms.loadById(formId).setMode('edit')
     };
     const inlineIconOpacity = 0.4
     const inlineIcon = readonly ?
