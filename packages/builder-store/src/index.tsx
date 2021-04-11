@@ -13,8 +13,8 @@ const stores = {
   Settings,
 };
 
-if ((window as any).steedos && process.env.NODE_ENV !== 'production') {
-  (window as any).steedos.stores = stores;
+if (process.env.NODE_ENV !== 'production') {
+  (window as any).stores = stores;
 }
 
 export default stores;
