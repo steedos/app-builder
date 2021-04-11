@@ -1,51 +1,8 @@
 import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
-import { SteedosClient } from '@steedos/client';
 import { convertFieldsSchema } from './utils';
+import { requestObject, requestRecords } from './API';
 
-const {
-  STEEDOS_ROOT_URL,
-  STEEDOS_TENANT_ID,
-  STEEDOS_USER_ID,
-  STEEDOS_AUTH_TOKEN,
-  STEEDOS_LOCALE = 'zh_CN'
-} = process.env
-
-const client = new SteedosClient();
-
-client.setUrl(STEEDOS_ROOT_URL)
-client.setUserId(STEEDOS_USER_ID)
-client.setToken(STEEDOS_AUTH_TOKEN);
-client.setSpaceId(STEEDOS_TENANT_ID);
-
-const requestObject = async (objectApiName: string) => {
-  //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
-  if (!objectApiName) {
-    return;
-  }
-  const object = await client.sobject(objectApiName).getConfig();
-  
-  // TODO： 转换 object, grid 类型字段，生成 subFields 属性
-  convertFieldsSchema(object);
-  return object;
-}
-
-const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
-  const records = await client.sobject(objectApiName).find(filters, fields);
-  return records;
-
-}
-
-const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {
-  const result = await client.sobject(objectApiName).update(objectRecordId, data);
-
-  return result;
-}
-
-const insertRecord = async (objectApiName: string, data: any) => {
-  const result = await client.sobject(objectApiName).insert(data);
-  return result;
-}
 
 export const RecordCache = types.model({
   id: types.identifier, //记录ID
@@ -188,8 +145,8 @@ export const ObjectModel = types.model({
   }
 })
 
-export const ObjectStore = types.model({
-  objects: types.map(ObjectModel)
+export const Objects = types.model({
+  objects: types.optional(types.map(ObjectModel), {})
 })
 .actions((self) => {
   const getObject = (objectApiName: string)=>{
@@ -209,4 +166,4 @@ export const ObjectStore = types.model({
   return {
     getObject,
   }
-})
+}).create()

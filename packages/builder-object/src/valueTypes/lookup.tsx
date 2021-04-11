@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag } from 'antd';
 import _ from 'lodash';
-import { useStore } from '@steedos/builder-store';
+import { useStore, Objects } from '@steedos/builder-store';
 import { ObjectContext } from "../providers/ObjectContext";
 import { observer } from "mobx-react-lite";
 import { Form } from '@steedos/builder-form';
@@ -25,7 +25,7 @@ const Lookup = observer((props:any) => {
     let tags:any[] = [];
     const hrefPrefix = `/app/-/${reference_to}/view/`
 
-    const object = store.objectStore.getObject(reference_to);
+    const object = Objects.getObject(reference_to);
     const objectContext = useContext(ObjectContext);
     if(mode==='read'){
         if(value){

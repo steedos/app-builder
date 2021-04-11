@@ -102,11 +102,25 @@ const withAntDesignPro = (StoryFn: Function, context: StoryContext) => {
 }
 
 const withSteedos = (StoryFn: Function, context: StoryContext) => {
+
+  const initialStore = {
+    rootUrl: process.env.STEEDOS_ROOT_URL,
+    tenantId: process.env.STEEDOS_TENANT_ID,
+    userId: process.env.STEEDOS_USER_ID,
+    authToken: process.env.STEEDOS_AUTH_TOKEN,
+    locale: 'zh_CN',
+    forms: {},
+    objects: {},
+  }
+
+  window['steedos'] = initialStore
+
   return (
-    <SteedosProvider>
+    <SteedosProvider {...initialStore}>
       <StoryFn />
     </SteedosProvider>
   )
 }
+
 
 export const decorators = [withChakra, withPerformance, withSFDS, withSteedos]

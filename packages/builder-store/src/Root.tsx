@@ -1,7 +1,6 @@
 import { types, Instance, onSnapshot } from "mobx-state-tree";
 import { FormModel } from "./Form";
 import { TableModel } from "./Table";
-import { ObjectModel, ObjectStore } from "./Object";
 
 // Define a store just like a model
 export const RootModel = types.model({
@@ -9,9 +8,6 @@ export const RootModel = types.model({
   currentRecordId: types.union(types.string, types.undefined, types.null), 
   forms: types.optional(types.map(FormModel), {}),
   tables: types.optional(types.map(TableModel), {}),
-  objectStore: types.optional(ObjectStore, {
-      objects: {}
-  }),
 }).actions(self => ({
   setCurrentObjectApiName(name: string) {
     self.currentObjectApiName = name;
@@ -31,13 +27,6 @@ export const RootModel = types.model({
   }
 }))
 
-let initialState = RootModel.create({
-  currentObjectApiName: null, 
-  currentRecordId: null, 
-  forms: {},
-  tables: {}
-});
-
 // const data = localStorage.getItem('rootState');
 // if (data) {
 //   const json: any = JSON.parse(data);
@@ -46,7 +35,8 @@ let initialState = RootModel.create({
 //   }
 // }
 
-export const rootStore = initialState;
+export const rootStore = RootModel.create({
+});
 
 // onSnapshot(store, snapshot => {
 //   console.log("Snapshot: ", snapshot);
@@ -54,3 +44,8 @@ export const rootStore = initialState;
 // });
 
 export type RootInstance = Instance<typeof RootModel>;
+
+export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}
+
+
+export const useStore = () => rootStore

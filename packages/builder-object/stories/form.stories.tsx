@@ -1,7 +1,6 @@
 import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectExpandTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
-import { SteedosProvider } from "@steedos/builder-steedos"
 
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
@@ -90,10 +89,8 @@ export const Form = () => {
     layout: 'horizontal' 
   }
   return (
-    <SteedosProvider>
       <ObjectForm {...objectFormProps}>
       </ObjectForm>
-    </SteedosProvider>
   )
 }
 
@@ -113,21 +110,18 @@ export const FormWithChildren = () => {
     label: 'Name'
   }
   return (
-    <SteedosProvider>
       <ObjectForm {...objectFormProps}>
         <FieldSection title='Section'>
           <ObjectField objectApiName={objectApiName} fieldName='name' fieldSchema={nameFieldSchema}/>
           {/* <span>111</span> */}
         </FieldSection> 
       </ObjectForm>
-    </SteedosProvider>
   )
 }
 
 
 export const Table = () => {
   return (
-    <SteedosProvider>
       <ObjectTable objectApiName='accounts' columnFields={
         [
           {
@@ -152,7 +146,6 @@ export const Table = () => {
       }>
         
       </ObjectTable>
-    </SteedosProvider>
   )
 }
 
@@ -160,10 +153,8 @@ export const Table = () => {
 
 export const Tree = () => {
   return (
-    <SteedosProvider>
       <ObjectTree objectApiName='organizations' nameField='name' parentField='parent'>
       </ObjectTree>
-    </SteedosProvider>
   )
 }
 
@@ -202,7 +193,6 @@ export const App = () => {
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
   return (
-  <SteedosProvider>
     <div className="App">
       <ProCard
         className="main-container"
@@ -295,6 +285,5 @@ export const App = () => {
         </ProCard>
       </ProCard>
     </div>
-  </SteedosProvider>
   )
 }

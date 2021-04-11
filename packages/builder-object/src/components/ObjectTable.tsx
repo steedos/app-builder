@@ -11,7 +11,7 @@ import ProTable, {
 import { SortOrder } from "antd/lib/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
-import { TableModel, useStore } from "@steedos/builder-store"
+import { TableModel, useStore, Objects } from "@steedos/builder-store"
 import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -87,7 +87,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   } = props
 
   const selfTableRef = useRef(null)
-  const object = store.objectStore.getObject(objectApiName);
+  const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
 
   const proColumns = []

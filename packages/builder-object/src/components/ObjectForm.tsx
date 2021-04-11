@@ -11,7 +11,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { FormModel, useStore } from '@steedos/builder-store';
+import { FormModel, useStore, Objects } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -56,7 +56,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   if (!store.forms[formId])
     store.forms[formId] = FormModel.create({id: formId, mode});
   
-  const object = store.objectStore.getObject(objectApiName);
+  const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
 
   if (object.schema) {

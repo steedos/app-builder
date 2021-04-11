@@ -5,7 +5,7 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { useStore } from "@steedos/builder-store"
+import { useStore, Objects } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -56,7 +56,7 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   if (checkable == undefined) checkable = true
 
   const store = useStore()
-  const object = store.objectStore.getObject(objectApiName);
+  const object = Objects.getObject(objectApiName);
 
   //上边都是schema相关的操作
   //下边才是去请求数据
