@@ -1,11 +1,9 @@
-// import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "../"
 import { Tree } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { useStore, Objects, API } from "@steedos/builder-store"
+import { Objects, API } from "@steedos/builder-store"
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -37,9 +35,6 @@ export type ObjectTreeProps =
   | any
 
 export const ObjectTree = observer((props: ObjectTreeProps) => {
-  // export const ObjectTree = <T extends Record<string, any>, U extends ParamsType, ValueType>(props: ObjectTreeProps<T, U, ValueType>) => {
-  // const store = useContext(BuilderStoreContext);
-  const objectContext: any = useContext(ObjectContext)
 
   let {
     name: treeId = "default",
@@ -55,7 +50,6 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   } = props
   if (checkable == undefined) checkable = true
 
-  const store = useStore()
   const object = Objects.getObject(objectApiName);
 
   //上边都是schema相关的操作

@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag } from 'antd';
 import _ from 'lodash';
-import { useStore, Objects, API } from '@steedos/builder-store';
+import { Objects, API } from '@steedos/builder-store';
 import { ObjectContext } from "../providers/ObjectContext";
 import { observer } from "mobx-react-lite";
 import { Form } from '@steedos/builder-form';
@@ -17,7 +17,6 @@ import FieldSelect, {
 // 参数 props.reference_to:
 
 const Lookup = observer((props:any) => {
-    const store = useStore();
     const [params, setParams] = useState({open: false,openTag: null});
     const { fieldSchema = {}, valueType, mode, fieldProps, ...rest } = props;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [] } = fieldSchema;
@@ -26,7 +25,6 @@ const Lookup = observer((props:any) => {
     const hrefPrefix = `/app/-/${reference_to}/view/`
 
     const object = Objects.getObject(reference_to);
-    const objectContext = useContext(ObjectContext);
     if(mode==='read'){
         if(value){
             const filter = value ? [[reference_to_field, '=', value]] : [];

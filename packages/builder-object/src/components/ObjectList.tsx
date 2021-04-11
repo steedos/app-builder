@@ -6,8 +6,8 @@
  * @Last Modified time: 2021-03-26 20:52:23
  */
 // import { BuilderStoreContext } from '@builder.io/react';
-import { ObjectContext } from "../"
-import { useStore, API } from "@steedos/builder-store"
+
+import { API } from "@steedos/builder-store"
 import { List, Button, Checkbox } from "antd"
 import _ from "lodash"
 import { observer } from "mobx-react-lite"
@@ -29,12 +29,7 @@ export type ObjectListProps =
   | any
 
 export const ObjectList = observer((props: ObjectListProps) => {
-  const objectContext: any = useContext(ObjectContext)
-  let store = useStore()
-  let { currentObjectApiName } = store
-  if (!currentObjectApiName) {
-    currentObjectApiName = objectContext.currentObjectApiName
-  }
+  
 
   let {
     name: treeId = "default",
@@ -47,7 +42,7 @@ export const ObjectList = observer((props: ObjectListProps) => {
   } = props
   // if (checkable == undefined) checkable = true
 
-  objectApiName = objectApiName || (currentObjectApiName as string)
+  objectApiName = objectApiName 
   const { isLoading, error, data: objectSchema, isFetching } = useQuery<any>(
     objectApiName + "_schema",
     async () => {
