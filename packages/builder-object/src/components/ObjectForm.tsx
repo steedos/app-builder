@@ -16,7 +16,7 @@ import { FieldSection } from "@steedos/builder-form";
 import './ObjectForm.less'
 
 export type FormProps<T = Record<string, any>>  = {
-  mode?: ProFieldFCMode,
+  mode?: 'read' | 'edit',
   editable?: boolean,
 } & BaseFormProps
 
@@ -84,15 +84,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   const onFinish = async(values:any) =>{
     let result; 
-    if(mode === 'add'){     
+    if(!recordId){     
       result = await API.insertRecord(objectApiName, values);
       if(result){
         alert("添加成功！");
       }
     }else{
-      if(!recordId){
-        return;
-      }
         
       result = await API.updateRecord(objectApiName, recordId, values);
       if(result){
@@ -102,7 +99,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const getSection = (sectionName) => {
-    const fieldMode = mode === "add" ? "edit" : mode;
     const sectionFields = _.filter(fieldSchemas, { 'group': sectionName });
     return (
       <FieldSection title={sectionName} key={sectionName}>
@@ -114,7 +110,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
             fieldName: field.name,
             label: field.label,
             fieldSchema: field,
-            mode: fieldMode,
+            mode,
           };
           return (<ObjectField {...fieldProps} />)
         })}

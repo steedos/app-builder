@@ -2,7 +2,6 @@ export * from "./Object"
 export * from "./Form"
 export * from "./Table"
 export * from "./Root"
-export * from "./Use"
 export * from "./Settings"
 export * from "./API"
 

@@ -45,7 +45,4 @@ export const rootStore = RootModel.create({
 
 export type RootInstance = Instance<typeof RootModel>;
 
-export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}
-
-
 export const useStore = () => rootStore
