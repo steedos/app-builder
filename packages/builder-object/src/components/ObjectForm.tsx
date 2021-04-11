@@ -15,10 +15,8 @@ import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
 
-export type ObjectFormFieldMode = 'add' | ProFieldFCMode;
-
 export type FormProps<T = Record<string, any>>  = {
-  mode?: ObjectFormFieldMode,
+  mode?: ProFieldFCMode,
   editable?: boolean,
 } & BaseFormProps
 
