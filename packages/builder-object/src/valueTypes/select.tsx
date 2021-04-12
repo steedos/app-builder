@@ -32,9 +32,13 @@ export const select = {
     return (<span>{value}</span>)
   },
   renderFormItem: (_: any, props: any) => {
-    const {fieldSchema={}} = props;
+    const { fieldSchema={}, fieldProps={} } = props;
     const {options = [], multiple ,optionsFunction} = fieldSchema;
-    props.fieldProps.options = options
+    props.fieldProps.options = options;
+    if (multiple){
+      fieldProps.mode = 'multiple';
+    }
+    // TODO: multiple：如果是true, 后期 需要 支持对已选中项进行拖动排序
     return (
       <FieldSelect mode='edit' {...props} />
     )

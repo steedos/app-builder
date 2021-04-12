@@ -56,10 +56,11 @@ export const Form = () => {
         { label: '年轻人', value: '3' },
         { label: '孩童', value: '4' }
       ],
+      // TODO: lookup中含有select的optionsFunction属性，故去lookup中测试此属性。
       // optionsFunction:(para:any)=>{
       //   return [{label: '小孩', value: 0}]
       // }
-      // multiple: true,
+      multiple: true,
     },
     object: {
       type: 'object',
