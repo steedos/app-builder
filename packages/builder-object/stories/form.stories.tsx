@@ -44,7 +44,39 @@ export const Form = () => {
         create_date: -1,
         amount: -1,
       },
+      options:[
+        { label: '合同1', value: 1 },
+        { label: '合同2', value: 2 },
+        { label: '合同3', value: 3 },
+      ],
       reference_limit: 15,
+    },
+    populationType: {
+      type: 'select',
+      label: '人群类型多选',
+      // TODO:icon参数最后再加上测试（因为有点复杂）。
+      options:[
+        { label: '老人',   value:'1' },
+        { label: '中年人', value: '2' },
+        { label: '年轻人', value: '3' },
+        { label: '孩童', value: '4' }
+      ],
+      optionsFunction:()=>{
+        return [{label: '小孩', value: 2}, {label: '婴儿', value: 1}]
+      },
+      multiple: true,
+    },
+    populationTypeSingle: {
+      type: 'select',
+      label: '人群类型单选',
+      // TODO:icon参数最后再加上测试（因为有点复杂）。
+      options:[
+        { label: '老人',   value:'1' },
+        { label: '中年人', value: '2' },
+        { label: '年轻人', value: '3' },
+        { label: '孩童', value: '4' }
+      ],
+      multiple: false,
     },
     object: {
       type: 'object',
