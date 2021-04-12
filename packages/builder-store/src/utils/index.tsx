@@ -12,7 +12,6 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
       _.each(objectConfig.fields, (fieldItem, key) => {
-        // fieldName = fieldName.replace("$","\\$");
         const reg = new RegExp(`^${fieldNameForReg}\.\\w+$`); //以fieldName开头，且用.号连接下一个字段名
         // if(key.startsWith(`${fieldName}.`)){
         if(reg.test(key)){
