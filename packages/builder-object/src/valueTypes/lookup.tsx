@@ -19,7 +19,7 @@ import FieldSelect, {
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { fieldSchema = {}, valueType, mode, fieldProps, ...rest } = props;
-    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [] } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
     const hrefPrefix = `/app/-/${reference_to}/view/`
@@ -60,7 +60,6 @@ const Lookup = observer((props:any) => {
         }
         let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction() :  props.options ;
         let request: any;
-
         if(options){
             fieldProps.options = options;
         }else{
@@ -73,18 +72,19 @@ const Lookup = observer((props:any) => {
                     textFilters = [reference_to_field, '=', props.text]
                 if (params.keyWords)
                     keyFilters = ['name', 'contains', params.keyWords]
-                if (fieldFilters.length) {
+                let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+                if (filtersOfField.length) {
                     if (keyFilters.length) {
-                        if (_.isArray(fieldFilters)) {
-                            keyFilters = [fieldFilters, keyFilters]
+                        if (_.isArray(filtersOfField)) {
+                            keyFilters = [filtersOfField, keyFilters]
                         }
                         else {
                             const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
-                            keyFilters = `(${fieldFilters}) and (${odataKeyFilters})`;
+                            keyFilters = `(${filtersOfField}) and (${odataKeyFilters})`;
                         }
                     }
                     else {
-                        keyFilters = fieldFilters;
+                        keyFilters = filtersOfField;
                     }
                 }
                 if (textFilters.length && keyFilters.length) {
@@ -119,7 +119,6 @@ const Lookup = observer((props:any) => {
                         value: item[reference_to_field]
                     }
                 })
-
                 return options;
             }
 

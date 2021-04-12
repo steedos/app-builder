@@ -44,20 +44,26 @@ export const Form = () => {
         create_date: -1,
         amount: -1,
       },
-      options:[
-        { label: '合同1', value: 1 },
-        { label: '合同2', value: 2 },
-        { label: '合同3', value: 3 },
-      ],
-      optionsFunction:(para:any)=>{
-        const column = [
-          { label: '大合同1', value: 1 },
-          { label: '大合同2', value: 2 },
-          { label: '大合同3', value: 3 },
-        ]
-        return column;
-      },
+      // options:[
+      //   { label: '合同1', value: 1 },
+      //   { label: '合同2', value: 2 },
+      //   { label: '合同3', value: 3 },
+      // ],
+      // optionsFunction:(para:any)=>{
+      //   const column = [
+      //     { label: '大合同1', value: 1 },
+      //     { label: '大合同2', value: 2 },
+      //     { label: '大合同3', value: 3 },
+      //   ]
+      //   return column;
+      // },
       reference_limit: 15,
+      filters:[['amount','between',[10,50]]],
+      filtersFunction:(filters)=>{
+        return [['amount','between',[15,50]]]
+        // return "(amount ge 15)"
+        // return "((amount ge 15) and (amount le 40))"
+      }
     },
     populationType: {
       type: 'select',
