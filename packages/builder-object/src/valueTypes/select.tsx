@@ -34,7 +34,7 @@ export const select = {
   renderFormItem: (_: any, props: any) => {
     const { fieldSchema={}, fieldProps={} } = props;
     const {options = [], multiple ,optionsFunction} = fieldSchema;
-    props.fieldProps.options = options;
+    props.fieldProps.options = optionsFunction ? optionsFunction() : options;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
