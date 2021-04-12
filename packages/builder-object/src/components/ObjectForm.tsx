@@ -10,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { FormModel, Objects, Forms, API } from '@steedos/builder-store';
+import { Objects, Forms, API } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -66,17 +66,19 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       fieldNames.push(field.name)
     })
   
-    const recordCache = object.getRecord(recordId, fieldNames)
-    if (recordCache.isLoading)
-      return (<div>Loading record ...</div>)
-
-    if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
-      const record = recordCache.data.value[0];
-      _.forEach(fieldNames, (fieldName:any)=>{
-        if (record[fieldName])
-          initialValues[fieldName] = record[fieldName];
-      })
-    } else {
+    if (recordId) {
+      const recordCache = object.getRecord(recordId, fieldNames)
+      if (recordCache.isLoading)
+        return (<div>Loading record ...</div>)
+  
+      if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
+        const record = recordCache.data.value[0];
+        _.forEach(fieldNames, (fieldName:any)=>{
+          if (record[fieldName])
+            initialValues[fieldName] = record[fieldName];
+        })
+      } else {
+      }
     }
   }
   
@@ -147,4 +149,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
 Form['propTypes'] = {
   objectApiName: PropTypes.string,
+  'object-api-name': PropTypes.string,
+  mode: PropTypes.string,
 };

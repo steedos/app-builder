@@ -5,7 +5,6 @@ import FieldSelect, {
   proFieldParsingValueEnumToArray,
 } from '@ant-design/pro-field/es/components/Select';
 import { Select } from 'antd';
-
 // 需要处理只读样式和多选效果
 // const SteedosSelect = (props) => {
 //   const {mode, text, fieldSchema={}, onChange, ...rest} = props;
@@ -34,10 +33,14 @@ export const select = {
   renderFormItem: (_: any, props: any) => {
     const { fieldSchema={}, fieldProps={} } = props;
     const {options = [], multiple ,optionsFunction} = fieldSchema;
-    props.fieldProps.options = options;
+    props.fieldProps.options = optionsFunction ? optionsFunction() : options;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
+    function filterOption(input, option){
+      return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
+    props.fieldProps.filterOption=filterOption;
     // TODO: multiple：如果是true, 后期 需要 支持对已选中项进行拖动排序
     return (
       <FieldSelect mode='edit' {...props} />

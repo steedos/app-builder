@@ -33,7 +33,7 @@ const requestObject = async (objectApiName: string) => {
 }
 
 const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
-  const records = await client.sobject(objectApiName).find(filters, fields);
+  const records = await client.sobject(objectApiName).find(filters, fields, options);
   return records;
 
 }

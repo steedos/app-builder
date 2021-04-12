@@ -19,7 +19,7 @@ import FieldSelect, {
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { fieldSchema = {}, valueType, mode, fieldProps, ...rest } = props;
-    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [] } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
     const hrefPrefix = `/app/-/${reference_to}/view/`
@@ -58,66 +58,71 @@ const Lookup = observer((props:any) => {
                 </Tag>
             );
         }
-
-        // 注意，request 里面的代码不会抛异常，包括编译错误。
-        const request = async (params: any, props: any) => {
-            // console.log("===request===params, props==", params, props);
-            // console.log("===request===reference_to==", reference_to);
-            let filters: any = [], textFilters: any = [], keyFilters: any = [];
-            if (props.text)
-                textFilters = [reference_to_field, '=', props.text]
-            if (params.keyWords)
-                keyFilters = ['name', 'contains', params.keyWords]
-            if (fieldFilters.length) {
-                if (keyFilters.length) {
-                    if (_.isArray(fieldFilters)) {
-                        keyFilters = [fieldFilters, keyFilters]
+        let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction() :  props.options ;
+        let request: any;
+        if(options){
+            fieldProps.options = options;
+        }else{
+            // 注意，request 里面的代码不会抛异常，包括编译错误。
+            request = async (params: any, props: any) => {
+                // console.log("===request===params, props==", params, props);
+                // console.log("===request===reference_to==", reference_to);
+                let filters: any = [], textFilters: any = [], keyFilters: any = [];
+                if (props.text)
+                    textFilters = [reference_to_field, '=', props.text]
+                if (params.keyWords)
+                    keyFilters = ['name', 'contains', params.keyWords]
+                let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+                if (filtersOfField.length) {
+                    if (keyFilters.length) {
+                        if (_.isArray(filtersOfField)) {
+                            keyFilters = [filtersOfField, keyFilters]
+                        }
+                        else {
+                            const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+                            keyFilters = `(${filtersOfField}) and (${odataKeyFilters})`;
+                        }
                     }
                     else {
-                        const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
-                        keyFilters = `(${fieldFilters}) and (${odataKeyFilters})`;
+                        keyFilters = filtersOfField;
                     }
                 }
-                else {
-                    keyFilters = fieldFilters;
+                if (textFilters.length && keyFilters.length) {
+                    if (_.isArray(keyFilters)) {
+                        filters = [textFilters, 'or', keyFilters]
+                    }
+                    else {
+                        const odataTextFilters = formatFiltersToODataQuery(textFilters);
+                        filters = `(${odataTextFilters}) or (${keyFilters})`;
+                    }
                 }
-            }
-            if (textFilters.length && keyFilters.length) {
-                if (_.isArray(keyFilters)) {
-                    filters = [textFilters, 'or', keyFilters]
+                else if (textFilters.length && !open) {
+                    filters = textFilters;
                 }
-                else {
-                    const odataTextFilters = formatFiltersToODataQuery(textFilters);
-                    filters = `(${odataTextFilters}) or (${keyFilters})`;
+                else if (keyFilters.length) {
+                    filters = keyFilters;
                 }
-            }
-            else if (textFilters.length && !open) {
-                filters = textFilters;
-            }
-            else if (keyFilters.length) {
-                filters = keyFilters;
-            }
-            const fields = [reference_to_field, 'name'];
-            // console.log("===filters===", filters);
-            let option: any = {};
-            if (reference_sort) {
-                option.sort = _.map(reference_sort, (value, key) => { return `${key}${value == 1 ? '' : ' desc'}` }).join(",")
-            }
-            if (reference_limit) {
-                option.pageSize = reference_limit
-            }
-            const data = await API.requestRecords(reference_to, filters, fields, option);
+                const fields = [reference_to_field, 'name'];
+                // console.log("===filters===", filters);
+                let option: any = {};
+                if (reference_sort) {
+                    option.sort = _.map(reference_sort, (value, key) => { return `${key}${value == 1 ? '' : ' desc'}` }).join(",")
+                }
+                if (reference_limit) {
+                    option.pageSize = reference_limit
+                }
+                const data = await API.requestRecords(reference_to, filters, fields, option);
 
-            const options = data.value.map((item) => {
-                return {
-                    label: item.name,
-                    value: item[reference_to_field]
-                }
-            })
+                options = data.value.map((item: any) => {
+                    return {
+                        label: item.name,
+                        value: item[reference_to_field]
+                    }
+                })
+                return options;
+            }
 
-            return options
         }
-
         const onDropdownVisibleChange = (open: boolean) => {
             if (open) {
                 setParams({ open, openTag: new Date() });

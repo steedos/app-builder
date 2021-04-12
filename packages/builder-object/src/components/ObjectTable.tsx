@@ -11,7 +11,7 @@ import ProTable, {
 import { SortOrder } from "antd/lib/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
-import { TableModel, Objects, API } from "@steedos/builder-store"
+import { Objects, API } from "@steedos/builder-store"
 import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,

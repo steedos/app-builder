@@ -2,8 +2,7 @@
 import React, { useContext } from "react";
 import _ from 'lodash';
 import { observer } from "mobx-react-lite"
-// import { store } from '@steedos/builder-store';
-import { useStore } from "@steedos/builder-store";
+import { Settings } from "@steedos/builder-store";
 
 export type RecordDetailPageProps = {
   objectApiName?: string,
@@ -14,7 +13,7 @@ export type RecordDetailPageProps = {
 export const RecordDetailPage = observer((props:RecordDetailPageProps) => {
   // export function RecordDetailPage(props:RecordDetailPageProps) {
   const { children, ...rest } = props;
-  let { currentObjectApiName, currentRecordId } = useStore();
+  let { currentObjectApiName, currentRecordId } = Settings;
 
   const objectApiName = props.objectApiName ? props.objectApiName : currentObjectApiName as string;
   const recordId = props.recordId ? props.recordId : currentRecordId;

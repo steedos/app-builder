@@ -82,6 +82,8 @@ export const ObjectModel = types.model({
   })
 
   const getRecord = (recordId: string, fields: string[]) => {
+    if (!recordId)
+      return null;
     const record = self.recordCaches.get(recordId)
     if (record)
       return record
