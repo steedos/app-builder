@@ -46,6 +46,21 @@ export const Form = () => {
       },
       reference_limit: 15,
     },
+    populationType: {
+      type: 'select',
+      label: '人群类型',
+      // TODO:icon参数最后再加上测试（因为有点复杂）。
+      options:[
+        { label: '老人',   value:'1' },
+        { label: '中年人', value: '2' },
+        { label: '年轻人', value: '3' },
+        { label: '孩童', value: '4' }
+      ],
+      // optionsFunction:(para:any)=>{
+      //   return [{label: '小孩', value: 0}]
+      // }
+      // multiple: true,
+    },
     object: {
       type: 'object',
       label: 'object',
