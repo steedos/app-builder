@@ -23,7 +23,7 @@ const options = {
   plugins: [,
     // Allow json resolution
     json(),
-    nodePolyfills(),
+    // nodePolyfills(),
     nodeResolve(),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),

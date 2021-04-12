@@ -10,7 +10,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { FormModel, Objects, Forms, API } from '@steedos/builder-store';
+import { Objects, Forms, API } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -147,4 +147,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
 Form['propTypes'] = {
   objectApiName: PropTypes.string,
+  'object-api-name': PropTypes.string,
+  mode: PropTypes.string,
 };
