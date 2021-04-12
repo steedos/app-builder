@@ -20,8 +20,6 @@ const defaultQueryClientConfig: any = {
 export function ObjectProvider(props: ObjectProviderProps) {
   const {
     locale,
-    currentObjectApiName,
-    currentRecordId,
     requestObject,
     requestRecords,
     updateRecord,
@@ -32,8 +30,6 @@ export function ObjectProvider(props: ObjectProviderProps) {
 
   return (
     <ObjectContext.Provider value={{
-      currentObjectApiName,
-      currentRecordId,
       queryClient,
       requestObject,
       requestRecords,

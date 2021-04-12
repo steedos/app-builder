@@ -27,32 +27,35 @@ export const Settings = types
   userId,
   authToken,
   locale,
+  currentAppId: types.maybeNull(types.string),
+  currentObjectApiName: types.maybeNull(types.string),
+  currentRecordId: types.maybeNull(types.string),
   env: types.frozen(),
 })
 .actions(self => {
-    const setRootUrl = (rootUrl) => {
+  return {
+    setRootUrl: (rootUrl) => {
         self.rootUrl = rootUrl
-    }
-    const setTenantId = (tenantId) => {
+    },
+    setTenantId: (tenantId) => {
         self.tenantId = tenantId
-    }
-    const setUserId = (userId) => {
+    },
+    setUserId: (userId) => {
         self.userId = userId
-    }
-    const setAuthToken = (authToken) => {
+    },
+    setAuthToken: (authToken) => {
         self.authToken = authToken
-    }
-    const setLocale = (locale) => {
+    },
+    setLocale(locale){
         self.locale = locale
-    }
-
-    return {
-      setRootUrl,
-      setTenantId,
-      setUserId,
-      setAuthToken,
-      setLocale
-    }
+    },
+    setCurrentObjectApiName(name: string) {
+      self.currentObjectApiName = name;
+    },
+    setCurrentRecordId(id: string) {
+      self.currentRecordId = id;
+    },
+  }
 })
 .create({
   rootUrl,

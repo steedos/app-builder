@@ -27,8 +27,6 @@ const defaultInsertRecord = async (objectApiName:string, formData:any) =>{
 
 export type ObjectContextValueType = {
   locale?: string,
-  currentObjectApiName?: string,
-  currentRecordId?: string,
   queryClient?: any,
   requestObject: ( objectApiName:string) => Promise<object | Error>
   requestRecords: <T extends Record<string, any>>( objectApiName:string, filters:any, fields:any, params?: RecordQueryRequestParams ) => Promise<Partial<RequestData<T>>>
