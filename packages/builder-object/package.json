@@ -41,6 +41,7 @@
     "@emotion/core": ">=10",
     "@emotion/styled": "^11.1.5",
     "@jsx-lite/core": "^0.0.17",
+    "@rollup/plugin-alias": "^3.1.2",
     "@steedos/builder-form": "1.0.0",
     "@steedos/builder-locale": "1.0.0",
     "@steedos/builder-store": "1.0.0",
@@ -62,6 +63,7 @@
     "react-to-webcomponent": "^1.5.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "tslib": "^2.1.0",
+    "web-components-with-react": "^1.2.1",
     "webcomponents-in-react": "^1.0.1"
   },
   "devDependencies": {

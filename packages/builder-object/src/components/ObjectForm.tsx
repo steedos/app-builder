@@ -66,17 +66,19 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       fieldNames.push(field.name)
     })
   
-    const recordCache = object.getRecord(recordId, fieldNames)
-    if (recordCache.isLoading)
-      return (<div>Loading record ...</div>)
-
-    if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
-      const record = recordCache.data.value[0];
-      _.forEach(fieldNames, (fieldName:any)=>{
-        if (record[fieldName])
-          initialValues[fieldName] = record[fieldName];
-      })
-    } else {
+    if (recordId) {
+      const recordCache = object.getRecord(recordId, fieldNames)
+      if (recordCache.isLoading)
+        return (<div>Loading record ...</div>)
+  
+      if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
+        const record = recordCache.data.value[0];
+        _.forEach(fieldNames, (fieldName:any)=>{
+          if (record[fieldName])
+            initialValues[fieldName] = record[fieldName];
+        })
+      } else {
+      }
     }
   }
   
