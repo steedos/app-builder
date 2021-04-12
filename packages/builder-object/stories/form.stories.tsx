@@ -49,6 +49,14 @@ export const Form = () => {
         { label: '合同2', value: 2 },
         { label: '合同3', value: 3 },
       ],
+      optionsFunction:(para:any)=>{
+        const column = [
+          { label: '大合同1', value: 1 },
+          { label: '大合同2', value: 2 },
+          { label: '大合同3', value: 3 },
+        ]
+        return column;
+      },
       reference_limit: 15,
     },
     populationType: {
