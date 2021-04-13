@@ -78,6 +78,6 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       fieldsSchema[fieldName] = fieldSchema;
     }
   });
-  // console.log("convertFieldsSchema====fieldsSchema===", fieldsSchema);
+  // console.log("convertFieldsSchema====fieldsSchema===", objectConfig.name, fieldsSchema);
   objectConfig.fields = fieldsSchema;
 }
