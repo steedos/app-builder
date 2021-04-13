@@ -36,6 +36,7 @@ export const Form = () => {
       label: '照片'
     },
     contracts: {
+      group:'lookup测试',
       reference_to: 'contracts',
       type: 'lookup',
       label: '合同',
@@ -58,14 +59,81 @@ export const Form = () => {
       //   return column;
       // },
       reference_limit: 15,
-      filters:[['amount','between',[10,50]]],
+      filters:[['amount','between',[0,100000]]],
       filtersFunction:(filters)=>{
-        return [['amount','between',[15,50]]]
+        return [['amount','between',[5,90000]]]
         // return "(amount ge 15)"
         // return "((amount ge 15) and (amount le 40))"
       }
     },
+    contracts_sort: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: 'reference_sort',
+      reference_sort: {
+        create_date: 1,
+        amount: -1,
+      },
+    },
+    contracts_reference_limit: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: 'reference_limit',
+      reference_limit: 3,
+    },
+    contracts_filtersFunction: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: 'filters(Function)',
+      filters:[['amount','between',[0,10000]]],
+      filtersFunction:(filters)=>{
+        return [['amount','between',[10,50]]]
+        // return "(amount ge 15)"
+        // return "((amount ge 15) and (amount le 40))"
+      }
+    },
+    contracts_optionsFunction: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: 'options(Function)',
+      options:[
+        { label: '合同1', value: 1 },
+        { label: '合同2', value: 2 },
+        { label: '合同3', value: 3 },
+      ],
+      optionsFunction:(para:any)=>{
+        const column = [
+          { label: '大合同1', value: 1 },
+          { label: '大合同2', value: 2 },
+          { label: '大合同3', value: 3 },
+        ]
+        return column;
+      },
+    },
+    contracts_multiple: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: 'multiple',
+      multiple: true,
+    },
+    contracts2: {
+      group:'lookup测试',
+      type: 'lookup',
+      label: '无reference_to只显示文本',
+      multiple: true,
+      options:[
+        { label: '合同1', value: "1" },
+        { label: '合同2', value: "2" },
+        { label: '合同3', value: "3" },
+      ],
+    },
     populationType: {
+      group: 'select测试',
       type: 'select',
       label: '人群类型多选',
       // TODO:icon参数最后再加上测试（因为有点复杂）。
@@ -81,11 +149,12 @@ export const Form = () => {
       multiple: true,
     },
     populationTypeSingle: {
+      group: 'select测试',
       type: 'select',
       label: '人群类型单选',
       // TODO:icon参数最后再加上测试（因为有点复杂）。
       options:[
-        { label: '老人',   value:'1' },
+        { label: '老人',  value:'1' },
         { label: '中年人', value: '2' },
         { label: '年轻人', value: '3' },
         { label: '孩童', value: '4' }
@@ -121,6 +190,7 @@ export const Form = () => {
       col1: '222',
       col2: true,
     }],
+    contracts2:['1','2'],
     object: {
       sub1: 'sub1',
       sub2: true,

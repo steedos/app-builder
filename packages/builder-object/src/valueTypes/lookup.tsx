@@ -22,26 +22,36 @@ const Lookup = observer((props:any) => {
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
-    const hrefPrefix = `/app/-/${reference_to}/view/`
-
-    const object = Objects.getObject(reference_to);
+    let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     if(mode==='read'){
+        const hrefPrefix = `/app/-/${reference_to}/view/`
         if(value){
-            const filter = value ? [[reference_to_field, '=', value]] : [];
-            const fields = [reference_to_field, 'name'];
-        
-            if (object.isLoading) return (<div>Loading object ...</div>);
-            const recordList: any = object.getRecordList(filter, fields);
-            if (recordList.isLoading) return (<div>Loading recordList ...</div>);
-            const recordListData = recordList.data;
-            if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                tags = recordListData.value.map((recordItem: any)=>{return {value: recordItem[reference_to_field], label: recordItem.name }});
+            if (reference_to) {
+                const object = Objects.getObject(reference_to);
+                const filter = value ? [[reference_to_field, '=', value]] : [];
+                const fields = [reference_to_field, 'name'];
+                if (object.isLoading) return (<div>Loading object ...</div>);
+                const recordList: any = object.getRecordList(filter, fields);
+                if (recordList.isLoading) return (<div>Loading recordList ...</div>);
+                const recordListData = recordList.data;
+                if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                    tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[reference_to_field], label: recordItem.name } });
+                }
+            }else{
+                // TODO:options({}) 里的对象后期需要存放value进入
+                options = _.isFunction(options) ? options({}) : options;
+                // tags = _.filter(options,["value",value])
+                tags = _.filter(options,(optionItem: any)=>{
+                    // multiple 和 _.isArray(value) 我认为 后者更好点，因为是根据它来判断的。
+                    return _.isArray(value) ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
+                })
             }
         }
         return (<React.Fragment>{tags.map((tagItem, index)=>{return (
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
-                <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>
+                {/* <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a> */}
+                { reference_to ? (<a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>) : (tagItem.label) }
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
