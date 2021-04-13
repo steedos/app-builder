@@ -114,8 +114,7 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 				this.appendChild(container);
 			}
 
-			// Use react to render element in container
-			debugger
+			// Use react to render element in 
 			this[reactComponentSymbol] = ReactDOM.render(React.createElement(ReactComponent, data), container);
 			rendering = false;
 		}
