@@ -222,6 +222,7 @@ export const Form = () => {
       col2: true,
     }],
     contracts2:['1','2'],
+    contractsNo:['2021-009'],
     object: {
       sub1: 'sub1',
       sub2: true,
