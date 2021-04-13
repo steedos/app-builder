@@ -58,15 +58,19 @@ const Lookup = observer((props:any) => {
                 </Tag>
             );
         }
-        let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction() :  props.options ;
+        let dependOnValues: any = {}
+        let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
         let request: any;
-        if(options){
-            fieldProps.options = options;
-        }else{
+        let requestFun= async (params: any, props: any) => {
             // 注意，request 里面的代码不会抛异常，包括编译错误。
-            request = async (params: any, props: any) => {
-                // console.log("===request===params, props==", params, props);
-                // console.log("===request===reference_to==", reference_to);
+            // console.log("===request===params, props==", params, props);
+            // console.log("===request===reference_to==", reference_to);
+            if(_.isFunction(options)) {
+                dependOnValues.__keyWords = params.keyWords;
+                const results = await options(dependOnValues);
+                return results;
+            }
+            else{
                 let filters: any = [], textFilters: any = [], keyFilters: any = [];
                 if (props.text)
                     textFilters = [reference_to_field, '=', props.text]
@@ -113,15 +117,29 @@ const Lookup = observer((props:any) => {
                 }
                 const data = await API.requestRecords(reference_to, filters, fields, option);
 
-                options = data.value.map((item: any) => {
+                const results = data.value.map((item: any) => {
                     return {
                         label: item.name,
                         value: item[reference_to_field]
                     }
                 })
-                return options;
+                return results;
             }
-
+        }
+        
+        if (reference_to){ // 含有reference_to
+            if (reference_to && !options) {
+                request = requestFun;
+            }
+            if (reference_to && options) {
+                if (_.isArray(options)) {
+                    fieldProps.options = options;
+                } else if (_.isFunction(options)) {
+                    request = requestFun;
+                }
+            }
+        }else{ // 最后一种情况 没有reference_to 只有options 或 optionsFunction 
+            fieldProps.options = _.isFunction(options) ? options(dependOnValues) : options;
         }
         const onDropdownVisibleChange = (open: boolean) => {
             if (open) {
