@@ -72,6 +72,7 @@ export const Form = () => {
       reference_to_field: "no",
       type: 'lookup',
       label: '合同编号',
+      multiple: true,
     },
     contracts_sort: {
       group:'lookup测试',
@@ -151,7 +152,7 @@ export const Form = () => {
         { label: '孩童', value: '4' }
       ],
       optionsFunction:()=>{
-        return [{label: '小孩', value: 2}, {label: '婴儿', value: 1}]
+        return [{label: '小孩', value: '2'}, {label: '婴儿', value: '1'}]
       },
       multiple: true,
     },
@@ -223,6 +224,7 @@ export const Form = () => {
     }],
     contracts2:['1','2'],
     contractsNo:['2021-009'],
+    populationType: ['1','2'],
     object: {
       sub1: 'sub1',
       sub2: true,

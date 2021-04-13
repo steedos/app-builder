@@ -1,34 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import _ from 'lodash';
-import FieldSelect, {
-  proFieldParsingText,
-  proFieldParsingValueEnumToArray,
-} from '@ant-design/pro-field/es/components/Select';
-import { Select } from 'antd';
-// 需要处理只读样式和多选效果
-// const SteedosSelect = (props) => {
-//   const {mode, text, fieldSchema={}, onChange, ...rest} = props;
-//   const [value, setValue] = useState<any>(text)
-//   const {options = []} = fieldSchema;
-  
-//   if (mode === 'read')
-//     return (<span>{value}</span>)
-//   else
-//     return (
-//       <Select {...rest} options={options} mode={mode} 
-//         value={value}
-//         onChange={(value, optionList, ...rest) => {
-//           setValue(value)
-//           onChange?.(value, optionList, ...rest);
-//           return;
-//         }}
-//       />
-//   )
-// }
+import FieldSelect from '@ant-design/pro-field/es/components/Select';
+
 export const select = {
   render: (text: any, props: any)=> {
-    const [value] = useState<any>(text)
-    return (<span>{value}</span>)
+    const { fieldSchema = {},dependFieldValues={}, valueType, mode, fieldProps, ...rest } = props;
+    let tags:any;
+    let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
+    options = _.isFunction(options) ? options(dependFieldValues) : options;
+    const value = fieldProps.value;
+    tags = _.filter(options,(optionItem: any)=>{
+        return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
+    })
+    return (<React.Fragment>{tags.map((tagItem, index)=>{return (
+        <React.Fragment key={tagItem.value}>
+            {index > 0 && ', '}
+            { (tagItem.label) }
+        </React.Fragment>
+    )})}</React.Fragment>)
   },
   renderFormItem: (text: any, props: any) => {
     const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;

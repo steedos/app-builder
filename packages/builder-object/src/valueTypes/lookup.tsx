@@ -1,16 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useQuery } from 'react-query'
+import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag } from 'antd';
 import _ from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
-import { ObjectContext } from "../providers/ObjectContext";
 import { observer } from "mobx-react-lite";
-import { Form } from '@steedos/builder-form';
-import FieldSelect, {
-    proFieldParsingText,
-    proFieldParsingValueEnumToArray,
-} from '@ant-design/pro-field/es/components/Select';
+import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
@@ -42,8 +36,7 @@ const Lookup = observer((props:any) => {
                 options = _.isFunction(options) ? options({}) : options;
                 // tags = _.filter(options,["value",value])
                 tags = _.filter(options,(optionItem: any)=>{
-                    // multiple 和 _.isArray(value) 我认为 后者更好点，因为是根据它来判断的。
-                    return _.isArray(value) ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
+                    return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
                 })
             }
         }
