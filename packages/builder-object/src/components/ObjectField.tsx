@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { useQuery } from "react-query";
 import { observer } from "mobx-react-lite"
 import { FormContext } from "antd/es/form/context";
+import { ProFormDependency } from '@ant-design/pro-form';
 import { FormModel, Forms } from '@steedos/builder-store';
 
 export type ObjectFieldProps = {
@@ -33,7 +34,7 @@ export const ObjectField = observer((props: any) => {
     hidden: fieldSchema.hidden,
     valueType: fieldSchema.type,
     required: fieldSchema.required,
-    options: fieldSchema.options,
+    // options: fieldSchema.options,
     readonly: fieldSchema.readonly,
     isWide: fieldSchema.is_wide,
     fieldSchema,
@@ -63,10 +64,18 @@ export const ObjectField = observer((props: any) => {
     colon: false,
   }
 
+  const dependOn = fieldSchema.depend_on ? fieldSchema.depend_on : []
+
   return (
-    <Field
-      formItemProps = {formItemProps}
-      {...formFieldProps}
-    />
+    <ProFormDependency name={dependOn}>
+      {(dependFieldValues) => {
+        return (
+          <Field
+            formItemProps={formItemProps}
+            dependFieldValues={dependFieldValues}
+            {...formFieldProps}
+          />)
+      }}
+    </ProFormDependency>
   )
 });

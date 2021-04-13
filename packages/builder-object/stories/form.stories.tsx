@@ -168,6 +168,30 @@ export const Form = () => {
       ],
       multiple: false,
     },
+    province: {
+      type: 'select',
+      label: '省',
+      group: "省市级联",
+      options:[
+        { label: '北京', value: 'bj' },
+        { label: '上海',   value:'sh' },
+        { label: '江苏', value: 'js' }
+      ]
+    },
+    city: {
+      type: 'select',
+      label: '市',
+      group: "省市级联",
+      depend_on: ["province"],
+      optionsFunction:(values: any)=>{
+        const cityData = {
+          bj: [{ label: '东城区', value: 'bj-1' }, { label: '西城区', value: 'bj-2' }],
+          sh: [{ label: '松江', value: 'sh-1' }, { label: '浦东', value: 'sh-2' }],
+          js: [{ label: '南京', value: 'js-1' }, { label: '杭州', value: 'js-2' }],
+        };
+        return cityData[values.province]
+      }
+    },
     object: {
       type: 'object',
       label: 'object',

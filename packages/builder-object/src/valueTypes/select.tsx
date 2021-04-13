@@ -31,9 +31,9 @@ export const select = {
     return (<span>{value}</span>)
   },
   renderFormItem: (_: any, props: any) => {
-    const { fieldSchema={}, fieldProps={} } = props;
+    const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;
     const {options = [], multiple ,optionsFunction} = fieldSchema;
-    props.fieldProps.options = optionsFunction ? optionsFunction() : options;
+    props.fieldProps.options = optionsFunction ? optionsFunction(dependFieldValues) : options;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
