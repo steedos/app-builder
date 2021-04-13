@@ -66,6 +66,13 @@ export const Form = () => {
         // return "((amount ge 15) and (amount le 40))"
       }
     },
+    contractsNo: {
+      group:'lookup测试',
+      reference_to: 'contracts',
+      reference_to_field: "no",
+      type: 'lookup',
+      label: '合同编号',
+    },
     contracts_sort: {
       group:'lookup测试',
       reference_to: 'contracts',
@@ -124,7 +131,7 @@ export const Form = () => {
     contracts2: {
       group:'lookup测试',
       type: 'lookup',
-      label: '无reference_to只显示文本',
+      label: '无reference_to/只读',
       multiple: true,
       options:[
         { label: '合同1', value: "1" },
