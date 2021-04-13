@@ -31,7 +31,7 @@ export type ObjectFormProps = {
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
-    objectApiName = Settings.currentObjectApiName,
+    objectApiName,
     initialValues = {},
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     recordId = '',

@@ -19,6 +19,12 @@ var define = {
 	}
 }
 
+function toPropName(attrName) {
+	return attrName.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+function toAttrName(propName) {
+  return propName.replace(/([A-Z])/g,"-$1").toLowerCase();
+}
 
 /**
  * Converts a React component into a webcomponent by wrapping it in a Proxy object.
@@ -40,6 +46,10 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 		return self;
 	};
 
+	// Handle attributes changing
+	if (ReactComponent.propTypes) {
+		WebComponent.observedAttributes = Object.keys(ReactComponent.propTypes).map((key)=>{return toAttrName(key)});
+	}
 
 	// Make the class extend HTMLElement
 	var targetPrototype = Object.create(HTMLElement.prototype);
@@ -48,7 +58,7 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 	// But have that prototype be wrapped in a proxy.
 	var proxyPrototype = new Proxy(targetPrototype, {
 		has: function (target, key) {
-			return key in ReactComponent.propTypes ||
+			return key in WebComponent.observedAttributes ||
 				key in targetPrototype;
 		},
 
@@ -71,7 +81,7 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 			if (own) {
 				return own;
 			}
-			if (key in ReactComponent.propTypes) {
+			if (key in WebComponent.observedAttributes) {
 				return { configurable: true, enumerable: true, writable: true, value: undefined };
 			}
 		}
@@ -90,7 +100,8 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 			var data = {};
 			Object.keys(this).forEach(function(key) {
 				if (renderAddedProperties[key] !== false) {
-					data[key] = this[key];
+					var propName = toPropName(key)
+					data[propName] = this[key];
 				}
 			}, this);
 			rendering = true;
@@ -104,7 +115,6 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 
 	// Handle attributes changing
 	if (ReactComponent.propTypes) {
-		WebComponent.observedAttributes = Object.keys(ReactComponent.propTypes);
 		targetPrototype.attributeChangedCallback = function(name, oldValue, newValue) {
 			// TODO: handle type conversion
 			this[name] = newValue;

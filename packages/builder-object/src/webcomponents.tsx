@@ -8,12 +8,12 @@ import { ObjectProvider } from './providers/ObjectProvider';
 
 customElements.define(
   "object-form",
-  reactToWebComponent(ObjectForm, React, ReactDOM, {shadow:false})
+  reactToWebComponent(ObjectForm, React, ReactDOM)
 );
 
 customElements.define(
   "object-provider",
-  reactToWebComponent(ObjectProvider, React, ReactDOM, {shadow:false})
+  reactToWebComponent(ObjectProvider, React, ReactDOM)
 );
 
 // customElements.define('object-provider', ReactCustomElementWithProps(ObjectProvider, ['locale', 'children'], false));
