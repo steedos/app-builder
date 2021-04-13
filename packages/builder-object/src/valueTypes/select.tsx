@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import _ from 'lodash';
 import FieldSelect, {
   proFieldParsingText,
   proFieldParsingValueEnumToArray,
@@ -30,10 +30,11 @@ export const select = {
     const [value] = useState<any>(text)
     return (<span>{value}</span>)
   },
-  renderFormItem: (_: any, props: any) => {
+  renderFormItem: (text: any, props: any) => {
     const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;
-    const {options = [], multiple ,optionsFunction} = fieldSchema;
-    props.fieldProps.options = optionsFunction ? optionsFunction(dependFieldValues) : options;
+    const { options, multiple ,optionsFunction} = fieldSchema;
+    let optionsFunc = _.isFunction(options) ? options({}) : options;
+    props.fieldProps.options = optionsFunction ? optionsFunction(dependFieldValues) : optionsFunc;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
