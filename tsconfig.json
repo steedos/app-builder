@@ -22,8 +22,8 @@
       "@steedos/builder-steedos": ["./packages/builder-steedos/src/index.tsx"],
       "@steedos/builder-object": ["packages/builder-object/src/index.tsx"],
       "@steedos/builder-locale": ["packages/builder-locale/src/index.tsx"],
-      "@emotion/core": ["node_modules/@emotion/react"],
-      "emotion-theming": ["node_modules/@emotion/react"],
+      // "@emotion/core": ["node_modules/@emotion/react"],
+      // "emotion-theming": ["node_modules/@emotion/react"],
     }
   },
   "include": [

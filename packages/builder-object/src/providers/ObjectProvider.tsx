@@ -18,6 +18,7 @@ const defaultQueryClientConfig: any = {
 }
 
 export function ObjectProvider(props: ObjectProviderProps) {
+  console.log(props)
   const {
     locale,
     requestObject,

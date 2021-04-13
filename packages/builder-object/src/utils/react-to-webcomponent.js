@@ -1,6 +1,7 @@
 var reactComponentSymbol = Symbol.for("r2wc.reactComponent");
 var renderSymbol = Symbol.for("r2wc.reactRender");
 var shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
+var _ = require('lodash');
 
 var define = {
 	// Creates a getter/setter that re-renders everytime a property is set.
@@ -94,6 +95,7 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 		// We could add a render method to allow this as well.
 		this[shouldRenderSymbol] = true;
 		this[renderSymbol]();
+
 	};
 	targetPrototype[renderSymbol] = function() {
 		if (this[shouldRenderSymbol] === true) {
@@ -104,10 +106,16 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 					data[propName] = this[key];
 				}
 			}, this);
+			console.log(data)
 			rendering = true;
 			// Container is either shadow DOM or light DOM depending on `shadow` option.
-			const container = options.shadow ? this.shadowRoot : this;
+			const container = options.shadow ? this.shadowRoot : document.createElement('span');
+			if (!options.shadow) {
+				this.appendChild(container);
+			}
+
 			// Use react to render element in container
+			debugger
 			this[reactComponentSymbol] = ReactDOM.render(React.createElement(ReactComponent, data), container);
 			rendering = false;
 		}

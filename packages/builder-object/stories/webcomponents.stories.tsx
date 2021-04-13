@@ -21,9 +21,9 @@ export const Form = () => {
   return (
     <div>
       <object-provider locale='en_US'>
+        <object-form mode='read' object-api-name='accounts'>
+        </object-form>
       </object-provider>
-      <object-form mode='read' object-api-name='accounts'>
-      </object-form>
     </div>
   )
 }

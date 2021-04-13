@@ -31,10 +31,10 @@ export type ObjectFormProps = {
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
-    objectApiName,
+    objectApiName = Settings.currentObjectApiName,
     initialValues = {},
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
-    recordId = '',
+    recordId = Settings.currentRecordId,
     name: formId = 'default',
     mode = 'edit', 
     layout = 'vertical',

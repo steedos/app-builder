@@ -49,8 +49,8 @@
     "dedup": "yarn-deduplicate --strategy highest yarn.lock"
   },
   "resolutions": {
-    "**/react": "17.0.1",
-    "**/react-dom": "17.0.1",
+    "**/react": "17.0.2",
+    "**/react-dom": "17.0.2",
     "@popperjs/core": "2.4.4"
   },
   "dependencies": {
