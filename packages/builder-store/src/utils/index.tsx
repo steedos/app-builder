@@ -6,13 +6,13 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   const fieldType = field && field.type;
   let sub_fields: any;
   // fieldName变量中可能带$和.符号，需要转换成RegExp匹配的带转义符的字符
-  const fieldNameForReg = fieldName.replace("$","\\$").replace(".","\.");
+  const fieldNameForReg = fieldName.replace("$","\\$").replace(".","\\.");
   switch(fieldType){
     case "object":
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
       _.each(objectConfig.fields, (fieldItem, key) => {
-        const reg = new RegExp(`^${fieldNameForReg}\.\\w+$`); //以fieldName开头，且用.号连接下一个字段名
+        const reg = new RegExp(`^${fieldNameForReg}\\.\\\w+$`); //以fieldName开头，且用.号连接下一个字段名
         // if(key.startsWith(`${fieldName}.`)){
         if(reg.test(key)){
           // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
@@ -29,7 +29,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
       _.each(objectConfig.fields, (fieldItem, key) => {
-        const reg = new RegExp(`^${fieldNameForReg}\.\\$\.\\w+$`); //以fieldName开头，且后面接着用.$.号连接下一个字段名
+        const reg = new RegExp(`^${fieldNameForReg}\\.\\$\\.\\\w+$`); //以fieldName开头，且后面接着用.$.号连接下一个字段名
         // if(key.startsWith(`${fieldName}.$.`)){
         if(reg.test(key)){
           // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
@@ -67,7 +67,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
  */
  export function convertFieldsSchema(objectConfig: any) {
   let fieldsSchema: any = {}
-  // console.log("convertFieldsSchema===", JSON.stringify(objectConfig.fields));
+  // console.log("convertFieldsSchema===", objectConfig.name, JSON.stringify(objectConfig.fields));
   _.each(objectConfig.fields, (field, fieldName) => {
     if(/\w+\.($\.)?(\w+)?/.test(fieldName)){
       // 所有的members.users、instances.$._id、sharing.$之类的复合字段会根据需要自动加到sub_fields中，所以不用再加到fieldsSchema中
