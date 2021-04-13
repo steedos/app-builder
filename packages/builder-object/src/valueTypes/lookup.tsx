@@ -13,7 +13,6 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { fieldSchema = {}, dependFieldValues={} ,valueType, mode, fieldProps, ...rest } = props;
-    console.log('props=>',props)
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
@@ -64,7 +63,6 @@ const Lookup = observer((props:any) => {
             );
         }
         let dependOnValues: any = dependFieldValues;
-        console.log('dependOnValues=>',dependOnValues)
         let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
         let request: any;
         let requestFun= async (params: any, props: any) => {
