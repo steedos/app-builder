@@ -12,7 +12,8 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
-    const { fieldSchema = {}, valueType, mode, fieldProps, ...rest } = props;
+    const { fieldSchema = {}, dependFieldValues={} ,valueType, mode, fieldProps, ...rest } = props;
+    console.log('props=>',props)
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
@@ -22,6 +23,7 @@ const Lookup = observer((props:any) => {
         if(value){
             if (reference_to) {
                 const object = Objects.getObject(reference_to);
+                // console.log('object=>',object)
                 const filter = value ? [[reference_to_field, '=', value]] : [];
                 const fields = [reference_to_field, 'name'];
                 if (object.isLoading) return (<div>Loading object ...</div>);
@@ -33,7 +35,7 @@ const Lookup = observer((props:any) => {
                 }
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
-                options = _.isFunction(options) ? options({}) : options;
+                options = _.isFunction(options) ? options(dependFieldValues) : options;
                 // tags = _.filter(options,["value",value])
                 tags = _.filter(options,(optionItem: any)=>{
                     return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
@@ -61,7 +63,8 @@ const Lookup = observer((props:any) => {
                 </Tag>
             );
         }
-        let dependOnValues: any = {}
+        let dependOnValues: any = dependFieldValues;
+        console.log('dependOnValues=>',dependOnValues)
         let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
         let request: any;
         let requestFun= async (params: any, props: any) => {

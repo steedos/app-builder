@@ -193,6 +193,30 @@ export const Form = () => {
         return cityData[values.province]
       }
     },
+    contracts_big: {
+      type: 'lookup',
+      label: '合同分类',
+      group: "lookup联动",
+      options: [
+        { label: '一级合同', value: 'one' },
+        { label: '二级合同', value: 'two' },
+        { label: '三级合同', value: 'three' }
+      ]
+    },
+    contracts_small: {
+      type: 'lookup',
+      label: '合同各类明细',
+      group: "lookup联动",
+      depend_on: ["contracts_big"],
+      optionsFunction: (values: any) => {
+        const smallData = {
+          one : [{ label: '11合同', value: 'one-1' }, { label: '12合同', value: 'one-2' }],
+          two : [{ label: '21合同', value: 'two-1' }, { label: '22合同', value: 'two-2' }],
+          three: [{ label: '31合同', value: 'three-1' }, { label: '32合同', value: 'three-2' }],
+        };
+        return smallData[values.contracts_big]
+      }
+    },
     object: {
       type: 'object',
       label: 'object',
