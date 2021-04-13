@@ -2,7 +2,7 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import { buildQueryString } from './utils/helpers';
 import { Filters, Fields, Options, Record, ODataQuery } from './types/sobject';
 
-const _ = require('underscore');
+import _ from 'underscore';
 
 export default class SObject {
     client: any;

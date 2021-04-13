@@ -30,6 +30,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@steedos/client": "^1.23.0",
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",
     "mobx-state-tree": "^5.0.1"

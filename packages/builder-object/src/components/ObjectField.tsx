@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-// import { BuilderStoreContext } from '@builder.io/react';
 
 import { Field } from '@steedos/builder-form'
 import _ from 'lodash';

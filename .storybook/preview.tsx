@@ -108,6 +108,7 @@ const withSteedos = (StoryFn: Function, context: StoryContext) => {
     tenantId: process.env.STEEDOS_TENANT_ID,
     userId: process.env.STEEDOS_USER_ID,
     authToken: process.env.STEEDOS_AUTH_TOKEN,
+    currentObjectApiName: 'accounts',
     locale: 'zh_CN',
     forms: {},
     objects: {},

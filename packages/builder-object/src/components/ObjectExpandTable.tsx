@@ -14,7 +14,6 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { ActionType } from "react-table"
 import "./ObjectExpandTable.less"
-// import { BuilderStoreContext } from '@builder.io/react';
 
 import {
   ObjectContext,

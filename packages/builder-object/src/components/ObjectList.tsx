@@ -5,7 +5,6 @@
  * @Last Modified by: Kent.Wood
  * @Last Modified time: 2021-03-26 20:52:23
  */
-// import { BuilderStoreContext } from '@builder.io/react';
 
 import { API } from "@steedos/builder-store"
 import { List, Button, Checkbox } from "antd"

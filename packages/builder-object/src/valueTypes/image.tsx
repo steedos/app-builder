@@ -5,7 +5,7 @@ import { Input } from 'antd';
 import { Upload, Button, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Image } from "antd";
-const { STEEDOS_ROOT_URL, STEEDOS_USER_ID, STEEDOS_TENANT_ID, STEEDOS_AUTH_TOKEN } = process.env
+import { Settings } from '@steedos/builder-store';
 import FieldImage from '@ant-design/pro-field/es/components/Image';
 
 /*
@@ -32,7 +32,7 @@ const renderFormItem = (text: any, props: any, formMode) => {
     let { onChange } = fieldProps;
 
     if (formMode === 'read') {
-        let url = STEEDOS_ROOT_URL + '/api/files/images/' + text;
+        let url = Settings.rootUrl + '/api/files/images/' + text;
         const proFieldProps = {
             mode: formMode
         }
@@ -59,7 +59,7 @@ const renderFormItem = (text: any, props: any, formMode) => {
         };
         const propsOther = {
             // http://127.0.0.1:5080/s3/images
-            action: STEEDOS_ROOT_URL + '/s3/images',
+            action: Settings.rootUrl + '/s3/images',
             listType: 'picture-card',
             fileList,
             onPreview,
@@ -69,12 +69,12 @@ const renderFormItem = (text: any, props: any, formMode) => {
             // maxCount: '1',
             data: {
                 // TODO: 暂时获取不能灵活获取 space 和 owner 值
-                space: STEEDOS_TENANT_ID,
-                owner: STEEDOS_USER_ID
+                space: Settings.tenantId,
+                owner: Settings.userId
             },
             headers: {
-                'X-User-Id': STEEDOS_USER_ID,
-                'X-Auth-Token': STEEDOS_AUTH_TOKEN
+                'X-User-Id': Settings.userId,
+                'X-Auth-Token': Settings.authToken
             },
             onChange: (options: any) => {
                 const { file, fileList: newFileList } = options;

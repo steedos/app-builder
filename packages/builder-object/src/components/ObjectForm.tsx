@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-// import { BuilderStoreContext } from '@builder.io/react';
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
@@ -10,7 +9,7 @@ import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import { Objects, Forms, API } from '@steedos/builder-store';
+import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 
 import './ObjectForm.less'
@@ -32,7 +31,7 @@ export type ObjectFormProps = {
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
-    objectApiName,
+    objectApiName = Settings.currentObjectApiName,
     initialValues = {},
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     recordId = '',
@@ -147,8 +146,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
 
 
-Form['propTypes'] = {
+ObjectForm['propTypes'] = {
   objectApiName: PropTypes.string,
-  'object-api-name': PropTypes.string,
   mode: PropTypes.string,
 };

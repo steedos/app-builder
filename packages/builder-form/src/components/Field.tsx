@@ -10,7 +10,6 @@ import { FormContext } from "antd/es/form/context";
 import { ProFormDatePicker } from "@ant-design/pro-form";
 import createField from '@ant-design/pro-form/es/BaseForm/createField'
 
-import { BuilderStoreContext } from "@builder.io/react";
 import { ProFormItemProps } from "@ant-design/pro-form/es/interface";
 import { Forms } from '@steedos/builder-store';
 

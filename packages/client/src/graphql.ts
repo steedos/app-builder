@@ -1,4 +1,5 @@
-const _ = require('underscore');
+import _ from 'underscore';
+
 export default class Graphql {
     client: any;
     constructor(client){

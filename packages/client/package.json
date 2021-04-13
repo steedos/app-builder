@@ -3,14 +3,26 @@
   "name": "@steedos/client",
   "version": "1.23.20",
   "description": "client lib for steedos",
-  "main": "lib/index.js",
-  "types": "index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "watch": "tsc --watch",
-    "compile": "tsc",
-    "build": "tsc",
-    "prepare": "tsc",
-    "test": "mocha test/unit/*.ts"
+    "prebuild": "rimraf dist",
+    "test": "mocha test/unit/*.ts",
+    "build": "concurrently yarn:build:*",
+    "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types"
   },
   "devDependencies": {
     "chai": "^4.3.3",
