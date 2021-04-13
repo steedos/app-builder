@@ -32,9 +32,9 @@ export const select = {
   },
   renderFormItem: (text: any, props: any) => {
     const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;
-    const { options, multiple ,optionsFunction} = fieldSchema;
-    let optionsFunc = _.isFunction(options) ? options({}) : options;
-    props.fieldProps.options = optionsFunction ? optionsFunction(dependFieldValues) : optionsFunc;
+    const { multiple ,optionsFunction} = fieldSchema;
+    let options = optionsFunction ? optionsFunction : fieldSchema.options;
+    props.fieldProps.options = _.isFunction(options) ? options(dependFieldValues) : options;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
