@@ -296,28 +296,33 @@ export const FormWithChildren = () => {
 
 export const Table = () => {
   return (
-      <ObjectTable objectApiName='accounts' columnFields={
-        [
-          {
-            fieldName: 'name'
-          },
-          {
-            fieldName: 'parent_id'
-          },
-          {
-            fieldName: 'created'
-          },
-          {
-            fieldName: 'created_by'
-          },
-          // {
-          //   fieldName: 'type'
-          // },
-          // {
-          //   fieldName: 'rating'
-          // }
-        ]
-      }>
+      <ObjectTable objectApiName='accounts' 
+        pagination={{
+          pageSize:3
+        }}
+        columnFields={
+          [
+            {
+              fieldName: 'name'
+            },
+            {
+              fieldName: 'parent_id'
+            },
+            {
+              fieldName: 'created'
+            },
+            {
+              fieldName: 'created_by'
+            },
+            // {
+            //   fieldName: 'type'
+            // },
+            // {
+            //   fieldName: 'rating'
+            // }
+          ]
+        }
+      >
         
       </ObjectTable>
   )
