@@ -1,7 +1,7 @@
 import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectExpandTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
-
+import { API } from '@steedos/builder-store';
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
@@ -215,6 +215,30 @@ export const Form = () => {
           three: [{ label: '31合同', value: 'three-1' }, { label: '32合同', value: 'three-2' }],
         };
         return smallData[values.contracts_big]
+      }
+    },
+    contracts_refeto_big: {
+      reference_to: 'contract_types',
+      type: 'lookup',
+      label: '合同分类',
+      group: "lookup联动有reference_to",
+      multiple: true,
+    },
+    contracts_refeto_small: {
+      reference_to: 'contracts',
+      type: 'lookup',
+      label: '合同',
+      group: "lookup联动有reference_to",
+      depend_on: ["contracts_refeto_big"],
+      optionsFunction: async (values: any) => {
+        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_refeto_big]], ["_id",'name'], {'pageSize':'10'});
+        const results = data.value.map((item: any) => {
+            return {
+                label: item.name,
+                value: item['_id']
+            }
+        })
+        return results;
       }
     },
     object: {
