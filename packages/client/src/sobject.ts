@@ -41,20 +41,14 @@ export default class SObject {
             if(options.pageSize){
                 params.$top = options.pageSize;
             }
-            if(options.current){
-                params.$skip = options.current * options.pageSize;
+            // current是从1开始的页码索引
+            if(options.current && options.pageSize){
+                params.$skip = (options.current - 1) * options.pageSize;
             }
             if(typeof options.sort === 'string'){
                 params.$orderby = options.sort;
             }
         }
-        // $top?: Number,
-        // $skip?: Number,
-        // $orderby?: Number,
-
-        //   pageSize: number,
-        //   current: number,
-        //   sort: any
         return params;
     }
 
