@@ -37,6 +37,8 @@ export const Field = observer((props: any) => {
     isWide = false,
     showInlineIcon = valueType != 'object' && valueType != 'grid',
     formItemProps = {},
+    dependFieldValues = {},
+    fieldSchema = {},
     // type,
     // count,
     // defaultValue,
