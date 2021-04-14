@@ -6,7 +6,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   const fieldType = field && field.type;
   let sub_fields: any;
   // fieldName变量中可能带$和.符号，需要转换成RegExp匹配的带转义符的字符
-  const fieldNameForReg = fieldName.replace("$","\\$").replace(".","\\.");
+  const fieldNameForReg = fieldName.replace(/\$/g,"\\$").replace(/\./g,"\\.");
   switch(fieldType){
     case "object":
       // 根据对象的子表字段信息，返回子表配置属性
