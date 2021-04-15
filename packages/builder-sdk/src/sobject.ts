@@ -45,8 +45,18 @@ export default class SObject {
             if(options.current && options.pageSize){
                 params.$skip = (options.current - 1) * options.pageSize;
             }
+            let sortIsNull:any;
             if(typeof options.sort === 'string'){
-                params.$orderby = options.sort;
+                sortIsNull=options.sort;
+            }else if(_.isArray(options.sort)){
+                let order = _.map(options.sort,(value)=>{
+                    let order2 = value[1]==='desc' ? value[0] + ' desc' : value[0];
+                    return order2;
+                }).join(",")
+                sortIsNull=order;
+            }
+            if(sortIsNull){
+                params.$orderby=sortIsNull;
             }
         }
         return params;
