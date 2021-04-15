@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { observer } from "mobx-react-lite"
 import { FormContext } from "antd/es/form/context";
 import { ProFormDependency } from '@ant-design/pro-form';
-import { FormModel, Forms } from '@steedos/builder-store';
+import { Forms } from '@steedos/builder-store';
 
 export type ObjectFieldProps = {
   objectApiName?: string,

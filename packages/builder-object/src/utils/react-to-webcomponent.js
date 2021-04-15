@@ -91,6 +91,12 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 
 	// Setup lifecycle methods
 	targetPrototype.connectedCallback = function() {
+		this.children = []
+		this.childNodes.forEach(node => {
+			this.children.push(node)
+			console.log(node.nodeName)
+		})
+
 		// Once connected, it will keep updating the innerHTML.
 		// We could add a render method to allow this as well.
 		this[shouldRenderSymbol] = true;
@@ -101,21 +107,25 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 		if (this[shouldRenderSymbol] === true) {
 			var data = {};
 			Object.keys(this).forEach(function(key) {
-				if (renderAddedProperties[key] !== false) {
+				if (renderAddedProperties[key] !== false && !key.startsWith('__react')) {
 					var propName = toPropName(key)
 					data[propName] = this[key];
 				}
 			}, this);
+			data.children = this.childNodes;
 			console.log(data)
 			rendering = true;
 			// Container is either shadow DOM or light DOM depending on `shadow` option.
-			const container = options.shadow ? this.shadowRoot : document.createElement('span');
-			if (!options.shadow) {
-				this.appendChild(container);
-			}
+			// const container = options.shadow ? this.shadowRoot : document.createElement('span');
+			// if (!options.shadow) {
+			// 	this.appendChild(container);
+			// }
+			const container = options.shadow ? this.shadowRoot : this;
 
 			// Use react to render element in 
-			this[reactComponentSymbol] = ReactDOM.render(React.createElement(ReactComponent, data), container);
+			this[reactComponentSymbol] = ReactDOM.render(
+				React.createElement(ReactComponent, data), container
+			);
 			rendering = false;
 		}
 	};

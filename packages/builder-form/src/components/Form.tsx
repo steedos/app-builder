@@ -7,7 +7,7 @@ import BaseForm from '@ant-design/pro-form/es/BaseForm';
 import { observer } from "mobx-react-lite"
 import _ from 'lodash'
 
-import { FormModel, Forms } from '@steedos/builder-store';
+import { Forms } from '@steedos/builder-store';
 
 // 在 ProForm的基础上扩展属性
 // colSpan: 每一列默认占几栅格，总共12栅格

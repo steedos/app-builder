@@ -12,7 +12,7 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { registerObjectListComponent } from ".."
+// import { registerObjectListComponent } from ".."
 import "./ObjectList.less"
 export type ObjectListProps =
   | ({
@@ -48,7 +48,7 @@ export const ObjectList = observer((props: ObjectListProps) => {
       return await API.requestObject(objectApiName as string)
     }
   )
-  if (objectSchema) registerObjectListComponent(_.keys(objectSchema.fields))
+  // if (objectSchema) registerObjectListComponent(_.keys(objectSchema.fields))
   //上边都是schema相关的操作
   //下边才是去请求数据
 
