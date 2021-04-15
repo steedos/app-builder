@@ -288,6 +288,13 @@ export const Form = () => {
         return results;
       }
     },
+    orderNo: {
+      reference_to: 'order',
+      type: 'lookup',
+      label: '订单',
+      group: "NAME_FIELD_KEY测试",
+      multiple: true,
+    },
     object: {
       type: 'object',
       label: 'object',
