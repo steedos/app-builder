@@ -1,6 +1,6 @@
 import { Builder } from '@builder.io/react';
 import _ from 'lodash';
-import { ObjectField } from "../";
+import { ObjectField } from "./ObjectField";
 
 export const configObjectField: any = {
   name: 'Steedos:ObjectField',

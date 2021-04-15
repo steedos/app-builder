@@ -16,6 +16,7 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "rimraf dist",
     "build-rollup": "rollup -c rollup.config.ts",
     "build": "concurrently yarn:build:*",
     "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps --copy-files",
