@@ -1,1 +1,1 @@
-declare module '@steedos/client';
+declare module '@steedos/builder-sdk';

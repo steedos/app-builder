@@ -1,7 +1,7 @@
 {
   "private": false,
-  "name": "@steedos/client",
-  "version": "1.23.20",
+  "name": "@steedos/builder-sdk",
+  "version": "1.0.0",
   "description": "client lib for steedos",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -38,5 +38,5 @@
     "@steedos/filters": "^1.23.22",
     "node-fetch": "^2.6.1"
   },
-  "repository": "https://github.com/steedos/app-builder/tree/master/packages/client"
+  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-sdk"
 }

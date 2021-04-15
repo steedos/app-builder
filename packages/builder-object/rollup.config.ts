@@ -28,7 +28,7 @@ const options = {
     typescript({ useTsconfigDeclarationDir: true }),
     alias({
       entries: {
-        "@steedos/client": "../../packages/client/src/index.ts",
+        "@steedos/builder-sdk": "../../packages/builder-sdk/src/index.ts",
         "@steedos/builder-store": "../../packages/builder-store/src/index.tsx",
         "@steedos/builder-ant-design": "../../packages/builder-ant-design/src/index.tsx",
         "@steedos/builder-form": "../../packages/builder-form/src/index.tsx",

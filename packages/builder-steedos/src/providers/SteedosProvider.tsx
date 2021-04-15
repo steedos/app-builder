@@ -2,7 +2,7 @@
 import React from "react";
 
 import { getSnapshot } from "mobx-state-tree";
-import { SteedosClient } from '@steedos/client';
+import { SteedosClient } from '@steedos/builder-sdk';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
 import { Settings, API } from "@steedos/builder-store";
