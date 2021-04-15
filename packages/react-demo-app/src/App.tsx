@@ -10,24 +10,19 @@ import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
-const {
-  REACT_APP_STEEDOS_ROOT_URL,
-  REACT_APP_STEEDOS_TENANT_ID,
-  REACT_APP_STEEDOS_USER_ID,
-  REACT_APP_STEEDOS_AUTH_TOKEN,
-  REACT_APP_STEEDOS_LOCALE = "zh_CN",
-} = process.env
+import { Settings } from '@steedos/builder-store'
+
 
 function App(props: any) {
   let queryObject = queryString.parse(window.location.search.slice(1))
   const providerProps = {
-    rootUrl: queryObject.rooturl || REACT_APP_STEEDOS_ROOT_URL || "/",
+    rootUrl: queryObject.rooturl || Settings.rootUrl || "/",
     tenantId:
-      queryObject.spaceid || getSpaceId() || REACT_APP_STEEDOS_TENANT_ID, //REACT_APP_STEEDOS_TENANT_ID,
-    userId: queryObject.userid || getUserId() || REACT_APP_STEEDOS_USER_ID,
+      queryObject.spaceid || getSpaceId() || Settings.tenantId, //REACT_APP_STEEDOS_TENANT_ID,
+    userId: queryObject.userid || getUserId() || Settings.userId,
     authToken:
-      queryObject.authtoken || getAuthToken() || REACT_APP_STEEDOS_AUTH_TOKEN,
-    locale: REACT_APP_STEEDOS_LOCALE,
+      queryObject.authtoken || getAuthToken() || Settings.authToken,
+    locale: Settings.locale,
   }
 
   const [selectedUser, setSelectedUsers] = useState([])
