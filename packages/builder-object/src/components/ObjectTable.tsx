@@ -61,7 +61,9 @@ export const getObjectTableProColumn = (field: any) => {
   }
 
   if (field.sortable) {
-    proColumnProps.sorter = true
+    proColumnProps.sorter = {
+        multiple: 1
+    };
   }
 
   proColumnProps.valueType = fieldType
