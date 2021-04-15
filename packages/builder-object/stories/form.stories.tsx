@@ -182,7 +182,6 @@ export const Form = () => {
       group: "select测试",
       depend_on: ["contracts_func_big"],
       optionsFunction: async (values: any) => {
-        console.log('values=>',values)
         const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_func_big]], ["_id",'name'], {'pageSize':'10'});
         const results = data.value.map((item: any) => {
             return {
@@ -190,7 +189,6 @@ export const Form = () => {
                 value: item['_id']
             }
         })
-        console.log('results=>',results)
         return results;
       },
     },
