@@ -143,7 +143,15 @@ const Lookup = observer((props:any) => {
                 }
             }
         }else{ // 最后一种情况 没有reference_to 只有options 或 optionsFunction 
-            fieldProps.options = _.isFunction(options) ? options(dependOnValues) : options;
+            if(_.isFunction(options)){
+                request = async (params: any, props: any) => {
+                  dependFieldValues.__keyWords = params.keyWords;
+                  const results = await options(dependFieldValues);
+                  return results;
+                };
+              }else{
+                fieldProps.options = options;
+              }
         }
         const onDropdownVisibleChange = (open: boolean) => {
             if (open) {

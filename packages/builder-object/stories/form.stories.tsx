@@ -169,6 +169,29 @@ export const Form = () => {
       ],
       multiple: false,
     },
+    contracts_func_big: {
+      reference_to: 'contract_types',
+      type: 'lookup',
+      label: '合同分类',
+      group: "select测试",
+      multiple: true,
+    },
+    contracts_func_small: {
+      type: 'select',
+      label: 'option is func',
+      group: "select测试",
+      depend_on: ["contracts_func_big"],
+      optionsFunction: async (values: any) => {
+        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_func_big]], ["_id",'name'], {'pageSize':'10'});
+        const results = data.value.map((item: any) => {
+            return {
+                label: item.name,
+                value: item['_id']
+            }
+        })
+        return results;
+      },
+    },
     province: {
       type: 'select',
       label: '省',
@@ -232,6 +255,30 @@ export const Form = () => {
       depend_on: ["contracts_refeto_big"],
       optionsFunction: async (values: any) => {
         const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_refeto_big]], ["_id",'name'], {'pageSize':'10'});
+        const results = data.value.map((item: any) => {
+            return {
+                label: item.name,
+                value: item['_id']
+            }
+        })
+        return results;
+      }
+    },
+    contracts_re_big: {
+      reference_to: 'contract_types',
+      type: 'lookup',
+      label: '1合同分类',
+      group: "no reference_to func request",
+      multiple: true,
+    },
+    contracts_re_small: {
+      // reference_to: 'contracts',
+      type: 'lookup',
+      label: '1合同',
+      group: "no reference_to func request",
+      depend_on: ["contracts_re_big"],
+      optionsFunction: async (values: any) => {
+        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_re_big]], ["_id",'name'], {'pageSize':'10'});
         const results = data.value.map((item: any) => {
             return {
                 label: item.name,
