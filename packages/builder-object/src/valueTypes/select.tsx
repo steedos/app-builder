@@ -43,17 +43,15 @@ export const select = {
         }
       }
       proFieldProps = {
-        showSearch: true,
-        optionFilterProp: 'label',
         request,
         params,
         onDropdownVisibleChange,
       }
     }else{
-      props.fieldProps.options = _.isFunction(options) ? options(dependFieldValues) : options;
-      props.fieldProps.filterOption=(input, option)=>{ return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 };
+      props.fieldProps.options = options;
     }
-
+    proFieldProps.showSearch=true;
+    proFieldProps.optionFilterProp='label';
     // TODO: multiple：如果是true, 后期 需要 支持对已选中项进行拖动排序
     return (
       <FieldSelect mode='edit' {...props} {...proFieldProps} />
