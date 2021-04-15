@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash';
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
@@ -20,20 +20,43 @@ export const select = {
     )})}</React.Fragment>)
   },
   renderFormItem: (text: any, props: any) => {
+    const [params, setParams] = useState({open: false,openTag: null});
     const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;
     const { multiple ,optionsFunction} = fieldSchema;
     let options = optionsFunction ? optionsFunction : fieldSchema.options;
-    props.fieldProps.options = _.isFunction(options) ? options(dependFieldValues) : options;
     if (multiple){
       fieldProps.mode = 'multiple';
     }
-    function filterOption(input, option){
-      return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    let proFieldProps:any = {};
+    let request:any;
+    let onDropdownVisibleChange:any;
+
+    if(_.isFunction(options)){
+      request = async (params: any, props: any) => {
+        dependFieldValues.__keyWords = params.keyWords;
+        const results = await options(dependFieldValues);
+        return results;
+      };
+      onDropdownVisibleChange = (open: boolean) => {
+        if (open) {
+            setParams({ open, openTag: new Date() });
+        }
+      }
+      proFieldProps = {
+        showSearch: true,
+        optionFilterProp: 'label',
+        request,
+        params,
+        onDropdownVisibleChange,
+      }
+    }else{
+      props.fieldProps.options = _.isFunction(options) ? options(dependFieldValues) : options;
+      props.fieldProps.filterOption=(input, option)=>{ return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 };
     }
-    props.fieldProps.filterOption=filterOption;
+
     // TODO: multiple：如果是true, 后期 需要 支持对已选中项进行拖动排序
     return (
-      <FieldSelect mode='edit' {...props} />
+      <FieldSelect mode='edit' {...props} {...proFieldProps} />
     )
   },
 }

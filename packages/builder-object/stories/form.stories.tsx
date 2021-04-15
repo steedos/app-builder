@@ -169,6 +169,31 @@ export const Form = () => {
       ],
       multiple: false,
     },
+    contracts_func_big: {
+      reference_to: 'contract_types',
+      type: 'lookup',
+      label: '合同分类',
+      group: "select测试",
+      multiple: true,
+    },
+    contracts_func_small: {
+      type: 'select',
+      label: 'option is func',
+      group: "select测试",
+      depend_on: ["contracts_func_big"],
+      optionsFunction: async (values: any) => {
+        console.log('values=>',values)
+        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_func_big]], ["_id",'name'], {'pageSize':'10'});
+        const results = data.value.map((item: any) => {
+            return {
+                label: item.name,
+                value: item['_id']
+            }
+        })
+        console.log('results=>',results)
+        return results;
+      },
+    },
     province: {
       type: 'select',
       label: '省',
