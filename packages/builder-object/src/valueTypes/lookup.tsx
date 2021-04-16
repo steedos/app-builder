@@ -13,9 +13,7 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
-    console.log("==Lookup=props====", props);
     const { fieldSchema = {},dependFieldValues={} } = fieldProps;
-    console.log("==Lookup=fieldSchema====", fieldSchema);
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
