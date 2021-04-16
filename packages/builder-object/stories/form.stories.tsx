@@ -140,6 +140,20 @@ export const Form = () => {
         { label: '合同3', value: "3" },
       ],
     },
+    contracts_reference_to_func: {
+      reference_to:()=>{
+        return 'contracts'
+      },
+      group:'lookup测试',
+      type: 'lookup',
+      label: '有reference_to为func',
+      // multiple: true,
+      // options:[
+      //   { label: '合同1', value: "1" },
+      //   { label: '合同2', value: "2" },
+      //   { label: '合同3', value: "3" },
+      // ],
+    },
     populationType: {
       group: 'select测试',
       type: 'select',
