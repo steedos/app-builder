@@ -20,10 +20,10 @@ const Lookup = observer((props:any) => {
     const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     if(mode==='read'){
-        const hrefPrefix = `/app/-/${reference_to}/view/`
+        const hrefPrefix = `/app/-/${referenceTo}/view/`
         if(value){
-            if (reference_to) {
-                const object = Objects.getObject(reference_to);
+            if (referenceTo) {
+                const object = Objects.getObject(referenceTo);
                 if (object.isLoading) return (<div>Loading object ...</div>);
                 let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                 const filter = value ? [[reference_to_field, '=', value]] : [];
@@ -47,23 +47,13 @@ const Lookup = observer((props:any) => {
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
                 {/* <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a> */}
-                { reference_to ? (<a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>) : (tagItem.label) }
+                { referenceTo ? (<a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>) : (tagItem.label) }
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
         if (multiple)
             fieldProps.mode = 'multiple';
 
-        const tagRender = (props) => {
-            const { label, value, closable, onClose } = props;
-            const href = `/app/-/${reference_to}/view/${value}`
-            return (
-                <Tag closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
-                    {mode === 'read' && (<a href={href}>{label}</a>)}
-                    {mode != 'read' && (<span>{label}</span>)}
-                </Tag>
-            );
-        }
         let dependOnValues: any = dependFieldValues;
         let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
         let request: any;
@@ -134,18 +124,18 @@ const Lookup = observer((props:any) => {
             }
         }
         
-        if (reference_to){ // 含有reference_to
-            if (reference_to && !options) {
+        if (referenceTo){ // 含有reference_to
+            if (referenceTo && !options) {
                 request = requestFun;
             }
-            if (reference_to && options) {
+            if (referenceTo && options) {
                 if (_.isArray(options)) {
                     fieldProps.options = options;
                 } else if (_.isFunction(options)) {
                     request = requestFun;
                 }
             }
-        }else{ // 最后一种情况 没有reference_to 只有options 或 optionsFunction 
+        }else{ // 最后一种情况 没有referenceTo 只有options 或 optionsFunction 
             if(_.isFunction(options)){
                 request = async (params: any, props: any) => {
                   dependFieldValues.__keyWords = params.keyWords;
@@ -168,7 +158,6 @@ const Lookup = observer((props:any) => {
             showArrow: true,
             optionFilterProp: 'label',
             fieldProps,
-            tagRender,
             request,
             params,
             onDropdownVisibleChange,
