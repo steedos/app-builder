@@ -16,6 +16,7 @@ const Lookup = observer((props:any) => {
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value;
     let tags:any[] = [];
+    const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     if(mode==='read'){
         const hrefPrefix = `/app/-/${reference_to}/view/`
@@ -75,7 +76,7 @@ const Lookup = observer((props:any) => {
                 return results;
             }
             else{
-                const object = Objects.getObject(reference_to);
+                const object = Objects.getObject(referenceTo);
                 let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                 let filters: any = [], textFilters: any = [], keyFilters: any = [];
                 if (props.text)
@@ -121,7 +122,7 @@ const Lookup = observer((props:any) => {
                 if (reference_limit) {
                     option.pageSize = reference_limit
                 }
-                const data = await API.requestRecords(reference_to, filters, fields, option);
+                const data = await API.requestRecords(referenceTo, filters, fields, option);
                 const results = data.value.map((item: any) => {
                     return {
                         label: item[referenceToLableField],
