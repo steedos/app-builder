@@ -17,8 +17,7 @@ export type ObjectFieldProps = {
 export const ObjectField = observer((props: any) => {
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
-  const { fieldName, fieldSchema } = props
-  let objectApiName = props.objectApiName;
+  const { objectApiName, fieldName, fieldSchema } = props
   
   /*
     TODO: fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。

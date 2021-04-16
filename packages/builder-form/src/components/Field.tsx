@@ -44,6 +44,7 @@ export const Field = observer((props: any) => {
     // options,
     ...rest
   } = props
+
   const mode = Forms.loadById(formId).mode
   const formItemPropsMerged = {
     ...attributes,
@@ -67,11 +68,20 @@ export const Field = observer((props: any) => {
 
   const ProFieldWrap = observer((props: any) => {
 
-    const { readonly, mode, ...rest } = props
+    const { 
+      readonly, 
+      mode, 
+      fieldSchema,
+      fieldProps,
+      dependFieldValues, ...rest } = props
 
     const proFieldProps = {
       readonly,
       emptyText: '',
+      fieldProps: Object.assign({}, fieldProps, {
+        fieldSchema,
+        dependFieldValues,
+      }),
       ...rest
     }
 

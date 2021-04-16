@@ -4,7 +4,8 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
 export const select = {
   render: (text: any, props: any)=> {
-    const { fieldSchema = {},dependFieldValues={}, valueType, mode, fieldProps, ...rest } = props;
+    const { valueType, mode, fieldProps, ...rest } = props;
+    const { fieldSchema = {},dependFieldValues={} } = fieldProps;
     let tags:any;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     options = _.isFunction(options) ? options(dependFieldValues) : options;
@@ -21,7 +22,8 @@ export const select = {
   },
   renderFormItem: (text: any, props: any) => {
     const [params, setParams] = useState({open: false,openTag: null});
-    const { fieldSchema={}, fieldProps={}, dependFieldValues={} } = props;
+    const { fieldProps={} } = props;
+    const { fieldSchema = {},dependFieldValues={} } = fieldProps;
     const { multiple ,optionsFunction} = fieldSchema;
     let options = optionsFunction ? optionsFunction : fieldSchema.options;
     if (multiple){

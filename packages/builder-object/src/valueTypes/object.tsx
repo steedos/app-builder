@@ -55,7 +55,8 @@ import { FieldSection } from '@steedos/builder-form';
 export const ObjectFieldObject = (props:any) => {
   const [form] = AntForm.useForm();
 
-  const {mode='read', text =[], objectApiName, fieldSchema={}, fieldProps={}} = props;
+  const {mode='read', text =[], fieldProps={}} = props;
+  const { fieldSchema = {}, dependFieldValues={} } = fieldProps;
   const {value:initialValues, onChange} = fieldProps;
   const {sub_fields={}, columns = 2} = fieldSchema;
   const label = fieldSchema.label? fieldSchema.label: fieldSchema.name
@@ -66,7 +67,6 @@ export const ObjectFieldObject = (props:any) => {
       const fieldItemProps = {
         key: fieldName,
         name: fieldName,
-        objectApiName,
         fieldName: fieldName,
         label: field.label?field.label:fieldName,
         fieldSchema: field,

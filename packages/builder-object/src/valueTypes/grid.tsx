@@ -15,8 +15,8 @@ import React, { useState } from 'react';
 // props.fields [] 列数组
 export const ObjectFieldGrid = (props) => {
   
-  const {mode='read', text =[], fieldSchema={}, fieldProps={}} = props;
-  const {value:initialValue, onChange} = fieldProps;
+  const {mode='read', text =[], fieldProps={}} = props;
+  const { fieldSchema = {}, dependFieldValues={}, value:initialValue, onChange } = fieldProps;
   
   _.forEach(initialValue, (row)=>{
     if (!row._id)
