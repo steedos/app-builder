@@ -63,7 +63,8 @@ export default class SObject {
     }
 
     async getConfig(){
-        const url = `${this.client.getBootstrapRoute()}/${this.objectName}`;
+        // const url = `${this.client.getBootstrapRoute()}/${this.objectName}`;
+        const url = `${this.client.getUrl()}/service/api/@${this.objectName}/uiSchema`;
         return await this.client.doFetch(url, {method: 'get'});
     }
 
