@@ -9,7 +9,7 @@ export const select = {
     let tags:any;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     options = _.isFunction(options) ? options(dependFieldValues) : options;
-    const value = fieldProps.value;
+    const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     tags = _.filter(options,(optionItem: any)=>{
         return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
     })

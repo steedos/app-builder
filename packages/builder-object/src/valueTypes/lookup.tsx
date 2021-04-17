@@ -15,7 +15,7 @@ const Lookup = observer((props:any) => {
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { fieldSchema = {},dependFieldValues={} } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
-    const value = fieldProps.value;
+    const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
     const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
