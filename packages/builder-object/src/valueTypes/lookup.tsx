@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
-import { Tag } from 'antd';
+import { Tag , Select} from 'antd';
 import _ from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
+const { Option } = Select;
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
@@ -17,7 +18,8 @@ const Lookup = observer((props:any) => {
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
-    const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
+    let referenceTos = _.isFunction(reference_to) ? reference_to() : reference_to;
+    const [referenceTo, setReferenceTo] = useState(_.isArray(referenceTos) ? referenceTos[0] : referenceTos);
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     if(mode==='read'){
         const hrefPrefix = `/app/-/${referenceTo}/view/`
@@ -163,8 +165,30 @@ const Lookup = observer((props:any) => {
             onDropdownVisibleChange,
             ...rest
         }
+        const SelectProFieldProps = {
+            mode: mode,
+            showSearch: true,
+            showArrow: true,
+            optionFilterProp: 'label',
+            onChange: (value: any) => {
+                setReferenceTo(value)
+            },
+            defaultValue:referenceTo
+        }
         return (
-            <FieldSelect {...proFieldProps} />
+            <React.Fragment>
+                {
+                    _.isArray(referenceTos) && 
+                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
+                        {
+                            _.map(referenceTos,(value)=>{
+                                return (<Option value={value} key={value}>{value}</Option>)
+                            })
+                        }
+                    </Select>)
+                }
+                <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }}/>
+            </React.Fragment>
         )
     }
 });
