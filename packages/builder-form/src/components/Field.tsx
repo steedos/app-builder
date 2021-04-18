@@ -76,7 +76,6 @@ export const Field = observer((props: any) => {
       dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
 
     const proFieldProps = {
-      readonly,
       emptyText: '',
       fieldProps: Object.assign({}, fieldProps, {
         field_schema: fieldSchema,
