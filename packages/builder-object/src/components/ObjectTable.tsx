@@ -55,7 +55,7 @@ export const getObjectTableProColumn = (field: any) => {
     dataIndex: field.name,
     formItemProps: {},
     fieldProps: {
-      fieldSchema: field
+      field_schema: field
     },
   }
   if (field.required) {
