@@ -142,8 +142,7 @@ export const Form = () => {
     },
     contracts_reference_to_func: {
       reference_to:()=>{
-        // return 'contracts'
-        return ['contracts','contract_types'];
+        return 'contracts'
       },
       group:'lookup测试',
       type: 'lookup',
