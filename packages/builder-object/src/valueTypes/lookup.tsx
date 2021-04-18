@@ -47,7 +47,7 @@ const Lookup = observer((props:any) => {
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
                 {/* <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a> */}
-                { referenceTo ? (<a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a>) : (tagItem.label) }
+                { referenceTo ? (<a href={`${hrefPrefix}${tagItem.value}`} className="text-blue-600 hover:text-blue-500 hover:underline">{tagItem.label}</a>) : (tagItem.label) }
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
