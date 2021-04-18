@@ -73,7 +73,7 @@ export const Field = observer((props: any) => {
       mode, 
       fieldSchema,
       fieldProps,
-      dependFieldValues, ...rest } = props
+      dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
 
     const proFieldProps = {
       readonly,
