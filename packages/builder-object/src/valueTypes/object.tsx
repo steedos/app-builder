@@ -56,7 +56,7 @@ export const ObjectFieldObject = (props:any) => {
   const [form] = AntForm.useForm();
 
   const {mode='read', text =[], fieldProps={}} = props;
-  const { fieldSchema = {}, dependFieldValues={} } = fieldProps;
+  const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={} } = fieldProps;
   const {value:initialValues, onChange} = fieldProps;
   const {sub_fields={}, columns = 2} = fieldSchema;
   const label = fieldSchema.label? fieldSchema.label: fieldSchema.name

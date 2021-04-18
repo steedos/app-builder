@@ -79,8 +79,8 @@ export const Field = observer((props: any) => {
       readonly,
       emptyText: '',
       fieldProps: Object.assign({}, fieldProps, {
-        fieldSchema,
-        dependFieldValues,
+        field_schema: fieldSchema,
+        depend_field_values: dependFieldValues,
       }),
       ...rest
     }

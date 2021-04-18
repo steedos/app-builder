@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 export const ObjectFieldGrid = (props) => {
   
   const {mode='read', text =[], fieldProps={}} = props;
-  const { fieldSchema = {}, dependFieldValues={}, value:initialValue, onChange } = fieldProps;
+  const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
   
   _.forEach(initialValue, (row)=>{
     if (!row._id)

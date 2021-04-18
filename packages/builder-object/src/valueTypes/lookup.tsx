@@ -13,7 +13,7 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
-    const { fieldSchema = {},dependFieldValues={} } = fieldProps;
+    const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
