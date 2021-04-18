@@ -56,7 +56,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   if (object.schema) {
     const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
     fieldSchemaArray.length = 0
-    _.mapKeys(mergedSchema.fields, (field, fieldName) => {
+    _.forEach(mergedSchema.fields, (field, fieldName) => {
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (!field.hidden && !isObjectField)
       fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: 'General'}))
