@@ -28,7 +28,11 @@ const routes = [
         render={props => {
           // pass the sub-routes down to keep nesting
           const objectApiName = props.match.params.objectApiName
-          return <route.component {...props} objectApiName={objectApiName} columnFields={[{ fieldName: "name" }]} routes={route.routes} />
+          if(route.component == ObjectTable){
+            return <route.component objectApiName={objectApiName} columnFields={[{ fieldName: "name" }]} routes={route.routes} />
+          }else{
+            return <route.component objectApiName={objectApiName} routes={route.routes} />
+          }
         }}
       />
     );
