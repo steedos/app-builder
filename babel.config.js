@@ -2,12 +2,14 @@ const BABEL_ENV = process.env.BABEL_ENV
 const isCommonJS = BABEL_ENV !== undefined && BABEL_ENV === "cjs"
 const isESM = BABEL_ENV !== undefined && BABEL_ENV === "esm"
 
+console.log(BABEL_ENV)
+
 module.exports = function (api) {
   api.cache(true)
 
   const presets = [
     [
-      "@babel/env",
+      "@babel/preset-env",
       {
         loose: true,
         modules: isCommonJS ? "commonjs" : false,
@@ -18,7 +20,6 @@ module.exports = function (api) {
     ],
     "@babel/preset-typescript",
     "@babel/preset-react",
-    // "@salesforce/babel-preset-design-system-react"
   ]
 
   const plugins = [
@@ -36,6 +37,9 @@ module.exports = function (api) {
     //     generateScopedName: "[name]--[local]--[hash:base64:5]",
     //   },
     // ],
+		'@babel/plugin-proposal-object-rest-spread',
+		'@babel/plugin-proposal-export-default-from',
+		'@babel/plugin-proposal-export-namespace-from',
   ]
 
   return {
