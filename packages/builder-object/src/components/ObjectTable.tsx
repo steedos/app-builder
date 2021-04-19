@@ -11,6 +11,7 @@ import { SortOrder } from "antd/lib/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
+import { getObjectRecordUrl } from "../utils"
 import "./ObjectTable.less"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -43,7 +44,7 @@ export type ObjectTableProps<T extends ObjectTableColumnProps> =
     })
   | any
 
-export const getObjectTableProColumn = (field: any) => {
+export const getObjectTableProColumn = (field: any, columnOption?: any) => {
   // 把yml中的某个字段field转成ant的ProTable中的columns属性项
   if (!field) {
     return null
@@ -56,7 +57,7 @@ export const getObjectTableProColumn = (field: any) => {
     formItemProps: {},
     fieldProps: {
       field_schema: field
-    },
+    }
   }
   if (field.required) {
     proColumnProps.formItemProps.required = true
@@ -69,6 +70,10 @@ export const getObjectTableProColumn = (field: any) => {
   }
 
   proColumnProps.valueType = fieldType
+
+  if(columnOption){
+    proColumnProps = Object.assign({}, proColumnProps, columnOption);
+  }
   
   return proColumnProps
 }
@@ -94,7 +99,13 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       columnFields,
       ({ fieldName, ...columnItem }: ObjectTableColumnProps) => {
         if (columnItem.hideInTable) return
-        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName])
+        let columnOption:any = {};
+        if(fieldName === object.schema.NAME_FIELD_KEY){
+          columnOption.render = (dom: any, record: any)=>{
+            return (<a href={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</a>);
+          }
+        }
+        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
 
         if (proColumn) {
           proColumns.push({ ...proColumn, ...columnItem })
