@@ -14,6 +14,7 @@ import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
 import { getObjectRecordUrl } from "../utils"
 import "./ObjectTable.less"
+import { Link } from "react-router-dom"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
@@ -120,7 +121,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         let columnOption:any = {};
         if(fieldName === object.schema.NAME_FIELD_KEY){
           columnOption.render = (dom: any, record: any)=>{
-            return (<a href={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</a>);
+            return (<Link to={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
           }
         }
         const proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
