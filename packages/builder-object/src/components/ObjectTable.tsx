@@ -2,6 +2,7 @@ import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from "lodash"
 import { ObjectContext } from "../"
 import { useQuery } from "react-query"
+import { formatFiltersToODataQuery } from '@steedos/filters';
 import ProTable, {
   ProTableProps,
   RequestData,
@@ -78,12 +79,29 @@ export const getObjectTableProColumn = (field: any, columnOption?: any) => {
   return proColumnProps
 }
 
+export const checkFieldTypeSupportBetweenQuery = (type: string)=> {
+  return false;
+  // return ["date", "datetime", "currency", "number"].includes(type);
+}
+
+export const getFieldDefaultOperation = (type: any)=>{
+	if(type && checkFieldTypeSupportBetweenQuery(type)){
+		return 'between';
+  }
+	else if(["textarea", "text", "code"].includes(type)){
+		return 'contains'
+  }
+	else{
+		return "="
+  }
+}
+
 export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   const {
     objectApiName,
     columnFields = [],
-    filters,
+    filters: defaultFilters,
     defaultClassName,
     onChange,
     ...rest
@@ -144,19 +162,37 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     */
 
     const { current, pageSize, ...searchFilters } = params
-    let tableFilters = Object.keys(searchFilters).map((key) => {
-      return "contains(" + key + ",'" + searchFilters[key] + "')"
-    })
+    let filters: any = [], keyFilters: any = [];
+    keyFilters = Object.keys(searchFilters).map((key) => {
+      const field = object.schema.fields[key];
+      return [key, getFieldDefaultOperation(field && field.type), searchFilters[key]];
+    });
+    
+    if (defaultFilters && defaultFilters.length) {
+      if(keyFilters && keyFilters.length){
+        if (_.isArray(defaultFilters)) {
+            filters = [defaultFilters, keyFilters]
+        }
+        else {
+            const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+            filters = `(${defaultFilters}) and (${odataKeyFilters})`;
+        }
+      }
+      else{
+        filters = defaultFilters;
+      }
+    }
+    else{
+      filters = keyFilters;
+    }
 
     // TODO: 这里antd的request请求函数与ObjectTable组件传入的filters,sort等格式不一样，需要转换处理
-    const fields = columnFields.map((n) => {
+    const fields = columnFields.map((n: any) => {
       return n.fieldName
     })
     const result = await API.requestRecords(
       objectApiName,
-      [filters ? "(" + filters + ")" : "", ...tableFilters]
-        .filter((a) => a)
-        .join(" and "), //[filters, tableFilters].filter(a=>a).join(' and '),
+      filters,
       fields,
       {
         pageSize: params.pageSize as number,

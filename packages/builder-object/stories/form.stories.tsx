@@ -428,6 +428,24 @@ export const Table = () => {
   )
 }
 
+export const TableFilters= () => {
+  return (
+      <ObjectTable objectApiName='tasks' 
+        columnFields={
+          [
+            {
+              fieldName: 'name'
+            }
+          ]
+        }
+        // filters="(contains(tolower(name),'n'))"
+        filters={[["name", "contains", "n"]]}
+      >
+        
+      </ObjectTable>
+  )
+}
+
 
 
 export const Tree = () => {
