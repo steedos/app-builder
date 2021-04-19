@@ -43,7 +43,7 @@ function RouteWithSubRoutes(route: any) {
       render={props => {
         // pass the sub-routes down to keep nesting
         const appApiName = props.match.params.appApiName
-        return <route.component {...props} appApiName={appApiName} routes={route.routes} />
+        return <route.component appApiName={appApiName} routes={route.routes} />
       }}
     />
   );
