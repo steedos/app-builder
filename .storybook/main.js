@@ -54,13 +54,13 @@ module.exports = {
     //   // include: path.resolve(__dirname, '../node_modules/')
     // });
 
-    // config.module.rules.push({
-    //     test: /\.jsx?$/,
-    //     loaders: ['babel-loader'],
-    //     include: [
-    //         path.join(__dirname, '../node_modules/@salesforce/design-system-react'),
-    //     ]
-    // })
+    config.module.rules.push({
+        test: /\.jsx?$/,
+        loaders: ['babel-loader'],
+        include: [
+            path.join(__dirname, '../node_modules/@salesforce/design-system-react'),
+        ]
+    })
 
     config.node = {
       module: 'empty',
