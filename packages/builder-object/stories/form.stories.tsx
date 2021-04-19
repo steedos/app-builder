@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectExpandTable } from "@steedos/builder-object";
+import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
@@ -306,8 +306,16 @@ export const Form = () => {
       reference_to: 'order',
       type: 'lookup',
       label: '订单',
-      group: "NAME_FIELD_KEY测试",
+      group: "lookup NAME_FIELD_KEY",
       multiple: true,
+    },
+    orders: {
+      reference_to: 'order',
+      type: 'lookup',
+      label: '订单集',
+      group: "lookup picker_schema",
+      multiple: true,
+      picker_schema: "all"
     },
     object: {
       type: 'object',
@@ -426,5 +434,39 @@ export const Tree = () => {
   return (
       <ObjectTree objectApiName='organizations' nameField='name' parentField='parent'>
       </ObjectTree>
+  )
+}
+
+export const ListView = () => {
+  return (
+      <ObjectListView objectApiName='accounts' 
+        pagination={{
+          pageSize:3
+        }}
+        columnFields={
+          [
+            {
+              fieldName: 'name'
+            },
+            {
+              fieldName: 'parent_id'
+            },
+            {
+              fieldName: 'created'
+            },
+            {
+              fieldName: 'created_by'
+            },
+            // {
+            //   fieldName: 'type'
+            // },
+            // {
+            //   fieldName: 'rating'
+            // }
+          ]
+        }
+      >
+        
+      </ObjectListView>
   )
 }
