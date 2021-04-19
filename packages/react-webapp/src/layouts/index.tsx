@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { ObjectTable } from '@steedos/builder-object';
+import { ObjectTable, ObjectForm } from '@steedos/builder-object';
 import { API } from '@steedos/builder-store';
 import {
   BrowserRouter as Router,
@@ -12,10 +12,14 @@ import {
 
 const routes = [
     {
-      path: "/app/:appApiName/:objectApiName",
-      component: ObjectTable
-    }
-  ];
+        path: "/app/:appApiName/:objectApiName/view/:recordId",
+        component: ObjectForm
+    },
+    {
+        path: "/app/:appApiName/:objectApiName",
+        component: ObjectTable
+    },
+];
   
   function RouteWithSubRoutes(route: any) {
     return (
