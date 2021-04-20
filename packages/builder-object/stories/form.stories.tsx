@@ -435,6 +435,12 @@ export const TableFilters= () => {
           [
             {
               fieldName: 'name'
+            },
+            {
+              fieldName: 'priority'
+            },
+            {
+              fieldName: 'related_to'
             }
           ]
         }
