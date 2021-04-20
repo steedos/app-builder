@@ -6,6 +6,9 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react"
+import {
+  BrowserRouter as Router
+} from "react-router-dom";
 import { StoryContext } from "@storybook/react"
 import * as React from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
@@ -119,7 +122,9 @@ const withSteedos = (StoryFn: Function, context: StoryContext) => {
 
   return (
     <SteedosProvider {...initialStore}>
-      <StoryFn />
+      <Router>
+        <StoryFn />
+      </Router>
     </SteedosProvider>
   )
 }
