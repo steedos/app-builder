@@ -47,7 +47,7 @@ export default function Layout(props: any) {
               // height: '100vh',
               // border: '1px solid #ddd',
             }}
-            navTheme='light'
+            navTheme='dark'
             menuItemRender={(item, dom) => {
               if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {
                 return <a target='_blank' href={item.path}>{item.name}</a>
