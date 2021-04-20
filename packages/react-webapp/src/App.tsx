@@ -1,9 +1,5 @@
 import React, { useRef } from 'react';
-import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { Button } from 'antd';
 import { SteedosProvider } from '@steedos/builder-steedos';
-import { ObjectTable } from '@steedos/builder-object';
-import { API } from '@steedos/builder-store';
 import { Settings } from '@steedos/builder-store'
 import {
   BrowserRouter as Router,
@@ -24,8 +20,6 @@ const initialStore = {
   forms: {},
   objects: {},
 }
-
-console.log(initialStore)
 
 const routes = [
   {
