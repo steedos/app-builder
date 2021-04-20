@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { ObjectTable, ObjectForm } from '@steedos/builder-object';
 import { API } from '@steedos/builder-store';
 import {
   BrowserRouter as Router,
@@ -8,16 +7,18 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { ObjectDetail } from '../pages/objectDetail';
+import ObjectListView from '../pages/objectListView';
 
 
 const routes = [
     {
         path: "/app/:appApiName/:objectApiName/view/:recordId",
-        component: ObjectForm
+        component: ObjectDetail
     },
     {
         path: "/app/:appApiName/:objectApiName",
-        component: ObjectTable
+        component: ObjectListView
     },
 ];
   
@@ -27,12 +28,8 @@ const routes = [
         path={route.path}
         render={props => {
           // pass the sub-routes down to keep nesting
-          const objectApiName = props.match.params.objectApiName
-          if(route.component == ObjectTable){
-            return <route.component objectApiName={objectApiName} columnFields={[{ fieldName: "name" }]} routes={route.routes} />
-          }else{
-            return <route.component objectApiName={objectApiName} routes={route.routes} />
-          }
+          const {appApiName, objectApiName, recordId} = props.match.params
+          return <route.component appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
         }}
       />
     );
@@ -72,13 +69,11 @@ export default function Layout(props: any) {
               pathname: '/welcome/welcome',
             }}
           >
-            <PageContainer content={false} title={false} header={undefined}>
-              <Switch>
-                {routes.map((route, i) => (
-                  <RouteWithSubRoutes key={i} {...route} />
-                ))}
-              </Switch>
-            </PageContainer>
+            <Switch>
+              {routes.map((route, i) => (
+                <RouteWithSubRoutes key={i} {...route} />
+              ))}
+            </Switch>
           </ProLayout>
     );
   };
