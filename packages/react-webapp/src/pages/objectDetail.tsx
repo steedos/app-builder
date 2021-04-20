@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import ProLayout, { PageContainer } from '@ant-design/pro-layout';
+import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectForm } from '@steedos/builder-object';
 import { Button, Dropdown, Menu } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
@@ -103,7 +103,9 @@ export const ObjectDetail = observer((props: any) => {
       ],
     }}
 >
-      <ObjectForm objectApiName={objectApiName} name={formName} mode={formMode}/>
+      <ObjectForm objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
+            render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
+      }}/>
   </PageContainer>
   );
 });

@@ -27,6 +27,10 @@ export type ObjectFormProps = {
   objectSchema?: any,
   initialValues?: any,
   recordId?: string
+  submitter?: any,
+  isModalForm?: boolean,
+  isDrawerForm?: boolean,
+  trigger?: any
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
@@ -39,6 +43,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     mode = 'edit', 
     layout = 'vertical',
     children,
+    submitter,
+    isModalForm,
+    isDrawerForm,
+    trigger,
     ...rest
   } = props;
  
@@ -136,6 +144,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       initialValues={initialValues}
       mode={mode}
       layout={layout}
+      submitter={submitter}
+      isModalForm={isModalForm}
+      isDrawerForm={isDrawerForm}
+      trigger={trigger}
       onFinish={onFinish}
       {...rest}
     >

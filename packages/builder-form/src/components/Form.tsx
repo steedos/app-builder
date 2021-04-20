@@ -4,6 +4,13 @@ import * as PropTypes from 'prop-types';
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 import { Form as AntForm } from 'antd';
 import BaseForm from '@ant-design/pro-form/es/BaseForm';
+import ProForm, {
+  ModalForm,
+  DrawerForm,
+  ProFormText,
+  ProFormDateRangePicker,
+  ProFormSelect,
+} from '@ant-design/pro-form';
 import { observer } from "mobx-react-lite"
 import _ from 'lodash'
 
@@ -18,7 +25,11 @@ export const Form = observer((props:any) => {
     name: formId = 'default',
     mode= 'read', 
     layout,
-    children, 
+    children,
+    submitter,
+    isModalForm,
+    isDrawerForm,
+    trigger,
     ...rest
   } = props
 
@@ -33,7 +44,7 @@ export const Form = observer((props:any) => {
         }
       : null;
 
-  const submitter = form.mode ==='read'? false : {
+  const defSubmitter = form.mode ==='read'? false : {
     // 配置按钮文本
     searchConfig: {
       resetText: '取消',
@@ -44,6 +55,11 @@ export const Form = observer((props:any) => {
         form.setMode('read')
       },
     },
+  }
+
+  let _submitter = false
+  if(form.mode !='read'){
+    _submitter = _.isBoolean(submitter) ? submitter : _.defaultsDeep({}, defSubmitter, submitter, {});
   }
 
   const contentRender = (items:any, submitter:any) => {
@@ -62,14 +78,24 @@ export const Form = observer((props:any) => {
     layout,
     ...formItemLayout,
     ...rest,
-    submitter,
+    submitter: _submitter,
+    trigger,
     contentRender,
   }
 
+  let FormComponent = BaseForm;
+  if(isModalForm){
+    FormComponent = ModalForm
+  }
+
+  if(isDrawerForm){
+    FormComponent = DrawerForm
+  }
+
   return (
-      <BaseForm {...formProps}>
+      <FormComponent {...formProps}>
           {children}
-      </BaseForm>
+      </FormComponent>
   )
 });
 
