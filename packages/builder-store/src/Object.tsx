@@ -9,6 +9,7 @@ export const RecordCache = types.model({
   objectApiName: types.string,
   fields: types.array(types.string),
   data: types.frozen(),
+  permissions: types.frozen(),
   isLoading: true,
 })
 .actions((self) => {
@@ -17,14 +18,25 @@ export const RecordCache = types.model({
     try {
       const filters = ['_id', '=', self.id]
       self.data = yield API.requestRecords(self.objectApiName, filters, self.fields)
+      self.permissions = yield API.requestRecordPermissions(self.objectApiName, self.id);
       self.isLoading = false
     } catch (err) {
       console.error(`Failed to load record ${self.id} `, err)
     }
-  })
+  });
+
+  const deleteRecord = flow(function* deleteRecord() {
+    try {
+      return yield API.deleteRecord(self.objectApiName, self.id);
+      self.isLoading = false
+    } catch (err) {
+      console.error(`Failed to delete record ${self.id} `, err)
+    }
+  });
 
   return {
     loadRecord,
+    deleteRecord
   }
 });
 
@@ -100,6 +112,17 @@ export const ObjectModel = types.model({
     return newRecord
   }
 
+  const deleteRecord = (recordId: string)=>{
+    if (!recordId){
+      return null;
+    }
+    const record = self.recordCaches.get(recordId)
+    if (record){
+      record.deleteRecord();
+      self.recordCaches.delete(recordId)
+    }
+  }
+
   const getRecordList = (filters: any, fields: any, options?) => {
     const stringifyFilters = JSON.stringify(filters);
     const stringifyFields = JSON.stringify(fields);
@@ -126,6 +149,7 @@ export const ObjectModel = types.model({
   return {
     loadObject,
     getRecord,
+    deleteRecord,
     getRecordList
   }
 })

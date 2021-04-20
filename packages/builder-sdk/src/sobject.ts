@@ -68,6 +68,11 @@ export default class SObject {
         return await this.client.doFetch(url, {method: 'get'});
     }
 
+    async getRecordPermissions(recordId){
+        const url = `${this.client.getUrl()}/service/api/@${this.objectName}/recordPermissions/${recordId}`;
+        return await this.client.doFetch(url, {method: 'get'});
+    }
+
     /**
      * Find and fetch records which matches given conditions
      *
@@ -142,7 +147,9 @@ export default class SObject {
      * @param id 
      */
     async delete(id: string){
-
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}/${id}`;
+        let result = await this.client.doFetch(url, {method: 'delete'});
+        return result
     }
 
     /**
