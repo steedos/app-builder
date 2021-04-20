@@ -38,11 +38,11 @@ const routes = [
 export default function Layout(props: any) {
     const { appApiName } = props;
     const [appName, setAppName] = useState('');
-    const [appIcon, setAppIcon] = useState(API.client.getUrl() + '/packages/steedos_creator/assets/logo-square.png');
+    const [appIcon, setAppIcon] = useState('https://www.steedos.com/img/logo.png');
     return (
           <ProLayout
             title={appName}
-            // logo = {appIcon}
+            logo = {appIcon}
             style={{
               // height: '100vh',
               // border: '1px solid #ddd',
