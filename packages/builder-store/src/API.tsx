@@ -56,6 +56,12 @@ const insertRecord = async (objectApiName: string, data: any) => {
   return result;
 }
 
+const deleteRecord = async (objectApiName: string, objectRecordId: string) => {
+  const result = await client.sobject(objectApiName).delete(objectRecordId);
+
+  return result;
+}
+
 export const API = {
   client,
   requestObject,
@@ -63,4 +69,5 @@ export const API = {
   requestRecords,
   updateRecord,
   insertRecord,
+  deleteRecord
 }

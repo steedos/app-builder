@@ -147,7 +147,9 @@ export default class SObject {
      * @param id 
      */
     async delete(id: string){
-
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}/${id}`;
+        let result = await this.client.doFetch(url, {method: 'delete'});
+        return result
     }
 
     /**

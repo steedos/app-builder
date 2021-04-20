@@ -5,9 +5,11 @@ import { Button, Dropdown, Menu } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
-import { observer } from "mobx-react-lite"
+import { observer } from "mobx-react-lite";
+import { useHistory } from "react-router-dom";
 
 export const ObjectDetail = observer((props: any) => {
+  let history = useHistory();
   const { appApiName, objectApiName, recordId } = props;
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
@@ -32,10 +34,15 @@ export const ObjectDetail = observer((props: any) => {
     form.setMode(value)
   }
 
+  function deleteRecord(){
+    recordCache.deleteRecord();
+    history.push(`/app/${appApiName}/${objectApiName}`);
+  }
+
   //编辑
   extraButtons.push(<Button key="editRecord" onClick={()=> setFormMode('edit')} type="primary">编辑</Button>)
 
-  dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> setFormMode('edit')}>删除</Menu.Item>)
+  dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
 
   if(schema.actions){
     _.each(schema.actions, function(action: any, actionApiName: string){
