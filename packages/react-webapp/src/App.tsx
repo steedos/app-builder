@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { SteedosProvider } from '@steedos/builder-steedos';
 import { ObjectTable } from '@steedos/builder-object';
 import { API } from '@steedos/builder-store';
+import { Settings } from '@steedos/builder-store'
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,21 +14,18 @@ import {
 
 import Layout from './layouts';
 
-const STEEDOS_ROOT_URL = "http://192.168.3.2:5080"
-const STEEDOS_TENANT_ID = "cei48XfStzib6SHER"
-const STEEDOS_USER_ID = "604189e68753dfc2885e6226"
-const STEEDOS_AUTH_TOKEN = "12f86909afc6ff1c0aa1ec6f49b1d4275a5c08595df3c077d5d3afb39e7d55d8d862cf5846a6378e7c67d1"
-
 const initialStore = {
-  rootUrl: STEEDOS_ROOT_URL,
-  tenantId: STEEDOS_TENANT_ID,
-  userId: STEEDOS_USER_ID,
-  authToken: STEEDOS_AUTH_TOKEN,
+  rootUrl: Settings.rootUrl,
+  tenantId: Settings.tenantId,
+  userId: Settings.userId,
+  authToken: Settings.authToken,
   currentObjectApiName: 'accounts',
   locale: 'zh_CN',
   forms: {},
   objects: {},
 }
+
+console.log(initialStore)
 
 const routes = [
   {
