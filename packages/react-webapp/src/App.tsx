@@ -7,6 +7,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import {
+  ChakraProvider,
+  theme,
+} from "@chakra-ui/react"
 
 import Layout from './layouts';
 
@@ -43,14 +47,16 @@ function RouteWithSubRoutes(route: any) {
 
 export default function App() {
   return (
-    <SteedosProvider {...initialStore}>
-      <Router>
-        <Switch>
-          {routes.map((route, i) => (
-            <RouteWithSubRoutes key={i} {...route} />
-          ))}
-        </Switch>
-      </Router>
-    </SteedosProvider>
+    <ChakraProvider theme={theme}>
+      <SteedosProvider {...initialStore}>
+        <Router>
+          <Switch>
+            {routes.map((route, i) => (
+              <RouteWithSubRoutes key={i} {...route} />
+            ))}
+          </Switch>
+        </Router>
+      </SteedosProvider>
+    </ChakraProvider>
   );
 };

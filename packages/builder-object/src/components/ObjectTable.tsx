@@ -164,23 +164,25 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
     const { current, pageSize, ...searchFilters } = params
     let filters: any = [], keyFilters: any = [];
-    keyFilters = Object.keys(searchFilters).map((key) => {
+    //searchFilters中包括params中自定义参数及顶部搜索框字段参数，字段名不可能是__开头，所以params中自定义参数以__开头可区分它们
+    const {__objectApiName, __columnFields, __defaultFilters, ...restFilters} = searchFilters;
+    keyFilters = Object.keys(restFilters).map((key) => {
       const field = object.schema.fields[key];
       return [key, getFieldDefaultOperation(field && field.type), searchFilters[key]];
     });
     
-    if (defaultFilters && defaultFilters.length) {
+    if (__defaultFilters && __defaultFilters.length) {
       if(keyFilters && keyFilters.length){
-        if (_.isArray(defaultFilters)) {
-            filters = [defaultFilters, keyFilters]
+        if (_.isArray(__defaultFilters)) {
+            filters = [__defaultFilters, keyFilters]
         }
         else {
             const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
-            filters = `(${defaultFilters}) and (${odataKeyFilters})`;
+            filters = `(${__defaultFilters}) and (${odataKeyFilters})`;
         }
       }
       else{
-        filters = defaultFilters;
+        filters = __defaultFilters;
       }
     }
     else{
@@ -188,11 +190,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     }
 
     // TODO: 这里antd的request请求函数与ObjectTable组件传入的filters,sort等格式不一样，需要转换处理
-    const fields = columnFields.map((n: any) => {
+    const fields = __columnFields.map((n: any) => {
       return n.fieldName
     })
     const result = await API.requestRecords(
-      objectApiName,
+      __objectApiName,
       filters,
       fields,
       {
@@ -226,6 +228,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       {...rest}
       onChange={() => {
         ;(rest.actionRef || selfTableRef).current.reload()
+      }}
+      params={{
+        __objectApiName: objectApiName,
+        __columnFields: columnFields,
+        __defaultFilters: defaultFilters,
       }}
       className={["object-table", rest.className].join(" ")}
     />

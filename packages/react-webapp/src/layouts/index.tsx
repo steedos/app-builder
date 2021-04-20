@@ -50,6 +50,7 @@ export default function Layout(props: any) {
             }}
             navTheme='dark'
             // headerRender= {(props: any) => {return (<SteedosAppLauncher/>)}}
+            fixSiderbar={true}
             menuItemRender={(item, dom) => {
               if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {
                 return <a target='_blank' href={item.path}>{item.name}</a>

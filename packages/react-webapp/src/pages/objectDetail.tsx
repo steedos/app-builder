@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectForm } from '@steedos/builder-object';
-import { Button, Dropdown, Menu } from 'antd';
+import { Button, Dropdown, Menu, Card } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
@@ -103,9 +103,13 @@ export const ObjectDetail = observer((props: any) => {
       ],
     }}
 >
+
+    <Card>
       <ObjectForm objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
-            render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
-      }}/>
+              render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
+        }}/>
+    </Card>
+
   </PageContainer>
   );
 });
