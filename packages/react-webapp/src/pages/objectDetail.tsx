@@ -65,7 +65,7 @@ export const ObjectDetail = observer((props: any) => {
       ],
     }}
 >
-      <ObjectForm objectApiName={objectApiName} />
+      <ObjectForm objectApiName={objectApiName} mode='read'/>
   </PageContainer>
   );
 });
