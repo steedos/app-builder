@@ -32,6 +32,13 @@ const requestObject = async (objectApiName: string) => {
   return object;
 }
 
+const requestRecordPermissions = async (objectApiName: string, recordId: string) => {
+  if (!objectApiName || !recordId) {
+    return;
+  }
+  return await client.sobject(objectApiName).getRecordPermissions(recordId);
+}
+
 const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
   const records = await client.sobject(objectApiName).find(filters, fields, options);
   return records;
@@ -52,6 +59,7 @@ const insertRecord = async (objectApiName: string, data: any) => {
 export const API = {
   client,
   requestObject,
+  requestRecordPermissions,
   requestRecords,
   updateRecord,
   insertRecord,

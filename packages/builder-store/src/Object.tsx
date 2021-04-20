@@ -9,6 +9,7 @@ export const RecordCache = types.model({
   objectApiName: types.string,
   fields: types.array(types.string),
   data: types.frozen(),
+  permissions: types.frozen(),
   isLoading: true,
 })
 .actions((self) => {
@@ -17,6 +18,7 @@ export const RecordCache = types.model({
     try {
       const filters = ['_id', '=', self.id]
       self.data = yield API.requestRecords(self.objectApiName, filters, self.fields)
+      self.permissions = yield API.requestRecordPermissions(self.objectApiName, self.id);
       self.isLoading = false
     } catch (err) {
       console.error(`Failed to load record ${self.id} `, err)

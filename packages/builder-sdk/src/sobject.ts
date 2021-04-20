@@ -68,6 +68,11 @@ export default class SObject {
         return await this.client.doFetch(url, {method: 'get'});
     }
 
+    async getRecordPermissions(recordId){
+        const url = `${this.client.getUrl()}/service/api/@${this.objectName}/recordPermissions/${recordId}`;
+        return await this.client.doFetch(url, {method: 'get'});
+    }
+
     /**
      * Find and fetch records which matches given conditions
      *
