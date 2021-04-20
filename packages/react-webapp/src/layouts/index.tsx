@@ -48,6 +48,7 @@ export default function Layout(props: any) {
               // border: '1px solid #ddd',
             }}
             navTheme='dark'
+            fixSiderbar={true}
             menuItemRender={(item, dom) => {
               if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {
                 return <a target='_blank' href={item.path}>{item.name}</a>
