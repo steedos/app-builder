@@ -15,7 +15,6 @@ packages/*/dist
 tooling/*/dist
 packages/*/node_modules
 npm-debug.log*
-packages/*/.env
 *.log
 *.cache
 yarn-error.log
@@ -101,8 +100,5 @@ yarn-error.log
 .yarn-integrity
 
 report.*
-.env
 yarn.lock
-.env
-.env
 build
