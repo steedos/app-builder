@@ -2,8 +2,8 @@ import { destroy, flow, types } from 'mobx-state-tree';
 import { get } from 'lodash';
 
 const isProd = process.env.NODE_ENV === 'production';
-let rootUrl = isProd ? '/' : 'http://localhost:5000';
-let env: any = {};
+let rootUrl = isProd ? '/' : process.env.REACT_APP_API_URL? process.env.REACT_APP_API_URL: 'http://localhost:5000';
+let env: any = process.env;
 let tenantId = '';
 let userId = '';
 let authToken = '';
