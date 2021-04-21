@@ -22,7 +22,13 @@ module.exports = {
       plugin: CracoBabelLoader,
       options: {
         includes: [
-            /(node_modules\/@salesforce\/design-system-react\/)/,
+          // /(node_modules\/@salesforce\/design-system-react\/)/,
+          {
+            test: /\.jsx?$/,
+            include: [
+                path.join(__dirname, '../../node_modules/@salesforce/design-system-react'),
+            ]
+          }
         ]
       }
     }
