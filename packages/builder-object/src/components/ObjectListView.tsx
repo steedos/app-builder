@@ -9,7 +9,7 @@ import ProTable, {
 } from "@ant-design/pro-table"
 import { SortOrder } from "antd/lib/table/interface"
 import { observer } from "mobx-react-lite"
-import { Objects, API } from "@steedos/builder-store"
+import { Objects, API, Settings } from "@steedos/builder-store"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
@@ -79,6 +79,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     listName = "all",
     columnFields = [],
     filters,
+    filter_scope="mine",
     ...rest
   } = props
 
@@ -94,6 +95,13 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     filters = listView.filters;
   }
   filters = _.isFunction(filters) ? filters() : filters;
+  if(!filter_scope){
+    filter_scope = listView.filter_scope;
+  }
+  if(filter_scope === "mine"){
+    let filtersArray=[["owner", "=", Settings.userId]];
+    filters = filters ? filtersArray.push(filters) : filtersArray;
+  }
   return (
     <ObjectTable
       objectApiName={objectApiName}
