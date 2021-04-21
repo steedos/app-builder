@@ -13,9 +13,13 @@ import {
 } from "@chakra-ui/react"
 
 import Layout from './layouts';
+
 import NoFoundPage from './pages/404';
 // import UserLayout from './layouts/UserLayout';
 import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
+
+import { Apps } from './pages/apps';
+
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -61,6 +65,9 @@ export default function App() {
     <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
         <Router>
+          <Route path="/">
+            <Apps />
+          </Route>
           <Switch>
             {routes.map((route, i) => (
               <RouteWithSubRoutes key={i} {...route} />
