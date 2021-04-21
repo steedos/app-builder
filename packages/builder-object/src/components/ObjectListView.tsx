@@ -74,9 +74,9 @@ export const getObjectListViewProColumn = (field: any) => {
 
 export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
 
-  const {
+  let {
     objectApiName,
-    listName,
+    listName = "all",
     columnFields = [],
     filters,
     ...rest
@@ -84,8 +84,12 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
 
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
-
-
+  let columnFieldsArray = object.schema.list_views[listName];
+  if (columnFields.length === 0) {
+    _.forEach(columnFieldsArray.columns, (value) => {
+      columnFields.push({ fieldName: value.field })
+    })
+  }
   return (
     <ObjectTable
       objectApiName={objectApiName}

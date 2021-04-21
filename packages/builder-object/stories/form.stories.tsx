@@ -469,6 +469,7 @@ export const ListView = () => {
         pagination={{
           pageSize:3
         }}
+        listName="allCustomers"
         columnFields={
           [
             {
