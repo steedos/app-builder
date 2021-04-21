@@ -90,6 +90,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       columnFields.push({ fieldName: value.field })
     })
   }
+  filters = _.isFunction(columnFieldsArray.filters) ? columnFieldsArray.filters() : columnFieldsArray.filters;
   return (
     <ObjectTable
       objectApiName={objectApiName}

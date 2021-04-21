@@ -470,28 +470,28 @@ export const ListView = () => {
           pageSize:3
         }}
         listName="allCustomers"
-        columnFields={
-          [
-            {
-              fieldName: 'name'
-            },
-            {
-              fieldName: 'parent_id'
-            },
-            {
-              fieldName: 'created'
-            },
-            {
-              fieldName: 'created_by'
-            },
-            // {
-            //   fieldName: 'type'
-            // },
-            // {
-            //   fieldName: 'rating'
-            // }
-          ]
-        }
+        // columnFields={
+        //   [
+        //     {
+        //       fieldName: 'name'
+        //     },
+        //     {
+        //       fieldName: 'parent_id'
+        //     },
+        //     {
+        //       fieldName: 'created'
+        //     },
+        //     {
+        //       fieldName: 'created_by'
+        //     },
+        //     // {
+        //     //   fieldName: 'type'
+        //     // },
+        //     // {
+        //     //   fieldName: 'rating'
+        //     // }
+        //   ]
+        // }
       >
         
       </ObjectListView>
