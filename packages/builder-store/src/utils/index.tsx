@@ -1,5 +1,13 @@
 import _ from 'lodash';
 
+export function saveEval(js: string){
+	try{
+		return eval(js)
+	}catch (e){
+		console.error(e, js);
+	}
+};
+
 const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   let fieldSchema: any = {};
   const field = objectConfig.fields[fieldName];
@@ -61,11 +69,11 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
 }
 
 /**
- * 转换传入的objectConfig中的 object, grid 类型字段，生成 sub_fields 属性
- * @param objectConfig 对象配置文件中该字段所属对象的配置
- * @returns 转换后的对象
+ * 转换传入的objectConfig中的 object, grid 类型字段，生成 sub_fields 属性，相关函数为字段串格式转换为函数
+ * @param objectConfig 对象配置文件中字段所属对象的配置
+ * @returns 转换后的fields
  */
- export function convertFieldsSchema(objectConfig: any) {
+ export function getFieldsSchema(objectConfig: any) {
   let fieldsSchema: any = {}
   // console.log("convertFieldsSchema===", objectConfig.name, JSON.stringify(objectConfig.fields));
   _.each(objectConfig.fields, (field, fieldName) => {
@@ -79,5 +87,44 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     }
   });
   // console.log("convertFieldsSchema====fieldsSchema===", objectConfig.name, fieldsSchema);
-  objectConfig.fields = fieldsSchema;
+  return fieldsSchema;
+}
+
+const getListViewSchema = (listView: any)=>{
+  let filters = listView._filters
+  if(filters){
+    filters = saveEval(`(${filters})`);
+    return Object.assign({}, listView, {filters});
+  }
+  else{
+    return listView;
+  }
+}
+
+/**
+ * 转换传入的objectConfig中list_views，相关函数为字段串格式转换为函数
+ * @param objectConfig 对象配置文件中列表视图所属对象的配置
+ * @returns 转换后的list_views
+ */
+ export function getListViewsSchema(objectConfig: any) {
+  let listViewsSchema: any = {}
+  _.each(objectConfig.list_views, (listView, listName) => {
+    const listViewSchema = getListViewSchema(listView);
+    if(listViewSchema){
+      listViewsSchema[listName] = listViewSchema;
+    }
+  });
+  return listViewsSchema;
+}
+
+/**
+ * 转换传入的objectConfig中的fields及list_views
+ * @param objectConfig 对象配置文件中该字段所属对象的配置
+ * @returns 转换后的对象
+ */
+ export function convertObjectSchema(objectConfig: any) {
+  objectConfig.fields = getFieldsSchema(objectConfig);
+  console.log("convertObjectSchema====objectConfig.fields===", objectConfig.name, objectConfig.fields);
+  objectConfig.list_views = getListViewsSchema(objectConfig);
+  console.log("convertObjectSchema====objectConfig.list_views===", objectConfig.name, objectConfig.list_views);
 }

@@ -3,7 +3,7 @@
 import { types, Instance, onSnapshot } from "mobx-state-tree";
 
 import { SteedosClient } from '@steedos/builder-sdk';
-import { convertFieldsSchema } from './utils';
+import { convertObjectSchema } from './utils';
 import { Settings } from './Settings';
 
 const client = new SteedosClient();
@@ -28,7 +28,7 @@ const requestObject = async (objectApiName: string) => {
   const object = await client.sobject(objectApiName).getConfig();
   
   // TODO： 转换 object, grid 类型字段，生成 subFields 属性
-  convertFieldsSchema(object);
+  convertObjectSchema(object);
   return object;
 }
 

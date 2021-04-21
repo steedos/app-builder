@@ -6,7 +6,6 @@ import { SteedosClient } from '@steedos/builder-sdk';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
 import { Settings, API } from "@steedos/builder-store";
-import { convertFieldsSchema } from '../utils';
 
 /*
 参数：
