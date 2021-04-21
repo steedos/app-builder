@@ -65,9 +65,9 @@ export default function App() {
     <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
         <Router>
-          <Route path="/">
+          {/* <Route path="/">
             <Apps />
-          </Route>
+          </Route> */}
           <Switch>
             {routes.map((route, i) => (
               <RouteWithSubRoutes key={i} {...route} />

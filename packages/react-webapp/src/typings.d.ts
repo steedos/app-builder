@@ -36,6 +36,8 @@ interface Window {
   routerBase: string;
 }
 
+declare const $;
+
 declare let ga: () => void;
 
 // preview.pro.ant.design only do not use in your production ;

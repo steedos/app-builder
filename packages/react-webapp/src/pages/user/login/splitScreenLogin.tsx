@@ -1,47 +1,35 @@
 import React, { useRef, useState } from 'react';
-import {
-    AlipayCircleOutlined,
-    LockOutlined,
-    MailOutlined,
-    MobileOutlined,
-    TaobaoCircleOutlined,
-    UserOutlined,
-    WeiboCircleOutlined,
-  } from '@ant-design/icons';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import styles from './index.less';
-import { Alert, Space, message, Tabs } from 'antd';
-import {IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl'
+import { User } from '@steedos/builder-store';
 
-const LoginMessage: React.FC<{
-    content: string;
-  }> = ({ content }) => (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
 
 export const SplitScreenLogin = observer((props: any) => {
   let history = useHistory();
-  const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
-  const [type, setType] = useState<string>('account');
+  const handleSubmit = () => {
+    const emailElement:any = document.getElementById("email");
+    const passwordElement:any = document.getElementById("password");
+    let email = '';
+    let mobile = '';
+    let username = '';
+    if(emailElement.value){
+        if(emailElement.value.indexOf('@') > 0){
+            email = emailElement.value;
+        }else if(emailElement.value.length === 11 && new Number(emailElement.value) > 10000000000){
+            mobile = emailElement.value;
+        }else{
+            username = emailElement.value;
+        }
+    }
 
-  const handleSubmit = (values: any) => {
-    
+    const user = {email: email, mobile: mobile, username: username, spaceId: ""}
+
+    User.login(user, passwordElement.value).then((result: any) => {
+        history.push('/app/-');
+    })
+    return false;
   };
-
-  const getFakeCaptcha = (mobile: string)=>{
-    return true;
-  }
 
   return (
     <div className="min-h-screen bg-white flex">
@@ -114,7 +102,8 @@ export const SplitScreenLogin = observer((props: any) => {
 
                 <div>
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={() => { return handleSubmit()}}
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     下一步
@@ -136,6 +125,3 @@ export const SplitScreenLogin = observer((props: any) => {
   )
 });
 
-function formatMessage(arg0: { id: string; defaultMessage: string; }): string {
-  return arg0.defaultMessage;
-}
