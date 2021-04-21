@@ -1,5 +1,13 @@
 import _ from 'lodash';
 
+export function saveEval(js: string){
+	try{
+		return eval(js)
+	}catch (e){
+		console.error(e, js);
+	}
+};
+
 const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   let fieldSchema: any = {};
   const field = objectConfig.fields[fieldName];
@@ -61,11 +69,11 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
 }
 
 /**
- * 转换传入的objectConfig中的 object, grid 类型字段，生成 sub_fields 属性
- * @param objectConfig 对象配置文件中该字段所属对象的配置
- * @returns 转换后的对象
+ * 转换传入的objectConfig中的 object, grid 类型字段，生成 sub_fields 属性，相关函数为字段串格式转换为函数
+ * @param objectConfig 对象配置文件中字段所属对象的配置
+ * @returns 转换后的fields
  */
- export function convertFieldsSchema(objectConfig: any) {
+ export function getFieldsSchema(objectConfig: any) {
   let fieldsSchema: any = {}
   // console.log("convertFieldsSchema===", objectConfig.name, JSON.stringify(objectConfig.fields));
   _.each(objectConfig.fields, (field, fieldName) => {
@@ -79,7 +87,87 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     }
   });
   // console.log("convertFieldsSchema====fieldsSchema===", objectConfig.name, fieldsSchema);
-  objectConfig.fields = fieldsSchema;
+  return fieldsSchema;
+}
+
+
+/**
+  视图过虑器需要支持function，后台转成字符串，前台eval成函数
+  让过虑器支持两种function方式：
+  1. 整个filters为function:
+  如：
+  filters: ()->
+    return [[["object_name","=","project_issues"],'or',["object_name","=","tasks"]]]
+  2. filters内的filter.value为function
+  如：
+  filters: [["object_name", "=", ()->
+    return "project_issues"
+  ]]
+  或
+  filters: [{
+    "field": "object_name"
+    "operation": "="
+    "value": ()->
+      return "project_issues"
+  }]
+ */
+const getListViewSchema = (listView: any)=>{
+  if(listView._filters){
+    let filters = saveEval(`(${listView._filters})`);
+    return Object.assign({}, listView, {filters});
+  }
+  else if(_.isArray(listView.filters)){
+    _.forEach(listView.filters, function(filter: any, _index) {
+      if (_.isArray(filter)) {
+        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "FUNCTION") {
+          filter[2] = saveEval("(" + filter[2] + ")");
+          filter.pop();
+        }
+        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "DATE") {
+          filter[2] = new Date(filter[2]);
+          return filter.pop();
+        }
+      } else if (_.isObject(filter) as any) {
+        if (_.isString(filter && filter._value)) {
+          return filter.value = saveEval("(" + filter._value + ")");
+        } else if (filter._is_date === true) {
+          return filter.value = new Date(filter.value);
+        }
+      }
+    });
+    return listView;
+  }
+  else{
+    return listView;
+  }
+}
+
+/**
+ * 转换传入的objectConfig中list_views，相关函数为字段串格式转换为函数
+ * @param objectConfig 对象配置文件中列表视图所属对象的配置
+ * @returns 转换后的list_views
+ */
+ export function getListViewsSchema(objectConfig: any) {
+  let listViewsSchema: any = {}
+  _.each(objectConfig.list_views, (listView, listName) => {
+    const listViewSchema = getListViewSchema(listView);
+    if(listViewSchema){
+      listViewsSchema[listName] = listViewSchema;
+    }
+  });
+  return listViewsSchema;
+}
+
+/**
+ * 转换传入的objectConfig中的fields及list_views
+ * @param objectConfig 对象配置文件中该字段所属对象的配置
+ * @returns 转换后的对象
+ */
+ export function convertObjectSchema(objectConfig: any) {
+  objectConfig.fields = getFieldsSchema(objectConfig);
+  console.log("convertObjectSchema====objectConfig.fields===", objectConfig.name, objectConfig.fields);
+  objectConfig.list_views = getListViewsSchema(objectConfig);
+  console.log("convertObjectSchema====objectConfig.list_views===", objectConfig.name, objectConfig.list_views);
 }
 
 export function getObjectOdataExpandFields(object: any,columns: string[]) {

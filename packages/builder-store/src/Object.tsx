@@ -1,6 +1,5 @@
 import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
-import { convertFieldsSchema } from './utils';
 import { API } from './API';
 import { getObjectOdataExpandFields } from './utils/index'
 

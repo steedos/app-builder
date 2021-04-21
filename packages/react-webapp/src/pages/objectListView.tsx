@@ -2,34 +2,16 @@ import React, { useRef, useState } from 'react';
 import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectTable, ObjectForm } from '@steedos/builder-object';
 import { Objects } from '@steedos/builder-store';
-import { Button, Dropdown, Menu, Modal } from 'antd';
+import { Button, Dropdown, Menu, message } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
+import { useHistory } from "react-router-dom";
 
 export const ObjectListView = observer((props: any) => {
+  let history = useHistory();
+    // const [formVisible, setFormVisible] = useState(false);
 
-    const [visible, setVisible] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Content of the modal');
-  
-    const showModal = () => {
-      setVisible(true);
-    };
-  
-    const handleOk = () => {
-      setModalText('The modal will be closed after two seconds');
-      setConfirmLoading(true);
-      setTimeout(() => {
-        setVisible(false);
-        setConfirmLoading(false);
-      }, 2000);
-    };
-  
-    const handleCancel = () => {
-      console.log('Clicked cancel button');
-      setVisible(false);
-    };
     const { appApiName, objectApiName } = props;
     const object: any = Objects.getObject(objectApiName);
     if (object.isLoading) return (<div>Loading object ...</div>)
@@ -39,12 +21,17 @@ export const ObjectListView = observer((props: any) => {
     const extraButtons: any[] = [];
     const dropdownMenus: any[] = [];
 
-    function newRecord() {
-        showModal()
+    function afterInsert(result) {
+      if(result && result.length >0){
+        const record = result[0];
+        message.success('新建成功');
+        history.push(`/app/${appApiName}/${objectApiName}/view/${record._id}`);
+        return true;
+      }
     }
 
     //新增
-    extraButtons.push(<ObjectForm title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`new-${objectApiName}`} trigger={<Button type="primary">新建</Button>}/>)
+    extraButtons.push(<ObjectForm key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
 
     //   dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
 

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectForm } from '@steedos/builder-object';
-import { Button, Dropdown, Menu, Card } from 'antd';
+import { Button, Dropdown, Menu, Card, message } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
@@ -37,6 +37,12 @@ export const ObjectDetail = observer((props: any) => {
   function deleteRecord(){
     recordCache.deleteRecord();
     history.push(`/app/${appApiName}/${objectApiName}`);
+  }
+
+  function afterUpdate(){
+    message.success('修改成功');
+    setFormMode('read');
+    return true;
   }
 
   //编辑
@@ -105,8 +111,17 @@ export const ObjectDetail = observer((props: any) => {
 >
 
     <Card>
-      <ObjectForm objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
+      <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
               render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
+              ,searchConfig: {
+                resetText: '取消',
+                submitText: '提交',
+              },
+              resetButtonProps: {
+                onClick: () => {
+                  setFormMode('read')
+                },
+              },
         }}/>
     </Card>
 

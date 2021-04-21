@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
 import { ObjectListView } from '../pages/objectListView';
-import { SteedosAppLauncher } from '@steedos/builder-lightning';
+// import { SteedosAppLauncher } from '@steedos/builder-lightning/src/components/AppLauncher';
 
 
 const routes = [

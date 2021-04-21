@@ -59,7 +59,7 @@ export const Form = observer((props:any) => {
 
   let _submitter = false
   if(form.mode !='read'){
-    _submitter = _.isBoolean(submitter) ? submitter : _.defaultsDeep({}, defSubmitter, submitter, {});
+    _submitter = _.isBoolean(submitter) ? submitter : submitter || defSubmitter;
   }
 
   const contentRender = (items:any, submitter:any) => {
@@ -70,7 +70,6 @@ export const Form = observer((props:any) => {
       </>
     );
   }
-
   const formProps = {
     name: formId,
     className: 'builder-form',

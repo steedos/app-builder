@@ -31,6 +31,9 @@ export type ObjectFormProps = {
   isModalForm?: boolean,
   isDrawerForm?: boolean,
   trigger?: any
+  afterUpdate?: Function,
+  afterInsert?: Function,
+  visible?: boolean
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
@@ -46,7 +49,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     submitter,
     isModalForm,
     isDrawerForm,
+    afterUpdate,
+    afterInsert,
     trigger,
+    visible,
     ...rest
   } = props;
  
@@ -95,15 +101,18 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     let result; 
     if(!recordId){     
       result = await API.insertRecord(objectApiName, values);
-      if(result){
-        alert("添加成功！");
+      if(afterInsert){
+        return afterInsert(result);
+      }else{
+        return result ? true : false
       }
     }else{
-        
       result = await API.updateRecord(objectApiName, recordId, values);
-      if(result){
-        alert("表单修改成功！");
-      }  
+      if(afterUpdate){
+        return afterUpdate(result);  
+      }else{
+        return result ? true : false
+      }
     } 
   }
 
@@ -149,6 +158,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isDrawerForm={isDrawerForm}
       trigger={trigger}
       onFinish={onFinish}
+      visible={visible}
       {...rest}
     >
       {children}
