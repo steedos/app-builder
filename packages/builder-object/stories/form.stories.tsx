@@ -142,7 +142,8 @@ export const Form = () => {
     },
     contracts_reference_to_func: {
       reference_to:()=>{
-        return 'contracts'
+        // return 'contracts'
+        return ['contracts','contract_types'];
       },
       group:'lookup测试',
       type: 'lookup',
@@ -153,6 +154,14 @@ export const Form = () => {
       //   { label: '合同2', value: "2" },
       //   { label: '合同3', value: "3" },
       // ],
+      // optionsFunction:(para:any)=>{
+      //   const column = [
+      //     { label: '大合同1', value: 1 },
+      //     { label: '大合同2', value: 2 },
+      //     { label: '大合同3', value: 3 },
+      //   ]
+      //   return column;
+      // },
     },
     populationType: {
       group: 'select测试',
@@ -349,6 +358,7 @@ export const Form = () => {
     contracts2:['1','2'],
     contractsNo:['2021-009'],
     populationType: ['1','2'],
+    contracts_reference_to_func: {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],label:"合同分类1"},
     object: {
       sub1: 'sub1',
       sub2: true,

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
-import { Tag } from 'antd';
-import _ from 'lodash';
+import { Tag , Select, Spin } from 'antd';
+import _, { isObject, result } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
+const { Option } = Select;
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
@@ -13,12 +14,30 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 const Lookup = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
-    const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
+    const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
-    const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
-    const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
+    let referenceTos = _.isFunction(reference_to) ? reference_to() : reference_to;
+    let defaultReferenceTo:any;
+    if(_.isArray(referenceTos)){
+        if(value && value.o){
+            defaultReferenceTo = value.o;
+        }else{
+            defaultReferenceTo = referenceTos[0];
+        }
+    }
+    let [referenceTo, setReferenceTo] = useState(_.isArray(referenceTos) ? defaultReferenceTo : referenceTos);
+    let defaultLabel:any;
+    if(_.isArray(referenceTos) && value && value.label){
+        defaultLabel=value.label;
+    }
+    let [label, setLabel] = useState(defaultLabel);
+    // optionsFunction优先options
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
+    if(_.isArray(referenceTos) && value ){
+        value=value.ids;
+    }
     if(mode==='read'){
         const hrefPrefix = `/app/-/${referenceTo}/view/`
         if(value){
@@ -55,14 +74,15 @@ const Lookup = observer((props:any) => {
             fieldProps.mode = 'multiple';
 
         let dependOnValues: any = dependFieldValues;
-        let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
         let request: any;
+        let labelInValue=false;
         let requestFun= async (params: any, props: any) => {
             // 注意，request 里面的代码不会抛异常，包括编译错误。
             // console.log("===request===params, props==", params, props);
             // console.log("===request===reference_to==", reference_to);
             if(_.isFunction(options)) {
                 dependOnValues.__keyWords = params.keyWords;
+                dependOnValues.__referenceTo = referenceTo;
                 const results = await options(dependOnValues);
                 return results;
             }
@@ -70,10 +90,13 @@ const Lookup = observer((props:any) => {
                 const object = Objects.getObject(referenceTo);
                 let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                 let filters: any = [], textFilters: any = [], keyFilters: any = [];
-                if (props.text)
-                    textFilters = [reference_to_field, '=', props.text]
-                if (params.keyWords)
-                    keyFilters = [referenceToLableField, 'contains', params.keyWords]
+                if (value){
+                    // const textValue= _.isArray(referenceTos) ? value.ids: value;
+                    textFilters = [reference_to_field, '=', value];
+                }
+                if (params.keyWords){
+                    keyFilters = [referenceToLableField, 'contains', params.keyWords];
+                }
                 let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
                 if (filtersOfField.length) {
                     if (keyFilters.length) {
@@ -104,7 +127,7 @@ const Lookup = observer((props:any) => {
                 else if (keyFilters.length) {
                     filters = keyFilters;
                 }
-                const fields = [reference_to_field, referenceToLableField];
+                let fields = [reference_to_field, referenceToLableField];
                 // console.log("===filters===", filters);
                 let option: any = {};
                 if (reference_sort) {
@@ -125,10 +148,10 @@ const Lookup = observer((props:any) => {
         }
         
         if (referenceTo){ // 含有reference_to
-            if (referenceTo && !options) {
+            if (!options) {
                 request = requestFun;
             }
-            if (referenceTo && options) {
+            else if (options) {
                 if (_.isArray(options)) {
                     fieldProps.options = options;
                 } else if (_.isFunction(options)) {
@@ -136,35 +159,71 @@ const Lookup = observer((props:any) => {
                 }
             }
         }else{ // 最后一种情况 没有referenceTo 只有options 或 optionsFunction 
-            if(_.isFunction(options)){
+            if (_.isFunction(options)) {
                 request = async (params: any, props: any) => {
-                  dependFieldValues.__keyWords = params.keyWords;
-                  const results = await options(dependFieldValues);
-                  return results;
+                    dependFieldValues.__keyWords = params.keyWords;
+                    const results = await options(dependFieldValues);
+                    return results;
                 };
-              }else{
+            } else {
                 fieldProps.options = options;
-              }
+            }
         }
         const onDropdownVisibleChange = (open: boolean) => {
             if (open) {
                 setParams({ open, openTag: new Date() });
             }
         }
-
+        let newFieldProps:any=fieldProps;
+        if(_.isArray(referenceTos)){
+            labelInValue=true;
+            newFieldProps = Object.assign({}, fieldProps, {
+                value: {value:fieldProps.value,label},
+                onChange:(values: any, option: any)=>{
+                    setLabel(values.label)
+                    onChange({o: referenceTo, ids: [values.value]})
+                }
+            })
+        }
         const proFieldProps = {
             mode: mode,
             showSearch: true,
             showArrow: true,
             optionFilterProp: 'label',
-            fieldProps,
+            fieldProps: newFieldProps,
             request,
+            labelInValue,
             params,
             onDropdownVisibleChange,
             ...rest
         }
+        const SelectProFieldProps = {
+            mode: mode,
+            showSearch: true,
+            showArrow: true,
+            optionFilterProp: 'label',
+            onChange: (value: any) => {
+                setReferenceTo(value)
+            },
+            defaultValue:referenceTo
+        }
+        // if(props.name==='contracts_reference_to_func') console.log('referenceTos==>',referenceTos)
+        const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
         return (
-            <FieldSelect {...proFieldProps} />
+            <React.Fragment>
+                {
+                    needReferenceToSelect && 
+                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
+                        {
+                            _.map(referenceTos,(referenceToValue)=>{
+                                return (<Option value={referenceToValue} key={referenceToValue}>{referenceToValue}</Option>)
+                            })
+                        }
+                    </Select>)
+                }
+                <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }}/>
+
+            </React.Fragment>
         )
     }
 });
