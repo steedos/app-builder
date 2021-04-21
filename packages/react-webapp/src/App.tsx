@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Redirect
 } from "react-router-dom";
 import {
   ChakraProvider,
@@ -13,6 +13,9 @@ import {
 } from "@chakra-ui/react"
 
 import Layout from './layouts';
+import NoFoundPage from './pages/404';
+// import UserLayout from './layouts/UserLayout';
+import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -27,8 +30,16 @@ const initialStore = {
 
 const routes = [
   {
+    path: "/login",
+    component: SplitScreenLogin
+  },
+  {
     path: "/app/:appApiName",
     component: Layout
+  },
+  {
+    path: "/404",
+    component: NoFoundPage
   }
 ];
 
@@ -54,6 +65,7 @@ export default function App() {
             {routes.map((route, i) => (
               <RouteWithSubRoutes key={i} {...route} />
             ))}
+            <Redirect from='*' to='/404' />
           </Switch>
         </Router>
       </SteedosProvider>

@@ -3000,6 +3000,59 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@formatjs/ecma402-abstract@1.6.5":
+  version "1.6.5"
+  resolved "https://registry.npm.taobao.org/@formatjs/ecma402-abstract/download/@formatjs/ecma402-abstract-1.6.5.tgz?cache=0&sync_timestamp=1618199628348&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40formatjs%2Fecma402-abstract%2Fdownload%2F%40formatjs%2Fecma402-abstract-1.6.5.tgz#ab461b6a284278ffe051ddd817537be4092e71be"
+  integrity sha1-q0YbaihCeP/gUd3YF1N75Akucb4=
+  dependencies:
+    tslib "^2.1.0"
+
+"@formatjs/icu-messageformat-parser@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.nlark.com/@formatjs/icu-messageformat-parser/download/@formatjs/icu-messageformat-parser-1.1.6.tgz#1f970542edc7cc49df183b397c3a1cda1d40ad63"
+  integrity sha1-H5cFQu3HzEnfGDs5fDoc2h1ArWM=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    "@formatjs/icu-skeleton-parser" "1.1.2"
+    tslib "^2.1.0"
+
+"@formatjs/icu-skeleton-parser@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.npm.taobao.org/@formatjs/icu-skeleton-parser/download/@formatjs/icu-skeleton-parser-1.1.2.tgz?cache=0&sync_timestamp=1618199628717&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40formatjs%2Ficu-skeleton-parser%2Fdownload%2F%40formatjs%2Ficu-skeleton-parser-1.1.2.tgz#b559f32a920ea6600df53735143b59e6cc087c1d"
+  integrity sha1-tVnzKpIOpmAN9Tc1FDtZ5swIfB0=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    tslib "^2.1.0"
+
+"@formatjs/intl-displaynames@4.0.13":
+  version "4.0.13"
+  resolved "https://registry.npm.taobao.org/@formatjs/intl-displaynames/download/@formatjs/intl-displaynames-4.0.13.tgz#48ed7a8c25e082ee93d3042d5a73c7c836c53503"
+  integrity sha1-SO16jCXggu6T0wQtWnPHyDbFNQM=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    tslib "^2.1.0"
+
+"@formatjs/intl-listformat@5.0.14":
+  version "5.0.14"
+  resolved "https://registry.npm.taobao.org/@formatjs/intl-listformat/download/@formatjs/intl-listformat-5.0.14.tgz#20862c464841dc4c46893db9144f3da5e9dc304e"
+  integrity sha1-IIYsRkhB3ExGiT25FE89pencME4=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    tslib "^2.1.0"
+
+"@formatjs/intl@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.nlark.com/@formatjs/intl/download/@formatjs/intl-1.10.0.tgz#325c92d57d09e1277a3e844bc909134098af56bc"
+  integrity sha1-MlyS1X0J4Sd6PoRLyQkTQJivVrw=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    "@formatjs/icu-messageformat-parser" "1.1.6"
+    "@formatjs/intl-displaynames" "4.0.13"
+    "@formatjs/intl-listformat" "5.0.14"
+    fast-memoize "^2.5.2"
+    intl-messageformat "9.6.8"
+    tslib "^2.1.0"
+
 "@fullhuman/postcss-purgecss@^3.1.3":
   version "3.1.3"
   resolved "https://registry.npm.taobao.org/@fullhuman/postcss-purgecss/download/@fullhuman/postcss-purgecss-3.1.3.tgz#47af7b87c9bfb3de4bc94a38f875b928fffdf339"
@@ -4331,10 +4384,15 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@popperjs/core@2.4.4", "@popperjs/core@^2.4.4", "@popperjs/core@^2.5.4":
+"@popperjs/core@2.4.4", "@popperjs/core@^2.4.4":
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.4.4.tgz#11d5db19bd178936ec89cd84519c4de439574398"
   integrity sha512-1oO6+dN5kdIA3sKPZhRGJTfGVP4SWV6KqlMOwry4J3HfyD68sl/3KmG7DeYUzvN+RbhXDnv/D8vNNB8168tAMg==
+
+"@popperjs/core@^2.5.4":
+  version "2.9.2"
+  resolved "https://registry.npm.taobao.org/@popperjs/core/download/@popperjs/core-2.9.2.tgz?cache=0&sync_timestamp=1617291042068&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40popperjs%2Fcore%2Fdownload%2F%40popperjs%2Fcore-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
+  integrity sha1-rep7aVPLs0ZRdmsFSEaOdDxqI1M=
 
 "@qixian.cs/path-to-regexp@^6.1.0":
   version "6.1.0"
@@ -5846,6 +5904,14 @@
   version "4.7.8"
   resolved "https://registry.npm.taobao.org/@types/history/download/@types/history-4.7.8.tgz?cache=0&sync_timestamp=1613379239144&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fhistory%2Fdownload%2F%40types%2Fhistory-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"
   integrity sha1-STSDh5gwdXBf6PTgL7Z/farsSTQ=
+
+"@types/hoist-non-react-statics@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.npm.taobao.org/@types/hoist-non-react-statics/download/@types/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha1-ESSq/lEYy1kZd66xzqrtEHDrA58=
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
 
 "@types/html-minifier-terser@^5.0.0":
   version "5.1.1"
@@ -12687,6 +12753,11 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://registry.npm.taobao.org/fast-levenshtein/download/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fast-memoize@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npm.taobao.org/fast-memoize/download/fast-memoize-2.5.2.tgz?cache=0&sync_timestamp=1586263971685&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffast-memoize%2Fdownload%2Ffast-memoize-2.5.2.tgz#79e3bb6a4ec867ea40ba0e7146816f6cdce9b57e"
+  integrity sha1-eeO7ak7IZ+pAug5xRoFvbNzptX4=
+
 fastparse@^1.1.2:
   version "1.1.2"
   resolved "https://r.cnpmjs.org/fastparse/download/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
@@ -14922,6 +14993,15 @@ interpret@^2.0.0:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/interpret/download/interpret-2.2.0.tgz#1a78a0b5965c40a5416d007ad6f50ad27c417df9"
   integrity sha1-GnigtZZcQKVBbQB61vUK0nxBffk=
+
+intl-messageformat@9.6.8:
+  version "9.6.8"
+  resolved "https://registry.nlark.com/intl-messageformat/download/intl-messageformat-9.6.8.tgz#6059f810ee21411ca3d83a21bce00b2784f8b10f"
+  integrity sha1-YFn4EO4hQRyj2DohvOALJ4T4sQ8=
+  dependencies:
+    "@formatjs/icu-messageformat-parser" "1.1.6"
+    fast-memoize "^2.5.2"
+    tslib "^2.1.0"
 
 into-stream@^6.0.0:
   version "6.0.0"
@@ -21842,7 +21922,7 @@ react-docgen@^5.0.0:
     node-dir "^0.1.10"
     strip-indent "^3.0.0"
 
-react-dom@17.0.2, react-dom@>=14, react-dom@^16.8.3, react-dom@^17.0.2:
+react-dom@>=14, react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.nlark.com/react-dom/download/react-dom-17.0.2.tgz?cache=0&sync_timestamp=1618849560049&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-dom%2Fdownload%2Freact-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
   integrity sha1-7P+2hF462Nv83EmPDQqTlzZQLCM=
@@ -21850,6 +21930,16 @@ react-dom@17.0.2, react-dom@>=14, react-dom@^16.8.3, react-dom@^17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-dom@^16.8.3:
+  version "16.14.0"
+  resolved "https://registry.nlark.com/react-dom/download/react-dom-16.14.0.tgz?cache=0&sync_timestamp=1618935781197&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-dom%2Fdownload%2Freact-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
+  integrity sha1-etg47Cmnd/s8dcOhkPZhz5Kri4k=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.19.1"
 
 react-draggable@^4.0.3:
   version "4.4.3"
@@ -21934,6 +22024,21 @@ react-inspector@^5.0.1:
     "@babel/runtime" "^7.0.0"
     is-dom "^1.0.0"
     prop-types "^15.0.0"
+
+react-intl@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.nlark.com/react-intl/download/react-intl-5.16.0.tgz#c13167966f864a11bdafa8e9ac5478cc3c11bff5"
+  integrity sha1-wTFnlm+GShG9r6jprFR4zDwRv/U=
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.6.5"
+    "@formatjs/icu-messageformat-parser" "1.1.6"
+    "@formatjs/intl" "1.10.0"
+    "@formatjs/intl-displaynames" "4.0.13"
+    "@formatjs/intl-listformat" "5.0.14"
+    "@types/hoist-non-react-statics" "^3.3.1"
+    hoist-non-react-statics "^3.3.2"
+    intl-messageformat "9.6.8"
+    tslib "^2.1.0"
 
 react-is@16.13.1, react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
@@ -22298,13 +22403,22 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@17.0.2, react@>=14, react@^16.8.3, react@^17.0.2:
+react@>=14, react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.nlark.com/react/download/react-17.0.2.tgz?cache=0&sync_timestamp=1618849150939&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact%2Fdownload%2Freact-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha1-0LXMUW0p6z7uOD91tihkz7aAADc=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+react@^16.8.3:
+  version "16.14.0"
+  resolved "https://registry.nlark.com/react/download/react-16.14.0.tgz?cache=0&sync_timestamp=1618935782349&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact%2Fdownload%2Freact-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+  integrity sha1-lNd23dCqo32j7aj8W2sYpMmjEU0=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
 
 reactcss@^1.2.0:
   version "1.2.3"
@@ -23466,6 +23580,14 @@ saxes@^5.0.1:
   integrity sha1-7rq5U/o7dgjb6U5drbFciI+maW0=
   dependencies:
     xmlchars "^2.2.0"
+
+scheduler@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.nlark.com/scheduler/download/scheduler-0.19.1.tgz?cache=0&sync_timestamp=1618935783463&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fscheduler%2Fdownload%2Fscheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
+  integrity sha1-Tz4u0sGn1laB9MhU+oxaHMtA8ZY=
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
 
 scheduler@^0.20.1:
   version "0.20.1"

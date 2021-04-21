@@ -31,7 +31,7 @@ export const ObjectListView = observer((props: any) => {
     }
 
     //新增
-    extraButtons.push(<ObjectForm afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
+    extraButtons.push(<ObjectForm key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
 
     //   dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
 
