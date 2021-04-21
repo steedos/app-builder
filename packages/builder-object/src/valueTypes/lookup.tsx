@@ -137,6 +137,8 @@ const Lookup = observer((props:any) => {
                     option.pageSize = reference_limit
                 }
                 const data = await API.requestRecords(referenceTo, filters, fields, option);
+                // if(props.name==='test_related_to') console.log('data==>',data)
+
                 const results = data.value.map((item: any) => {
                     return {
                         label: item[referenceToLableField],
@@ -146,7 +148,7 @@ const Lookup = observer((props:any) => {
                 return results;
             }
         }
-        
+
         if (referenceTo){ // 含有reference_to
             if (!options) {
                 request = requestFun;

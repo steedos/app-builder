@@ -7,14 +7,14 @@ export type Fields = string | Array<string>
 export type Options = {
     pageSize: number,
     current: number,
-    sort: any
+    sort: any,
     // $top?: Number,
     // $skip?: Number,
     // $orderby?: Number,
     // $count?: boolean,
     // $filter?: Filters,
     // $select?: Fields,
-    // $expand?: string
+    expand?: string
 }
 
 export type ODataQuery = {

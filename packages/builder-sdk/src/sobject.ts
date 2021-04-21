@@ -33,9 +33,14 @@ export default class SObject {
         if($filter){
             params.$filter = $filter
         }
+        // console.log('fields==>',fields)
         const $select = this.getSelect(fields);
+        // console.log('$select==>',$select)
         if($select){
             params.$select = $select
+        }
+        if(options && options.expand){
+            params.$expand = options.expand
         }
         if(options){
             if(options.pageSize){

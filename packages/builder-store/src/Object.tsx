@@ -2,7 +2,7 @@ import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
 import { convertFieldsSchema } from './utils';
 import { API } from './API';
-
+import { getObjectOdataExpandFields } from './utils/index'
 
 export const RecordCache = types.model({
   id: types.identifier, //记录ID
@@ -15,9 +15,13 @@ export const RecordCache = types.model({
 .actions((self) => {
 
   const loadRecord = flow(function* loadRecord() {
+    console.log('self.id====>',self, self.id)
     try {
       const filters = ['_id', '=', self.id]
-      self.data = yield API.requestRecords(self.objectApiName, filters, self.fields)
+      const object = Objects.getObject(self.objectApiName).schema;
+      // console.log('object===>',object.fields, typeof object.fields)
+      const expand = getObjectOdataExpandFields(object, self.fields)
+      self.data = yield API.requestRecords(self.objectApiName, filters, self.fields, {expand})
       self.permissions = yield API.requestRecordPermissions(self.objectApiName, self.id);
       self.isLoading = false
     } catch (err) {

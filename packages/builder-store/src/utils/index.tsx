@@ -81,3 +81,19 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   // console.log("convertFieldsSchema====fieldsSchema===", objectConfig.name, fieldsSchema);
   objectConfig.fields = fieldsSchema;
 }
+
+export function getObjectOdataExpandFields(object: any,columns: string[]) {
+  var expand_fields, fields:[];
+  expand_fields = [];
+  fields = object.fields;
+  if (!columns) {
+    columns = _.keys(fields);
+  }
+  _.each(columns,(n)=>{
+    var ref1, ref2;
+    if (((ref1 = fields[n]) != null ? ref1.type : void 0) === "master_detail" || ((ref2 = fields[n]) != null ? ref2.type : void 0) === "lookup") {
+      return expand_fields.push(n)
+    }
+  })
+  return expand_fields.join(",");
+}
