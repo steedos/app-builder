@@ -90,11 +90,52 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   return fieldsSchema;
 }
 
+
+/**
+  视图过虑器需要支持function，后台转成字符串，前台eval成函数
+  让过虑器支持两种function方式：
+  1. 整个filters为function:
+  如：
+  filters: ()->
+    return [[["object_name","=","project_issues"],'or',["object_name","=","tasks"]]]
+  2. filters内的filter.value为function
+  如：
+  filters: [["object_name", "=", ()->
+    return "project_issues"
+  ]]
+  或
+  filters: [{
+    "field": "object_name"
+    "operation": "="
+    "value": ()->
+      return "project_issues"
+  }]
+ */
 const getListViewSchema = (listView: any)=>{
-  let filters = listView._filters
-  if(filters){
-    filters = saveEval(`(${filters})`);
+  if(listView._filters){
+    let filters = saveEval(`(${listView._filters})`);
     return Object.assign({}, listView, {filters});
+  }
+  else if(_.isArray(listView.filters)){
+    _.forEach(listView.filters, function(filter: any, _index) {
+      if (_.isArray(filter)) {
+        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "FUNCTION") {
+          filter[2] = saveEval("(" + filter[2] + ")");
+          filter.pop();
+        }
+        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "DATE") {
+          filter[2] = new Date(filter[2]);
+          return filter.pop();
+        }
+      } else if (_.isObject(filter) as any) {
+        if (_.isString(filter && filter._value)) {
+          return filter.value = saveEval("(" + filter._value + ")");
+        } else if (filter._is_date === true) {
+          return filter.value = new Date(filter.value);
+        }
+      }
+    });
+    return listView;
   }
   else{
     return listView;

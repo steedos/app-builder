@@ -84,12 +84,16 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
 
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
-  let columnFieldsArray = object.schema.list_views[listName];
+  let listView = object.schema.list_views[listName];
   if (columnFields.length === 0) {
-    _.forEach(columnFieldsArray.columns, (value) => {
+    _.forEach(listView.columns, (value) => {
       columnFields.push({ fieldName: value.field })
     })
   }
+  if(!filters){
+    filters = listView.filters;
+  }
+  filters = _.isFunction(filters) ? filters() : filters;
   return (
     <ObjectTable
       objectApiName={objectApiName}
