@@ -69,6 +69,8 @@
                                 "label": "链接",
                                 "valueType": "href",
                                 "readonly": false,
+                                "is_wide": true,
+                                "isWide": true,
                                 "rules": [
                                     {
                                         "message": "Please input...",
