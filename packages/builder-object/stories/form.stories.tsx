@@ -369,7 +369,7 @@ export const Form = () => {
 }
 
 
-export const FormWithChildren = () => {
+export const FormVertical = () => {
   const objectApiName = 'accounts';
   const fields = []
   const recordId = process.env.STEEDOS_CURRENT_RECORD_ID;
@@ -377,6 +377,8 @@ export const FormWithChildren = () => {
     objectApiName,
     fields,
     recordId,
+    mode: 'read',
+    layout: 'vertical'
   }
   const nameFieldSchema = {
     type: 'text',

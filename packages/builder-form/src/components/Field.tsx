@@ -62,7 +62,10 @@ export const Field = observer((props: any) => {
     formItemPropsMerged.wrapperCol = { span: 24 };
   } else if (isWide) {
     formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
-    if (!context.vertical) {
+    if (context.vertical) {
+      formItemPropsMerged.labelCol = { span: 4 };
+      formItemPropsMerged.wrapperCol = { span: 24 };
+    } else {
       formItemPropsMerged.labelCol = { span: 4 };
       formItemPropsMerged.wrapperCol = { span: 20 };
     }
