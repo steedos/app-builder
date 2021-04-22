@@ -10,7 +10,7 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
 
-const Lookup = observer((props:any) => {
+export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
@@ -171,9 +171,9 @@ const Lookup = observer((props:any) => {
 
 export const lookup = {
     render: (text: any, props: any) => {
-        return (<Lookup {...props} mode="read"></Lookup>)
+        return (<LookupField {...props} mode="read"></LookupField>)
     },
     renderFormItem: (text: any, props: any) => {
-        return (<Lookup {...props} mode="edit"></Lookup>)
+        return (<LookupField {...props} mode="edit"></LookupField>)
     }
 }
