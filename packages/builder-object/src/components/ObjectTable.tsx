@@ -39,6 +39,7 @@ export type ObjectTableProps<T extends ObjectTableColumnProps> =
       objectApiName?: string
       columnFields?: T[]
       filters?: [] | string
+      sort?: [] | string
       onChange?: ([any]) => void
       // filterableFields?: [string]
     } & {
@@ -103,6 +104,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     objectApiName,
     columnFields = [],
     filters: defaultFilters,
+    sort,
     defaultClassName,
     onChange,
     ...rest
@@ -123,6 +125,9 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
           columnOption.render = (dom: any, record: any)=>{
             return (<Link to={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
           }
+        }
+        if(sort){
+          
         }
         const proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
 
