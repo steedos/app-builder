@@ -92,6 +92,23 @@ export const ObjectDetail = observer((props: any) => {
       }
     })
   }
+  const extra = [...extraButtons];
+  if(dropdownMenus.length > 0){
+    extra.push(<Dropdown
+      key="dropdown"
+      trigger={['click']}
+      overlay={
+        <Menu>
+          {dropdownMenus}
+        </Menu>
+      }
+    >
+      <Button key="4" style={{ padding: '0 8px' }}>
+        <EllipsisOutlined />
+      </Button>
+    </Dropdown>)
+  }
+
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -108,22 +125,7 @@ export const ObjectDetail = observer((props: any) => {
           },
         ],
       },
-      extra: [
-        ...extraButtons,
-        <Dropdown
-            key="dropdown"
-            trigger={['click']}
-            overlay={
-              <Menu>
-                {dropdownMenus}
-              </Menu>
-            }
-          >
-            <Button key="4" style={{ padding: '0 8px' }}>
-              <EllipsisOutlined />
-            </Button>
-          </Dropdown>
-      ],
+      extra: extra
     }}
 >
   <Space direction="vertical" style={{width: "100%"}}>
