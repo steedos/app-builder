@@ -94,7 +94,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   if(!filters){
     filters = listView.filters;
   }
-  filters = _.isFunction(filters) ? filters() : filters;
+  // filters = _.isFunction(filters) ? filters() : filters;
   if(!filter_scope){
     filter_scope = listView.filter_scope;
   }
