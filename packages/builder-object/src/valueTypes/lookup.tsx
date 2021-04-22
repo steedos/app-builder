@@ -5,6 +5,8 @@ import _ from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
+import { Link } from "react-router-dom";
+import { getObjectRecordUrl } from "../utils";
 
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
@@ -20,7 +22,6 @@ export const LookupField = observer((props:any) => {
     const referenceTo = _.isFunction(reference_to) ? reference_to() : reference_to;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     if(mode==='read'){
-        const hrefPrefix = `/app/-/${referenceTo}/view/`
         if(value){
             if (referenceTo) {
                 const object = Objects.getObject(referenceTo);
@@ -46,8 +47,7 @@ export const LookupField = observer((props:any) => {
         return (<React.Fragment>{tags.map((tagItem, index)=>{return (
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
-                {/* <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a> */}
-                { referenceTo ? (<a href={`${hrefPrefix}${tagItem.value}`} className="text-blue-600 hover:text-blue-500 hover:underline">{tagItem.label}</a>) : (tagItem.label) }
+                { referenceTo ? (<Link to={getObjectRecordUrl(referenceTo, tagItem.value)} className="text-blue-600 hover:text-blue-500 hover:underline">{tagItem.label}</Link>) : (tagItem.label) }
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
