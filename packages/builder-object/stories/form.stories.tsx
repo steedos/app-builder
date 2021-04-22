@@ -2,6 +2,7 @@ import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectListView, Objec
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
+import { Link } from "react-router-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
@@ -454,7 +455,29 @@ export const TableFilters= () => {
   )
 }
 
-
+export const TableColumnRender= () => {
+  return (
+      <ObjectTable objectApiName='tasks' 
+        columnFields={
+          [
+            {
+              fieldName: 'name',
+              render: (dom: any, record: any)=>{
+                return (<Link to={`/app/-/tasks/view/${record._id}`} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
+              }
+            },
+            {
+              fieldName: 'priority'
+            },
+            {
+              fieldName: 'related_to'
+            }
+          ]
+        }
+      >
+      </ObjectTable>
+  )
+}
 
 export const Tree = () => {
   return (
@@ -499,7 +522,7 @@ export const ListView = () => {
 }
 
 
-export const ListViewNoToobar = () => {
+export const ListViewNoSearch = () => {
   return (
       <ObjectListView objectApiName='tasks' 
         search={false}

@@ -120,16 +120,10 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       columnFields,
       ({ fieldName, ...columnItem }: ObjectTableColumnProps) => {
         if (columnItem.hideInTable) return
-        let columnOption:any = {};
-        if(fieldName === object.schema.NAME_FIELD_KEY){
-          columnOption.render = (dom: any, record: any)=>{
-            return (<Link to={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
-          }
-        }
         if(sort){
           
         }
-        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
+        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName])
 
         if (proColumn) {
           proColumns.push({ ...proColumn, ...columnItem })

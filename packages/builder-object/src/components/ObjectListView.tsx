@@ -13,6 +13,8 @@ import { Button, Dropdown, Menu, message } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
 import { PageContainer } from '@ant-design/pro-layout';
+import { Link } from "react-router-dom";
+import { getObjectRecordUrl } from "../utils"
 
 export type ObjectListViewColumnProps = {
   fieldName: string
@@ -87,12 +89,18 @@ function getListViewFilters(listView, props){
   return filters;
 }
 
-function getListViewColumnFields(listView, props){
+function getListViewColumnFields(listView: any, props: any, nameFieldKey: string){
   let { columnFields = [] } = props;
   if (columnFields.length === 0) {
     _.forEach(listView.columns, (column: any) => {
       const fieldName: string = _.isObject(column) ? (column as any).field : column;
-      columnFields.push({ fieldName: fieldName })
+      let columnOption: any = { fieldName };
+      if(fieldName === nameFieldKey){
+        columnOption.render = (dom: any, record: any)=>{
+          return (<Link to={getObjectRecordUrl(props.objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
+        }
+      }
+      columnFields.push(columnOption)
     })
   }
   return columnFields;
@@ -168,7 +176,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const schema = object.schema; 
   const title = schema.label;
   let listView = schema.list_views[listName];
-  const columnFields = getListViewColumnFields(listView, props);
+  const columnFields = getListViewColumnFields(listView, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
   const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref});
   const extra = [...extraButtons];
