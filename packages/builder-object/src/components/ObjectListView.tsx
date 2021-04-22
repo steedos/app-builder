@@ -87,14 +87,18 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   if (object.isLoading) return (<div>Loading object ...</div>)
   let listView = object.schema.list_views[listName];
   if (columnFields.length === 0) {
-    _.forEach(listView.columns, (value) => {
-      columnFields.push({ fieldName: value.field })
+    _.forEach(listView.columns, (column: any) => {
+      const fieldName: string = _.isObject(column) ? (column as any).field : column;
+      columnFields.push({ fieldName: fieldName })
     })
   }
   if(!filters){
     filters = listView.filters;
   }
+
+  // filters为function的情况先不处理（因为filters中可能调用Creator，Steedos等全局变量），按空值返回
   // filters = _.isFunction(filters) ? filters() : filters;
+  filters = _.isFunction(filters) ? [] : filters;
   if(!filter_scope){
     filter_scope = listView.filter_scope;
   }
