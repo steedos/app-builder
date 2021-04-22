@@ -497,3 +497,14 @@ export const ListView = () => {
       </ObjectListView>
   )
 }
+
+
+export const ListViewNoToobar = () => {
+  return (
+      <ObjectListView objectApiName='tasks' 
+        search={false}
+      >
+        
+      </ObjectListView>
+  )
+}
