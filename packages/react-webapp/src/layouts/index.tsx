@@ -8,7 +8,8 @@ import {
   Link
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
-import { ObjectListView } from '../pages/objectListView';
+// import { ObjectListView } from '../pages/objectListView';
+import { ObjectListView } from '@steedos/builder-object';
 // import { SteedosAppLauncher } from '@steedos/builder-lightning/src/components/AppLauncher';
 
 
