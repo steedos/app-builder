@@ -146,7 +146,7 @@ export const ObjectDetail = observer((props: any) => {
       relatedList.map((item, index) => {
         return (
           <Card >
-            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName}/>
+            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
           </Card>
         )
     })

@@ -5,6 +5,7 @@ import ProTable, {
   ProTableProps,
   RequestData,
   ProColumnType,
+  ActionType,
 } from "@ant-design/pro-table"
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
@@ -97,11 +98,15 @@ function getListViewColumnFields(listView, props){
   return columnFields;
 }
 
-function getButtons(schema, props){
+function getButtons(schema, props, options){
   let history = useHistory();
-  let { objectApiName, appApiName = "-" } = props
+  let { objectApiName, appApiName = "-", master} = props
   const title = schema.label;
   function afterInsert(result) {
+    if(master && options && options.actionRef){
+      options.actionRef.current.reload();
+      return true;
+    }
     if(result && result.length >0){
       const record = result[0];
       message.success('新建成功');
@@ -110,10 +115,17 @@ function getButtons(schema, props){
     }
   }
 
+  let initialValues = null;
+  if(master){
+    initialValues = {
+      [master.relatedFieldApiName]: master.recordId
+    }
+  }
+
   const extraButtons: any[] = [];
   const dropdownMenus: any[] = [];
 
-  extraButtons.push(<ObjectForm key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
+  extraButtons.push(<ObjectForm initialValues={initialValues} key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
   _.each(schema.actions, function (action: any, actionApiName: string) {
       let visible = false;
 
@@ -150,7 +162,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     listName = "all",
     ...rest
   } = props
-
+  const ref = useRef<ActionType>();
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 
@@ -158,7 +170,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   let listView = schema.list_views[listName];
   const columnFields = getListViewColumnFields(listView, props);
   const filters = getListViewFilters(listView, props);
-  const {extraButtons, dropdownMenus} = getButtons(schema, props);
+  const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref});
   const extra = [...extraButtons];
   if(dropdownMenus.length > 0){
     extra.push(<Dropdown
@@ -182,6 +194,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       extra: extra,
     }}>
     <ObjectTable
+      actionRef={ref} 
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
