@@ -79,7 +79,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     listName = "all",
     columnFields = [],
     filters,
-    filter_scope="mine",
+    filter_scope,
     ...rest
   } = props
 
@@ -99,8 +99,13 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     filter_scope = listView.filter_scope;
   }
   if(filter_scope === "mine"){
-    let filtersArray=[["owner", "=", Settings.userId]];
-    filters = filters ? filtersArray.push(filters) : filtersArray;
+    const filtersOwner=[["owner", "=", Settings.userId]];
+    if(filters && filters.length){
+      filters = [filtersOwner, filters];
+    }
+    else{
+      filters = filtersOwner;
+    }
   }
   return (
     <ObjectTable
