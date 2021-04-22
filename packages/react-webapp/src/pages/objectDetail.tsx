@@ -1,12 +1,28 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectForm } from '@steedos/builder-object';
-import { Button, Dropdown, Menu, Card, message } from 'antd';
+import { Button, Dropdown, Menu, Card, message, Space } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
+
+import { ObjectListView } from '@steedos/builder-object';
+
+function getRelatedList(objectSchema){
+  const detailsInfo = objectSchema.details;
+  const relatedList = [];
+  _.each(detailsInfo, function(detailInfo){
+    const index = detailInfo.indexOf(".");
+    const objectApiName = detailInfo.substr(0,index);
+    const fieldApiName = detailInfo.substr(index+1);
+    relatedList.push({objectApiName, fieldApiName})
+  })
+  console.log(`getRelatedList`, relatedList)
+  return relatedList;
+}
+
 
 export const ObjectDetail = observer((props: any) => {
   let history = useHistory();
@@ -16,7 +32,8 @@ export const ObjectDetail = observer((props: any) => {
   if (object.isLoading) return (<div>Loading object ...</div>)
   const recordCache = object.getRecord(recordId, [])
   if (recordCache.isLoading) return (<div>Loading record ...</div>)
-  const schema = object.schema ;
+  const schema = object.schema;
+  const relatedList = getRelatedList(schema);
   let title = '';
   let recordPermissions: any = null;
   let record: any = null;
@@ -109,8 +126,8 @@ export const ObjectDetail = observer((props: any) => {
       ],
     }}
 >
-
-    <Card>
+  <Space direction="vertical" style={{width: "100%"}}>
+    <Card >
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
               render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
               ,searchConfig: {
@@ -125,6 +142,17 @@ export const ObjectDetail = observer((props: any) => {
         }}/>
     </Card>
 
+    {
+      relatedList.map((item, index) => {
+        return (
+          <Card >
+            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName}/>
+          </Card>
+        )
+    })
+
+    }
+  </Space>
   </PageContainer>
   );
 });

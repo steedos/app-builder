@@ -1,28 +1,17 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from "lodash"
-import { ObjectTable } from "./"
-import { useQuery } from "react-query"
+import { ObjectForm, ObjectTable } from "./"
 import ProTable, {
   ProTableProps,
   RequestData,
   ProColumnType,
 } from "@ant-design/pro-table"
-import { SortOrder } from "antd/lib/table/interface"
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
-// export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
-//   mode?: ProFieldFCMode,
-//   editable?: boolean,
-// } & ProTableProps<T, U, ValueType> & {
-//   defaultClassName: string;
-// }
-
-// export type ObjectTableProps = {
-//   objectApiName?: string,
-//   recordId?: string,
-// } & ProTableProps<T, U, ValueType> & {
-//   defaultClassName: string;
-// }
+import { Button, Dropdown, Menu, message } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons';
+import { useHistory } from "react-router-dom";
+import { PageContainer } from '@ant-design/pro-layout';
 
 export type ObjectListViewColumnProps = {
   fieldName: string
@@ -31,6 +20,7 @@ export type ObjectListViewColumnProps = {
 export type ObjectListViewProps<T extends ObjectListViewColumnProps> =
   | ({
       name?: string
+      appApiName?: string
       objectApiName?: string
       listName?: string
       columnFields?: T[]
@@ -72,26 +62,8 @@ export const getObjectListViewProColumn = (field: any) => {
   return proColumnProps
 }
 
-export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
-
-  let {
-    objectApiName,
-    listName = "all",
-    columnFields = [],
-    filters,
-    filter_scope,
-    ...rest
-  } = props
-
-  const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
-  let listView = object.schema.list_views[listName];
-  if (columnFields.length === 0) {
-    _.forEach(listView.columns, (column: any) => {
-      const fieldName: string = _.isObject(column) ? (column as any).field : column;
-      columnFields.push({ fieldName: fieldName })
-    })
-  }
+function getListViewFilters(listView, props){
+  let { filters, filter_scope } = props;
   if(!filters){
     filters = listView.filters;
   }
@@ -111,7 +83,104 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       filters = filtersOwner;
     }
   }
+  return filters;
+}
+
+function getListViewColumnFields(listView, props){
+  let { columnFields = [] } = props;
+  if (columnFields.length === 0) {
+    _.forEach(listView.columns, (column: any) => {
+      const fieldName: string = _.isObject(column) ? (column as any).field : column;
+      columnFields.push({ fieldName: fieldName })
+    })
+  }
+  return columnFields;
+}
+
+function getButtons(schema, props){
+  let history = useHistory();
+  let { objectApiName, appApiName = "-" } = props
+  const title = schema.label;
+  function afterInsert(result) {
+    if(result && result.length >0){
+      const record = result[0];
+      message.success('新建成功');
+      history.push(`/app/${appApiName}/${objectApiName}/view/${record._id}`);
+      return true;
+    }
+  }
+
+  const extraButtons: any[] = [];
+  const dropdownMenus: any[] = [];
+
+  extraButtons.push(<ObjectForm key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
+  _.each(schema.actions, function (action: any, actionApiName: string) {
+      let visible = false;
+
+      if (_.isString(action._visible)) {
+          try {
+              const visibleFunction = eval(`(${action._visible})`);
+              visible = visibleFunction(objectApiName)
+          } catch (error) {
+              // console.error(error, action._visible)
+          }
+      }
+
+      if (_.isBoolean(action._visible)) {
+          visible = action._visible
+      }
+
+      if (visible && _.includes(['list'], action.on)) {
+          if (extraButtons.length < 5) {
+              extraButtons.push(<Button key={actionApiName} onClick={action.todo}>{action.label}</Button>)
+          } else {
+              dropdownMenus.push(<Menu.Item key={actionApiName} onClick={action.todo}>{action.label}</Menu.Item>)
+          }
+      }
+  });
+  return {
+    extraButtons,
+    dropdownMenus
+  }
+}
+
+export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
+  let {
+    objectApiName,
+    listName = "all",
+    ...rest
+  } = props
+
+  const object = Objects.getObject(objectApiName);
+  if (object.isLoading) return (<div>Loading object ...</div>)
+  const schema = object.schema; 
+  const title = schema.label;
+  let listView = schema.list_views[listName];
+  const columnFields = getListViewColumnFields(listView, props);
+  const filters = getListViewFilters(listView, props);
+  const {extraButtons, dropdownMenus} = getButtons(schema, props);
+  const extra = [...extraButtons];
+  if(dropdownMenus.length > 0){
+    extra.push(<Dropdown
+      key="dropdown"
+      trigger={['click']}
+      overlay={
+        <Menu>
+          {dropdownMenus}
+        </Menu>
+      }
+    >
+      <Button key="4" style={{ padding: '0 8px' }}>
+        <EllipsisOutlined />
+      </Button>
+    </Dropdown>)
+  }
   return (
+    <PageContainer content={false} title={false} header={{
+      title: title,
+      ghost: true,
+      extra: extra,
+    }}>
     <ObjectTable
       objectApiName={objectApiName}
       columnFields={columnFields}
@@ -119,5 +188,6 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       className={["object-listview", rest.className].join(" ")}
       {...rest}
     />
+    </PageContainer>
   )
 })

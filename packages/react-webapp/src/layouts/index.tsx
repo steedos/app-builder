@@ -10,7 +10,7 @@ import {
 import { ObjectDetail } from '../pages/objectDetail';
 // import { ObjectListView } from '../pages/objectListView';
 import { ObjectListView } from '@steedos/builder-object';
-// import { SteedosAppLauncher } from '@steedos/builder-lightning/src/components/AppLauncher';
+import { SteedosAppLauncher } from "@steedos/builder-lightning";
 
 
 const routes = [
@@ -38,7 +38,8 @@ const routes = [
   }
 
 export default function Layout(props: any) {
-    const { appApiName } = props;
+    let { appApiName } = props;
+    appApiName = 'contracts'
     const [appName, setAppName] = useState('');
     const [appIcon, setAppIcon] = useState('https://www.steedos.com/img/logo.png');
     return (
@@ -50,7 +51,7 @@ export default function Layout(props: any) {
               // border: '1px solid #ddd',
             }}
             navTheme='dark'
-            // headerRender= {(props: any) => {return (<SteedosAppLauncher/>)}}
+            headerRender= {(props: any) => {return (<SteedosAppLauncher/>)}}
             fixSiderbar={true}
             menuItemRender={(item, dom) => {
               if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {

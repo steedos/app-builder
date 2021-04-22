@@ -67,18 +67,6 @@ export const ObjectListView = observer((props: any) => {
         <PageContainer content={false} title={false} header={{
             title: title,
             ghost: true,
-            // breadcrumb: {
-            //   routes: [
-            //     {
-            //       path: `/app/${appApiName}`,
-            //       breadcrumbName: '列表',
-            //     },
-            //     {
-            //       path: '',
-            //       breadcrumbName: '详细',
-            //     },
-            //   ],
-            // },
             extra: [
               ...extraButtons,
               <Dropdown
