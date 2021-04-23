@@ -8,9 +8,10 @@ export const User = types.model({
 })
 .actions((self) => {
     function setUserInfo(data: any) {
-        self._id = data.userId;
+        const userId = data.userId || data._id
+        self._id = userId;
         self.name = data.name;
-        self.avatar = `${API.client.getUrl()}/avatar/${data.userId}`;
+        self.avatar = `${API.client.getUrl()}/avatar/${userId}`;
     }
     function goLogin(){
         window.location.href = `/login`;
