@@ -403,6 +403,8 @@ export const Table = () => {
         pagination={{
           pageSize:3
         }}
+        sort="created desc,name desc"
+        // sort={[["created","desc"],["name","desc"]]}
         columnFields={
           [
             {
