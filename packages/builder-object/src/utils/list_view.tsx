@@ -67,37 +67,6 @@ export function unionSelectColumnsWithExtraAndDepandOn(objectSchema: any, column
 	return selectColumns
 }
 
-export function removeCurrentRelatedColumns(objectSchema: any, columns: any, relatedObjectApiName: string) {
-	// 移除主键字段，即columns中的reference_to等于object_name的字段
-  // TODO: 任务，附件，日程等子表列表还是没有移除，原来1.23就一直是有问题的
-  const fields = objectSchema.fields;
-  if (relatedObjectApiName) {
-    columns = columns.filter(function(n: string) {
-      const field = fields[n];
-      if (field && field?.type == "master_detail") {
-        if (field.multiple) {
-          return true;
-        }
-        let referenceTo = field.reference_to;
-        if (referenceTo) {
-          if (_.isFunction(referenceTo)) {
-            referenceTo = referenceTo();
-          }
-        }
-        if (_.isArray(referenceTo)) {
-          return true;
-        } else {
-          return referenceTo !== relatedObjectApiName;
-        }
-      } else {
-        return true;
-      }
-    });
-  }
-  
-  return columns;
-};
-
 export function getListviewColumns(objectSchema: any, listName: string, relatedObjectApiName: string, isMobile: boolean) {
 	// 原来Creator.getListviewColumns函数逻辑
   const listView = objectSchema.list_views[listName];
@@ -137,7 +106,6 @@ export function getListviewColumns(objectSchema: any, listName: string, relatedO
     columns.push("parent");
   }
   columns = _.compact(columns)
-  columns = removeCurrentRelatedColumns(objectSchema, columns, relatedObjectApiName)
   return columns;
 }
 
