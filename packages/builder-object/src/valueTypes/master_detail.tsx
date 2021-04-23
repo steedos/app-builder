@@ -1,11 +1,12 @@
 import React from 'react';
+import {LookupField} from './lookup'
 
 // 和lookup相同
 export const master_detail = {
   render: (text: any, props: any) => {
-    return (<div>master detail display</div>)
+      return (<LookupField {...props} mode="read"></LookupField>)
   },
-  renderFormItem: (_: any, props: any) => {
-    return (<div>master detail edit</div>)
+  renderFormItem: (text: any, props: any) => {
+      return (<LookupField {...props} mode="edit"></LookupField>)
   }
 }

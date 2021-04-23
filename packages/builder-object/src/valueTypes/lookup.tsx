@@ -5,13 +5,15 @@ import _, { isObject, result } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
+import { Link } from "react-router-dom";
+import { getObjectRecordUrl } from "../utils";
 
 const { Option } = Select;
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
 
-const Lookup = observer((props:any) => {
+export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
@@ -39,7 +41,6 @@ const Lookup = observer((props:any) => {
         value=value.ids;
     }
     if(mode==='read'){
-        const hrefPrefix = `/app/-/${referenceTo}/view/`
         if(value){
             if (referenceTo) {
                 const object = Objects.getObject(referenceTo);
@@ -65,8 +66,7 @@ const Lookup = observer((props:any) => {
         return (<React.Fragment>{tags.map((tagItem, index)=>{return (
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
-                {/* <a href={`${hrefPrefix}${tagItem.value}`}>{tagItem.label}</a> */}
-                { referenceTo ? (<a href={`${hrefPrefix}${tagItem.value}`} className="text-blue-600 hover:text-blue-500 hover:underline">{tagItem.label}</a>) : (tagItem.label) }
+                { referenceTo ? (<Link to={getObjectRecordUrl(referenceTo, tagItem.value)} className="text-blue-600 hover:text-blue-500 hover:underline">{tagItem.label}</Link>) : (tagItem.label) }
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
@@ -232,9 +232,9 @@ const Lookup = observer((props:any) => {
 
 export const lookup = {
     render: (text: any, props: any) => {
-        return (<Lookup {...props} mode="read"></Lookup>)
+        return (<LookupField {...props} mode="read"></LookupField>)
     },
     renderFormItem: (text: any, props: any) => {
-        return (<Lookup {...props} mode="edit"></Lookup>)
+        return (<LookupField {...props} mode="edit"></LookupField>)
     }
 }

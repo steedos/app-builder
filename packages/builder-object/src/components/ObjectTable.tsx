@@ -39,6 +39,7 @@ export type ObjectTableProps<T extends ObjectTableColumnProps> =
       objectApiName?: string
       columnFields?: T[]
       filters?: [] | string
+      sort?: [] | string
       onChange?: ([any]) => void
       // filterableFields?: [string]
     } & {
@@ -97,12 +98,41 @@ export const getFieldDefaultOperation = (type: any)=>{
   }
 }
 
+function getDefaultSortOrder(fieldName: any, sort:any){
+  let sortDirection:any;
+  let sortValue: any;
+  if (sort) {
+    if (typeof sort === 'string' && sort.length > 0) {
+      let arr = [];
+      arr = sort.split(',');
+      sortValue = _.map(arr, (value, key) => {
+        if (value.indexOf(' ')) {
+          return arr[key] = value.split(' ');
+        } else {
+          return arr[key] = [value]
+        }
+      })
+    } else {
+      sortValue = sort;
+    }
+    if (sortValue.length > 0) {
+      _.forEach(sortValue, (ele) => {
+        if (ele[0] === fieldName) {
+          sortDirection = ele[1] === 'desc' ? 'descend' : 'ascend';
+        }
+      })
+    }
+  }
+  return sortDirection;
+}
+
 export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   const {
     objectApiName,
     columnFields = [],
     filters: defaultFilters,
+    sort,
     defaultClassName,
     onChange,
     ...rest
@@ -112,20 +142,20 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   const selfTableRef = useRef(null)
   if (object.isLoading) return (<div>Loading object ...</div>)
 
+  let defaultSort: any = {};
   const proColumns = []
   if (object.schema && object.schema.fields) {
     _.forEach(
       columnFields,
       ({ fieldName, ...columnItem }: ObjectTableColumnProps) => {
         if (columnItem.hideInTable) return
-        let columnOption:any = {};
-        if(fieldName === object.schema.NAME_FIELD_KEY){
-          columnOption.render = (dom: any, record: any)=>{
-            return (<Link to={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
-          }
+        let columnOption: any = {};
+        const defaultSortOrder = getDefaultSortOrder(fieldName,sort)
+        if(defaultSortOrder){
+          columnOption.defaultSortOrder = defaultSortOrder;
+          defaultSort[fieldName] = defaultSortOrder;
         }
-        const proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
-
+        const  proColumn = getObjectTableProColumn(object.schema.fields[fieldName], columnOption)
         if (proColumn) {
           proColumns.push({ ...proColumn, ...columnItem })
         }
@@ -193,6 +223,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     const fields = __columnFields.map((n: any) => {
       return n.fieldName
     })
+    // TODO: ant.design的bug（defaultSortOrder 和 sorter存在时sort没获取到设置的初始值），所以这里
+    // 设置下sort的初始值， 后期修复这个bug后以下三行代码可以 删除。
+    if(_.isEmpty(sort) && !_.isEmpty(defaultSort)){
+      sort = defaultSort;
+    }
     const result = await API.requestRecords(
       __objectApiName,
       filters,

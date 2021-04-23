@@ -11,18 +11,42 @@ import GlobalNavigationBarRegion from '@salesforce/design-system-react/component
 import Button from '@salesforce/design-system-react/components/button';
 import Search from '@salesforce/design-system-react/components/input/search';
 import IconSettings from '@salesforce/design-system-react/components/icon-settings';
+import actionSprite from '@salesforce-ux/design-system/assets/icons/action-sprite/svg/symbols.svg';
+import customSprite from '@salesforce-ux/design-system/assets/icons/custom-sprite/svg/symbols.svg';
+import standardSprite from '@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg';
+import utilitySprite from '@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg';
+import Icon from '@salesforce/design-system-react/components/icon'; 
+
+function getTabs(apps){
+	let tabs = [];
+	_.each(apps, function(app){
+		tabs = tabs.concat(app.children)
+	})
+	return _.unionBy(tabs, "id");;
+}
 
 export class SteedosAppLauncher extends React.Component {
 	static displayName = 'Steedos App Launcher';
-
 	state = {
 		search: '',
+		open: false,
 	};
 
 	onSearch = (event) => {
 		this.setState({ search: event.target.value });
 	};
-
+	triggerOnClick = ()=> {
+		this.setState({open: !this.state.open})
+	}
+	onClick=(value, e)=>{
+		if(this.props.history){
+			this.props.history.push(value.path);
+		}
+		this.setState({open: false})
+	}
+	onClose=()=>{
+		this.setState({open: false})
+	}
 	render() {
 		const search = (
 			<Search
@@ -30,87 +54,55 @@ export class SteedosAppLauncher extends React.Component {
 					console.log('Search term:', event.target.value);
 					this.onSearch(event);
 				}}
-				placeholder="Find an app"
-				assistiveText={{ label: 'Find an app' }}
+				placeholder="搜索应用程序或项目..."
+				assistiveText={{ label: '搜索应用程序或项目...' }}
 			/>
 		);
 		const headerButton = <Button label="App Exchange" />;
-
+		let { currentApp, apps  } = this.props;
+		if(!currentApp){
+			currentApp = {}
+		}
+		if(!apps){
+			apps = []
+		}
+		const tabs = getTabs(apps);
 		return (
-			<IconSettings iconPath="/assets/icons">
+			<IconSettings actionSprite={actionSprite} standardSprite={standardSprite} customSprite={customSprite} utilitySprite={utilitySprite}>
 				<GlobalNavigationBar>
 					<GlobalNavigationBarRegion region="primary">
 						<AppLauncher
-							triggerName="App Name"
+							title="应用程序启动器"
+							triggerName={currentApp.name}
 							search={search}
-							modalHeaderButton={headerButton}
+							// modalHeaderButton={headerButton}
+							onClose={this.onClose}
+							isOpen={this.state.open}
+							triggerOnClick={this.triggerOnClick}
 						>
-							<AppLauncherExpandableSection title="Tile Section">
-								<AppLauncherTile
-									description="The primary internal Salesforce org. Used to run our online sales business and manage accounts."
-									iconText="SC"
-									search={this.state.search}
-									title="Sales Cloud"
-								/>
-								<AppLauncherTile
-									description="Salesforce Marketing Cloud lets businesses of any size engage with their customers through multiple channels of messaging."
-									iconBackgroundColor="#e0cf76"
-									iconText="MC"
-									search={this.state.search}
-									title="Marketing Cloud"
-								/>
-								<AppLauncherTile
-									description="Community for managing employee benefits and time off."
-									iconBackgroundColor="#6a8adc"
-									iconText="HR"
-									search={this.state.search}
-									title="HR Concierge"
-								/>
-								<AppLauncherTile
-									description="Manage your finances across multiple financial platforms and make the most of your capital."
-									iconBackgroundColor="#73c07b"
-									iconText="MM"
-									search={this.state.search}
-									title="My Money"
-								/>
-								<AppLauncherTile
-									description="The key to call center and contact center management is more simple than you think with this amazing application!"
-									iconBackgroundColor="#b67e6a"
-									iconText="CC"
-									search={this.state.search}
-									title="Call Center"
-								/>
-								<AppLauncherTile
-									description="Areas of Focus are used to track customer support for your brand and ensure high quality support"
-									iconBackgroundColor="#69bad0"
-									iconText="CS"
-									search={this.state.search}
-									title="Customer Support Community"
-								/>
+							<AppLauncherExpandableSection title="所有应用程序">
+								{apps?.map((app, i) => (
+									<AppLauncherTile
+										key={app.id}
+										description={app.description}
+										// iconText={app.icon}
+										iconNode={<Icon
+											assistiveText={{ label: app.name }}
+											category="standard"
+											name={app.icon}
+											size="large"
+										/>}
+										search={this.state.search}
+										title={app.name}
+										onClick={(e)=>{return this.onClick(app,e)}}
+									/>
+								))}
 							</AppLauncherExpandableSection>
 							<hr />
-							<AppLauncherExpandableSection title="All Items">
-								<AppLauncherLink search={this.state.search}>
-									Accounts
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Announcements
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Approvals
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Campaigns
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Cases
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Coaching
-								</AppLauncherLink>
-								<AppLauncherLink search={this.state.search}>
-									Contacts
-								</AppLauncherLink>
+							<AppLauncherExpandableSection title="所有项目">
+								{tabs?.map((tab, i) => (
+									<AppLauncherLink key={tab.id} search={this.state.search} onClick={(e)=>{return this.onClick(tab,e)}} >{tab.name}</AppLauncherLink>
+								))}
 							</AppLauncherExpandableSection>
 						</AppLauncher>
 					</GlobalNavigationBarRegion>

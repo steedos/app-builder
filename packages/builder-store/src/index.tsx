@@ -3,13 +3,14 @@ import { Forms } from './Form';
 import { Objects } from './Object';
 import { Settings } from './Settings';
 import { User } from './User';
-
+import { Apps } from './Apps'
 const stores = {
   Forms,
   Objects,
   Settings,
   API,
-  User
+  User,
+  Apps
 };
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -21,7 +22,8 @@ export {
   Objects,
   Settings,
   API,
-  User
+  User,
+  Apps
 }
 
 export default stores;

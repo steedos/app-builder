@@ -165,9 +165,9 @@ const getListViewSchema = (listView: any)=>{
  */
  export function convertObjectSchema(objectConfig: any) {
   objectConfig.fields = getFieldsSchema(objectConfig);
-  console.log("convertObjectSchema====objectConfig.fields===", objectConfig.name, objectConfig.fields);
+  // console.log("convertObjectSchema====objectConfig.fields===", objectConfig.name, objectConfig.fields);
   objectConfig.list_views = getListViewsSchema(objectConfig);
-  console.log("convertObjectSchema====objectConfig.list_views===", objectConfig.name, objectConfig.list_views);
+  // console.log("convertObjectSchema====objectConfig.list_views===", objectConfig.name, objectConfig.list_views);
 }
 
 export function getObjectOdataExpandFields(object: any,columns: string[]) {

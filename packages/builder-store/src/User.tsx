@@ -8,9 +8,10 @@ export const User = types.model({
 })
 .actions((self) => {
     function setUserInfo(data: any) {
-        self._id = data._id;
+        const userId = data.userId || data._id
+        self._id = userId;
         self.name = data.name;
-        self.avatar = data.avatar;
+        self.avatar = `${API.client.getUrl()}/avatar/${userId}`;
     }
     function goLogin(){
         window.location.href = `/login`;
@@ -47,7 +48,7 @@ export const User = types.model({
     login: flow(function* login(userName, passowrd) {
         try {
             const userInfo = yield API.client.login(userName, passowrd);
-            setUserInfo(userInfo);
+            setUserInfo(userInfo.user);
         } catch (error) {
             console.error("Failed to fetch userinfo", error)
             goLogin();
