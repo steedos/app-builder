@@ -91,7 +91,7 @@ function getListViewFilters(listView, props){
 
 function getListviewColumns(objectSchema: any, listName: any){
   let listView = objectSchema.list_views[listName];
-  let listViewColumns = listView.columns;
+  let listViewColumns = listView && listView.columns;
   if(!listViewColumns){
     listView = objectSchema.list_views.default;
     listViewColumns = listView && listView.columns;
