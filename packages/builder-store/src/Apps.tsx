@@ -45,9 +45,9 @@ export const Apps = types.model({
             let app = self.menus.get(appId);
             if(!app){
                 if(self.menus.size > 0){
-                    let app = self.menus.get(appId);
+                    app = self.menus.get(appId);
                     if(!app){
-                        app = self.menus.get(self.menus.keys[0]);
+                        app = self.menus.get(_.keys(self.menus.toJSON())[0]);
                     }
                   }
             }
