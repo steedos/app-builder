@@ -39,6 +39,9 @@ export class SteedosAppLauncher extends React.Component {
 		}
 		this.setState({open: false})
 	}
+	onClose=()=>{
+		this.setState({open: false})
+	}
 	render() {
 		const search = (
 			<Search
@@ -68,12 +71,14 @@ export class SteedosAppLauncher extends React.Component {
 							triggerName={currentApp.name}
 							search={search}
 							// modalHeaderButton={headerButton}
+							onClose={this.onClose}
 							isOpen={this.state.open}
 							triggerOnClick={this.triggerOnClick}
 						>
 							<AppLauncherExpandableSection title="所有应用程序">
 								{apps?.map((app, i) => (
 									<AppLauncherTile
+										key={app.id}
 										description={app.description}
 										iconText={app.icon}
 										search={this.state.search}
@@ -86,7 +91,7 @@ export class SteedosAppLauncher extends React.Component {
 							<hr />
 							<AppLauncherExpandableSection title="所有项目">
 								{tabs?.map((tab, i) => (
-									<AppLauncherLink search={this.state.search} onClick={(e)=>{return this.onClick(tab,e)}} >{tab.name}</AppLauncherLink>
+									<AppLauncherLink key={tab.id} search={this.state.search} onClick={(e)=>{return this.onClick(tab,e)}} >{tab.name}</AppLauncherLink>
 								))}
 							</AppLauncherExpandableSection>
 						</AppLauncher>
