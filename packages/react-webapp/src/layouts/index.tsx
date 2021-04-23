@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import { Apps } from '@steedos/builder-store';
 import _ from 'lodash';
 import { useHistory } from "react-router-dom";
+import { RightContent } from '../components/GlobalHeader/RightContent';
 
 const routes = [
   {
@@ -85,6 +86,7 @@ export const Layout = observer((props: any) => {
       location={{
         pathname: '/welcome/welcome',
       }}
+      rightContentRender={() => <RightContent />}
     >
       <Switch>
         {routes.map((route, i) => (
