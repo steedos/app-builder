@@ -15,7 +15,11 @@ export default class SObject {
 
     private getFilter(filters: Filters){
         if(_.isArray(filters)){
-            return formatFiltersToODataQuery(filters)
+            let userContext: any = {};
+            userContext.userId = this.client.getUserId();
+            userContext.spaceId = this.client.getSpaceId();
+            userContext.user = {}; //TODU:当前用户userSession
+            return formatFiltersToODataQuery(filters, userContext)
         }
         return filters;
     }
