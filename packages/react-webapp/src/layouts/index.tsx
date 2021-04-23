@@ -28,14 +28,14 @@ const routes = [
   },
 ];
 
-function RouteWithSubRoutes(route: any) {
+function RouteWithSubRoutes(route: any, history: any) {
   return (
     <Route
       path={route.path}
       render={props => {
         // pass the sub-routes down to keep nesting
         const { appApiName, objectApiName, recordId } = props.match.params
-        return <route.component appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
+        return <route.component history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
       }}
     />
   );
@@ -96,7 +96,7 @@ export const Layout = observer((props: any) => {
     >
       <Switch>
         {routes.map((route, i) => (
-          <RouteWithSubRoutes key={i} {...route} />
+          <RouteWithSubRoutes key={i} {...route}/>
         ))}
       </Switch>
     </ProLayout>

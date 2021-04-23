@@ -7,12 +7,9 @@ import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 import { Space } from 'antd';
 import { observer } from "mobx-react-lite";
-import { useHistory } from "react-router-dom";
 
 export const RightContent = observer((props: any) => {
-  let history = useHistory();
   const { theme, layout } = props;
-  console.log(`RightContent styles`, styles, styles.right);
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'top') {

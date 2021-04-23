@@ -11,7 +11,6 @@ import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
 import { Button, Dropdown, Menu, message } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { useHistory } from "react-router-dom";
 import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from "react-router-dom";
 import { getObjectRecordUrl } from "../utils"
@@ -26,7 +25,8 @@ export type ObjectListViewProps<T extends ObjectListViewColumnProps> =
       appApiName?: string
       objectApiName?: string
       listName?: string
-      columnFields?: T[]
+      columnFields?: T[],
+      history?:any,
       filters?: [] | string
       onChange?: ([any]) => void
       // filterableFields?: [string]
@@ -120,7 +120,6 @@ function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey:
 }
 
 function getButtons(schema, props, options){
-  let history = useHistory();
   let { objectApiName, appApiName = "-", master} = props
   const title = schema.label;
   function afterInsert(result) {
@@ -131,7 +130,9 @@ function getButtons(schema, props, options){
     if(result && result.length >0){
       const record = result[0];
       message.success('新建成功');
-      history.push(`/app/${appApiName}/${objectApiName}/view/${record._id}`);
+      if(options.history){
+        options.history.push(`/app/${appApiName}/${objectApiName}/view/${record._id}`);
+      }
       return true;
     }
   }
@@ -192,7 +193,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const listViewColumns = getListviewColumns(schema, listName);
   const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
-  const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref});
+  const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref, history: rest.history});
   const extra = [...extraButtons];
   if(dropdownMenus.length > 0){
     extra.push(<Dropdown

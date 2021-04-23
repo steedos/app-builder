@@ -15,7 +15,6 @@ import {
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
-// import UserLayout from './layouts/UserLayout';
 import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
 
 const initialStore = {
