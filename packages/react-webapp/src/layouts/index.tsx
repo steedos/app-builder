@@ -43,7 +43,7 @@ function RouteWithSubRoutes(route: any) {
 
 export const Layout = observer((props: any) => {
   let history = useHistory();
-  let { appApiName } = props;
+  let { appApiName, objectApiName } = props;
   const actionRef = useRef<{
     reload: () => void;
   }>();
@@ -58,6 +58,12 @@ export const Layout = observer((props: any) => {
     appsMenus.forEach(function (app) {
       apps.push(app)
     })
+  }
+
+  if(currentApp && !objectApiName){
+    if(currentApp.children && currentApp.children.length > 0){
+      history.push(currentApp.children[0].path)
+    }
   }
 
 
