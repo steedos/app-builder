@@ -89,10 +89,23 @@ function getListViewFilters(listView, props){
   return filters;
 }
 
-function getListViewColumnFields(listView: any, props: any, nameFieldKey: string){
+function getListviewColumns(objectSchema: any, listName: any){
+  let listView = objectSchema.list_views[listName];
+  let listViewColumns = listView.columns;
+  if(!listViewColumns){
+    listView = objectSchema.list_views.default;
+    listViewColumns = listView && listView.columns;
+    if(!listViewColumns){
+      listViewColumns = [objectSchema.NAME_FIELD_KEY]
+    }
+  }
+  return listViewColumns;
+}
+
+function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey: string){
   let { columnFields = [] } = props;
   if (columnFields.length === 0) {
-    _.forEach(listView.columns, (column: any) => {
+    _.forEach(listViewColumns, (column: any) => {
       const fieldName: string = _.isObject(column) ? (column as any).field : column;
       let columnOption: any = { fieldName };
       if(fieldName === nameFieldKey){
@@ -176,7 +189,8 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const schema = object.schema; 
   const title = schema.label;
   let listView = schema.list_views[listName];
-  const columnFields = getListViewColumnFields(listView, props, schema.NAME_FIELD_KEY);
+  const listViewColumns = getListviewColumns(schema, listName);
+  const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
   const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref});
   const extra = [...extraButtons];
