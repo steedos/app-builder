@@ -131,7 +131,7 @@ export const ObjectDetail = observer((props: any) => {
   <Space direction="vertical" style={{width: "100%"}}>
     <Card>
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
-              render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
+              render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
               ,searchConfig: {
                 resetText: '取消',
                 submitText: '提交',
