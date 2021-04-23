@@ -67,7 +67,7 @@ export class SteedosAppLauncher extends React.Component {
 							title="应用程序启动器"
 							triggerName={currentApp.name}
 							search={search}
-							modalHeaderButton={headerButton}
+							// modalHeaderButton={headerButton}
 							isOpen={this.state.open}
 							triggerOnClick={this.triggerOnClick}
 						>
