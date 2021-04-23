@@ -96,6 +96,10 @@ export default class SteedosClient {
         this.authToken = this.getSpaceId() + ',' + token;
     }
 
+    getUserId(){
+        return this.userId;
+    }
+
     getSpaceId(){
         return this.spaceId;
     }
