@@ -21,7 +21,6 @@ export const AvatarDropdown = observer((props: any) => {
     }
     history.push(`/account/${key}`);
   };
-  console.log(`User`, User.name)
   const {
     currentUser = {
       name: User.name,
