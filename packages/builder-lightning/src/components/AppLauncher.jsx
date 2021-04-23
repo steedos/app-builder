@@ -11,6 +11,11 @@ import GlobalNavigationBarRegion from '@salesforce/design-system-react/component
 import Button from '@salesforce/design-system-react/components/button';
 import Search from '@salesforce/design-system-react/components/input/search';
 import IconSettings from '@salesforce/design-system-react/components/icon-settings';
+import actionSprite from '@salesforce-ux/design-system/assets/icons/action-sprite/svg/symbols.svg';
+import customSprite from '@salesforce-ux/design-system/assets/icons/custom-sprite/svg/symbols.svg';
+import standardSprite from '@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg';
+import utilitySprite from '@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg';
+import Icon from '@salesforce/design-system-react/components/icon'; 
 
 function getTabs(apps){
 	let tabs = [];
@@ -63,7 +68,7 @@ export class SteedosAppLauncher extends React.Component {
 		}
 		const tabs = getTabs(apps);
 		return (
-			<IconSettings iconPath="/assets/icons">
+			<IconSettings actionSprite={actionSprite} standardSprite={standardSprite} customSprite={customSprite} utilitySprite={utilitySprite}>
 				<GlobalNavigationBar>
 					<GlobalNavigationBarRegion region="primary">
 						<AppLauncher
@@ -80,12 +85,17 @@ export class SteedosAppLauncher extends React.Component {
 									<AppLauncherTile
 										key={app.id}
 										description={app.description}
-										iconText={app.icon}
+										// iconText={app.icon}
+										iconNode={<Icon
+											assistiveText={{ label: app.name }}
+											category="standard"
+											name={app.icon}
+											size="large"
+										/>}
 										search={this.state.search}
 										title={app.name}
 										onClick={(e)=>{return this.onClick(app,e)}}
 									/>
-									
 								))}
 							</AppLauncherExpandableSection>
 							<hr />
