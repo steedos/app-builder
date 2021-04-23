@@ -129,7 +129,7 @@ export const ObjectDetail = observer((props: any) => {
     }}
 >
   <Space direction="vertical" style={{width: "100%"}}>
-    <Card >
+    <Card>
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
               render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
               ,searchConfig: {
@@ -147,7 +147,7 @@ export const ObjectDetail = observer((props: any) => {
     {
       relatedList.map((item, index) => {
         return (
-          <Card >
+          <Card key={`card-${item.objectApiName}-${item.fieldApiName}`}>
             <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
           </Card>
         )

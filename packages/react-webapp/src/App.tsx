@@ -34,7 +34,15 @@ const routes = [
     component: SplitScreenLogin
   },
   {
+    path: "/app/:appApiName/:objectApiName",
+    component: Layout
+  },
+  {
     path: "/app/:appApiName",
+    component: Layout
+  },
+  {
+    path: "/",
     component: Layout
   },
   {
@@ -50,7 +58,8 @@ function RouteWithSubRoutes(route: any) {
       render={props => {
         // pass the sub-routes down to keep nesting
         const appApiName = props.match.params.appApiName
-        return <route.component appApiName={appApiName} routes={route.routes} />
+        const objectApiName = props.match.params.objectApiName
+        return <route.component appApiName={appApiName} objectApiName={objectApiName} routes={route.routes} />
       }}
     />
   );
