@@ -12,6 +12,8 @@ export const User = types.model({
         self._id = userId;
         self.name = data.name;
         self.avatar = `${API.client.getUrl()}/avatar/${userId}`;
+
+        API.client.setUserId(userId)
     }
     function goLogin(){
         window.location.href = `/login`;
