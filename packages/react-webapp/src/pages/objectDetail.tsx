@@ -7,8 +7,10 @@ import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
+import { Tabs } from 'antd';
 
 import { ObjectListView } from '@steedos/builder-object';
+const { TabPane } = Tabs;
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
@@ -26,6 +28,7 @@ function getRelatedList(objectSchema){
 export const ObjectDetail = observer((props: any) => {
   let history = useHistory();
   const { appApiName, objectApiName, recordId } = props;
+  const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
@@ -115,6 +118,24 @@ export const ObjectDetail = observer((props: any) => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     );
   }
+
+  function onTabChange(key){
+    setTabActiveKey(key)
+  }
+
+  const tabList = [];
+  tabList.push({tab: "详细信息", key: `${objectApiName}-detail`});
+  relatedList.map((item, index) => {
+    const object:any = Objects.getObject(item.objectApiName);
+    if (object.isLoading) return ;
+    tabList.push({tab: object.schema.label, key: `related-${item.objectApiName}-${item.fieldApiName}`});
+  })
+
+  if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
+    setTabActiveKey(`${objectApiName}-detail`)
+  }
+
+
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -134,9 +155,12 @@ export const ObjectDetail = observer((props: any) => {
       },
       extra: extra
     }}
+    tabList={tabList}
+    tabActiveKey={tabActiveKey}
+    onTabChange={onTabChange}
 >
   <Space direction="vertical" style={{width: "100%"}}>
-    <Card>
+    <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
               render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
               ,searchConfig: {
@@ -150,11 +174,10 @@ export const ObjectDetail = observer((props: any) => {
               },
         }}/>
     </Card>
-
     {
       relatedList.map((item, index) => {
         return (
-          <Card key={`card-${item.objectApiName}-${item.fieldApiName}`}>
+          <Card style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
             <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
           </Card>
         )
