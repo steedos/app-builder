@@ -52,7 +52,9 @@ export const Apps = types.model({
                   }
             }
             if(app){
-                self.currentAppId = app.id;
+                if(self.currentAppId != app.id){
+                    self.currentAppId = app.id;
+                }
             }
             return app;
         },

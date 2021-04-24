@@ -6,7 +6,7 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { ObjectListView } from '@steedos/builder-object';
 
@@ -19,7 +19,6 @@ function getRelatedList(objectSchema){
     const fieldApiName = detailInfo.substr(index+1);
     relatedList.push({objectApiName, fieldApiName})
   })
-  console.log(`getRelatedList`, relatedList)
   return relatedList;
 }
 
@@ -108,15 +107,23 @@ export const ObjectDetail = observer((props: any) => {
       </Button>
     </Dropdown>)
   }
-
+  function itemRender(route, params, routes, paths) {
+    const last = routes.indexOf(route) === routes.length - 1;
+    return last ? (
+      <span>{route.breadcrumbName}</span>
+    ) : (
+      <Link to={route.path}>{route.breadcrumbName}</Link>
+    );
+  }
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
       ghost: true,
       breadcrumb: {
+        itemRender: itemRender,
         routes: [
           {
-            path: `/app/${appApiName}`,
+            path: `/app/${appApiName}/${objectApiName}`,
             breadcrumbName: '列表',
           },
           {
