@@ -108,7 +108,7 @@ function getListviewColumns(objectSchema: any, listName: any){
 }
 
 function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey: string){
-  let { columnFields = [] } = props;
+  let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
     _.forEach(listViewColumns, (column: any) => {
       const fieldName: string = _.isObject(column) ? (column as any).field : column;
@@ -119,6 +119,15 @@ function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey:
         }
       }
       columnFields.push(columnOption)
+    })
+  }
+  //作为相关表时，不显示关系键
+  if(master){
+    return _.filter(columnFields, (columnField)=>{
+      if(_.isString(columnField)){
+        return columnField != master.relatedFieldApiName
+      }
+      return columnField.fieldName != master.relatedFieldApiName
     })
   }
   return columnFields;
