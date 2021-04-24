@@ -16,6 +16,7 @@ import { Apps } from '@steedos/builder-store';
 import _ from 'lodash';
 import { useHistory } from "react-router-dom";
 import { RightContent } from '../components/GlobalHeader/RightContent';
+import { SteedosIcon } from '@steedos/builder-lightning';
 
 const routes = [
   {
@@ -66,6 +67,14 @@ export const Layout = observer((props: any) => {
     }
   }
 
+  
+  const loopMenuItem = (menus: any[]): any[] =>{
+    return menus.map(({ icon, children, ...item }) => ({
+      ...item,
+      icon: icon && <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={icon} size="x-small"/></span>,
+      children: children && loopMenuItem(children),
+    }));
+  }
 
   return (
     <ProLayout
@@ -78,7 +87,10 @@ export const Layout = observer((props: any) => {
           return <a target='_blank' href={item.path}>{item.name}</a>
         } else {
           return <Link to={item.path || '/welcome'}>
-            {item.name}
+            <span className="ant-pro-menu-item">
+                {item.icon}
+              <span className="ant-pro-menu-item-title">{item.name}</span>
+            </span>
           </Link>
         }
 
@@ -86,7 +98,7 @@ export const Layout = observer((props: any) => {
       menu={{
         request: async () => {
           const appMenus: any = await API.client.doFetch(API.client.getUrl() + `/service/api/apps/${Apps.currentAppId || '-'}/menus`, { method: 'get' });
-          return appMenus.children
+          return loopMenuItem(appMenus.children)
         },
       }}
       location={{
