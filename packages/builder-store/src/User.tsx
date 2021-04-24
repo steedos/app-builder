@@ -7,13 +7,22 @@ export const User = types.model({
     avatar: types.maybeNull(types.string),
 })
 .actions((self) => {
-    function setUserInfo(data: any) {
+    function setUserInfo(data: any, spaceId?) {
         const userId = data.userId || data._id
         self._id = userId;
         self.name = data.name;
         self.avatar = `${API.client.getUrl()}/avatar/${userId}`;
 
-        API.client.setUserId(userId)
+        const spaces = data.spaces;
+        const cookieSpaceId = getCookie("X-Space-Id");
+        if(cookieSpaceId){
+            API.client.setSpaceId(cookieSpaceId);
+        }else if(spaces.length > 0){
+            API.client.setSpaceId(spaces[0]._id);
+        }
+        API.client.setUserId(userId);
+        API.client.setToken(getCookie("X-Auth-Token"));
+        (window as any).SClient = API.client;
     }
     function goLogin(){
         window.location.href = `/login`;
@@ -72,6 +81,9 @@ export const User = types.model({
                 goLogin();
             }
         }else{
+            API.client.setUserId(userId);
+            API.client.setSpaceId(getCookie("X-Space-Id"));
+            API.client.setToken(getCookie("X-Auth-Token"));
             (self as any).fetchUserInfo();
         }
     }
