@@ -66,7 +66,7 @@ export const getObjectListViewProColumn = (field: any) => {
 }
 
 function getListViewFilters(listView, props){
-  let { filters, filter_scope } = props;
+  let { filters, filter_scope, master } = props;
   if(!filters){
     filters = listView.filters;
   }
@@ -86,6 +86,11 @@ function getListViewFilters(listView, props){
       filters = filtersOwner;
     }
   }
+
+  if(master){
+    filters = [[master.relatedFieldApiName, "=", master.recordId], filters];
+  }
+
   return filters;
 }
 
