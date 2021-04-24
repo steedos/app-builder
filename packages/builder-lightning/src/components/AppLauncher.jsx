@@ -16,6 +16,7 @@ import customSprite from '@salesforce-ux/design-system/assets/icons/custom-sprit
 import standardSprite from '@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg';
 import utilitySprite from '@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg';
 import Icon from '@salesforce/design-system-react/components/icon'; 
+import _ from 'lodash';
 
 function getTabs(apps){
 	let tabs = [];
@@ -81,7 +82,7 @@ export class SteedosAppLauncher extends React.Component {
 							triggerOnClick={this.triggerOnClick}
 						>
 							<AppLauncherExpandableSection title="所有应用程序">
-								{apps?.map((app, i) => (
+								{_.filter(apps, (app)=> { return app.name.indexOf(this.state.search) > -1; })?.map((app, i) => (
 									<AppLauncherTile
 										key={app.id}
 										description={app.description}
@@ -100,7 +101,7 @@ export class SteedosAppLauncher extends React.Component {
 							</AppLauncherExpandableSection>
 							<hr />
 							<AppLauncherExpandableSection title="所有项目">
-								{tabs?.map((tab, i) => (
+								{_.filter(tabs, (tab)=> { return tab.name.indexOf(this.state.search) > -1; })?.map((tab, i) => (
 									<AppLauncherLink key={tab.id} search={this.state.search} onClick={(e)=>{return this.onClick(tab,e)}} >{tab.name}</AppLauncherLink>
 								))}
 							</AppLauncherExpandableSection>
