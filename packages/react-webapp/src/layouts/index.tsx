@@ -109,7 +109,7 @@ export const Layout = observer((props: any) => {
         const {collapsed, logo: logoUrl, title: titleValue} = menuProps;
         return (
           <div>
-            {collapsed ? null : (logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) : null)}
+            {/* {collapsed ? null : (logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) : null)} */}
             <SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>
           </div>
       ) }}
