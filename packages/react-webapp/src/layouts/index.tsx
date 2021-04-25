@@ -101,21 +101,21 @@ export const Layout = observer((props: any) => {
     }));
   }
 
-  const spaceId = API.client.getSpaceId()
-  const spaceObject = Objects.getObject("spaces");
-  if (spaceObject.isLoading) return (<div>Loading space ...</div>)
+  // const spaceId = API.client.getSpaceId()
+  // const spaceObject = Objects.getObject("spaces");
+  // if (spaceObject.isLoading) return (<div>Loading space ...</div>)
 
-  const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
-  if (spaceRecord.isLoading)
-    return (<div>Loading space ...</div>)
-  const spaceData = spaceRecord && spaceRecord.data && spaceRecord.data.value && spaceRecord.data.value[0];
-  const {name: spaceTitle , avatar: logoAvatar} = spaceData || {};
+  // const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
+  // if (spaceRecord.isLoading)
+  //   return (<div>Loading space ...</div>)
+  // const spaceData = spaceRecord && spaceRecord.data && spaceRecord.data.value && spaceRecord.data.value[0];
+  // const {name: spaceTitle , avatar: logoAvatar} = spaceData || {};
 
 
   let logoAvatarUrl = "";
-  if(logoAvatar){
-    logoAvatarUrl = Settings.rootUrl + '/api/files/avatars/' + logoAvatar;
-  }
+  // if(logoAvatar){
+  //   logoAvatarUrl = Settings.rootUrl + '/api/files/avatars/' + logoAvatar;
+  // }
   return (
     <ProLayout
       actionRef={actionRef}
