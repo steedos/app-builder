@@ -30,6 +30,10 @@ const routes = [
     component: TabIframe
   },
   {
+    path: "/app/:appApiName/:objectApiName/grid/:listViewApiName",
+    component: ObjectListView
+  },
+  {
     path: "/app/:appApiName/:objectApiName",
     component: ObjectListView
   }
@@ -42,7 +46,7 @@ function RouteWithSubRoutes(route: any, history: any) {
       render={props => {
         console.log(`RouteWithSubRoutes props`, props)
         // pass the sub-routes down to keep nesting
-        const { appApiName, objectApiName, recordId, tabApiName } = props.match.params
+        const { appApiName, objectApiName, recordId, tabApiName, listViewApiName } = props.match.params
         let src = null;
         let title = null;
         if(props.location && props.location.state){
@@ -54,7 +58,7 @@ function RouteWithSubRoutes(route: any, history: any) {
             title = state.title
           }
         }
-        return <route.component tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
+        return <route.component listViewApiName={listViewApiName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
       }}
     />
   );

@@ -10,7 +10,7 @@ import ProTable, {
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
 import { Button, Dropdown, Menu, message } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from "react-router-dom";
 import { getObjectRecordUrl } from "../utils"
@@ -70,9 +70,13 @@ function getListViewFilters(listView, props){
   if(!filters){
     filters = listView.filters;
   }
-
-  // filters为function的情况先不处理（因为filters中可能调用Creator，Steedos等全局变量），按空值返回
-  // filters = _.isFunction(filters) ? filters() : filters;
+  if(_.isFunction(filters)){
+    try {
+      filters = filters()
+    } catch (error) {
+      console.warn(`list view filter error: `, error)
+    }
+  }
   filters = _.isFunction(filters) ? [] : filters;
   if(!filter_scope){
     filter_scope = listView.filter_scope;
@@ -192,19 +196,40 @@ function getButtons(schema, props, options){
   }
 }
 
+function getListViewDropdownMenus(schema, props, options){
+  const listViews = schema.list_views;
+  let { objectApiName, appApiName = "-", master } = props;
+  if(master){
+    return null;
+  }
+  return (
+    <Menu>
+      {
+        _.values(listViews).map((_listView, i) => (
+          <Menu.Item>
+            <Link to={`/app/${appApiName}/${objectApiName}/grid/${_listView.name}`}>{_listView.label}</Link>
+          </Menu.Item>
+        ))
+      }
+    </Menu>
+  )
+}
+
+
 export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   let {
     objectApiName,
-    listName = "all",
+    listViewApiName = "all",
     ...rest
   } = props
+  console.log(`ObjectListView`, listViewApiName);
   const ref = useRef<ActionType>();
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 
   const title = schema.label;
-  let listView = schema.list_views[listName];
-  const listViewColumns = getListviewColumns(schema, listName);
+  let listView = schema.list_views[listViewApiName];
+  const listViewColumns = getListviewColumns(schema, listViewApiName);
   const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
   const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref, history: rest.history});
@@ -224,9 +249,17 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       </Button>
     </Dropdown>)
   }
+
+  const listViewDropdownMenus = getListViewDropdownMenus(schema, props, {})
+
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
+      subTitle:(listViewDropdownMenus ? <Dropdown overlay={listViewDropdownMenus}>
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          {listView.label} <DownOutlined />
+        </a>
+      </Dropdown> : null),
       ghost: true,
       extra: extra,
     }}>
