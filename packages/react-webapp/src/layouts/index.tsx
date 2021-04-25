@@ -19,6 +19,8 @@ import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { TabIframe } from '../pages/tabIframe';
 import { Image } from 'antd';
+import { Objects} from '@steedos/builder-store';
+import { Settings } from '@steedos/builder-store';
 
 const routes = [
 
@@ -99,13 +101,27 @@ export const Layout = observer((props: any) => {
     }));
   }
 
+  const spaceId = API.client.getSpaceId()
+  const spaceObject = Objects.getObject("spaces");
+  if (spaceObject.isLoading) return (<div>Loading space ...</div>)
+
+  const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
+  if (spaceRecord.isLoading)
+    return (<div>Loading space ...</div>)
+  const spaceData = spaceRecord && spaceRecord.data && spaceRecord.data.value && spaceRecord.data.value[0];
+  const {name: spaceTitle , avatar: logoAvatar} = spaceData || {};
+
+
+  let logoAvatarUrl = "";
+  if(logoAvatar){
+    logoAvatarUrl = Settings.rootUrl + '/api/files/avatars/' + logoAvatar;
+  }
   return (
     <ProLayout
       actionRef={actionRef}
       navTheme='dark'
       location={history.location}
-      logo=""
-      // logo="http://localhost:5000/packages/steedos_creator/assets/logo-square.png"
+      logo={logoAvatarUrl}
       menuHeaderRender={(logo, title, menuProps) => { 
         const {collapsed, logo: logoUrl, title: titleValue} = menuProps || {};
         return (
