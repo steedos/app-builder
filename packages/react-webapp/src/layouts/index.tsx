@@ -17,11 +17,17 @@ import _ from 'lodash';
 import { useHistory } from "react-router-dom";
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
+import { TabIframe } from '../pages/tabIframe';
 
 const routes = [
+
   {
     path: "/app/:appApiName/:objectApiName/view/:recordId",
     component: ObjectDetail
+  },
+  {
+    path: "/app/:appApiName/frame/:tabApiName",
+    component: TabIframe
   },
   {
     path: "/app/:appApiName/:objectApiName",
@@ -34,9 +40,21 @@ function RouteWithSubRoutes(route: any, history: any) {
     <Route
       path={route.path}
       render={props => {
+        console.log(`RouteWithSubRoutes props`, props)
         // pass the sub-routes down to keep nesting
-        const { appApiName, objectApiName, recordId } = props.match.params
-        return <route.component history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
+        const { appApiName, objectApiName, recordId, tabApiName } = props.match.params
+        let src = null;
+        let title = null;
+        if(props.location && props.location.state){
+          const state: any = props.location.state;
+          if(state.src){
+            src = state.src
+          }
+          if(state.title){
+            title = state.title
+          }
+        }
+        return <route.component tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
       }}
     />
   );
@@ -84,7 +102,7 @@ export const Layout = observer((props: any) => {
       menuHeaderRender={(props: any) => { return (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>) }}
       fixSiderbar={true}
       menuItemRender={(item, dom) => {
-        if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {
+        if ((item.path?.startsWith('http://') || item.path?.startsWith('https://')) && item.target =='_blank') {
           return <a target='_blank' href={item.path}>
               <span className="ant-pro-menu-item">
                 {item.icon}
@@ -92,12 +110,22 @@ export const Layout = observer((props: any) => {
             </span>
             </a>
         } else {
-          return <Link to={item.path || '/welcome'}>
+
+          if(item.type ==='url'){
+            return <Link to={{pathname: `/app/${appApiName}/frame/${item.id}`, state: { src: item.path, title: item.name }}}>
             <span className="ant-pro-menu-item">
                 {item.icon}
               <span className="ant-pro-menu-item-title">{item.name}</span>
             </span>
           </Link>
+          }else{
+            return <Link to={item.path}>
+            <span className="ant-pro-menu-item">
+                {item.icon}
+              <span className="ant-pro-menu-item-title">{item.name}</span>
+            </span>
+          </Link>
+          }
         }
 
       }}
