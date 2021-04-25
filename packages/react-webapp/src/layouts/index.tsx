@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { TabIframe } from '../pages/tabIframe';
+import { Image } from 'antd';
 
 const routes = [
 
@@ -103,7 +104,15 @@ export const Layout = observer((props: any) => {
       actionRef={actionRef}
       navTheme='dark'
       location={history.location}
-      menuHeaderRender={(props: any) => { return (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>) }}
+      // logo="http://localhost:5000/packages/steedos_creator/assets/logo-square.png"
+      menuHeaderRender={(logo, title, menuProps) => { 
+        const {collapsed, logo: logoUrl, title: titleValue} = menuProps;
+        return (
+          <div>
+            {collapsed ? null : (logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) : logoUrl)}
+            <SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>
+          </div>
+      ) }}
       fixSiderbar={true}
       menuItemRender={(item, dom) => {
         if ((item.path?.startsWith('http://') || item.path?.startsWith('https://')) && item.target =='_blank') {
