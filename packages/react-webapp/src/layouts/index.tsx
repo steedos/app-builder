@@ -26,7 +26,7 @@ const routes = [
   {
     path: "/app/:appApiName/:objectApiName",
     component: ObjectListView
-  },
+  }
 ];
 
 function RouteWithSubRoutes(route: any, history: any) {
@@ -80,11 +80,17 @@ export const Layout = observer((props: any) => {
     <ProLayout
       actionRef={actionRef}
       navTheme='dark'
+      location={history.location}
       menuHeaderRender={(props: any) => { return (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>) }}
       fixSiderbar={true}
       menuItemRender={(item, dom) => {
         if (item.path?.startsWith('http://') || item.path?.startsWith('https://')) {
-          return <a target='_blank' href={item.path}>{item.name}</a>
+          return <a target='_blank' href={item.path}>
+              <span className="ant-pro-menu-item">
+                {item.icon}
+              <span className="ant-pro-menu-item-title">{item.name}</span>
+            </span>
+            </a>
         } else {
           return <Link to={item.path || '/welcome'}>
             <span className="ant-pro-menu-item">
@@ -100,9 +106,6 @@ export const Layout = observer((props: any) => {
           const appMenus: any = await API.client.doFetch(API.client.getUrl() + `/service/api/apps/${Apps.currentAppId || '-'}/menus`, { method: 'get' });
           return loopMenuItem(appMenus.children)
         },
-      }}
-      location={{
-        pathname: '/welcome/welcome',
       }}
       rightContentRender={() => <RightContent />}
     >
