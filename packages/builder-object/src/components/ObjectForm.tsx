@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
+import { Form as ProForm } from 'antd';
 import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
@@ -55,6 +56,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     visible,
     ...rest
   } = props;
+  const [proForm] = ProForm.useForm();
  
   const form = Forms.loadById(formId)
   form.setMode(mode);
@@ -144,7 +146,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     })
     return dom;
   }
-
+  // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
+  // 所以在此调用下 form.setFieldsValue() 使其重新生效。
+  proForm.setFieldsValue(initialValues)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -152,6 +156,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       className='builder-form object-form'
       initialValues={initialValues}
       mode={mode}
+      form={proForm}
       layout={layout}
       submitter={submitter}
       isModalForm={isModalForm}
