@@ -197,7 +197,10 @@ function getButtons(schema, props, options){
 }
 
 function getListViewDropdownMenus(schema, props, options){
-  const listViews = schema.list_views;
+  const listViews = [];
+  _.each(schema.list_views, (_listView, key)=>{
+    listViews.push(Object.assign({}, _listView, {name: key}))
+  })
   let { objectApiName, appApiName = "-", master } = props;
   if(master){
     return null;
