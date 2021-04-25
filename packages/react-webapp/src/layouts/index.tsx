@@ -104,12 +104,13 @@ export const Layout = observer((props: any) => {
       actionRef={actionRef}
       navTheme='dark'
       location={history.location}
+      logo=""
       // logo="http://localhost:5000/packages/steedos_creator/assets/logo-square.png"
       menuHeaderRender={(logo, title, menuProps) => { 
-        const {collapsed, logo: logoUrl, title: titleValue} = menuProps;
+        const {collapsed, logo: logoUrl, title: titleValue} = menuProps || {};
         return (
           <div>
-            {/* {collapsed ? null : (logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) : null)} */}
+            {collapsed ? null : (logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) : null)}
             <SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>
           </div>
       ) }}
