@@ -48,7 +48,7 @@ export const SplitScreenLogin = observer((props: any) => {
                     <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Email address
+                                邮件地址
               </label>
                             <div className="mt-1">
                                 <input
@@ -64,7 +64,7 @@ export const SplitScreenLogin = observer((props: any) => {
 
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                Password
+                                密码
               </label>
                             <div className="mt-1">
                                 <input
