@@ -88,7 +88,12 @@ export const Layout = observer((props: any) => {
 
   if(currentApp && !objectApiName){
     if(currentApp.children && currentApp.children.length > 0){
-      history.push(currentApp.children[0].path)
+      const firstTab = currentApp.children[0];
+      if(firstTab.type ==='url'){
+				history.push(`/app/${currentApp.id}/frame/${firstTab.id}`, {src: firstTab.path, title: firstTab.name});
+			}else{
+				history.push(firstTab.path);
+			}
     }
   }
 
