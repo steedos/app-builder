@@ -21,7 +21,9 @@ import _ from 'lodash';
 function getTabs(apps){
 	let tabs = [];
 	_.each(apps, function(app){
-		tabs = tabs.concat(app.children)
+		_.each(app.children, (tab)=>{
+			tabs.push(Object.assign({}, tab, {appApiName: app.id}))
+		})
 	})
 	return _.unionBy(tabs, "id");;
 }
@@ -41,7 +43,12 @@ export class SteedosAppLauncher extends React.Component {
 	}
 	onClick=(value, e)=>{
 		if(this.props.history){
-			this.props.history.push(value.path);
+			if(value.type ==='url'){
+				this.props.history.push(`/app/${value.appApiName}/frame/${value.id}`, {src: value.path, title: value.name});
+			}else{
+				this.props.history.push(value.path);
+			}
+			
 		}
 		this.setState({open: false})
 	}
