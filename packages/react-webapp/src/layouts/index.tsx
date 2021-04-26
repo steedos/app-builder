@@ -133,9 +133,9 @@ export const Layout = observer((props: any) => {
         return (
           <div>
             {collapsed ? null : (logoUrl ? (<div className="steedos-logo"><img src={logoUrl.toString()} alt={titleValue.toString()} /></div>) : null)}
-            <SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>
           </div>
       ) }}
+      menuExtraRender={() => (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>)}
       fixSiderbar={true}
       menuItemRender={(item, dom) => {
         if ((item.path?.startsWith('http://') || item.path?.startsWith('https://')) && item.target =='_blank') {
