@@ -1,5 +1,7 @@
 const CracoLessPlugin = require('craco-less');
 const CracoBabelLoader = require("craco-babel-loader");
+const CracoAlias = require("craco-alias");
+
 const path = require("path");
 
 module.exports = {
@@ -30,6 +32,17 @@ module.exports = {
             ]
           }
         ]
+      }
+    },
+    {
+      plugin: CracoAlias,
+      options: {
+        source: "options",
+        baseUrl: "./",
+        aliases: {
+          // "@emotion/core": path.join(__dirname, '../../node_modules/@emotion/react'),
+          // "emotion-theming": path.join(__dirname, '../../node_modules/@emotion/react'),
+        }
       }
     }
   ],
