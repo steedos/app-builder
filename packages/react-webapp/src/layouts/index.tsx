@@ -118,6 +118,7 @@ export const Layout = observer((props: any) => {
   }
   return (
     <ProLayout
+      title="Steedos"
       actionRef={actionRef}
       navTheme='dark'
       location={history.location}
