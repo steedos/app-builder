@@ -259,6 +259,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       rowSelection={rest.rowSelection || { onChange }}
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
       options={false}
+      columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
       {...rest}
       onChange={() => {
