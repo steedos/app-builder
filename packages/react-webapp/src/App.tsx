@@ -15,8 +15,8 @@ import {
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
-// import UserLayout from './layouts/UserLayout';
 import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
+import { ChartDesign } from './pages/chartDesign';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -35,7 +35,19 @@ const routes = [
     component: SplitScreenLogin
   },
   {
+    path: "/chartDesign",
+    component: ChartDesign
+  },
+  {
+    path: "/app/:appApiName/:objectApiName",
+    component: Layout
+  },
+  {
     path: "/app/:appApiName",
+    component: Layout
+  },
+  {
+    path: "/",
     component: Layout
   },
   {
@@ -51,7 +63,8 @@ function RouteWithSubRoutes(route: any) {
       render={props => {
         // pass the sub-routes down to keep nesting
         const appApiName = props.match.params.appApiName
-        return <route.component appApiName={appApiName} routes={route.routes} />
+        const objectApiName = props.match.params.objectApiName
+        return <route.component appApiName={appApiName} objectApiName={objectApiName} routes={route.routes} />
       }}
     />
   );

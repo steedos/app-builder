@@ -1,18 +1,11 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from "lodash"
-import { ObjectForm, ObjectTable } from "./"
-import ProTable, {
-  ProTableProps,
-  RequestData,
-  ProColumnType,
-  ActionType,
+import { ObjectTable } from "./"
+import {
+  ProColumnType
 } from "@ant-design/pro-table"
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
-import { Button, Dropdown, Menu, message } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { useHistory } from "react-router-dom";
-import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from "react-router-dom";
 import { getObjectRecordUrl } from "../utils"
 
@@ -23,10 +16,9 @@ export type ObjectListViewColumnProps = {
 export type ObjectListViewProps<T extends ObjectListViewColumnProps> =
   | ({
       name?: string
-      appApiName?: string
       objectApiName?: string
       listName?: string
-      columnFields?: T[]
+      columnFields?: T[],
       filters?: [] | string
       onChange?: ([any]) => void
       // filterableFields?: [string]
@@ -66,19 +58,23 @@ export const getObjectListViewProColumn = (field: any) => {
 }
 
 function getListViewFilters(listView, props){
-  let { filters, filter_scope } = props;
+  let { filters, filter_scope, master } = props;
   if(!filters){
     filters = listView.filters;
   }
-
-  // filters为function的情况先不处理（因为filters中可能调用Creator，Steedos等全局变量），按空值返回
-  // filters = _.isFunction(filters) ? filters() : filters;
+  if(_.isFunction(filters)){
+    try {
+      filters = filters()
+    } catch (error) {
+      console.warn(`list view filter error: `, error)
+    }
+  }
   filters = _.isFunction(filters) ? [] : filters;
   if(!filter_scope){
     filter_scope = listView.filter_scope;
   }
   if(filter_scope === "mine"){
-    const filtersOwner=[["owner", "=", Settings.userId]];
+    const filtersOwner=[["owner", "=", API.client.getUserId()]];
     if(filters && filters.length){
       filters = [filtersOwner, filters];
     }
@@ -86,12 +82,17 @@ function getListViewFilters(listView, props){
       filters = filtersOwner;
     }
   }
+
+  if(master){
+    filters = [[master.relatedFieldApiName, "=", master.recordId], filters];
+  }
+
   return filters;
 }
 
 function getListviewColumns(objectSchema: any, listName: any){
   let listView = objectSchema.list_views[listName];
-  let listViewColumns = listView.columns;
+  let listViewColumns = listView && listView.columns;
   if(!listViewColumns){
     listView = objectSchema.list_views.default;
     listViewColumns = listView && listView.columns;
@@ -103,7 +104,7 @@ function getListviewColumns(objectSchema: any, listName: any){
 }
 
 function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey: string){
-  let { columnFields = [] } = props;
+  let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
     _.forEach(listViewColumns, (column: any) => {
       const fieldName: string = _.isObject(column) ? (column as any).field : column;
@@ -116,65 +117,16 @@ function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey:
       columnFields.push(columnOption)
     })
   }
-  return columnFields;
-}
-
-function getButtons(schema, props, options){
-  let history = useHistory();
-  let { objectApiName, appApiName = "-", master} = props
-  const title = schema.label;
-  function afterInsert(result) {
-    if(master && options && options.actionRef){
-      options.actionRef.current.reload();
-      return true;
-    }
-    if(result && result.length >0){
-      const record = result[0];
-      message.success('新建成功');
-      history.push(`/app/${appApiName}/${objectApiName}/view/${record._id}`);
-      return true;
-    }
-  }
-
-  let initialValues = null;
+  //作为相关表时，不显示关系键
   if(master){
-    initialValues = {
-      [master.relatedFieldApiName]: master.recordId
-    }
+    return _.filter(columnFields, (columnField)=>{
+      if(_.isString(columnField)){
+        return columnField != master.relatedFieldApiName
+      }
+      return columnField.fieldName != master.relatedFieldApiName
+    })
   }
-
-  const extraButtons: any[] = [];
-  const dropdownMenus: any[] = [];
-
-  extraButtons.push(<ObjectForm initialValues={initialValues} key="standard_new" afterInsert={afterInsert} title={`新建 ${title}`} mode="edit" isModalForm={true} objectApiName={objectApiName} name={`form-new-${objectApiName}`} submitter={false} trigger={<Button type="primary" >新建</Button>}/>)
-  _.each(schema.actions, function (action: any, actionApiName: string) {
-      let visible = false;
-
-      if (_.isString(action._visible)) {
-          try {
-              const visibleFunction = eval(`(${action._visible})`);
-              visible = visibleFunction(objectApiName)
-          } catch (error) {
-              // console.error(error, action._visible)
-          }
-      }
-
-      if (_.isBoolean(action._visible)) {
-          visible = action._visible
-      }
-
-      if (visible && _.includes(['list'], action.on)) {
-          if (extraButtons.length < 5) {
-              extraButtons.push(<Button key={actionApiName} onClick={action.todo}>{action.label}</Button>)
-          } else {
-              dropdownMenus.push(<Menu.Item key={actionApiName} onClick={action.todo}>{action.label}</Menu.Item>)
-          }
-      }
-  });
-  return {
-    extraButtons,
-    dropdownMenus
-  }
+  return columnFields;
 }
 
 export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
@@ -183,46 +135,21 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     listName = "all",
     ...rest
   } = props
-  const ref = useRef<ActionType>();
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 
-  const title = schema.label;
   let listView = schema.list_views[listName];
   const listViewColumns = getListviewColumns(schema, listName);
   const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
-  const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref});
-  const extra = [...extraButtons];
-  if(dropdownMenus.length > 0){
-    extra.push(<Dropdown
-      key="dropdown"
-      trigger={['click']}
-      overlay={
-        <Menu>
-          {dropdownMenus}
-        </Menu>
-      }
-    >
-      <Button key="4" style={{ padding: '0 8px' }}>
-        <EllipsisOutlined />
-      </Button>
-    </Dropdown>)
-  }
+
   return (
-    <PageContainer content={false} title={false} header={{
-      title: title,
-      ghost: true,
-      extra: extra,
-    }}>
     <ObjectTable
-      actionRef={ref} 
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
       className={["object-listview", rest.className].join(" ")}
       {...rest}
     />
-    </PageContainer>
   )
 })

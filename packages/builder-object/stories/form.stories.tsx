@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
+import { ObjectForm, ObjectField, ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable, Iframe } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
@@ -541,5 +541,11 @@ export const ListViewNoSearch = () => {
       >
         
       </ObjectListView>
+  )
+}
+
+export const IframeTest = () => {
+  return (
+      <Iframe src="http://www.baidu.com/" width="100%" height="100%"/>
   )
 }

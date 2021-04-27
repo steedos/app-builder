@@ -6,9 +6,11 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { Tabs } from 'antd';
 
 import { ObjectListView } from '@steedos/builder-object';
+const { TabPane } = Tabs;
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
@@ -19,7 +21,6 @@ function getRelatedList(objectSchema){
     const fieldApiName = detailInfo.substr(index+1);
     relatedList.push({objectApiName, fieldApiName})
   })
-  console.log(`getRelatedList`, relatedList)
   return relatedList;
 }
 
@@ -27,6 +28,7 @@ function getRelatedList(objectSchema){
 export const ObjectDetail = observer((props: any) => {
   let history = useHistory();
   const { appApiName, objectApiName, recordId } = props;
+  const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
@@ -108,15 +110,41 @@ export const ObjectDetail = observer((props: any) => {
       </Button>
     </Dropdown>)
   }
+  function itemRender(route, params, routes, paths) {
+    const last = routes.indexOf(route) === routes.length - 1;
+    return last ? (
+      <span>{route.breadcrumbName}</span>
+    ) : (
+      <Link to={route.path}>{route.breadcrumbName}</Link>
+    );
+  }
+
+  function onTabChange(key){
+    setTabActiveKey(key)
+  }
+
+  const tabList = [];
+  tabList.push({tab: "详细信息", key: `${objectApiName}-detail`});
+  relatedList.map((item, index) => {
+    const object:any = Objects.getObject(item.objectApiName);
+    if (object.isLoading) return ;
+    tabList.push({tab: object.schema.label, key: `related-${item.objectApiName}-${item.fieldApiName}`});
+  })
+
+  if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
+    setTabActiveKey(`${objectApiName}-detail`)
+  }
+
 
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
       ghost: true,
       breadcrumb: {
+        itemRender: itemRender,
         routes: [
           {
-            path: `/app/${appApiName}`,
+            path: `/app/${appApiName}/${objectApiName}`,
             breadcrumbName: '列表',
           },
           {
@@ -127,11 +155,13 @@ export const ObjectDetail = observer((props: any) => {
       },
       extra: extra
     }}
+    tabList={tabList}
+    tabActiveKey={tabActiveKey}
+    onTabChange={onTabChange}
 >
-  <Space direction="vertical" style={{width: "100%"}}>
-    <Card >
+    <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
-              render: (_, dom) => <FooterToolbar>{dom}</FooterToolbar>
+              render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
               ,searchConfig: {
                 resetText: '取消',
                 submitText: '提交',
@@ -143,18 +173,16 @@ export const ObjectDetail = observer((props: any) => {
               },
         }}/>
     </Card>
-
     {
       relatedList.map((item, index) => {
         return (
-          <Card >
+          <Card style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
             <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
           </Card>
         )
     })
 
     }
-  </Space>
   </PageContainer>
   );
 });

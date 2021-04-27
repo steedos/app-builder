@@ -47,12 +47,17 @@ export const LookupField = observer((props:any) => {
                 if (object.isLoading) return (<div>Loading object ...</div>);
                 let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                 const filter = value ? [[reference_to_field, '=', value]] : [];
-                const fields = [reference_to_field, referenceToLableField];
+                const fields = [reference_to_field, referenceToLableField, "_id"];
                 const recordList: any = object.getRecordList(filter, fields);
                 if (recordList.isLoading) return (<div>Loading recordList ...</div>);
                 const recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                    tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[reference_to_field], label: recordItem[referenceToLableField] } });
+                    let tagsValueField = reference_to_field;
+                    if(referenceTo === "space_users" && reference_to_field === "user"){
+                        // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
+                        tagsValueField = "_id"
+                    }
+                    tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } });
                 }
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入

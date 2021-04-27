@@ -5,12 +5,14 @@ import _ from 'lodash';
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
+import { Form as ProForm } from 'antd';
 import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
+import { Spin } from 'antd';
 
 import './ObjectForm.less'
 
@@ -55,6 +57,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     visible,
     ...rest
   } = props;
+  const [proForm] = ProForm.useForm();
  
   const form = Forms.loadById(formId)
   form.setMode(mode);
@@ -65,7 +68,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const fieldSchemaArray = [];
 
   const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
+  if (object.isLoading) return (<div><Spin/></div>)
 
   if (object.schema) {
     const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
@@ -73,7 +76,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     _.forEach(mergedSchema.fields, (field, fieldName) => {
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (!field.hidden && !isObjectField)
-      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: '通用'}))
     })
     _.forEach(fieldSchemaArray, (field:any)=>{
       fieldNames.push(field.name)
@@ -82,7 +85,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     if (recordId) {
       const recordCache = object.getRecord(recordId, fieldNames)
       if (recordCache.isLoading)
-        return (<div>Loading record ...</div>)
+        return (<div><Spin/></div>)
   
       if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
         const record = recordCache.data.value[0];
@@ -144,7 +147,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     })
     return dom;
   }
-
+  // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
+  // 所以在此调用下 form.setFieldsValue() 使其重新生效。
+  proForm.setFieldsValue(initialValues)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -152,6 +157,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       className='builder-form object-form'
       initialValues={initialValues}
       mode={mode}
+      form={proForm}
       layout={layout}
       submitter={submitter}
       isModalForm={isModalForm}
