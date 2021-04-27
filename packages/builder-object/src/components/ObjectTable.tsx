@@ -261,7 +261,6 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       options={false}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
-      {...rest}
       onChange={() => {
         ;(rest.actionRef || selfTableRef).current.reload()
       }}
@@ -271,6 +270,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __defaultFilters: defaultFilters,
       }}
       className={["object-table", rest.className].join(" ")}
+      {...rest}
     />
   )
 })

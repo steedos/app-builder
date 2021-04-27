@@ -75,7 +75,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     _.forEach(mergedSchema.fields, (field, fieldName) => {
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (!field.hidden && !isObjectField)
-      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: '通用'}))
     })
     _.forEach(fieldSchemaArray, (field:any)=>{
       fieldNames.push(field.name)
