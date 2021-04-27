@@ -10,7 +10,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Tabs } from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 
-import { ObjectListView } from '@steedos/builder-object';
+import { ListView } from '../pages/listView';
 const { TabPane } = Tabs;
 
 function getRelatedList(objectSchema){
@@ -185,7 +185,7 @@ export const ObjectDetail = observer((props: any) => {
       relatedList.map((item, index) => {
         return (
           <div style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
-            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
+            <ListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
           </div>
         )
     })

@@ -102,6 +102,12 @@
 .ant-layout {
   background: #fff
 }
-.ant-pro-page-container-children-content {
+/* .ant-pro-page-container-children-content {
   margin: 0
+} */
+
+/*详细界面子表列表周边间隔太大了*/
+.ant-pro-grid-content-children .ant-card-body{
+  padding-left: 0;
+  padding-right: 0;
 }
