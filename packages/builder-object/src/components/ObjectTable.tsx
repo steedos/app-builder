@@ -139,6 +139,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     ...rest
   } = props
 
+  const [totalRecords, setTotalRecords] = useState(0)
+
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
   if (object.isLoading) return (<div><Spin/></div>)
@@ -244,6 +246,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
           : [],
       }
     )
+    setTotalRecords(result["@odata.count"])
     return {
       data: result.value,
       success: true,
@@ -259,9 +262,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       rowKey={rest.rowKey || "_id"}
       rowSelection={rest.rowSelection || { onChange }}
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
-      options={false}
       columnEmptyText={false}
-      toolBarRender={false}
       actionRef={rest.actionRef || selfTableRef}
       onChange={() => {
         ;(rest.actionRef || selfTableRef).current.reload()
@@ -270,6 +271,12 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __objectApiName: objectApiName,
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
+      }}
+      search={{
+        filterType: 'light',
+      }}
+      toolbar={{
+        subTitle: `${totalRecords} 个项目`
       }}
       size="small"
       className={["object-table", rest.className].join(" ")}
