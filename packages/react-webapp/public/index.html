@@ -99,6 +99,14 @@
     .ant-layout-sider-children .ant-pro-sider-extra .slds-context-bar{
       margin-left: -5px; 
     }
+    /* logo下 九宫格旁边文字过长设置width用已存在的 ... 设置显示出来 */
+    .ant-layout-sider .slds-context-bar__primary{
+        width: 100%;
+    }
+    /* 如果不写 102% ，显示的带有...的文字内容较短 */
+    .ant-layout-sider .slds-context-bar__primary .slds-context-bar__item{
+        width: 102%;
+    }
   </style>
 </head>
 <div style="margin: 0px; padding: 0px" id="root"></div>
