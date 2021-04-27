@@ -159,7 +159,6 @@ export const ObjectDetail = observer((props: any) => {
     tabActiveKey={tabActiveKey}
     onTabChange={onTabChange}
 >
-  <Space direction="vertical" style={{width: "100%"}}>
     <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
       <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
               render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
@@ -184,7 +183,6 @@ export const ObjectDetail = observer((props: any) => {
     })
 
     }
-  </Space>
   </PageContainer>
   );
 });
