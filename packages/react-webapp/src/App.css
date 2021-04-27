@@ -99,7 +99,9 @@
     width: 102%;
 }
 
-
+.ant-layout {
+  background: #fff
+}
 .ant-pro-page-container-children-content {
   margin: 0
 }
