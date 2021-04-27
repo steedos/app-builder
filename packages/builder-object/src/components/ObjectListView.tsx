@@ -74,7 +74,7 @@ function getListViewFilters(listView, props){
     filter_scope = listView.filter_scope;
   }
   if(filter_scope === "mine"){
-    const filtersOwner=[["owner", "=", Settings.userId]];
+    const filtersOwner=[["owner", "=", API.client.getUserId()]];
     if(filters && filters.length){
       filters = [filtersOwner, filters];
     }
