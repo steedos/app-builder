@@ -1,4 +1,7 @@
 /* 新建窗口关闭按钮样式优化 */
+.ant-modal-content .ant-modal-close{
+    outline: none;
+}
 .ant-modal-root .ant-modal-content .ant-modal-close .ant-modal-close-x{
     margin-top: -3px !important;
 }
