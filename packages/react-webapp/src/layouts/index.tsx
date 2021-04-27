@@ -130,10 +130,9 @@ export const Layout = observer((props: any) => {
       logo={logoAvatarUrl}
       menuHeaderRender={(logo, title, menuProps) => { 
         const {collapsed, logo: logoUrl, title: titleValue} = menuProps || {};
+        const logoDom = logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) :null;
         return (
-          <div>
-            {collapsed ? null : (logoUrl ? (<div className="steedos-logo"><img src={logoUrl.toString()} alt={titleValue.toString()} /></div>) : null)}
-          </div>
+          logoDom
       ) }}
       menuExtraRender={() => (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>)}
       fixSiderbar={true}
