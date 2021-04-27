@@ -105,7 +105,7 @@ export const ListView = observer((props: any) => {
   const ref = useRef<ActionType>();
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<ProSkeleton type="list" />)
-  
+
   const schema = object.schema; 
   const title = schema.label;
   let listView = schema.list_views[listName];
@@ -145,6 +145,7 @@ export const ListView = observer((props: any) => {
         actionRef={ref} 
         objectApiName={objectApiName}
         listName={listName}
+        size="small"
         {...rest}
       />
     </PageContainer>

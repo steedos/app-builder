@@ -261,6 +261,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
       options={false}
       columnEmptyText={false}
+      toolBarRender={false}
       actionRef={rest.actionRef || selfTableRef}
       onChange={() => {
         ;(rest.actionRef || selfTableRef).current.reload()
@@ -270,6 +271,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
       }}
+      size="small"
       className={["object-table", rest.className].join(" ")}
       {...rest}
     />
