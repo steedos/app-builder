@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import { Apps } from '@steedos/builder-store';
 import _ from 'lodash';
 import { useHistory } from "react-router-dom";
+import ProSkeleton from '@ant-design/pro-skeleton';
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { TabIframe } from '../pages/tabIframe';
@@ -108,11 +109,9 @@ export const Layout = observer((props: any) => {
 
   const spaceId = API.client.getSpaceId()
   const spaceObject = Objects.getObject("spaces");
-  if (spaceObject.isLoading) return (<div>Loading space ...</div>)
-
   const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
-  if (spaceRecord.isLoading)
-    return (<div>Loading space ...</div>)
+  if (spaceObject.isLoading || spaceRecord.isLoading)
+    return (<ProSkeleton type="list" />)
   const spaceData = spaceRecord && spaceRecord.data && spaceRecord.data.value && spaceRecord.data.value[0];
   const {name: spaceTitle , avatar: logoAvatar} = spaceData || {};
 
