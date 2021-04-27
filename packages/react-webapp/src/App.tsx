@@ -72,7 +72,7 @@ function RouteWithSubRoutes(route: any) {
 
 export default function App() {
   return (
-    <ChakraProvider theme={theme}>
+    // <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
         <Router>
           <Switch>
@@ -83,6 +83,6 @@ export default function App() {
           </Switch>
         </Router>
       </SteedosProvider>
-    </ChakraProvider>
+    // </ChakraProvider>
   );
 };
