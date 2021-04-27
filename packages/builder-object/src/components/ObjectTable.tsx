@@ -13,6 +13,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
 import { getObjectRecordUrl } from "../utils"
+import { Spin } from 'antd';
 import "./ObjectTable.less"
 import { Link } from "react-router-dom"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
@@ -140,7 +141,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
-  if (object.isLoading) return (<div>Loading object ...</div>)
+  if (object.isLoading) return (<div><Spin/></div>)
 
   let defaultSort: any = {};
   const proColumns = []
