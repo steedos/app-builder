@@ -8,7 +8,7 @@ import {
   Link
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
-import { ObjectGrid } from '../pages/objectGrid';
+import { ListView } from '../pages/listView';
 // import { ObjectListView } from '@steedos/builder-object';
 import { SteedosAppLauncher } from "@steedos/builder-lightning";
 import { observer } from "mobx-react-lite";
@@ -34,11 +34,11 @@ const routes = [
   },
   {
     path: "/app/:appApiName/:objectApiName/grid/:listName",
-    component: ObjectGrid
+    component: ListView
   },
   {
     path: "/app/:appApiName/:objectApiName",
-    component: ObjectGrid
+    component: ListView
   }
 ];
 

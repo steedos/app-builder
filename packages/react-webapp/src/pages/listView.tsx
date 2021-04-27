@@ -94,7 +94,7 @@ function getListViewDropdownMenus(schema, props, options){
 }
 
 
-export const ObjectGrid = observer((props: any) => {
+export const ListView = observer((props: any) => {
   let {
     objectApiName,
     listName = "all",
