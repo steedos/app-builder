@@ -8,8 +8,8 @@ import {
   Link
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
-// import { ObjectListView } from '../pages/objectListView';
-import { ObjectListView } from '@steedos/builder-object';
+import { ObjectGrid } from '../pages/objectGrid';
+// import { ObjectListView } from '@steedos/builder-object';
 import { SteedosAppLauncher } from "@steedos/builder-lightning";
 import { observer } from "mobx-react-lite";
 import { Apps } from '@steedos/builder-store';
@@ -33,12 +33,12 @@ const routes = [
     component: TabIframe
   },
   {
-    path: "/app/:appApiName/:objectApiName/grid/:listViewApiName",
-    component: ObjectListView
+    path: "/app/:appApiName/:objectApiName/grid/:listName",
+    component: ObjectGrid
   },
   {
     path: "/app/:appApiName/:objectApiName",
-    component: ObjectListView
+    component: ObjectGrid
   }
 ];
 
@@ -49,7 +49,7 @@ function RouteWithSubRoutes(route: any, history: any) {
       render={props => {
         console.log(`RouteWithSubRoutes props`, props)
         // pass the sub-routes down to keep nesting
-        const { appApiName, objectApiName, recordId, tabApiName, listViewApiName } = props.match.params
+        const { appApiName, objectApiName, recordId, tabApiName, listName } = props.match.params
         let src = null;
         let title = null;
         if(props.location && props.location.state){
@@ -61,7 +61,7 @@ function RouteWithSubRoutes(route: any, history: any) {
             title = state.title
           }
         }
-        return <route.component listViewApiName={listViewApiName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
+        return <route.component listName={listName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
       }}
     />
   );
