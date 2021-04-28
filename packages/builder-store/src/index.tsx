@@ -30,3 +30,12 @@ export {
 }
 
 export default stores;
+
+declare global {
+  interface Window {
+      Creator: any
+  }
+}
+
+window.Creator = {};
+window.Creator.Objects = {};

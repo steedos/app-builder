@@ -86,6 +86,8 @@ export const ObjectModel = types.model({
     try {
       self.schema = yield API.requestObject(self.id)
       self.isLoading = false
+      const Creator = window.Creator;
+      Creator.Objects[self.id] = self.schema
       return self
     } catch (err) {
       console.error(`Failed to load object ${self.id} `, err)
