@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
 import { Tabs } from 'antd';
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 import { ObjectListView } from '@steedos/builder-object';
 import { ChartDesignModal } from '../components/chartDesignModal';
@@ -32,10 +33,10 @@ export const ObjectDetail = observer((props: any) => {
   const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
   const recordCache = object.getRecord(recordId, [])
-  if (recordCache.isLoading) return (<div>Loading record ...</div>)
+  if (object.isLoading || recordCache.isLoading) return (<ProSkeleton type="descriptions" />)
   const schema = object.schema;
+
   const relatedList = getRelatedList(schema);
   let title = '';
   let recordPermissions: any = null;
@@ -165,7 +166,14 @@ export const ObjectDetail = observer((props: any) => {
     onTabChange={onTabChange}
 >
     <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
-      <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
+      <ObjectForm 
+        layout='horizontal' 
+        afterUpdate={afterUpdate} 
+        recordId={recordId} 
+        objectApiName={objectApiName} 
+        name={formName} 
+        mode={formMode} 
+        submitter={{
               render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
               ,searchConfig: {
                 resetText: '取消',
@@ -181,9 +189,9 @@ export const ObjectDetail = observer((props: any) => {
     {
       relatedList.map((item, index) => {
         return (
-          <Card style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
+          <div style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
             <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
-          </Card>
+          </div>
         )
     })
 

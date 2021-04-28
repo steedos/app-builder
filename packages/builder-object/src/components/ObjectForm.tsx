@@ -12,6 +12,7 @@ import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
+import { Spin } from 'antd';
 
 import './ObjectForm.less'
 
@@ -67,7 +68,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const fieldSchemaArray = [];
 
   const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
+  if (object.isLoading) return (<div><Spin/></div>)
 
   if (object.schema) {
     const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
@@ -75,7 +76,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     _.forEach(mergedSchema.fields, (field, fieldName) => {
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (!field.hidden && !isObjectField)
-      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: 'General'}))
+      fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: '通用'}))
     })
     _.forEach(fieldSchemaArray, (field:any)=>{
       fieldNames.push(field.name)
@@ -84,7 +85,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     if (recordId) {
       const recordCache = object.getRecord(recordId, fieldNames)
       if (recordCache.isLoading)
-        return (<div>Loading record ...</div>)
+        return (<div><Spin/></div>)
   
       if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
         const record = recordCache.data.value[0];

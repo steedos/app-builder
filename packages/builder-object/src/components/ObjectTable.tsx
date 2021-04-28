@@ -13,6 +13,7 @@ import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
 import { getObjectRecordUrl } from "../utils"
+import { Spin } from 'antd';
 import "./ObjectTable.less"
 import { Link } from "react-router-dom"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
@@ -138,9 +139,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     ...rest
   } = props
 
+  const [totalRecords, setTotalRecords] = useState(0)
+
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
-  if (object.isLoading) return (<div>Loading object ...</div>)
+  if (object.isLoading) return (<div><Spin/></div>)
 
   let defaultSort: any = {};
   const proColumns = []
@@ -243,6 +246,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
           : [],
       }
     )
+    setTotalRecords(result["@odata.count"])
     return {
       data: result.value,
       success: true,
@@ -258,10 +262,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       rowKey={rest.rowKey || "_id"}
       rowSelection={rest.rowSelection || { onChange }}
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
-      options={false}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
-      {...rest}
       onChange={() => {
         ;(rest.actionRef || selfTableRef).current.reload()
       }}
@@ -270,7 +272,15 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
       }}
+      search={{
+        filterType: 'light',
+      }}
+      toolbar={{
+        subTitle: `${totalRecords} 个项目`
+      }}
+      size="small"
       className={["object-table", rest.className].join(" ")}
+      {...rest}
     />
   )
 })

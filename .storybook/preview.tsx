@@ -13,11 +13,12 @@ import { StoryContext } from "@storybook/react"
 import * as React from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
 import { withPerformance } from "storybook-addon-performance"
-import IconSettings from '@salesforce/design-system-react/components/icon-settings';
+// import IconSettings from '@salesforce/design-system-react/components/icon-settings';
 import ProProvider, {zhCNIntl} from '@ant-design/pro-provider';
 import { Input, Space, Tag } from 'antd';
 
 import {SteedosProvider} from '@steedos/builder-steedos';
+import { SteedosIconSettings } from "../packages/builder-lightning/src/components/IconSettings";
 
 // import "antd/dist/antd.css";
 // import "@ant-design/pro-table/dist/table.css";
@@ -76,9 +77,9 @@ const withChakra = (StoryFn: Function, context: StoryContext) => {
 const withSFDS = (StoryFn: Function, context: StoryContext) => {
 
   return (
-    <IconSettings iconPath="/node_modules/@salesforce-ux/design-system/assets/icons">
+    <SteedosIconSettings>
       <StoryFn />
-    </IconSettings>
+    </SteedosIconSettings>
   )
 }
 

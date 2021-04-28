@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { Input } from 'antd';
 import { Upload, Button, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import { Image } from "antd";
-import { Settings } from '@steedos/builder-store';
+import { Settings , API} from '@steedos/builder-store';
 import FieldImage from '@ant-design/pro-field/es/components/Image';
+import { observer } from "mobx-react-lite";
 
 /*
  * 对象字段类型组件
@@ -27,21 +26,18 @@ import FieldImage from '@ant-design/pro-field/es/components/Image';
  *    "imgs__c": "iHXH3SrYP5ZcarQbX"
 */
 
-const renderFormItem = (text: any, props: any, formMode) => {
-    const { fieldProps = {} } = props;
+export const ImageField = observer((props: any) => {
+    const { fieldProps = {} ,mode ,text, fileType} = props;
     let { onChange } = fieldProps;
 
-    if (formMode === 'read') {
-        let url = Settings.rootUrl + '/api/files/images/' + text;
-        const proFieldProps = {
-            mode: formMode
-        }
+    if (mode === 'read') {
+        let url = Settings.rootUrl + '/api/files/'+fileType+'/' + text;
         return (<Image alt="图片" width={32} src={url} />)
         // return (<FieldImage {...proFieldProps} />)
     }
-    if (formMode === 'edit') {
-        props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
-        
+    if (mode === 'edit') {
+        // props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
+        const proProps = Object.assign({}, props, {name:"file"});
         const [fileList, setFileList] = useState([]);
         const onPreview = async file => {
             let src = file.url;
@@ -59,7 +55,7 @@ const renderFormItem = (text: any, props: any, formMode) => {
         };
         const propsOther = {
             // http://127.0.0.1:5080/s3/images
-            action: Settings.rootUrl + '/s3/images',
+            action: Settings.rootUrl + '/s3/'+fileType,
             listType: 'picture-card',
             fileList,
             onPreview,
@@ -68,13 +64,12 @@ const renderFormItem = (text: any, props: any, formMode) => {
             accept: 'image/png, image/jpeg, image/jpg, image/gif',
             // maxCount: '1',
             data: {
-                // TODO: 暂时获取不能灵活获取 space 和 owner 值
-                space: Settings.tenantId,
-                owner: Settings.userId
+                space: API.client.getSpaceId(),
+                owner: API.client.getUserId()
             },
             headers: {
-                'X-User-Id': Settings.userId,
-                'X-Auth-Token': Settings.authToken
+                'X-User-Id': API.client.getUserId(),
+                'X-Auth-Token': API.client.getToken()
             },
             onChange: (options: any) => {
                 const { file, fileList: newFileList } = options;
@@ -84,23 +79,20 @@ const renderFormItem = (text: any, props: any, formMode) => {
                 }
             }
         }
-        
         return (
-            <Upload {...props} {...propsOther}>
+            <Upload {...proProps} {...propsOther}>
                 {fileList.length < 1 && '+ Upload'}
             </Upload>
         );
     }
-}
+});
 
 export const image = {
     render: (text: any, props: any) => {
-        // console.log('图片1进入readonly状态',props)
-        return renderFormItem(text, props, 'read')
+        return (<ImageField {...props} mode="read" fileType="images"></ImageField>)
     },
 
     renderFormItem: (text: any, props: any) => {
-        // console.log('图片1进入edit状态',props)
-        return renderFormItem(text, props, 'edit')
+        return (<ImageField {...props} mode="edit" fileType="images"></ImageField>)
     }
 }

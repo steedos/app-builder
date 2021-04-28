@@ -8,13 +8,14 @@ import {
   Link
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
-// import { ObjectListView } from '../pages/objectListView';
-import { ObjectListView } from '@steedos/builder-object';
+import { ListView } from '../pages/listView';
+// import { ObjectListView } from '@steedos/builder-object';
 import { SteedosAppLauncher } from "@steedos/builder-lightning";
 import { observer } from "mobx-react-lite";
 import { Apps } from '@steedos/builder-store';
 import _ from 'lodash';
 import { useHistory } from "react-router-dom";
+import ProSkeleton from '@ant-design/pro-skeleton';
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { TabIframe } from '../pages/tabIframe';
@@ -33,12 +34,12 @@ const routes = [
     component: TabIframe
   },
   {
-    path: "/app/:appApiName/:objectApiName/grid/:listViewApiName",
-    component: ObjectListView
+    path: "/app/:appApiName/:objectApiName/grid/:listName",
+    component: ListView
   },
   {
     path: "/app/:appApiName/:objectApiName",
-    component: ObjectListView
+    component: ListView
   }
 ];
 
@@ -49,7 +50,7 @@ function RouteWithSubRoutes(route: any, history: any) {
       render={props => {
         console.log(`RouteWithSubRoutes props`, props)
         // pass the sub-routes down to keep nesting
-        const { appApiName, objectApiName, recordId, tabApiName, listViewApiName } = props.match.params
+        const { appApiName, objectApiName, recordId, tabApiName, listName } = props.match.params
         let src = null;
         let title = null;
         if(props.location && props.location.state){
@@ -61,7 +62,7 @@ function RouteWithSubRoutes(route: any, history: any) {
             title = state.title
           }
         }
-        return <route.component listViewApiName={listViewApiName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
+        return <route.component listName={listName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
       }}
     />
   );
@@ -108,11 +109,9 @@ export const Layout = observer((props: any) => {
 
   const spaceId = API.client.getSpaceId()
   const spaceObject = Objects.getObject("spaces");
-  if (spaceObject.isLoading) return (<div>Loading space ...</div>)
-
   const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
-  if (spaceRecord.isLoading)
-    return (<div>Loading space ...</div>)
+  if (spaceObject.isLoading || spaceRecord.isLoading)
+    return (<ProSkeleton type="list" />)
   const spaceData = spaceRecord && spaceRecord.data && spaceRecord.data.value && spaceRecord.data.value[0];
   const {name: spaceTitle , avatar: logoAvatar} = spaceData || {};
 
@@ -130,10 +129,9 @@ export const Layout = observer((props: any) => {
       logo={logoAvatarUrl}
       menuHeaderRender={(logo, title, menuProps) => { 
         const {collapsed, logo: logoUrl, title: titleValue} = menuProps || {};
+        const logoDom = logoUrl ? (<img src={logoUrl.toString()} alt={titleValue.toString()} />) :null;
         return (
-          <div>
-            {collapsed ? null : (logoUrl ? (<div className="steedos-logo"><img src={logoUrl.toString()} alt={titleValue.toString()} /></div>) : null)}
-          </div>
+          logoDom
       ) }}
       menuExtraRender={() => (<SteedosAppLauncher currentApp={currentApp} apps={apps} history={history}/>)}
       fixSiderbar={true}

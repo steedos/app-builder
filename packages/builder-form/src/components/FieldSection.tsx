@@ -1,13 +1,8 @@
 import React, { useContext } from 'react';
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 import { observer } from "mobx-react-lite"
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/accordion";
+
+import ExpandableSection from '@salesforce/design-system-react/components/expandable-section';
 import _ from 'lodash';
 
 export const FieldSection = observer((props: any) => {
@@ -33,23 +28,14 @@ export const FieldSection = observer((props: any) => {
   }
 
   return (
-    <Accordion defaultIndex={[0]} allowMultiple colorScheme='gray' pb={2} {...attributes}>
-      <AccordionItem borderBottom={0} borderTop={0}>
-        <Box background='gray.100' borderRadius={2}>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              {title}
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Box>
-        <AccordionPanel py={2} px={4}>
-          <Grid {...boxOptions}>
-            {/* {renderChildren(children)} */}
-            {children}
-          </Grid>
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <ExpandableSection
+      id="default-expandable-section"
+      title={title}
+    >
+      <Grid {...boxOptions}>
+        {/* {renderChildren(children)} */}
+        {children}
+      </Grid>
+    </ExpandableSection>
   )
 })
