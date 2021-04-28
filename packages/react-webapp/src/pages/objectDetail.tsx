@@ -7,11 +7,9 @@ import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
-import { Tabs } from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
 
-import { ObjectListView } from '@steedos/builder-object';
-const { TabPane } = Tabs;
+import { RelatedList } from './relatedList';
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
@@ -136,7 +134,6 @@ export const ObjectDetail = observer((props: any) => {
     setTabActiveKey(`${objectApiName}-detail`)
   }
 
-
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -183,13 +180,13 @@ export const ObjectDetail = observer((props: any) => {
     </Card>
     {
       relatedList.map((item, index) => {
+        const master = {objectApiName, recordId, relatedFieldApiName: item.fieldApiName};
         return (
           <div style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
-            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
+            <RelatedList appApiName={appApiName} objectApiName={item.objectApiName} master={master} toolbar={toolbar} />
           </div>
         )
-    })
-
+      })
     }
   </PageContainer>
   );
