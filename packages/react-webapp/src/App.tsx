@@ -15,7 +15,7 @@ import {
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
-import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
+import { Login } from './pages/user/login';
 import { ChartDesign } from './pages/chartDesign';
 
 const initialStore = {
@@ -32,7 +32,7 @@ const initialStore = {
 const routes = [
   {
     path: "/login",
-    component: SplitScreenLogin
+    component: Login
   },
   {
     path: "/chartDesign",

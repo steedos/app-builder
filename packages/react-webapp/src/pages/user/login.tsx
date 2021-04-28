@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { User } from '@steedos/builder-store';
 
 
-export const SplitScreenLogin = observer((props: any) => {
+export const Login = observer((props: any) => {
     let history = useHistory();
     const handleSubmit = () => {
         const emailElement: any = document.getElementById("email");
@@ -40,11 +40,11 @@ export const SplitScreenLogin = observer((props: any) => {
                     src="https://www.steedos.com/img/logo_platform.png"
                     alt="Workflow"
                 />
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">登录</h2>
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <h2 className="mt-0 text-center text-3xl font-extrabold text-gray-900">登录</h2>
                     <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
