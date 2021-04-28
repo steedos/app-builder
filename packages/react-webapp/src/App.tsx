@@ -16,7 +16,6 @@ import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
 import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
-import { ChartDesign } from './pages/chartDesign';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -33,10 +32,6 @@ const routes = [
   {
     path: "/login",
     component: SplitScreenLogin
-  },
-  {
-    path: "/chartDesign",
-    component: ChartDesign
   },
   {
     path: "/app/:appApiName/:objectApiName",

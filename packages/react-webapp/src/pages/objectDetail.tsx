@@ -10,6 +10,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Tabs } from 'antd';
 
 import { ObjectListView } from '@steedos/builder-object';
+import { ChartDesignModal } from '../components/chartDesignModal';
 const { TabPane } = Tabs;
 
 function getRelatedList(objectSchema){
@@ -63,9 +64,13 @@ export const ObjectDetail = observer((props: any) => {
     setFormMode('read');
     return true;
   }
-
+  
   //编辑
   extraButtons.push(<Button key="editRecord" onClick={()=> setFormMode('edit')} type="primary">编辑</Button>)
+
+  if(objectApiName === 'charts'){
+    extraButtons.push(<ChartDesignModal key="chartEdit" chartId={recordId}></ChartDesignModal>)
+  }
 
   dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
 

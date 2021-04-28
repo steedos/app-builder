@@ -232,6 +232,9 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const schema = object.schema; 
   const title = schema.label;
   let listView = schema.list_views[listViewApiName];
+  if(!listView){
+    return (<div></div>)
+  }
   const listViewColumns = getListviewColumns(schema, listViewApiName);
   const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
