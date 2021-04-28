@@ -25,7 +25,6 @@ export const ChartDesign = observer((props: ChartDesignProps) => {
     if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
         record = recordCache.data.value[0];
     }
-    console.log(`record`, record)
     if(!record){
         return (<div>Loading record ...</div>)
     }
@@ -33,12 +32,10 @@ export const ChartDesign = observer((props: ChartDesignProps) => {
     const [options, setOptions] = useState(record.options || {});
     const [type, setType] = useState(record.type);
     const onOptionsChange = function (data) {
-        console.log(`onOptionsChange data`, data);
         setOptions(data)
         if(onEditOptionsChange){
             onEditOptionsChange(data);
         }
-        console.log(`onOptionsChange options`, options);
     }
 
     const onChange = function (a, b, c, d) {

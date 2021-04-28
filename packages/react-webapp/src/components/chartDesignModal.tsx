@@ -22,15 +22,12 @@ export const ChartDesignModal = observer((props: ChartDesignProps) => {
     form.validateFields()
           .then(values => {
             // form.resetFields();
-            console.log(`values`, values)
-            console.log(`editOptions`, editOptions)
             // onCreate(values);
             let record: any = {type: values.type, label: values.label};
             if(!_.isEmpty(editOptions)){
               record.options = editOptions
             }
             API.updateRecord(CHART_OBJECT_APINAME, chartId, record).then((value)=>{
-              console.log(`updateRecord`, value);
               closeModal();
               setConfirmLoading(false);
             }).catch(info => {
