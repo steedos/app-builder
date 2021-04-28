@@ -15,8 +15,8 @@ import {
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
+
 import { Login } from './pages/user/login';
-import { ChartDesign } from './pages/chartDesign';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -33,10 +33,6 @@ const routes = [
   {
     path: "/login",
     component: Login
-  },
-  {
-    path: "/chartDesign",
-    component: ChartDesign
   },
   {
     path: "/app/:appApiName/:objectApiName",
