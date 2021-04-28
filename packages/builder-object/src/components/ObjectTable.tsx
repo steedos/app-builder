@@ -136,6 +136,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     sort,
     defaultClassName,
     onChange,
+    toolbar,
     ...rest
   } = props
 
@@ -275,9 +276,9 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       search={{
         filterType: 'light',
       }}
-      toolbar={{
+      toolbar={Object.assign({}, {
         subTitle: `${totalRecords} 个项目`
-      }}
+      }, toolbar)}
       size="small"
       className={["object-table", rest.className].join(" ")}
       {...rest}

@@ -534,6 +534,19 @@ export const ListViewNoSearch = () => {
   )
 }
 
+export const ListViewToolbar = () => {
+  return (
+      <ObjectListView objectApiName='tasks' 
+        search={false}
+        toolbar={{
+          actions: (<div>自定义按钮</div>)
+        }}
+      >
+        
+      </ObjectListView>
+  )
+}
+
 export const IframeTest = () => {
   return (
       <Iframe src="http://www.baidu.com/" width="100%" height="100%"/>
