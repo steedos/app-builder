@@ -27,6 +27,9 @@ const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+// 华炎魔方
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
@@ -94,7 +97,8 @@ module.exports = function (webpackEnv) {
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
-  const shouldUseReactRefresh = env.raw.FAST_REFRESH;
+  // 华炎魔方
+  const shouldUseReactRefresh = false; //env.raw.FAST_REFRESH;
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -321,9 +325,10 @@ module.exports = function (webpackEnv) {
       // https://github.com/facebook/create-react-app/issues/290
       // `web` extension prefixes have been added for better support
       // for React Native Web.
-      extensions: paths.moduleFileExtensions
-        .map(ext => `.${ext}`)
-        .filter(ext => useTypeScript || !ext.includes('ts')),
+      // extensions: paths.moduleFileExtensions
+      //   .map(ext => `.${ext}`)
+      //   .filter(ext => useTypeScript || !ext.includes('ts')),
+      extensions: [".ts", ".tsx", ".js", '.jsx', '.json'],
       alias: {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -336,6 +341,9 @@ module.exports = function (webpackEnv) {
         ...(modules.webpackAliases || {}),
       },
       plugins: [
+        // 华炎魔方：兼容 tsconfig 中的 paths
+        new TsconfigPathsPlugin(),
+
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
         // guards against forgotten dependencies and such.
         PnpWebpackPlugin,
@@ -344,10 +352,11 @@ module.exports = function (webpackEnv) {
         // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
         // please link the files into your node_modules/ and let module-resolution kick in.
         // Make sure your source files are compiled, as they will not be processed in any way.
-        new ModuleScopePlugin(paths.appSrc, [
-          paths.appPackageJson,
-          reactRefreshOverlayEntry,
-        ]),
+        // new ModuleScopePlugin(paths.appSrc, [
+        //   paths.appPackageJson,
+        //   reactRefreshOverlayEntry,
+        // ]),
+
       ],
     },
     resolveLoader: {
@@ -533,6 +542,65 @@ module.exports = function (webpackEnv) {
                 },
                 'sass-loader'
               ),
+            },
+            // 华炎魔方：Salesforce 兼容
+            {
+              test: /\.jsx?$/,
+              loader: require.resolve('babel-loader'),
+              include: [
+                  path.join(__dirname, '../../../node_modules/@salesforce/design-system-react'),
+              ], 
+              options: {
+                presets: ["@babel/preset-react", "@babel/preset-env"],
+                plugins: [
+                  ["@babel/plugin-proposal-class-properties", { loose: true }],
+                  '@babel/plugin-proposal-object-rest-spread',
+                  '@babel/plugin-proposal-export-default-from',
+                  '@babel/plugin-proposal-export-namespace-from',
+                ]
+              }
+            },
+
+            // 华炎魔方：添加 less 相关配置
+            {
+              test: /\.less$/,
+              // exclude: /\\.module\\.less$/,
+              use: [
+                { 
+                  loader: 'style-loader', 
+                }, 
+                { 
+                  loader: 'css-loader', 
+                }, 
+                { 
+                  loader: 'less-loader',
+                  options: {
+                    lessOptions: { // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
+                      modifyVars: { 
+                        '@primary-color': '#1DA57A',
+                        '@layout-sider-background': '#000',
+                      },
+                      javascriptEnabled: true,
+                    },
+                  },
+                },
+              ],
+            },
+            // 华炎魔方
+            {
+              test: /\.[jt]sx?$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: require.resolve('ts-loader'),
+                  options: {
+                    configFile: paths.appTsConfig,
+                    // getCustomTransformers: () => ({
+                    //   before: isEnvDevelopment ? [ReactRefreshTypeScript()] : [],
+                    // }),
+                  },
+                },
+              ],
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
