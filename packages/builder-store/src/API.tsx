@@ -40,8 +40,8 @@ const requestRecordPermissions = async (objectApiName: string, recordId: string)
 }
 
 const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
-  const data = await client.sobject(objectApiName).find(filters, fields, options);
-  return data;
+  const records = await client.sobject(objectApiName).find(filters, fields, options);
+  return records;
 }
 
 const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {

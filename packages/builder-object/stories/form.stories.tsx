@@ -13,7 +13,7 @@ export default {
 }
 
 export const Form = () => {
-  const objectApiName = 'tasks';
+  const objectApiName = 'accounts';
   const fields = {
     grid: {
       type: 'grid',
@@ -92,7 +92,7 @@ export const Form = () => {
       reference_to: 'contracts',
       type: 'lookup',
       label: 'reference_limit',
-      reference_limit: 2,
+      reference_limit: 3,
     },
     contracts_filtersFunction: {
       group:'lookup测试',
@@ -101,11 +101,11 @@ export const Form = () => {
       label: 'filters(Function)',
       filters:[['amount','between',[0,10000]]],
       filtersFunction:(filters)=>{
-        return [['amount','between',[20,50]]]
+        return [['amount','between',[10,50]]]
         // return "(amount ge 15)"
         // return "((amount ge 15) and (amount le 40))"
       }
-    },  
+    },
     contracts_optionsFunction: {
       group:'lookup测试',
       reference_to: 'contracts',

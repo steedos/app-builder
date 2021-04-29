@@ -17,7 +17,6 @@ export const LookupField = observer((props:any) => {
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
-    if(fieldProps==='no') console.log('reference_to_field==1111===>',reference_to_field)
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let valueTemp = value;
     let tags:any[] = [];
@@ -54,7 +53,6 @@ export const LookupField = observer((props:any) => {
                         tags.push({label: lab, value: idName})
                     })
                 }else{
-                    if(fieldProps==='no')  console.log('reference_to_field==22222===>',reference_to_field)
                     const object = Objects.getObject(referenceTo);
                     if (object.isLoading) return (<div>Loading object ...</div>);
                     let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
@@ -202,16 +200,11 @@ export const LookupField = observer((props:any) => {
         }
 
         let newFieldProps:any=fieldProps;
-        // if(!_.isArray(referenceTos) && (props.text && props.text['ids'])){
-        //     fieldProps.value=fieldProps.value['ids']
-        //     console.log('aaaaaaa==>',fieldProps.value)
-        // }
         if(_.isArray(referenceTos)){
             labelInValue=true;
             newFieldProps = Object.assign({}, fieldProps, {
                 value: {value: fieldProps.value,label},
                 onChange:(values: any, option: any)=>{
-                    // console.log('bbbbbbbb==>',fieldProps.value, label)
                     setLabel(values.label)
                     onChange({o: referenceTo, ids: [values.value], labels: [values.label]})
                 }
@@ -239,7 +232,6 @@ export const LookupField = observer((props:any) => {
             },
             defaultValue:referenceTo
         }
-        // if(props.name==='contracts_reference_to_func') console.log('referenceTos==>',referenceTos)
         const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
         return (
             <React.Fragment>

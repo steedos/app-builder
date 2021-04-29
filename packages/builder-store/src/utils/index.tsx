@@ -201,11 +201,9 @@ export function convertRecordsForLookup(data, fieldsSchema) {
   }, 
   当lookup组件中 reference_to不是数组，初始化值需要 string || [] ; 也就是 '_id' 的值。
   */
-  // console.log('开始===>',data, fields)
   let recoreds=data && data.value;
   if(recoreds && recoreds.length){
     data.value = recoreds.map((record: any)=>{
-      // console.log('record===>',record)
       _.each(record, (fieldValue, key)=>{
         if(fieldValue){
           const fieldSchema = fieldsSchema[key];
@@ -217,7 +215,6 @@ export function convertRecordsForLookup(data, fieldsSchema) {
                 fieldReferenceTo = fieldReferenceTo();
               }
             }
-            // console.log('fieldValue==>',fieldValue,key)
             if(fieldReferenceTo && fieldReferenceTo.length){
               if(!_.isArray(fieldValue)){
                 fieldValue=[fieldValue];
