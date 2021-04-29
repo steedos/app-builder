@@ -10,7 +10,7 @@ export const QueryModel = types.model({
 }).actions((self) => {
     const loadData = flow(function* loadData(queryId) {
         try {
-            const results = yield API.client.doFetch(API.client.getUrl() + `/service/api/~packages-@steedos/charts/queries/${queryId}/results`, { method: 'post' });
+            const results = yield API.client.doFetch(API.client.getUrl() + `/service/api/~packages-@steedos/service-charts/queries/${queryId}/results`, { method: 'post' });
             let data = {
                 columns: [],
                 rows: results

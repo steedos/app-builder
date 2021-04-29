@@ -126,8 +126,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   const getSection = (sectionName, options) => {
     const sectionFields = _.filter(fieldSchemaArray, { 'group': sectionName });
+    const columns = isModalForm ? 2 : undefined
     return (
-      <FieldSection title={sectionName} key={sectionName} {...options}>
+      <FieldSection title={sectionName} key={sectionName} columns={columns} {...options}>
         {_.map(sectionFields, (field:any)=>{
           const fieldProps = {
             key: field.name,
