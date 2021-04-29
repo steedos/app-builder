@@ -122,10 +122,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  const getSection = (sectionName) => {
+  const getSection = (sectionName, options) => {
     const sectionFields = _.filter(fieldSchemaArray, { 'group': sectionName });
     return (
-      <FieldSection title={sectionName} key={sectionName}>
+      <FieldSection title={sectionName} key={sectionName} {...options}>
         {_.map(sectionFields, (field:any)=>{
           const fieldProps = {
             key: field.name,
@@ -145,8 +145,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const getSections = () => {
      const sections = _.groupBy(fieldSchemaArray, 'group');
      const dom = [];
+     const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
      _.forEach(sections, (value, key) => {
-      dom.push(getSection(key))
+      dom.push(getSection(key, options))
     })
     return dom;
   }
