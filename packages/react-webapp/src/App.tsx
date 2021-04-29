@@ -15,8 +15,8 @@ import {
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
-import { SplitScreenLogin } from './pages/user/login/splitScreenLogin';
-import { ChartDesign } from './pages/chartDesign';
+
+import { Login } from './pages/user/login';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -32,11 +32,7 @@ const initialStore = {
 const routes = [
   {
     path: "/login",
-    component: SplitScreenLogin
-  },
-  {
-    path: "/chartDesign",
-    component: ChartDesign
+    component: Login
   },
   {
     path: "/app/:appApiName/:objectApiName",
@@ -72,7 +68,7 @@ function RouteWithSubRoutes(route: any) {
 
 export default function App() {
   return (
-    <ChakraProvider theme={theme}>
+    // <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
         <Router>
           <Switch>
@@ -83,6 +79,6 @@ export default function App() {
           </Switch>
         </Router>
       </SteedosProvider>
-    </ChakraProvider>
+    // </ChakraProvider>
   );
 };

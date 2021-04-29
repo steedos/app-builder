@@ -148,7 +148,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
-      className={["object-listview", rest.className].join(" ")}
+      // className={["object-listview", rest.className].join(" ")}
       {...rest}
     />
   )

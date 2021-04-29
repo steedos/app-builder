@@ -10,6 +10,7 @@ import { Button, Dropdown, Menu, message } from 'antd';
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from "react-router-dom";
+import ProSkeleton from '@ant-design/pro-skeleton';
 
 
 function getButtons(schema, props, options){
@@ -100,10 +101,11 @@ export const ListView = observer((props: any) => {
     listName = "all",
     ...rest
   } = props
-  console.log(`ObjectListView`, listName);
+  
   const ref = useRef<ActionType>();
   const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
+  if (object.isLoading) return (<ProSkeleton type="list" />)
+
   const schema = object.schema; 
   const title = schema.label;
   let listView = schema.list_views[listName];
@@ -128,6 +130,9 @@ export const ListView = observer((props: any) => {
 
   const listViewDropdownMenus = getListViewDropdownMenus(schema, props, {})
 
+  // 切换对象时应该重置过滤条件
+  ref.current && ref.current.reset();
+
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -143,6 +148,7 @@ export const ListView = observer((props: any) => {
         actionRef={ref} 
         objectApiName={objectApiName}
         listName={listName}
+        size="small"
         {...rest}
       />
     </PageContainer>

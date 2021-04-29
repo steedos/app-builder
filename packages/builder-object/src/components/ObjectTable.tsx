@@ -3,6 +3,7 @@ import _ from "lodash"
 import { ObjectContext } from "../"
 import { useQuery } from "react-query"
 import { formatFiltersToODataQuery } from '@steedos/filters';
+import useAntdMediaQuery from 'use-media-antd-query';
 import ProTable, {
   ProTableProps,
   RequestData,
@@ -136,8 +137,14 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     sort,
     defaultClassName,
     onChange,
+    toolbar,
     ...rest
   } = props
+
+  const [totalRecords, setTotalRecords] = useState(0)
+
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
 
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
@@ -244,6 +251,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
           : [],
       }
     )
+    setTotalRecords(result["@odata.count"])
     return {
       data: result.value,
       success: true,
@@ -251,6 +259,9 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     }
   }
 
+  const search = isMobile? false : {
+    filterType: 'light',
+  }
 
   return (
     <ProTable
@@ -259,7 +270,6 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       rowKey={rest.rowKey || "_id"}
       rowSelection={rest.rowSelection || { onChange }}
       pagination={{ ...rest.pagination, hideOnSinglePage: true }}
-      options={false}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
       onChange={() => {
@@ -270,6 +280,11 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
       }}
+      search={search}
+      toolbar={Object.assign({}, {
+        subTitle: `${totalRecords} 个项目`
+      }, toolbar)}
+      size="small"
       className={["object-table", rest.className].join(" ")}
       {...rest}
     />

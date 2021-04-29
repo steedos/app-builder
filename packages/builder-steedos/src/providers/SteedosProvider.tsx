@@ -6,6 +6,7 @@ import { SteedosClient } from '@steedos/builder-sdk';
 import { SteedosContext } from '..';
 import { ObjectProvider } from "@steedos/builder-object";
 import { Settings, API } from "@steedos/builder-store";
+import { SteedosIconSettings } from "@steedos/builder-lightning";
 
 /*
 参数：
@@ -40,9 +41,11 @@ export function SteedosProvider(props: any) {
 
   return (
     <SteedosContext.Provider value={{}}>
+      <SteedosIconSettings>
         <ObjectProvider {...objectProviderProps}>
           {props.children}
         </ObjectProvider>
+      </SteedosIconSettings>
     </SteedosContext.Provider>
   )
 }

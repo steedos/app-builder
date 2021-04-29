@@ -61,11 +61,6 @@
 }
 /*左侧菜单样式--end--*/
 
-/*详细界面子表列表周边间隔太大了*/
-.ant-card-body .ant-card-body{
-  padding-left: 0;
-  padding-right: 0;
-}
 /* 详细界面子表列表内部间隔太大了 */
 .ant-pro-page-container-children-content .ant-pro-page-container-children-content{
   margin-top: 0;
@@ -102,4 +97,15 @@
 /* 如果不写 102% ，显示的带有...的文字内容较短 */
 .ant-layout-sider .slds-context-bar__primary .slds-context-bar__item{
     width: 102%;
+}
+
+.ant-layout {
+  background: #fff
+}
+.ant-pro-page-container-children-content {
+  margin: 0
+}
+
+.ant-pro-page-container-tabs {
+  border-bottom: 1px solid rgb(221, 219, 218);
 }

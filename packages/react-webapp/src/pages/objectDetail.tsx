@@ -7,10 +7,9 @@ import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
-import { Tabs } from 'antd';
-
-import { ObjectListView } from '@steedos/builder-object';
-const { TabPane } = Tabs;
+import ProSkeleton from '@ant-design/pro-skeleton';
+import { RelatedList } from './relatedList';
+import { ChartDesignModal } from '../components/chartDesignModal';
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
@@ -31,10 +30,10 @@ export const ObjectDetail = observer((props: any) => {
   const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
   const recordCache = object.getRecord(recordId, [])
-  if (recordCache.isLoading) return (<div>Loading record ...</div>)
+  if (object.isLoading || recordCache.isLoading) return (<ProSkeleton type="descriptions" />)
   const schema = object.schema;
+
   const relatedList = getRelatedList(schema);
   let title = '';
   let recordPermissions: any = null;
@@ -63,9 +62,13 @@ export const ObjectDetail = observer((props: any) => {
     setFormMode('read');
     return true;
   }
-
+  
   //编辑
   extraButtons.push(<Button key="editRecord" onClick={()=> setFormMode('edit')} type="primary">编辑</Button>)
+
+  if(objectApiName === 'charts'){
+    extraButtons.push(<ChartDesignModal key="chartEdit" chartId={recordId}></ChartDesignModal>)
+  }
 
   dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
 
@@ -134,8 +137,6 @@ export const ObjectDetail = observer((props: any) => {
   if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
     setTabActiveKey(`${objectApiName}-detail`)
   }
-
-
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -145,7 +146,7 @@ export const ObjectDetail = observer((props: any) => {
         routes: [
           {
             path: `/app/${appApiName}/${objectApiName}`,
-            breadcrumbName: '列表',
+            breadcrumbName: object.schema.label,
           },
           {
             path: '',
@@ -159,8 +160,15 @@ export const ObjectDetail = observer((props: any) => {
     tabActiveKey={tabActiveKey}
     onTabChange={onTabChange}
 >
-    <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
-      <ObjectForm afterUpdate={afterUpdate} recordId={recordId} objectApiName={objectApiName} name={formName} mode={formMode} submitter={{
+    <div style={{padding: 24, display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
+      <ObjectForm 
+        layout='horizontal' 
+        afterUpdate={afterUpdate} 
+        recordId={recordId} 
+        objectApiName={objectApiName} 
+        name={formName} 
+        mode={formMode} 
+        submitter={{
               render: (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
               ,searchConfig: {
                 resetText: '取消',
@@ -172,16 +180,16 @@ export const ObjectDetail = observer((props: any) => {
                 },
               },
         }}/>
-    </Card>
+    </div>
     {
       relatedList.map((item, index) => {
+        const master = {objectApiName, recordId, relatedFieldApiName: item.fieldApiName};
         return (
-          <Card style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
-            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
-          </Card>
+          <div style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
+            <RelatedList appApiName={appApiName} objectApiName={item.objectApiName} master={master} toolbar={toolbar} />
+          </div>
         )
-    })
-
+      })
     }
   </PageContainer>
   );

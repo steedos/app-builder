@@ -1,20 +1,20 @@
 import React, { useContext } from 'react';
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 import { observer } from "mobx-react-lite"
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/accordion";
+import useAntdMediaQuery from 'use-media-antd-query';
+
+import ExpandableSection from '@salesforce/design-system-react/components/expandable-section';
 import _ from 'lodash';
 
 export const FieldSection = observer((props: any) => {
+
+  const colSize = useAntdMediaQuery();
+
   const { 
     attributes, // Builder.io 传过来的参数。
     title, 
-    columns = 2, 
+    titleHidden = false,
+    columns = (colSize === 'sm' || colSize === 'xs')? 1: 2, //(colSize === 'xl')? 3: (colSize === 'xxl')? 4: 2, 
     children 
   } = props
   
@@ -32,24 +32,21 @@ export const FieldSection = observer((props: any) => {
     return (result)
   }
 
-  return (
-    <Accordion defaultIndex={[0]} allowMultiple colorScheme='gray' pb={2} {...attributes}>
-      <AccordionItem borderBottom={0} borderTop={0}>
-        <Box background='gray.100' borderRadius={2}>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              {title}
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </Box>
-        <AccordionPanel py={2} px={4}>
-          <Grid {...boxOptions}>
-            {/* {renderChildren(children)} */}
-            {children}
-          </Grid>
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+  if (titleHidden) 
+    return (
+      <Grid {...boxOptions}>
+        {children}
+      </Grid>
+    )
+  else
+    return (
+      <ExpandableSection
+        id="default-expandable-section"
+        title={title}
+      >
+        <Grid {...boxOptions}>
+          {children}
+        </Grid>
+      </ExpandableSection>
   )
 })

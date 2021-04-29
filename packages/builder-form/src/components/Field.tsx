@@ -1,20 +1,17 @@
 import ProField from "@ant-design/pro-field";
-import { Form } from 'antd';
 import type { InputProps } from 'antd';
 
 import React, { useContext, useState } from "react";
 import * as PropTypes from 'prop-types';
 import { Flex, Box } from "@chakra-ui/layout"
-import { EditIcon, LockIcon } from '@chakra-ui/icons'
 import { FormContext } from "antd/es/form/context";
-import { ProFormDatePicker } from "@ant-design/pro-form";
 import createField from '@ant-design/pro-form/es/BaseForm/createField'
 
 import { ProFormItemProps } from "@ant-design/pro-form/es/interface";
 import { Forms } from '@steedos/builder-store';
 
 import { observer } from "mobx-react-lite"
-import FieldContext from "@ant-design/pro-form/es/FieldContext";
+import Button from '@salesforce/design-system-react/components/button'; 
 
 import './Field.less'
 
@@ -99,8 +96,21 @@ export const Field = observer((props: any) => {
     };
     const inlineIconOpacity = 0.4
     const inlineIcon = readonly ?
-      <LockIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }} /> :
-      <EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}
+      <Button
+        iconCategory="utility"
+        iconName="lock"
+        iconSize="small"
+        iconVariant="container"
+        iconClassName="slds-button__icon slds-button__icon_hint"
+        variant="icon"/> :
+      <Button
+        iconCategory="utility"
+        iconName="edit"
+        iconSize="small"
+        iconVariant="container"
+        iconClassName="slds-button__icon slds-button__icon_hint"
+        variant="icon"
+        //<EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}
         onClick={() => {
           onInlineEdit()
         }}
