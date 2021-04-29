@@ -137,7 +137,6 @@ export const ObjectDetail = observer((props: any) => {
   if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
     setTabActiveKey(`${objectApiName}-detail`)
   }
-
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -147,7 +146,7 @@ export const ObjectDetail = observer((props: any) => {
         routes: [
           {
             path: `/app/${appApiName}/${objectApiName}`,
-            breadcrumbName: '列表',
+            breadcrumbName: object.schema.label,
           },
           {
             path: '',
