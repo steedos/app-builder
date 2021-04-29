@@ -74,7 +74,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
     fieldSchemaArray.length = 0
     _.forEach(mergedSchema.fields, (field, fieldName) => {
-      if (!field.group || field.group == 'null')
+      if (!field.group || field.group == 'null' || field.group == '-')
         field.group = '通用'
       let isObjectField = /\w+\.\w+/.test(fieldName)
       // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
