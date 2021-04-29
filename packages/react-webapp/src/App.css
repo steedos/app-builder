@@ -109,12 +109,3 @@
 .ant-pro-page-container-tabs {
   border-bottom: 1px solid rgb(221, 219, 218);
 }
-
-.ant-form-item-label > label {
-  font-size: 12px;
-  color: var(--lwc-colorTextLabel,rgb(62, 62, 60))
-}
-
-.slds-section__title {
-  font-weight: inherit
-}
