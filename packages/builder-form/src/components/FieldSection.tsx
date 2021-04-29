@@ -14,7 +14,7 @@ export const FieldSection = observer((props: any) => {
     attributes, // Builder.io 传过来的参数。
     title, 
     titleHidden = false,
-    columns = (colSize === 'sm' || colSize === 'xs')? 1: (colSize === 'xl')? 3: (colSize === 'xxl')? 4: 2, 
+    columns = 2, //(colSize === 'sm' || colSize === 'xs')? 1: (colSize === 'xl')? 3: (colSize === 'xxl')? 4: 2, 
     children 
   } = props
   
