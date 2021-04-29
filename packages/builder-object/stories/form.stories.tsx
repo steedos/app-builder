@@ -13,7 +13,7 @@ export default {
 }
 
 export const Form = () => {
-  const objectApiName = 'accounts';
+  const objectApiName = 'tasks';
   const fields = {
     grid: {
       type: 'grid',
@@ -32,10 +32,12 @@ export const Form = () => {
     test: {
       type: 'text',
     },
+    /*
     testImage: {
       type: 'image',
       label: '照片'
     },
+    */
     contracts: {
       group:'lookup测试',
       reference_to: 'contracts',
@@ -81,7 +83,7 @@ export const Form = () => {
       type: 'lookup',
       label: 'reference_sort',
       reference_sort: {
-        create_date: 1,
+        // create_date: 1,
         amount: -1,
       },
     },
@@ -90,7 +92,7 @@ export const Form = () => {
       reference_to: 'contracts',
       type: 'lookup',
       label: 'reference_limit',
-      reference_limit: 3,
+      reference_limit: 2,
     },
     contracts_filtersFunction: {
       group:'lookup测试',
@@ -99,11 +101,11 @@ export const Form = () => {
       label: 'filters(Function)',
       filters:[['amount','between',[0,10000]]],
       filtersFunction:(filters)=>{
-        return [['amount','between',[10,50]]]
+        return [['amount','between',[20,50]]]
         // return "(amount ge 15)"
         // return "((amount ge 15) and (amount le 40))"
       }
-    },
+    },  
     contracts_optionsFunction: {
       group:'lookup测试',
       reference_to: 'contracts',
@@ -140,11 +142,12 @@ export const Form = () => {
         { label: '合同2', value: "2" },
         { label: '合同3', value: "3" },
       ],
-    },
+    }, 
+
     contracts_reference_to_func: {
       reference_to:()=>{
-        // return 'contracts'
-        return ['contracts','contract_types'];
+        return 'contracts'
+        // return ['contracts','contract_types'];
       },
       group:'lookup测试',
       type: 'lookup',
@@ -215,7 +218,7 @@ export const Form = () => {
         })
         return results;
       },
-    },
+    },  
     province: {
       type: 'select',
       label: '省',
@@ -240,6 +243,7 @@ export const Form = () => {
         return cityData[values.province]
       }
     },
+    
     contracts_big: {
       type: 'lookup',
       label: '合同分类',
@@ -327,6 +331,7 @@ export const Form = () => {
       multiple: true,
       picker_schema: "all"
     },
+    
     object: {
       type: 'object',
       label: 'object',
@@ -359,7 +364,8 @@ export const Form = () => {
     contracts2:['1','2'],
     contractsNo:['2021-009'],
     populationType: ['1','2'],
-    contracts_reference_to_func: {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],label:"合同分类1"},
+    // contracts_reference_to_func: {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],labels:["合同分类1"]},
+    contracts_reference_to_func: 'ebqwa4viwcwMZa7MY',
     object: {
       sub1: 'sub1',
       sub2: true,

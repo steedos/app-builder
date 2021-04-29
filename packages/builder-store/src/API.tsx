@@ -40,29 +40,8 @@ const requestRecordPermissions = async (objectApiName: string, recordId: string)
 }
 
 const requestRecords = async (objectApiName: string, filters: any, fields: any, options?: any) => {
-  const records = await client.sobject(objectApiName).find(filters, fields, options);
-  /* TODO: lookup组件中初始化值需要 {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],label:"合同分类1"} 这种格式，
-    故 将以下格式转换下。
-    contracts_reference_to_func: {
-      "reference_to._o": "contract_types",
-      "reference_to.o": "contract_types",
-      '_NAME_FIELD_VALUE': "合同分类1",
-      '_id': "fcxTeWMEvgdMQnvwZ"
-    }, 
-  */
-    // test_related_to
-  _.forEach(records,(value,key)=>{
-    // console.log('value=>',value)
-    let tempValue=value;
-    _.forEach(tempValue,(v,k)=>{
-      if(k==="reference_to.o"){
-        // console.log('have-"reference_to.o"')
-      }
-    })
-  })
-  console.log('requestRecords==>',requestRecords)
-  return records;
-
+  const data = await client.sobject(objectApiName).find(filters, fields, options);
+  return data;
 }
 
 const updateRecord = async (objectApiName: string, objectRecordId: string, data: any) => {

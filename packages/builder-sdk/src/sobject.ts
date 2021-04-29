@@ -37,9 +37,7 @@ export default class SObject {
         if($filter){
             params.$filter = $filter
         }
-        // console.log('fields==>',fields)
         const $select = this.getSelect(fields);
-        // console.log('$select==>',$select)
         if($select){
             params.$select = $select
         }
@@ -95,6 +93,7 @@ export default class SObject {
      * @returns {Promise<Array<Record>>}
      */
     async find(filters: Filters, fields: Fields, options: Options){
+        // console.log('getQueryParams=up=>find',options)
         let params = this.getQueryParams(filters, fields, options);
         let url = this.client.getBaseRoute() + "/api/v4/".concat(this.objectName) + buildQueryString(params);
         let result = await this.client.doFetch(url, {method: 'get'});

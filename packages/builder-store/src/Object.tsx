@@ -1,7 +1,7 @@
 import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
 import { API } from './API';
-import { getObjectOdataExpandFields } from './utils/index'
+import { getObjectOdataExpandFields ,convertRecordsForLookup} from './utils/index'
 
 export const RecordCache = types.model({
   id: types.identifier, //记录ID
@@ -14,13 +14,15 @@ export const RecordCache = types.model({
 .actions((self) => {
 
   const loadRecord = flow(function* loadRecord() {
-    console.log('self.id====>',self, self.id)
     try {
       const filters = ['_id', '=', self.id]
       const object = Objects.getObject(self.objectApiName).schema;
-      // console.log('object===>',object.fields, typeof object.fields)
       const expand = getObjectOdataExpandFields(object, self.fields)
-      self.data = yield API.requestRecords(self.objectApiName, filters, self.fields, {expand})
+      // 添加 expand 参数
+      const dataResult = yield API.requestRecords(self.objectApiName, filters, self.fields, {expand})
+      // lookup组件reference_to是否是数组 的初始化值 的转换。
+      self.data = convertRecordsForLookup(dataResult, object.fields)
+
       self.permissions = yield API.requestRecordPermissions(self.objectApiName, self.id);
       self.isLoading = false
     } catch (err) {
@@ -102,7 +104,6 @@ export const ObjectModel = types.model({
     const record = self.recordCaches.get(recordId)
     if (record)
       return record
-    
     const newRecord = RecordCache.create({
       id: recordId,
       objectApiName: self.id,

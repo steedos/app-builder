@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag , Select, Spin } from 'antd';
-import _, { isObject, result } from 'lodash';
+import _, { isObject, result, values } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
@@ -12,13 +12,14 @@ const { Option } = Select;
 // 相关表类型字段
 // 通过下拉框显示相关表中的数据，可以搜索
 // 参数 props.reference_to:
-
 export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
+    if(fieldProps==='no') console.log('reference_to_field==1111===>',reference_to_field)
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    let valueTemp = value;
     let tags:any[] = [];
     let referenceTos = _.isFunction(reference_to) ? reference_to() : reference_to;
     let defaultReferenceTo:any;
@@ -31,33 +32,45 @@ export const LookupField = observer((props:any) => {
     }
     let [referenceTo, setReferenceTo] = useState(_.isArray(referenceTos) ? defaultReferenceTo : referenceTos);
     let defaultLabel:any;
-    if(_.isArray(referenceTos) && value && value.label){
-        defaultLabel=value.label;
+
+    if(_.isArray(referenceTos) && value && value.labels && value.labels.length){
+        defaultLabel=value.labels.join(",");
+        // defaultLabel=value.labels;
     }
     let [label, setLabel] = useState(defaultLabel);
     // optionsFunction优先options
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
-    if(_.isArray(referenceTos) && value ){
-        value=value.ids;
-    }
+    // if(_.isArray(referenceTos) && value ){
+        if(_.isObject(value) && !_.isArray(value)){
+            value=value['ids'];
+        }
+    //}
     if(mode==='read'){
         if(value){
             if (referenceTo) {
-                const object = Objects.getObject(referenceTo);
-                if (object.isLoading) return (<div>Loading object ...</div>);
-                let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
-                const filter = value ? [[reference_to_field, '=', value]] : [];
-                const fields = [reference_to_field, referenceToLableField, "_id"];
-                const recordList: any = object.getRecordList(filter, fields);
-                if (recordList.isLoading) return (<div>Loading recordList ...</div>);
-                const recordListData = recordList.data;
-                if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                    let tagsValueField = reference_to_field;
-                    if(referenceTo === "space_users" && reference_to_field === "user"){
-                        // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
-                        tagsValueField = "_id"
+                if(_.isObject(valueTemp) && !_.isArray(valueTemp)){
+                    _.forEach(valueTemp['ids'],(idName,idIndex)=>{
+                        let lab= valueTemp['labels'][idIndex];
+                        tags.push({label: lab, value: idName})
+                    })
+                }else{
+                    if(fieldProps==='no')  console.log('reference_to_field==22222===>',reference_to_field)
+                    const object = Objects.getObject(referenceTo);
+                    if (object.isLoading) return (<div>Loading object ...</div>);
+                    let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
+                    const filter = value ? [[reference_to_field, '=', value]] : [];
+                    const fields = [reference_to_field, referenceToLableField, "_id"];
+                    const recordList: any = object.getRecordList(filter, fields);
+                    if (recordList.isLoading) return (<div>Loading recordList ...</div>);
+                    const recordListData = recordList.data;
+                    if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                        let tagsValueField = reference_to_field;
+                        if(referenceTo === "space_users" && reference_to_field === "user"){
+                            // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
+                            tagsValueField = "_id"
+                        }
+                        tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } });
                     }
-                    tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } });
                 }
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
@@ -85,6 +98,7 @@ export const LookupField = observer((props:any) => {
             // 注意，request 里面的代码不会抛异常，包括编译错误。
             // console.log("===request===params, props==", params, props);
             // console.log("===request===reference_to==", reference_to);
+
             if(_.isFunction(options)) {
                 dependOnValues.__keyWords = params.keyWords;
                 dependOnValues.__referenceTo = referenceTo;
@@ -136,13 +150,18 @@ export const LookupField = observer((props:any) => {
                 // console.log("===filters===", filters);
                 let option: any = {};
                 if (reference_sort) {
-                    option.sort = _.map(reference_sort, (value, key) => { return `${key}${value == 1 ? '' : ' desc'}` }).join(",")
+                    option.sort = _.map(reference_sort, (value, key) => { 
+                        if(fields.indexOf(key)<0){ fields.push(key) };
+                        return `${key}${value == 1 ? '' : ' desc'}` 
+                    }).join(",")
+                }
+                if (_.isArray(referenceTos)) {
+                    option.referenceTos = referenceTos;
                 }
                 if (reference_limit) {
                     option.pageSize = reference_limit
                 }
-                const data = await API.requestRecords(referenceTo, filters, fields, option);
-                // if(props.name==='test_related_to') console.log('data==>',data)
+                let data = await API.requestRecords(referenceTo, filters, fields, option);
 
                 const results = data.value.map((item: any) => {
                     return {
@@ -181,14 +200,20 @@ export const LookupField = observer((props:any) => {
                 setParams({ open, openTag: new Date() });
             }
         }
+
         let newFieldProps:any=fieldProps;
+        // if(!_.isArray(referenceTos) && (props.text && props.text['ids'])){
+        //     fieldProps.value=fieldProps.value['ids']
+        //     console.log('aaaaaaa==>',fieldProps.value)
+        // }
         if(_.isArray(referenceTos)){
             labelInValue=true;
             newFieldProps = Object.assign({}, fieldProps, {
-                value: {value:fieldProps.value,label},
+                value: {value: fieldProps.value,label},
                 onChange:(values: any, option: any)=>{
+                    // console.log('bbbbbbbb==>',fieldProps.value, label)
                     setLabel(values.label)
-                    onChange({o: referenceTo, ids: [values.value]})
+                    onChange({o: referenceTo, ids: [values.value], labels: [values.label]})
                 }
             })
         }
@@ -228,7 +253,7 @@ export const LookupField = observer((props:any) => {
                         }
                     </Select>)
                 }
-                <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }}/>
+                <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }} />
 
             </React.Fragment>
         )

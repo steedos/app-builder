@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 export function saveEval(js: string){
 	try{
 		return eval(js)
@@ -56,6 +55,11 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
           reference_to: "space_users",
           reference_to_field: "user"
         });
+      }
+      else if(field._reference_to){
+        // 如果只有_reference_to， 那就给field增加一个reference_to属性。
+        let reference_to = saveEval(`(${field._reference_to})`);
+        fieldSchema = Object.assign({}, field, {reference_to});
       }
       else{
         fieldSchema = field;
@@ -174,7 +178,7 @@ export function getObjectOdataExpandFields(object: any,columns: string[]) {
   var expand_fields, fields:[];
   expand_fields = [];
   fields = object.fields;
-  if (!columns) {
+  if (!columns || columns.length ==0) {
     columns = _.keys(fields);
   }
   _.each(columns,(n)=>{
@@ -184,4 +188,78 @@ export function getObjectOdataExpandFields(object: any,columns: string[]) {
     }
   })
   return expand_fields.join(",");
+}
+
+export function convertRecordsForLookup(data, fieldsSchema) {
+  /* TODO: lookup组件中reference_to是数组时，初始化值需要 {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],label:"合同分类1"} 这种格式，
+  故 将以下格式转换下。
+  contracts_reference_to_func: {
+    "reference_to._o": "contract_types",
+    "reference_to.o": "contract_types",
+    '_NAME_FIELD_VALUE': "合同分类1",
+    '_id': "fcxTeWMEvgdMQnvwZ"
+  }, 
+  当lookup组件中 reference_to不是数组，初始化值需要 string || [] ; 也就是 '_id' 的值。
+  */
+  // console.log('开始===>',data, fields)
+  let recoreds=data && data.value;
+  if(recoreds && recoreds.length){
+    data.value = recoreds.map((record: any)=>{
+      // console.log('record===>',record)
+      _.each(record, (fieldValue, key)=>{
+        if(fieldValue){
+          const fieldSchema = fieldsSchema[key];
+          if(fieldSchema && fieldSchema.type==='lookup' && fieldSchema.reference_to){
+            let fieldReferenceTo :any;
+            if(fieldSchema.reference_to){
+              fieldReferenceTo=fieldSchema.reference_to;
+              if(_.isFunction(fieldReferenceTo)){
+                fieldReferenceTo = fieldReferenceTo();
+              }
+            }
+            // console.log('fieldValue==>',fieldValue,key)
+            if(fieldReferenceTo && fieldReferenceTo.length){
+              if(!_.isArray(fieldValue)){
+                fieldValue=[fieldValue];
+              }
+              let referenceTo:any, ids=[], labels=[];
+              
+              _.forEach(fieldValue,(val)=>{
+                referenceTo=val['reference_to.o'];
+                if(referenceTo){
+                  const id = val["_id"];
+                  const label = val["_NAME_FIELD_VALUE"];
+                  if(id){
+                    ids.push(id)
+                  }
+                  if(label){
+                    labels.push(label)
+                  }
+                }
+              })
+              if(referenceTo){
+                if( _.isArray(fieldReferenceTo)){
+                  record[key].o = referenceTo;
+                  if(ids && ids.length){
+                    record[key].ids = ids;
+                  }
+                  if(labels && labels.length){
+                    record[key].labels = labels;
+                  }
+                  delete record[key]["reference_to._o"];
+                  delete record[key]["reference_to.o"];
+                  delete record[key]._NAME_FIELD_VALUE;
+                  delete record[key]._id;
+                }else{
+                  record[key] = fieldSchema.multiple ? ids : ids[0];
+                }
+              }
+            }
+          }
+        }
+      });
+      return record;
+    });
+  }
+  return data;
 }
