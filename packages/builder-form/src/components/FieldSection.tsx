@@ -9,6 +9,7 @@ export const FieldSection = observer((props: any) => {
   const { 
     attributes, // Builder.io 传过来的参数。
     title, 
+    titleHidden = false,
     columns = 2, 
     children 
   } = props
@@ -27,15 +28,21 @@ export const FieldSection = observer((props: any) => {
     return (result)
   }
 
-  return (
-    <ExpandableSection
-      id="default-expandable-section"
-      title={title}
-    >
+  if (titleHidden) 
+    return (
       <Grid {...boxOptions}>
-        {/* {renderChildren(children)} */}
         {children}
       </Grid>
-    </ExpandableSection>
+    )
+  else
+    return (
+      <ExpandableSection
+        id="default-expandable-section"
+        title={title}
+      >
+        <Grid {...boxOptions}>
+          {children}
+        </Grid>
+      </ExpandableSection>
   )
 })

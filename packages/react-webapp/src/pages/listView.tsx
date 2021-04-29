@@ -130,6 +130,9 @@ export const ListView = observer((props: any) => {
 
   const listViewDropdownMenus = getListViewDropdownMenus(schema, props, {})
 
+  // 切换对象时应该重置过滤条件
+  ref.current && ref.current.reset();
+
   return (
     <PageContainer content={false} title={false} header={{
       title: title,

@@ -7,12 +7,9 @@ import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
-import { Tabs } from 'antd';
 import ProSkeleton from '@ant-design/pro-skeleton';
-
-import { ObjectListView } from '@steedos/builder-object';
+import { RelatedList } from './relatedList';
 import { ChartDesignModal } from '../components/chartDesignModal';
-const { TabPane } = Tabs;
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
@@ -140,8 +137,6 @@ export const ObjectDetail = observer((props: any) => {
   if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
     setTabActiveKey(`${objectApiName}-detail`)
   }
-
-
   return (
     <PageContainer content={false} title={false} header={{
       title: title,
@@ -151,7 +146,7 @@ export const ObjectDetail = observer((props: any) => {
         routes: [
           {
             path: `/app/${appApiName}/${objectApiName}`,
-            breadcrumbName: '列表',
+            breadcrumbName: object.schema.label,
           },
           {
             path: '',
@@ -165,7 +160,7 @@ export const ObjectDetail = observer((props: any) => {
     tabActiveKey={tabActiveKey}
     onTabChange={onTabChange}
 >
-    <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
+    <div style={{padding: 24, display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
       <ObjectForm 
         layout='horizontal' 
         afterUpdate={afterUpdate} 
@@ -185,16 +180,16 @@ export const ObjectDetail = observer((props: any) => {
                 },
               },
         }}/>
-    </Card>
+    </div>
     {
       relatedList.map((item, index) => {
+        const master = {objectApiName, recordId, relatedFieldApiName: item.fieldApiName};
         return (
           <div style={{display: tabActiveKey===`related-${item.objectApiName}-${item.fieldApiName}` ? '': 'none'}}  key={`card-${item.objectApiName}-${item.fieldApiName}`}>
-            <ObjectListView search={false} appApiName={appApiName} objectApiName={item.objectApiName} master={{objectApiName:objectApiName, recordId: recordId, relatedFieldApiName: item.fieldApiName}} />
+            <RelatedList appApiName={appApiName} objectApiName={item.objectApiName} master={master} toolbar={toolbar} />
           </div>
         )
-    })
-
+      })
     }
   </PageContainer>
   );

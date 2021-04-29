@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import { observer } from "mobx-react-lite"
 import { FormContext } from "antd/es/form/context";
 import { ProFormDependency } from '@ant-design/pro-form';
+import useAntdMediaQuery from 'use-media-antd-query';
 import { Forms } from '@steedos/builder-store';
 
 export type ObjectFieldProps = {
@@ -19,6 +20,10 @@ export const ObjectField = observer((props: any) => {
   const formId = context.name?context.name:'default';
   const { objectApiName, fieldName, fieldSchema } = props
   
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
+  if (isMobile)
+    fieldSchema.is_wide = true
   /*
     TODO: fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。
   */
