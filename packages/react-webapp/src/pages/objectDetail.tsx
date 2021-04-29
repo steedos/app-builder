@@ -160,7 +160,7 @@ export const ObjectDetail = observer((props: any) => {
     tabActiveKey={tabActiveKey}
     onTabChange={onTabChange}
 >
-    <Card style={{display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
+    <div style={{padding: 24, display: tabActiveKey===`${objectApiName}-detail` ? '': 'none'}} >
       <ObjectForm 
         layout='horizontal' 
         afterUpdate={afterUpdate} 
@@ -180,7 +180,7 @@ export const ObjectDetail = observer((props: any) => {
                 },
               },
         }}/>
-    </Card>
+    </div>
     {
       relatedList.map((item, index) => {
         const master = {objectApiName, recordId, relatedFieldApiName: item.fieldApiName};
