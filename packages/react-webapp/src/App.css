@@ -105,3 +105,13 @@
 .ant-pro-page-container-children-content {
   margin: 0
 }
+
+/*tailwind和sf的样式都给svg全局加了vertical-align: middle;会造成部分svg标签垂直方向未对齐*/
+.ant-pro-page-container .ant-page-header-heading-extra button svg{
+  /* 记录详细界面右上角的省略号图标 */
+  vertical-align: unset;
+}
+.ant-layout-header .anticon svg{
+  /* 顶部toolbar用户avatar图标左侧的问号图标 */
+  vertical-align: unset;
+}
