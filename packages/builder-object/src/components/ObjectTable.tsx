@@ -3,6 +3,7 @@ import _ from "lodash"
 import { ObjectContext } from "../"
 import { useQuery } from "react-query"
 import { formatFiltersToODataQuery } from '@steedos/filters';
+import useAntdMediaQuery from 'use-media-antd-query';
 import ProTable, {
   ProTableProps,
   RequestData,
@@ -142,6 +143,9 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
 
   const [totalRecords, setTotalRecords] = useState(0)
 
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
+
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
   if (object.isLoading) return (<div><Spin/></div>)
@@ -255,6 +259,9 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     }
   }
 
+  const search = isMobile? false : {
+    filterType: 'light',
+  }
 
   return (
     <ProTable
@@ -273,9 +280,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
       }}
-      search={{
-        filterType: 'light',
-      }}
+      search={search}
       toolbar={Object.assign({}, {
         subTitle: `${totalRecords} 个项目`
       }, toolbar)}

@@ -74,11 +74,13 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
     fieldSchemaArray.length = 0
     _.forEach(mergedSchema.fields, (field, fieldName) => {
+      if (!field.group || field.group == 'null' || field.group == '-')
+        field.group = '通用'
       let isObjectField = /\w+\.\w+/.test(fieldName)
       // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
       let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
       if (!field.hidden && !isObjectField && !isOmitField){
-        fieldSchemaArray.push(_.defaults({name: fieldName}, field, {group: '通用'}))
+        fieldSchemaArray.push(_.defaults({name: fieldName}, field))
       }
     })
     _.forEach(fieldSchemaArray, (field:any)=>{
@@ -122,10 +124,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  const getSection = (sectionName) => {
+  const getSection = (sectionName, options) => {
     const sectionFields = _.filter(fieldSchemaArray, { 'group': sectionName });
     return (
-      <FieldSection title={sectionName} key={sectionName}>
+      <FieldSection title={sectionName} key={sectionName} {...options}>
         {_.map(sectionFields, (field:any)=>{
           const fieldProps = {
             key: field.name,
@@ -145,8 +147,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const getSections = () => {
      const sections = _.groupBy(fieldSchemaArray, 'group');
      const dom = [];
+     const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
      _.forEach(sections, (value, key) => {
-      dom.push(getSection(key))
+      dom.push(getSection(key, options))
     })
     return dom;
   }
