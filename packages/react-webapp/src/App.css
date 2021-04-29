@@ -114,3 +114,7 @@
   font-size: 12px;
   color: var(--lwc-colorTextLabel,rgb(62, 62, 60))
 }
+
+.slds-section__title {
+  font-weight: inherit
+}
