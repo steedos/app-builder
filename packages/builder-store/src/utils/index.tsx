@@ -64,6 +64,15 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       else{
         fieldSchema = field;
       }
+      // TODO: 暂时将以下两个属性代码注释，后期优化放开
+      // if(field._filtersFunction){
+      //   let filtersFunction = saveEval(`(${fieldSchema._filtersFunction})`);
+      //   fieldSchema = Object.assign({}, fieldSchema, {filtersFunction});
+      // }
+      // if(field._optionsFunction){
+      //   let optionsFunction = saveEval(`(${fieldSchema._optionsFunction})`);
+      //   fieldSchema = Object.assign({}, field, {optionsFunction});
+      // }
       break;
     default:
       fieldSchema = field;
@@ -183,15 +192,17 @@ export function getObjectOdataExpandFields(object: any,columns: string[]) {
   }
   _.each(columns,(n)=>{
     var ref1, ref2;
-    if (((ref1 = fields[n]) != null ? ref1.type : void 0) === "master_detail" || ((ref2 = fields[n]) != null ? ref2.type : void 0) === "lookup") {
-      return expand_fields.push(n)
+    if(fields){
+      if (((ref1 = fields[n]) != null ? ref1.type : void 0) === "master_detail" || ((ref2 = fields[n]) != null ? ref2.type : void 0) === "lookup") {
+        return expand_fields.push(n)
+      }
     }
   })
   return expand_fields.join(",");
 }
 
 export function convertRecordsForLookup(data, fieldsSchema) {
-  /* TODO: lookup组件中reference_to是数组时，初始化值需要 {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],label:"合同分类1"} 这种格式，
+  /* TODO: lookup组件中reference_to是数组时，初始化值需要 {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],labels:["合同分类1"]} 这种格式，
   故 将以下格式转换下。
   contracts_reference_to_func: {
     "reference_to._o": "contract_types",
@@ -206,7 +217,7 @@ export function convertRecordsForLookup(data, fieldsSchema) {
     data.value = recoreds.map((record: any)=>{
       _.each(record, (fieldValue, key)=>{
         if(fieldValue){
-          const fieldSchema = fieldsSchema[key];
+          const fieldSchema = fieldsSchema && fieldsSchema[key];
           if(fieldSchema && fieldSchema.type==='lookup' && fieldSchema.reference_to){
             let fieldReferenceTo :any;
             if(fieldSchema.reference_to){

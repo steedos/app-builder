@@ -16,12 +16,13 @@ export const RecordCache = types.model({
   const loadRecord = flow(function* loadRecord() {
     try {
       const filters = ['_id', '=', self.id]
-      const object = Objects.getObject(self.objectApiName).schema;
-      const expand = getObjectOdataExpandFields(object, self.fields)
+      const object = Objects.getObject(self.objectApiName);
+      const objectSchema = object.schema;
+      const expand = getObjectOdataExpandFields(objectSchema, self.fields)
       // 添加 expand 参数
       const dataResult = yield API.requestRecords(self.objectApiName, filters, self.fields, {expand})
       // lookup组件reference_to是否是数组 的初始化值 的转换。
-      self.data = convertRecordsForLookup(dataResult, object.fields)
+      self.data = convertRecordsForLookup(dataResult, objectSchema.fields)
 
       self.permissions = yield API.requestRecordPermissions(self.objectApiName, self.id);
       self.isLoading = false

@@ -18,7 +18,7 @@ export const LookupField = observer((props:any) => {
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
-    let valueTemp = value;
+    let valueOriginal = value;
     let tags:any[] = [];
     let referenceTos = _.isFunction(reference_to) ? reference_to() : reference_to;
     let defaultReferenceTo:any;
@@ -47,9 +47,9 @@ export const LookupField = observer((props:any) => {
     if(mode==='read'){
         if(value){
             if (referenceTo) {
-                if(_.isObject(valueTemp) && !_.isArray(valueTemp)){
-                    _.forEach(valueTemp['ids'],(idName,idIndex)=>{
-                        let lab= valueTemp['labels'][idIndex];
+                if(_.isObject(valueOriginal) && !_.isArray(valueOriginal) && valueOriginal['labels']){
+                    _.forEach(valueOriginal['ids'],(idName,idIndex)=>{
+                        let lab= valueOriginal['labels'][idIndex];
                         tags.push({label: lab, value: idName})
                     })
                 }else{
@@ -67,13 +67,14 @@ export const LookupField = observer((props:any) => {
                             // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
                             tagsValueField = "_id"
                         }
-                        tags = recordListData.value.map((recordItem: any) => { return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } });
+                        tags = recordListData.value.map((recordItem: any) => { 
+                            return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } 
+                        });
                     }
                 }
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
                 options = _.isFunction(options) ? options(dependFieldValues) : options;
-                // tags = _.filter(options,["value",value])
                 tags = _.filter(options,(optionItem: any)=>{
                     return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
                 })

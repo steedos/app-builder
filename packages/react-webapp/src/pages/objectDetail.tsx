@@ -30,10 +30,10 @@ export const ObjectDetail = observer((props: any) => {
   const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);
+  if (object.isLoading) return (<ProSkeleton type="descriptions" />)
   const recordCache = object.getRecord(recordId, [])
-  if (object.isLoading || recordCache.isLoading) return (<ProSkeleton type="descriptions" />)
+  if (recordCache.isLoading) return (<ProSkeleton type="descriptions" />)
   const schema = object.schema;
-
   const relatedList = getRelatedList(schema);
   let title = '';
   let recordPermissions: any = null;
