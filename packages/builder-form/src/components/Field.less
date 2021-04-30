@@ -28,14 +28,26 @@
   }
 
 
-  .ant-form-item-label > label {
-    font-size: 12px;
-    height: 24px;
-    color: var(--lwc-colorTextLabel,rgb(62, 62, 60))
-  }
+  .ant-form-item {
 
-  .ant-form-item .ant-form-item-label {
-    padding-bottom: 0;
+    .ant-form-item-label {
+      white-space: inherit;
+      padding-bottom: 0;
+      > label {
+        font-size: 12px;
+        height: 24px;
+        color: var(--lwc-colorTextLabel,rgb(62, 62, 60));
+        height: auto;
+        white-space: inherit;
+      }
+    }
+
+    &.field.type-object > .ant-form-item-label {
+      display: none;
+    }
+    &.field.type-grid > .ant-form-item-label {
+      display: none;
+    }
   }
 
   .slds-section__title {

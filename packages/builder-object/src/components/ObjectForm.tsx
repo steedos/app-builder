@@ -77,6 +77,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       if (!field.group || field.group == 'null' || field.group == '-')
         field.group = '通用'
       let isObjectField = /\w+\.\w+/.test(fieldName)
+      if (field.type == 'grid' || field.type == 'object') {
+        field.group = field.label
+      }
       // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
       let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
       if (!field.hidden && !isObjectField && !isOmitField){
