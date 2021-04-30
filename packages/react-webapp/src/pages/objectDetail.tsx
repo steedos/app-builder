@@ -9,7 +9,7 @@ import { observer } from "mobx-react-lite";
 import { Link, useHistory } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
 import { RelatedList } from './relatedList';
-import { ChartDesignModal } from '../components/chartDesignModal';
+import { ChartDesignModal } from '@steedos/builder-charts';
 
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;

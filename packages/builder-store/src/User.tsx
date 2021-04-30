@@ -20,6 +20,7 @@ export const User = types.model({
         }else if(spaces.length > 0){
             API.client.setSpaceId(spaces[0]._id);
         }
+        //TODO 写入Settings
         API.client.setUserId(userId);
         API.client.setToken(getCookie("X-Auth-Token"));
         (window as any).SClient = API.client;

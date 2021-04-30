@@ -5,6 +5,7 @@ import { ChartDesign, ChartDesignProps, CHART_OBJECT_APINAME } from './chartDesi
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { API } from '@steedos/builder-store';
 import _ from 'lodash';
+import './chartDesignModal.less';
 
 export const ChartDesignModal = observer((props: ChartDesignProps) => {
   const { chartId } = props;
@@ -65,6 +66,7 @@ export const ChartDesignModal = observer((props: ChartDesignProps) => {
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
+      wrapClassName="ant-modal-fullscreen"
       width="98%"
       destroyOnClose={true}
     >
