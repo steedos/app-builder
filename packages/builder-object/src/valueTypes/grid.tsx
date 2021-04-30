@@ -3,10 +3,35 @@ import ProForm from '@ant-design/pro-form';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import ProField from "@ant-design/pro-field";
 import { MenuOutlined } from '@ant-design/icons';
 import arrayMove from 'array-move';
+import {useClickAway} from 'react-use';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+
+export const TableCell = (props:any) => {
+  const { dataIndex, record, valueType, defaultRender } = props
+  const [editing, setEditing] = useState(false);
+  const text = record?.[dataIndex]
+  const ref = useRef(null);
+  useClickAway(ref, () => {
+    setEditing(false)
+  });
+  const onClick = () => {
+    setEditing(true)
+  }
+  return (
+    <div ref={ref} onClick={onClick}>
+      {!editing && (<ProField 
+        mode='read'
+        text={text}
+        proFieldKey='key'
+        valueType={valueType}/>)}
+      {editing && defaultRender()}
+    </div>
+  )
+}
 
 // 表格类型字段，
 // value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
@@ -33,11 +58,12 @@ export const ObjectFieldGrid = (props) => {
     dataIndex: 'sort',
     width: 30,
     className: 'drag-visible',
-    render: () => <DragHandle />,
-    renderFormItem: () => <span />,
+    render: () => <span />,
+    renderFormItem: () => <DragHandle />,
   }];
   _.forEach(sub_fields, (field, fieldName)=>{
     columns.push({
+      width: field.is_wide? 200: 100,
       key: fieldName,
       dataIndex: fieldName,
       title: field.label?field.label:fieldName,
@@ -46,6 +72,21 @@ export const ObjectFieldGrid = (props) => {
       hideInSearch: !field.filterable,
       hideInTable: field.hidden,
       hideInForm: field.hidden | field.omit,
+      // render: (_, row) => {
+      //   // console.log(_)
+      //   // console.log(row)
+      //   return (<ProField mode='read'/>)
+      // },
+      renderFormItem: (_, row) => {
+        const { defaultRender, record, recordKey } = row
+        const cellProps = {
+          ..._,
+          defaultRender,
+          record,
+          recordKey,
+        }
+        return <TableCell {...cellProps}/>
+      }
     })
   });
   if (mode == 'edit'){
@@ -73,7 +114,7 @@ export const ObjectFieldGrid = (props) => {
   const onDragEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
       const newData = arrayMove([].concat(value), oldIndex, newIndex).filter(el => !!el);
-      console.log('Sorted items: ', newData);
+      onChange?.(newData);
       setValue(newData);
     }
     // TODO: 拖动结果需要单独出发 form 保存事件。
@@ -111,13 +152,8 @@ export const ObjectFieldGrid = (props) => {
         search={false}
         defaultData={value}
         size="small"
+        tableLayout='fixed'
         rowKey="_id"
-        components={{
-          body: {
-            wrapper: DraggableContainer,
-            row: DraggableBodyRow,
-          },
-        }}
         toolBarRender={false}
         pagination={false}
         columns={columns}
@@ -132,9 +168,16 @@ export const ObjectFieldGrid = (props) => {
           setValue(value)
         }}
         size="small"
+        tableLayout='fixed'
         rowKey="_id"
         toolBarRender={false}
         columns={columns}
+        components={{
+          body: {
+            wrapper: DraggableContainer,
+            row: DraggableBodyRow,
+          },
+        }}
         recordCreatorProps={{
           newRecordType: 'dataSource',
           position: 'bottom',
