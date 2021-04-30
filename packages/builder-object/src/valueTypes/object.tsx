@@ -87,6 +87,7 @@ export const ObjectFieldObject = (props:any) => {
       // formFieldComponent = {ObjectField}
       className='object-sub-form'
       initialValues={initialValues}
+      labelAlign='left'
       // mode={mode}
       form={form}
       component={false}  //子表单不创建 html form tag
