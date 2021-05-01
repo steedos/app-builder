@@ -5,7 +5,7 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import { User } from '@steedos/builder-store';
+import { API, Settings, User } from '@steedos/builder-store';
 export const AvatarDropdown = observer((props: any) => {
   let history = useHistory();
   const onMenuClick = (event: {
@@ -16,15 +16,15 @@ export const AvatarDropdown = observer((props: any) => {
   }) => {
     const { key } = event;
     if (key === 'logout') {
-      User.logout();
+      API.client.logout();
       return;
     }
     history.push(`/account/${key}`);
   };
   const {
     currentUser = {
-      name: User.name,
-      avatar: User.avatar,
+      name: User.user?.name,
+      avatar: `${API.client.getUrl()}/avatar/${Settings.userId}`,
     },
     menu,
   } = props;

@@ -2,32 +2,25 @@ import React, { useRef, useState } from 'react';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
 import { useHistory } from "react-router-dom";
-import { User } from '@steedos/builder-store';
+import { API, Settings, User } from '@steedos/builder-store';
 
 
 export const Login = observer((props: any) => {
     let history = useHistory();
+
+    const user = User.user;
+    if (user)
+        history.push('/app/-');
+        
     const handleSubmit = () => {
         const emailElement: any = document.getElementById("email");
         const passwordElement: any = document.getElementById("password");
-        let email = '';
-        let mobile = '';
-        let username = '';
-        if (emailElement.value) {
-            if (emailElement.value.indexOf('@') > 0) {
-                email = emailElement.value;
-            } else if (emailElement.value.length === 11 && new Number(emailElement.value) > 10000000000) {
-                mobile = emailElement.value;
-            } else {
-                username = emailElement.value;
-            }
-        }
 
-        const user = { email: email, mobile: mobile, username: username, spaceId: "" }
-
-        User.login(user, passwordElement.value).then((result: any) => {
-            history.push('/app/-');
+        User.login(emailElement.value, passwordElement.value).then((result: any) => {
+            if (result)
+                history.push('/app/-');
         })
+        
         return false;
     };
 

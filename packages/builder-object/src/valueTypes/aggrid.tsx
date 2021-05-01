@@ -12,12 +12,11 @@ import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 import './aggrid.less';
 
 const ProFieldRenderer = (props: any) => {
-  console.log(props)
   const { 
     value, 
     valueType = 'text',
@@ -135,7 +134,7 @@ export const ObjectFieldGrid = (props) => {
   };
 
   return (
-    <div className="ag-theme-alpine">
+    <div className="ag-theme-balham steedos-grid">
       <AgGridReact
         rowDragManaged={true}
         animateRows={true}

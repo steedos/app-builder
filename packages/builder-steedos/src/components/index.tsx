@@ -1,2 +1,3 @@
-export * from './RecordDetailPage'
-export * from './RecordDetailPage.config'
+export const SteedosHome = () => {
+  
+};

@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import { SteedosProvider } from '@steedos/builder-steedos';
-import { Settings } from '@steedos/builder-store'
+import { Settings, User } from '@steedos/builder-store'
+import { observer } from "mobx-react-lite";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  useHistory
 } from "react-router-dom";
 import {
   ChakraProvider,
@@ -43,7 +45,7 @@ const routes = [
   },
   {
     path: "/",
-    component: Layout
+    component: Login
   },
   {
     path: "/404",
@@ -65,7 +67,7 @@ function RouteWithSubRoutes(route: any) {
   );
 }
 
-export default function App() {
+export const Apps =  observer( () => {
   return (
     // <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
@@ -80,4 +82,7 @@ export default function App() {
       </SteedosProvider>
     // </ChakraProvider>
   );
-};
+});
+
+export default Apps;
+
