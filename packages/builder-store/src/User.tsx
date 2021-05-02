@@ -4,6 +4,7 @@ import { Settings } from "./Settings";
 
 export const User = types.model({
   me: types.maybeNull(types.frozen()),
+  isLoading: true,
 })
 .actions(self => {
   const setMe = (user: any) => {
@@ -19,10 +20,12 @@ export const User = types.model({
       return self.me;
     try {
       // 临时修改：目前 /accounts/user 接口不支持传入 Authorization: Bearer ${spaceId}, #1660
+      self.isLoading = true;
       API.client.setSpaceId(null);
       const me = yield API.client.getMe();
       API.client.setSpaceId(me.spaceId);
       setMe(me);
+      self.isLoading = false;
       return me;
     } catch (error) {
         console.error("Failed to fetch userinfo", error)

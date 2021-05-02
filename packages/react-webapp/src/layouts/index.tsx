@@ -71,16 +71,20 @@ function RouteWithSubRoutes(route: any, history: any) {
 export const Layout = observer((props: any) => {
   let history = useHistory();
 
-  User.getMe()
+  let { appApiName, objectApiName } = props;
+  const actionRef = useRef<{
+    reload: () => void;
+  }>();
+
+  User.getMe();
+  if (User.isLoading)
+    return (<></>);
+    
   if (!User.me) {
     history.push('/login');
     return (<></>);
   }
 
-  let { appApiName, objectApiName } = props;
-  const actionRef = useRef<{
-    reload: () => void;
-  }>();
   const appsMenus = Apps.getMenus();
   if (appsMenus && appsMenus.size && Apps.currentAppId != appApiName) {
     setTimeout(actionRef.current?.reload, 100)
