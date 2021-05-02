@@ -23,7 +23,7 @@ export const AvatarDropdown = observer((props: any) => {
   };
   const {
     currentUser = {
-      name: User.user?.name,
+      name: User.me?.name,
       avatar: `${API.client.getUrl()}/avatar/${Settings.userId}`,
     },
     menu,

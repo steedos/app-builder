@@ -3,11 +3,11 @@ import { API } from './API';
 import { Settings } from "./Settings";
 
 export const User = types.model({
-    user: types.maybeNull(types.frozen()),
+  me: types.maybeNull(types.frozen()),
 })
 .actions(self => {
-  const setUser = (user: any) => {
-    self.user = user;
+  const setMe = (user: any) => {
+    self.me = user;
   };
   const goLogin = () => {
     Settings.setUserId(null)
@@ -15,13 +15,19 @@ export const User = types.model({
     // window.location.href = `/login`;
   };
   const getMe = flow(function* getMe() {
-      try {
-          const userInfo = yield API.client.getMe();
-          setUser(userInfo);
-      } catch (error) {
-          console.error("Failed to fetch userinfo", error)
-          goLogin();
-      }
+    if (self.me)
+      return self.me;
+    try {
+      // 临时修改：目前 /accounts/user 接口不支持传入 Authorization: Bearer ${spaceId}, #1660
+      API.client.setSpaceId(null);
+      const me = yield API.client.getMe();
+      API.client.setSpaceId(me.spaceId);
+      setMe(me);
+      return me;
+    } catch (error) {
+        console.error("Failed to fetch userinfo", error)
+        goLogin();
+    }
   });
   return {
     getMe, 
@@ -44,7 +50,7 @@ export const User = types.model({
       try {
           const data = yield API.client.login(user, passowrd);
           if (data.user) {
-            setUser(data.user);
+            setMe(data.user);
             Settings.setUserId(data.user._id)
             Settings.setAuthToken(data.token)
             Settings.setTenantId(data.user.spaceId)
@@ -64,11 +70,7 @@ export const User = types.model({
         }
     }),
     afterCreate() {
-      if (Settings.userId && Settings.authToken) {
-        getMe();
-      } else {
-        goLogin();
-      }
+      
     }
   }
 }).create()

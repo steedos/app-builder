@@ -71,9 +71,10 @@ function RouteWithSubRoutes(route: any, history: any) {
 export const Layout = observer((props: any) => {
   let history = useHistory();
 
-  const user = User.user;
-  if (!user) {
-    history.push('/login')
+  User.getMe()
+  if (!User.me) {
+    history.push('/login');
+    return (<></>);
   }
 
   let { appApiName, objectApiName } = props;

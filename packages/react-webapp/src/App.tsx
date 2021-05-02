@@ -35,17 +35,17 @@ const routes = [
     path: "/login",
     component: Login
   },
-  {
-    path: "/app/:appApiName/:objectApiName",
-    component: Layout
-  },
-  {
-    path: "/app/:appApiName",
-    component: Layout
-  },
+  // {
+  //   path: "/app/:appApiName/:objectApiName",
+  //   component: Layout
+  // },
+  // {
+  //   path: "/app/:appApiName",
+  //   component: Layout
+  // },
   {
     path: "/",
-    component: Login
+    component: Layout
   },
   {
     path: "/404",
@@ -67,7 +67,7 @@ function RouteWithSubRoutes(route: any) {
   );
 }
 
-export const Apps =  observer( () => {
+export const Apps =  () => {
   return (
     // <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
@@ -82,7 +82,7 @@ export const Apps =  observer( () => {
       </SteedosProvider>
     // </ChakraProvider>
   );
-});
+};
 
 export default Apps;
 
