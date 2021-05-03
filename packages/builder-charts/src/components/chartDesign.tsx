@@ -28,8 +28,29 @@ export const ChartDesign = observer((props: ChartDesignProps) => {
     if(!record){
         return (<div>Loading record ...</div>)
     }
+
+    const defOptions = {
+        stepCol: {},
+        valueCol: {},
+        sortKeyCol: {},
+        mapType: 'countries',
+        controls: {
+            enabled: true
+        },
+        rendererOptions:{
+            table: {
+                rowTotals: true
+            }
+        },
+        wordCountLimit:{
+
+        },
+        wordLengthLimit: {
+            
+        }
+    }
     
-    const [options, setOptions] = useState(record.options || {});
+    const [options, setOptions] = useState(Object.assign({}, defOptions, record.options));
     const [type, setType] = useState(record.type);
     const onOptionsChange = function (data) {
         setOptions(data)
@@ -50,9 +71,9 @@ export const ChartDesign = observer((props: ChartDesignProps) => {
     const data = query.data
 
     const onValuesChange = function (values) {
-        console.log(`onFormLayoutChange`, values)
+        console.log(`onFormLayoutChange3333`, values)
+        console.log(`options`, options)
     }
-
     return (
         <Row gutter={[24, 24]}>
             <Col span={9}>
@@ -72,8 +93,8 @@ export const ChartDesign = observer((props: ChartDesignProps) => {
                             <Option value="COUNTER">Counter</Option>
                             <Option value="DETAILS">Details View</Option>
                             <Option value="FUNNEL">Funnel</Option>
-                            <Option value="CHOROPLETH">Map (Choropleth)</Option>
-                            <Option value="Map (Markers)">MAP</Option>
+                            {/* <Option value="CHOROPLETH">Map (Choropleth)</Option>
+                            <Option value="Map (Markers)">MAP</Option> */}
                             <Option value="PIVOT">Pivot Table</Option>
                             <Option value="SANKEY">Sankey</Option>
                             <Option value="SUNBURST_SEQUENCE">Sunburst Sequence</Option>

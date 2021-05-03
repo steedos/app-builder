@@ -1,5 +1,5 @@
 {
-  "name": "@steedos/builder-object",
+  "name": "@steedos/builder-charts",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/cjs/index.js",
@@ -43,6 +43,7 @@
     "@emotion/core": ">=10",
     "@emotion/styled": "^11.1.5",
     "@jsx-lite/core": "^0.0.17",
+    "@redash/viz": "^0.1.1",
     "@rollup/plugin-alias": "^3.1.2",
     "@steedos/builder-form": "1.0.0",
     "@steedos/builder-locale": "1.0.0",
@@ -60,11 +61,9 @@
     "react-dom": "^17.0.2",
     "react-loadable": "^5.5.0",
     "react-query": "^3.13.3",
-    "react-resizable": "^1.11.1",
     "react-slick": "^0.23.2",
     "react-sortable-hoc": "^2.0.0",
     "react-to-webcomponent": "^1.5.1",
-    "react-use": "^17.2.4",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "tslib": "^2.1.0",
     "web-components-with-react": "^1.2.1",
@@ -111,5 +110,5 @@
     "typedoc": "^0.11.0",
     "validate-commit-msg": "^2.12.2"
   },
-  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-object"
+  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-charts"
 }

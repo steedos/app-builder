@@ -11,7 +11,6 @@ import {
   ChakraProvider,
   theme,
 } from "@chakra-ui/react"
-
 import { Layout } from './layouts';
 
 import NoFoundPage from './pages/404';
