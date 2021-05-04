@@ -218,7 +218,7 @@ export function convertRecordsForLookup(data, fieldsSchema) {
       _.each(record, (fieldValue, key)=>{
         if(fieldValue){
           const fieldSchema = fieldsSchema && fieldsSchema[key];
-          if(fieldSchema && fieldSchema.type==='lookup' && fieldSchema.reference_to){
+          if(fieldSchema && ['lookup', 'master_detail'].indexOf(fieldSchema.type) > -1 && fieldSchema.reference_to){
             let fieldReferenceTo :any;
             if(fieldSchema.reference_to){
               fieldReferenceTo=fieldSchema.reference_to;
