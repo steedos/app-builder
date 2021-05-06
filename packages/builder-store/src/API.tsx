@@ -20,6 +20,8 @@ onSnapshot(Settings, () => {
   client.setSpaceId(Settings.tenantId);
 })
 
+
+
 const requestObject = async (objectApiName: string) => {
   //TODO 通过接口获取对象信息 /api/bootstrap/:spaceId/:objectName
   if (!objectApiName) {
@@ -68,5 +70,5 @@ export const API = {
   requestRecords,
   updateRecord,
   insertRecord,
-  deleteRecord
+  deleteRecord,
 }

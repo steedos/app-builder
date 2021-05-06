@@ -2,17 +2,17 @@ import { API } from './API';
 import { Forms } from './Form';
 import { Objects } from './Object';
 import { Settings } from './Settings';
-import { User } from './User';
 import { Apps } from './Apps'
+import { User } from './User'
 import { Queries } from './Queries';
 const stores = {
   Forms,
   Objects,
   Settings,
   API,
-  User,
   Apps,
-  Queries
+  User,
+  Queries,
 };
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -24,8 +24,8 @@ export {
   Objects,
   Settings,
   API,
-  User,
   Apps,
+  User,
   Queries
 }
 

@@ -21,7 +21,7 @@ import { SteedosIcon } from '@steedos/builder-lightning';
 import { TabIframe } from '../pages/tabIframe';
 import { Image } from 'antd';
 import { Objects} from '@steedos/builder-store';
-import { Settings } from '@steedos/builder-store';
+import { Settings, User } from '@steedos/builder-store';
 
 const routes = [
 
@@ -70,10 +70,21 @@ function RouteWithSubRoutes(route: any, history: any) {
 
 export const Layout = observer((props: any) => {
   let history = useHistory();
+
   let { appApiName, objectApiName } = props;
   const actionRef = useRef<{
     reload: () => void;
   }>();
+
+  User.getMe();
+  if (User.isLoading)
+    return (<></>);
+    
+  if (!User.me) {
+    history.push('/login');
+    return (<></>);
+  }
+
   const appsMenus = Apps.getMenus();
   if (appsMenus && appsMenus.size && Apps.currentAppId != appApiName) {
     setTimeout(actionRef.current?.reload, 100)

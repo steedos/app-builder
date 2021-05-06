@@ -93,7 +93,6 @@ export default class SteedosClient {
 
     setToken(token: string) {
         this.token = token;
-        this.authToken = this.getSpaceId() + ',' + token;
     }
 
     getUserId(){
@@ -106,12 +105,13 @@ export default class SteedosClient {
 
     setSpaceId(spaceId){
         this.spaceId = spaceId;
-        this.authToken = spaceId + ',' + this.getToken();
     }
 
     getAuthToken(){
-        // return this.getSpaceId() + ',' + this.getToken();
-        return this.authToken;
+        if (this.getSpaceId())
+            return this.getSpaceId() + ',' + this.getToken();
+        else
+            return this.getToken();
     }
 
     setCSRF(csrfToken: string) {
@@ -187,8 +187,8 @@ export default class SteedosClient {
             ...this.defaultHeaders,
         };
 
-        if (this.authToken) {
-            headers[HEADER_AUTH] = `${HEADER_BEARER} ${this.authToken}`;
+        if (this.getAuthToken()) {
+            headers[HEADER_AUTH] = `${HEADER_BEARER} ${this.getAuthToken()}`;
         }
 
         const csrfToken = this.csrf || this.getCSRFFromCookie();
