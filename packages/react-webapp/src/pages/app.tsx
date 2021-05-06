@@ -22,7 +22,6 @@ export const App = observer((props: any) => {
   if (!appApiName)
     return null
 
-  console.log(appApiName)
   Apps.setCurrentAppId(appApiName);
 
   const currentApp = Apps.getCurrentApp()
