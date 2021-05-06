@@ -32,7 +32,7 @@
   "dependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
     "@salesforce-ux/design-system": "^2.14.3",
-    "@salesforce/design-system-react": "^0.10.31"
+    "@salesforce/design-system-react": "^0.10.32"
   },
   "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-lightning"
 }

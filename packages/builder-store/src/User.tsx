@@ -19,6 +19,8 @@ export const User = types.model({
   const loadMe = flow(function* loadMe() {
     try {
       self.isLoading = true;
+      // 获取user信息， 不需要传入 spaceId，否则传错的话会导致可能验证失败
+      API.client.setSpaceId(null);
       const me = yield API.client.getMe();
       Settings.setUserId(me._id)
       if (me.spaces.length>0) {

@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import { SteedosProvider } from '@steedos/builder-steedos';
-import { Settings, User } from '@steedos/builder-store'
+import { Settings, User } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
+import SLDSSettings from '@salesforce/design-system-react/components/SLDSSettings';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,52 +32,19 @@ const initialStore = {
   objects: {},
 }
 
-const routes = [
-  {
-    path: "/login",
-    component: Login
-  },
-  // {
-  //   path: "/app/:appApiName/:objectApiName",
-  //   component: Layout
-  // },
-  // {
-  //   path: "/app/:appApiName",
-  //   component: Layout
-  // },
-  {
-    path: "/",
-    component: Layout
-  },
-  {
-    path: "/404",
-    component: NoFoundPage
-  }
-];
-
-function RouteWithSubRoutes(route: any) {
-  return (
-    <Route
-      path={route.path}
-      render={props => {
-        // pass the sub-routes down to keep nesting
-        const appApiName = props.match.params.appApiName
-        const objectApiName = props.match.params.objectApiName
-        return <route.component appApiName={appApiName} objectApiName={objectApiName} routes={route.routes} />
-      }}
-    />
-  );
-}
 
 export const Apps =  () => {
+  
+  SLDSSettings.setAppElement('#root');
   return (
     // <ChakraProvider theme={theme}>
       <SteedosProvider {...initialStore}>
         <Router>
           <Switch>
-            {routes.map((route, i) => (
-              <RouteWithSubRoutes key={i} {...route} />
-            ))}
+            <Route path="/login" component={Login} exact/>
+            <Route path="/app/:appApiName/" component={Layout}/>
+            <Route path="/app/:appApiName/:objectApiName" component={Layout}/>
+            <Route path="/" component={Layout}/>
             <Redirect from='*' to='/404' />
           </Switch>
         </Router>

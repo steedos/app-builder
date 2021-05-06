@@ -67,6 +67,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const fieldNames = [];
   const fieldSchemaArray = [];
 
+  if (!objectApiName)
+    return null;
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div><Spin/></div>)
 

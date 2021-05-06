@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useParams
 } from "react-router-dom";
 import { ObjectDetail } from '../pages/objectDetail';
 import { ListView } from '../pages/listView';
@@ -23,58 +24,11 @@ import { Image } from 'antd';
 import { Objects} from '@steedos/builder-store';
 import { Settings, User } from '@steedos/builder-store';
 
-const routes = [
-
-  {
-    path: "/app/:appApiName/:objectApiName/view/:recordId",
-    component: ObjectDetail
-  },
-  {
-    path: "/app/:appApiName/frame/:tabApiName",
-    component: TabIframe
-  },
-  {
-    path: "/app/:appApiName/:objectApiName/grid/:listName",
-    component: ListView
-  },
-  {
-    path: "/app/:appApiName/:objectApiName",
-    component: ListView
-  }
-];
-
-function RouteWithSubRoutes(route: any, history: any) {
-  return (
-    <Route
-      path={route.path}
-      render={props => {
-        console.log(`RouteWithSubRoutes props`, props)
-        // pass the sub-routes down to keep nesting
-        const { appApiName, objectApiName, recordId, tabApiName, listName } = props.match.params
-        let src = null;
-        let title = null;
-        if(props.location && props.location.state){
-          const state: any = props.location.state;
-          if(state.src){
-            src = state.src
-          }
-          if(state.title){
-            title = state.title
-          }
-        }
-        return <route.component listName={listName} tabApiName={tabApiName} src={src} title={title} history={props.history} appApiName={appApiName} objectApiName={objectApiName} recordId={recordId} routes={route.routes} />
-      }}
-    />
-  );
-}
-
 export const Layout = observer((props: any) => {
   let history = useHistory();
 
-  let { appApiName, objectApiName } = props;
-  const actionRef = useRef<{
-    reload: () => void;
-  }>();
+  const params : any = useParams();
+  let { appApiName, objectApiName } = params;
 
   User.getMe();
   if (User.isLoading)
@@ -87,9 +41,6 @@ export const Layout = observer((props: any) => {
 
 
   const appsMenus = Apps.getMenus();
-  if (appsMenus && appsMenus.size && Apps.currentAppId != appApiName) {
-    setTimeout(actionRef.current?.reload, 100)
-  }
   const currentApp = Apps.getCurrentApp(appApiName);
   // let menu = null;
   let apps = [];
@@ -98,22 +49,26 @@ export const Layout = observer((props: any) => {
       apps.push(app)
     })
   }
+  if (!currentApp)
+    return null;
 
   if(currentApp && !objectApiName){
     if(currentApp.children && currentApp.children.length > 0){
       const firstTab = currentApp.children[0];
       if(firstTab.type ==='url'){
-				history.push(`/app/${currentApp.id}/frame/${firstTab.id}`, {src: firstTab.path, title: firstTab.name});
+				// history.push(`/app/${currentApp.id}/frame/${firstTab.id}`, {src: firstTab.path, title: firstTab.name});
 			}else{
-				history.push(firstTab.path);
+				// history.push(firstTab.path);
 			}
     }
   }
 
   
   const loopMenuItem = (menus: any[]): any[] =>{
-    return menus.map(({ icon, children, ...item }) => ({
+    return menus.map(({ icon, children, id, ...item }) => ({
       ...item,
+      // key: id,
+      id,
       icon: icon && <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={icon} size="x-small"/></span>,
       children: children && loopMenuItem(children),
     }));
@@ -135,7 +90,6 @@ export const Layout = observer((props: any) => {
   return (
     <ProLayout
       title="Steedos"
-      actionRef={actionRef}
       navTheme='dark'
       location={history.location}
       logo={logoAvatarUrl}
@@ -175,18 +129,15 @@ export const Layout = observer((props: any) => {
         }
 
       }}
-      menu={{
-        request: async () => {
-          const appMenus: any = await API.client.doFetch(API.client.getUrl() + `/service/api/apps/${Apps.currentAppId || '-'}/menus`, { method: 'get' });
-          return loopMenuItem(appMenus.children)
-        },
-      }}
+      menuDataRender={() => loopMenuItem(currentApp.children)}
       rightContentRender={() => <RightContent />}
     >
       <Switch>
-        {routes.map((route, i) => (
-          <RouteWithSubRoutes key={i} {...route}/>
-        ))}
+        <Route path="/app/:appApiName/:objectApiName" component={ListView} exact/>
+        <Route path="/app/:appApiName/:objectApiName/grid/:listName" component={ListView} exact/> 
+        <Route path="/app/:appApiName/:objectApiName/view/:recordId" component={ObjectDetail} exact/>
+        <Route path="/app/:appApiName/frame/:tabApiName" component={TabIframe} exact/>
+        
       </Switch>
     </ProLayout>
   );

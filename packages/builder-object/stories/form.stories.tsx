@@ -387,7 +387,7 @@ export const Form = () => {
 
 
 export const FormVertical = () => {
-  const objectApiName = 'accounts';
+  const objectApiName = 'object_layouts';
   const fields = []
   const recordId = process.env.STEEDOS_CURRENT_RECORD_ID;
   const objectFormProps = {
