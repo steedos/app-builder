@@ -17,10 +17,9 @@ export function SteedosProvider(props: any) {
 
   const {
     rootUrl,
-    tenantId,
-    userId,
-    authToken,
-    user = {},
+    tenantId = localStorage.getItem('steedos:spaceId'),
+    userId = localStorage.getItem('steedos:userId'),
+    authToken = localStorage.getItem('steedos:token'),
     locale,
   } = props;
 

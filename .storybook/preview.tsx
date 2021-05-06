@@ -110,8 +110,6 @@ const withSteedos = (StoryFn: Function, context: StoryContext) => {
   const initialStore = {
     rootUrl: process.env.REACT_APP_API_URL,
     locale: 'zh_CN',
-    forms: {},
-    objects: {},
   }
 
   window['steedos'] = initialStore
