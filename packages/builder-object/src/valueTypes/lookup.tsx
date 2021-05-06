@@ -63,7 +63,7 @@ export const LookupField = observer((props:any) => {
                     const recordListData = recordList.data;
                     if (recordListData && recordListData.value && recordListData.value.length > 0) {
                         let tagsValueField = reference_to_field;
-                        if(referenceTo === "space_users" && reference_to_field === "user"){
+                        if(reference_to_field && reference_to_field !== "_id"){
                             // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
                             tagsValueField = "_id"
                         }
