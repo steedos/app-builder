@@ -54,12 +54,12 @@ export const LookupField = observer((props:any) => {
                     })
                 }else{
                     const object = Objects.getObject(referenceTo);
-                    if (object.isLoading) return (<div>Loading object ...</div>);
+                    if (object.isLoading) return (<div><Spin/></div>);
                     let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                     const filter = value ? [[reference_to_field, '=', value]] : [];
                     const fields = [reference_to_field, referenceToLableField, "_id"];
                     const recordList: any = object.getRecordList(filter, fields);
-                    if (recordList.isLoading) return (<div>Loading recordList ...</div>);
+                    if (recordList.isLoading) return (<div><Spin/></div>);
                     const recordListData = recordList.data;
                     if (recordListData && recordListData.value && recordListData.value.length > 0) {
                         let tagsValueField = reference_to_field;
