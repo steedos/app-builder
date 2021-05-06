@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ProLayout, { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { ObjectForm } from '@steedos/builder-object';
-import { Button, Dropdown, Menu, Card, message, Space } from 'antd';
+import { Button, Dropdown, Menu, Card, message, Space, Modal } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
@@ -70,7 +70,7 @@ export const ObjectDetail = observer((props: any) => {
     extraButtons.push(<ChartDesignModal key="chartEdit" chartId={recordId}></ChartDesignModal>)
   }
 
-  dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> deleteRecord()}>删除</Menu.Item>)
+  dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> Modal.confirm({title:"", content: "删除此记录？",onOk: deleteRecord})}>删除</Menu.Item>)
 
   if(schema.actions){
     _.each(schema.actions, function(action: any, actionApiName: string){
