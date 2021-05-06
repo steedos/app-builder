@@ -16,7 +16,7 @@ export const AvatarDropdown = observer((props: any) => {
   }) => {
     const { key } = event;
     if (key === 'logout') {
-      API.client.logout();
+      User.logout();
       return;
     }
     history.push(`/account/${key}`);
