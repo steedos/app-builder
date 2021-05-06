@@ -13,12 +13,7 @@ export default {
 
 
 const LoginComponent = observer(() => {
-    User.getMe();
-    if (User.me) {
-        const welcome = `Welcome back ${User.me.name}`
-        return <Alert message={welcome} type="success" />
-    }
-    const handleSubmit = () => {
+    const handleLogin = () => {
         const emailElement: any = document.getElementById("email");
         const passwordElement: any = document.getElementById("password");
 
@@ -28,6 +23,25 @@ const LoginComponent = observer(() => {
         
         return false;
     };
+
+    const handleLogout = ()=> {
+        User.logout()
+    }
+
+    User.getMe();
+    if (User.me) {
+        const welcome = `Welcome back ${User.me.name}`
+        return (
+            <div>
+                <Alert message={welcome} type="success" />
+                <button
+                    type="button"
+                    onClick={() => { return handleLogout() }}
+                    className="mt-10 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >注销</button>
+            </div>
+        )
+    }
 
     document.title = "Steedos";
     return (
@@ -79,7 +93,7 @@ const LoginComponent = observer(() => {
                         <div>
                             <button
                                 type="button"
-                                onClick={() => { return handleSubmit() }}
+                                onClick={() => { return handleLogin() }}
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 提交

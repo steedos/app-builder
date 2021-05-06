@@ -20,9 +20,11 @@ export const User = types.model({
     try {
       self.isLoading = true;
       const me = yield API.client.getMe();
-      API.client.setSpaceId(me.spaces[0]._id);
       Settings.setUserId(me._id)
-      Settings.setTenantId(me.spaces[0]._id)
+      if (me.spaces.length>0) {
+        API.client.setSpaceId(me.spaces[0]._id);
+        Settings.setTenantId(me.spaces[0]._id)
+      }
       setMe(me);
       self.isLoading = false;
       self.isLoginFailed = false
@@ -67,14 +69,6 @@ export const User = types.model({
             Settings.setAuthToken(data.token)
           }
           const me = User.loadMe();
-            // setMe(data.user);
-            // API.client.setUserId(data.user._id);
-            // API.client.setSpaceId(data.user.spaceId);
-            // Settings.setUserId(data.user._id)
-            // Settings.setTenantId(data.user.spaceId)
-            // self.isLoading = false;
-            // self.isLoginFailed = false
-          // }
           self.isLoading = false;
           self.isLoginFailed = false
           return me
