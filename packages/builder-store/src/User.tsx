@@ -23,6 +23,8 @@ export const User = types.model({
       API.client.setSpaceId(null);
       const me = yield API.client.getMe();
       API.client.setSpaceId(me.spaceId);
+      Settings.setUserId(me._id)
+      Settings.setTenantId(me.spaces[0]._id)
       setMe(me);
       self.isLoading = false;
       self.isLoginFailed = false

@@ -108,7 +108,7 @@ export default class SteedosClient {
     }
 
     getAuthToken(){
-        if (this.getSpaceId())
+        if (this.getSpaceId() && this.getToken())
             return this.getSpaceId() + ',' + this.getToken();
         else
             return this.getToken();

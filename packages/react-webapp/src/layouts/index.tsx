@@ -119,7 +119,7 @@ export const Layout = observer((props: any) => {
     }));
   }
 
-  const spaceId = API.client.getSpaceId()
+  const spaceId = Settings.tenantId
   const spaceObject = Objects.getObject("spaces");
   const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
   if (spaceObject.isLoading || spaceRecord.isLoading)
