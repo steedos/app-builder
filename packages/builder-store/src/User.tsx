@@ -58,6 +58,7 @@ export const User = types.model({
             Settings.setAuthToken(data.token)
             Settings.setTenantId(data.user.spaceId)
           }
+          return data
       } catch (error) {
           console.error("Failed to fetch userinfo", error)
           goLogin();
