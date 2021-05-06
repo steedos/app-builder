@@ -8,8 +8,6 @@ import {
   Link,
   useParams
 } from "react-router-dom";
-import { ObjectDetail } from '../pages/objectDetail';
-import { ListView } from '../pages/listView';
 // import { ObjectListView } from '@steedos/builder-object';
 import { SteedosAppLauncher } from "@steedos/builder-lightning";
 import { observer } from "mobx-react-lite";
@@ -19,7 +17,6 @@ import { useHistory } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
-import { TabIframe } from '../pages/tabIframe';
 import { Image } from 'antd';
 import { Objects} from '@steedos/builder-store';
 import { Settings, User } from '@steedos/builder-store';
@@ -40,9 +37,9 @@ export const Layout = observer((props: any) => {
   }
 
 
-  const appsMenus = Apps.getMenus();
-  const currentApp = Apps.getCurrentApp(appApiName);
-  // let menu = null;
+  Apps.setCurrentAppId(appApiName)
+  const currentApp = Apps.getCurrentApp();
+  const appsMenus = Apps.getMenus()
   let apps = [];
   if (appsMenus) {
     appsMenus.forEach(function (app) {
@@ -52,22 +49,22 @@ export const Layout = observer((props: any) => {
   if (!currentApp)
     return null;
 
-  if(currentApp && !objectApiName){
-    if(currentApp.children && currentApp.children.length > 0){
-      const firstTab = currentApp.children[0];
-      if(firstTab.type ==='url'){
-				// history.push(`/app/${currentApp.id}/frame/${firstTab.id}`, {src: firstTab.path, title: firstTab.name});
-			}else{
-				// history.push(firstTab.path);
-			}
-    }
-  }
-
+  // if(currentApp && !objectApiName){
+  //   if(currentApp.children && currentApp.children.length > 0){
+  //     const firstTab = currentApp.children[0];
+  //     if(firstTab.type ==='url'){
+	// 			// history.push(`/app/${currentApp.id}/frame/${firstTab.id}`, {src: firstTab.path, title: firstTab.name});
+	// 		}else{
+  //       // history.push(firstTab.path);
+  //       return null;
+	// 		}
+  //   }
+  // }
   
   const loopMenuItem = (menus: any[]): any[] =>{
     return menus.map(({ icon, children, id, ...item }) => ({
       ...item,
-      // key: id,
+      key: id,
       id,
       icon: icon && <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={icon} size="x-small"/></span>,
       children: children && loopMenuItem(children),
@@ -132,13 +129,7 @@ export const Layout = observer((props: any) => {
       menuDataRender={() => loopMenuItem(currentApp.children)}
       rightContentRender={() => <RightContent />}
     >
-      <Switch>
-        <Route path="/app/:appApiName/:objectApiName" component={ListView} exact/>
-        <Route path="/app/:appApiName/:objectApiName/grid/:listName" component={ListView} exact/> 
-        <Route path="/app/:appApiName/:objectApiName/view/:recordId" component={ObjectDetail} exact/>
-        <Route path="/app/:appApiName/frame/:tabApiName" component={TabIframe} exact/>
-        
-      </Switch>
+      {props.children}
     </ProLayout>
   );
 });

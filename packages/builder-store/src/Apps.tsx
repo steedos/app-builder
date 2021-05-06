@@ -15,48 +15,49 @@ export const AppMenuModel = types.model({
 export const Apps = types.model({
     menus: types.optional(types.map(AppMenuModel), {}),
     currentAppId: types.maybeNull(types.string),
+    currentApp: types.maybeNull(AppMenuModel),
 }).actions((self) => {
-    function setAppsMenus(menus) {
-        _.each(menus, function(menu){
-            self.menus.put(menu);
-        })
-    }
-    const loadAppsMenus = flow(function* loadAppsMenus() {
+    const loadMenus = flow(function* loadMenus() {
         try {
             const menus = yield API.client.doFetch(API.client.getUrl() + `/service/api/apps/menus`, { method: 'get' });
-            setAppsMenus(menus);
+            setMenus(menus);
+            return self.menus;
         } catch (error) {
             console.error("Failed to fetch apps/menus", error)
         }
     })
-    return {
-        getMenus: function () {
-            if (self.menus && self.menus.size) {
-                return self.menus;
-            } else {
-                loadAppsMenus();
-                return self.menus;
-            }
-        },
-        changeCurrentApp: function(appId){
-            self.currentAppId = appId;
-        },
-        getCurrentApp: function(appId){
-            let app = self.menus.get(appId);
-            if(!app){
-                if(self.menus.size > 0){
-                    app = self.menus.get(appId);
-                    if(!app){
-                        app = self.menus.get(_.keys(self.menus.toJSON())[0]);
-                    }
-                  }
-            }
-            if(app){
-                if(self.currentAppId != app.id){
-                    self.currentAppId = app.id;
+    function setMenus(menus) {
+        _.each(menus, function(menu){
+            self.menus.put(menu);
+        })
+    }
+    const getMenus = function () {
+        if (self.menus && self.menus.size) {
+            return self.menus;
+        } else {
+            const menus = loadMenus();
+            return self.menus;
+        }
+    }
+    const getCurrentApp = function(){
+        const menus = getMenus();
+        let app = menus.get(self.currentAppId);
+        if(!app){
+            if(menus.size > 0){
+                app = menus.get(self.currentAppId);
+                if(!app){
+                    app = menus.get(_.keys(menus.toJSON())[0]);
                 }
-            }
-            return app;
+              }
+        }
+        return app;
+    }
+    return {
+        getMenus,
+        getCurrentApp,
+        setCurrentAppId: function(appId){
+            self.currentAppId = appId;
+            // self.currentApp = getCurrentApp(self.currentAppId)
         },
     }
 }).create()

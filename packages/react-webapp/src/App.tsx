@@ -20,6 +20,7 @@ import { Layout } from './layouts';
 import NoFoundPage from './pages/404';
 
 import { Login } from './pages/user/login';
+import { App } from './pages/app';
 
 const initialStore = {
   rootUrl: Settings.rootUrl,
@@ -42,8 +43,7 @@ export const Apps =  () => {
         <Router>
           <Switch>
             <Route path="/login" component={Login} exact/>
-            <Route path="/app/:appApiName/" component={Layout}/>
-            <Route path="/app/:appApiName/:objectApiName" component={Layout}/>
+            <Route path="/app/:appApiName/" component={App}/>
             <Route path="/" component={Layout}/>
             <Redirect from='*' to='/404' />
           </Switch>
