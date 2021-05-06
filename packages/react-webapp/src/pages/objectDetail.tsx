@@ -6,7 +6,7 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
 import * as _ from 'lodash';
 import { observer } from "mobx-react-lite";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
 import { RelatedList } from './relatedList';
 import { ChartDesignModal } from '@steedos/builder-charts';
@@ -26,7 +26,8 @@ function getRelatedList(objectSchema){
 
 export const ObjectDetail = observer((props: any) => {
   let history = useHistory();
-  const { appApiName, objectApiName, recordId } = props;
+  const params: any = useParams();
+  const { appApiName, objectApiName, recordId } = params;
   const [tabActiveKey, setTabActiveKey] = useState<string>(`${objectApiName}-detail`);
   const [formMode] = useState<'read' | 'edit'>('read');
   const object:any = Objects.getObject(objectApiName);

@@ -25,7 +25,6 @@ export const Settings = types
   userId: types.maybeNull(types.string),
   authToken: types.maybeNull(types.string),
   locale: types.maybeNull(types.string),
-  currentAppId: types.maybeNull(types.string),
   currentObjectApiName: types.maybeNull(types.string),
   currentRecordId: types.maybeNull(types.string),
   env: types.frozen(),

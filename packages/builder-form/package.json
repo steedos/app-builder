@@ -37,7 +37,7 @@
     "@emotion/core": ">=10",
     "@emotion/styled": "^11.1.5",
     "@jsx-lite/core": "^0.0.17",
-    "@salesforce/design-system-react": "^0.10.31",
+    "@salesforce/design-system-react": "^0.10.32",
     "@steedos/builder-locale": "1.0.0",
     "@steedos/builder-store": "1.0.0",
     "classnames": "^2.2.6",

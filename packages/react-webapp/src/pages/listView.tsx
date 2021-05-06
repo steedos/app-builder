@@ -9,7 +9,7 @@ import { Objects } from "@steedos/builder-store"
 import { Button, Dropdown, Menu, message } from 'antd';
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
 
 
@@ -96,9 +96,9 @@ function getListViewDropdownMenus(schema, props, options){
 
 
 export const ListView = observer((props: any) => {
+  const params: any = useParams();
+  const { objectApiName, listName = "all" } = params;
   let {
-    objectApiName,
-    listName = "all",
     ...rest
   } = props
   
