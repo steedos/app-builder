@@ -78,11 +78,11 @@ export const Layout = observer((props: any) => {
 
   User.getMe();
   if (User.isLoading)
-    return (<></>);
+    return (<>Loading user</>);
     
   if (!User.me) {
     history.push('/login');
-    return (<></>);
+    return (<>Please login</>);
   }
 
   const appsMenus = Apps.getMenus();

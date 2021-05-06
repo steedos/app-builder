@@ -28,13 +28,15 @@ export const User = types.model({
       self.isLoading = false;
       return me;
     } catch (error) {
-        console.error("Failed to fetch userinfo", error)
-        goLogin();
+      self.isLoading = false;
+      console.error("Failed to fetch userinfo", error)
+      goLogin();
     }
   });
   return {
     getMe, 
     login: flow(function* login(userInput, passowrd) {
+      self.isLoading = true;
       let email = '';
       let mobile = '';
       let username = '';
@@ -57,16 +59,21 @@ export const User = types.model({
             Settings.setUserId(data.user._id)
             Settings.setAuthToken(data.token)
             Settings.setTenantId(data.user.spaceId)
+            self.isLoading = false;
           }
           return data
       } catch (error) {
-          console.error("Failed to fetch userinfo", error)
-          goLogin();
+        self.isLoading = false;
+        console.error("Failed to fetch userinfo", error)
+        goLogin();
       }
     }),
     logout: flow(function* logout() {
         try {
             yield API.client.logout();
+            Settings.setUserId(null)
+            Settings.setAuthToken(null)
+            Settings.setTenantId(null)
             goLogin();
         } catch (error) {
             console.error("Failed to fetch userinfo", error)
