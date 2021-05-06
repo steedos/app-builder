@@ -234,17 +234,23 @@ export const LookupField = observer((props:any) => {
             defaultValue:referenceTo
         }
         const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
+        let referenceToOptions:any = [];
+        let isLoadingReferenceTosObject;
+        if(needReferenceToSelect){
+            _.forEach(referenceTos,(val)=>{
+                const object = Objects.getObject(val);
+                if (!object.isLoading){
+                    referenceToOptions.push({label:object.schema.label,value:val})
+                }
+            })
+            isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
+        }
+        if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
         return (
             <React.Fragment>
                 {
                     needReferenceToSelect && 
-                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
-                        {
-                            _.map(referenceTos,(referenceToValue)=>{
-                                return (<Option value={referenceToValue} key={referenceToValue}>{referenceToValue}</Option>)
-                            })
-                        }
-                    </Select>)
+                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} options={referenceToOptions} ></Select>)
                 }
                 <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }} />
 
