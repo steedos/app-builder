@@ -64,12 +64,12 @@ export const ImageField = observer((props: any) => {
             accept: 'image/png, image/jpeg, image/jpg, image/gif',
             // maxCount: '1',
             data: {
-                space: API.client.getSpaceId(),
-                owner: API.client.getUserId()
+                space: Settings.tenantId,
+                owner: Settings.userId
             },
             headers: {
-                'X-User-Id': API.client.getUserId(),
-                'X-Auth-Token': API.client.getToken()
+                'X-User-Id': Settings.userId,
+                'X-Auth-Token': Settings.authToken
             },
             onChange: (options: any) => {
                 const { file, fileList: newFileList } = options;
