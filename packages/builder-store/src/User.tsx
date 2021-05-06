@@ -16,13 +16,11 @@ export const User = types.model({
     Settings.setAuthToken(null)
     // window.location.href = `/login`;
   };
-  const loadMe = flow(function* getMe() {
+  const loadMe = flow(function* loadMe() {
     try {
-      // 临时修改：目前 /accounts/user 接口不支持传入 Authorization: Bearer ${spaceId}, #1660
       self.isLoading = true;
-      API.client.setSpaceId(null);
       const me = yield API.client.getMe();
-      API.client.setSpaceId(me.spaceId);
+      API.client.setSpaceId(me.spaces[0]._id);
       Settings.setUserId(me._id)
       Settings.setTenantId(me.spaces[0]._id)
       setMe(me);
@@ -43,6 +41,7 @@ export const User = types.model({
     return self.me
   }
   return {
+    loadMe,
     getMe, 
     login: flow(function* login(userInput, passowrd) {
       self.isLoading = true;
@@ -63,18 +62,22 @@ export const User = types.model({
 
       try {
           const data = yield API.client.login(user, passowrd);
-          if (data.user) {
-            setMe(data.user);
-            API.client.setUserId(data.user._id);
+          if (data.token) {
             API.client.setToken(data.token);
-            API.client.setSpaceId(data.user.spaceId);
-            Settings.setUserId(data.user._id)
             Settings.setAuthToken(data.token)
-            Settings.setTenantId(data.user.spaceId)
-            self.isLoading = false;
-            self.isLoginFailed = false
           }
-          return data
+          const me = User.loadMe();
+            // setMe(data.user);
+            // API.client.setUserId(data.user._id);
+            // API.client.setSpaceId(data.user.spaceId);
+            // Settings.setUserId(data.user._id)
+            // Settings.setTenantId(data.user.spaceId)
+            // self.isLoading = false;
+            // self.isLoginFailed = false
+          // }
+          self.isLoading = false;
+          self.isLoginFailed = false
+          return me
       } catch (error) {
         self.isLoading = false;
         self.isLoginFailed = true
@@ -85,6 +88,7 @@ export const User = types.model({
     logout: flow(function* logout() {
         try {
             yield API.client.logout();
+            setMe(null)
             Settings.setUserId(null)
             Settings.setAuthToken(null)
             Settings.setTenantId(null)
