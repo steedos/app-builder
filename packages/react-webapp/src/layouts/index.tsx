@@ -78,12 +78,13 @@ export const Layout = observer((props: any) => {
 
   User.getMe();
   if (User.isLoading)
-    return (<></>);
+    return (<span>Loading user...</span>)
     
   if (!User.me) {
     history.push('/login');
-    return (<></>);
+    return (<>Please login</>);
   }
+
 
   const appsMenus = Apps.getMenus();
   if (appsMenus && appsMenus.size && Apps.currentAppId != appApiName) {
@@ -118,7 +119,7 @@ export const Layout = observer((props: any) => {
     }));
   }
 
-  const spaceId = API.client.getSpaceId()
+  const spaceId = Settings.tenantId
   const spaceObject = Objects.getObject("spaces");
   const spaceRecord = spaceObject.getRecord(spaceId, ["avatar", "name"]);
   if (spaceObject.isLoading || spaceRecord.isLoading)

@@ -8,10 +8,6 @@ import { API, Settings, User } from '@steedos/builder-store';
 export const Login = observer((props: any) => {
     let history = useHistory();
 
-    const user = User.me;
-    if (user)
-        history.push('/app/-');
-
     const handleSubmit = () => {
         const emailElement: any = document.getElementById("email");
         const passwordElement: any = document.getElementById("password");
