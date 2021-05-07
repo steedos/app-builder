@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import ProField from "@ant-design/pro-field";
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
+import Button from '@salesforce/design-system-react/components/button'; 
 import Popover from '@salesforce/design-system-react/components/popover'; 
 
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
@@ -89,9 +90,27 @@ export const ObjectFieldGrid = (props) => {
       row._id=uuidv4()
   })
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
+  const [gridApi, setGridApi] = useState<any>(null)
+
+  const addRow = () => {
+    const newRow = {
+      _id: uuidv4(),
+    }
+    value.push(newRow)
+    gridApi.setRowData(value);
+    onChange(value)
+  }
+
+  const deleteRow = (props) => {
+    const selectedId = props.data?._id
+    const newValue = value.filter(function (dataItem) {
+      return dataItem._id != selectedId
+    });
+    props.api.setRowData(newValue);
+    onChange(newValue)
+  }
 
   const RowActions = (props: any) => {
-    console.log(props)
     return (
       <Dropdown
         assistiveText={{ icon: 'Options' }}
@@ -99,19 +118,15 @@ export const ObjectFieldGrid = (props) => {
         iconName="down"
         iconVariant="border-filled"
         iconSize='x-small'
+        width='x-small'
         menuPosition="overflowBoundaryElement"
         onSelect={(option) => {
-          const selectedId = props.data?._id
           if (option.value === 'delete') {
-            const newValue = value.filter(function (dataItem) {
-              return dataItem._id != selectedId
-            });
-            props.api.setRowData(newValue);
-            onChange(newValue)
+            deleteRow(props)
           }
         }}
         options={[
-          { label: 'Delete', value: 'delete' }
+          { label: '删除', value: 'delete' }
         ]}
       />
     )
@@ -132,6 +147,10 @@ export const ObjectFieldGrid = (props) => {
       rowData.push(node.data);
     });
     onChange(rowData)
+  };
+
+  const getRowNodeId = function (data) {
+    return data._id;
   };
 
   const getColumns = ()=>{
@@ -181,6 +200,8 @@ export const ObjectFieldGrid = (props) => {
   return (
     <div className="ag-theme-balham steedos-grid">
       <AgGridReact
+        immutableData={true}
+        getRowNodeId={getRowNodeId}
         rowDragManaged={true}
         animateRows={true}
         rowData={value}
@@ -188,6 +209,9 @@ export const ObjectFieldGrid = (props) => {
         stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
+        onGridReady={(params) => {
+          setGridApi(params.api);
+        }}
         suppressNoRowsOverlay={true}
         frameworkComponents = {{
           proFieldRenderer: ProFieldRenderer,
@@ -195,6 +219,16 @@ export const ObjectFieldGrid = (props) => {
           rowActions: RowActions,
         }}
       />
+      { mode == 'edit' && (
+        <Button
+          iconCategory="utility"
+          iconName="add"
+          iconPosition="left"
+          label="新建"
+          variant="base"
+          onClick={()=>addRow()}
+        />
+      )}
     </div>
   )
 }
