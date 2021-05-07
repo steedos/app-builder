@@ -66,6 +66,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // const [fieldNames, setFieldNames] = useState([]);
   const fieldNames = [];
   const fieldSchemaArray = [];
+  const sections = [];
 
   if (!objectApiName)
     return null;
@@ -80,7 +81,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         field.group = '通用'
       let isObjectField = /\w+\.\w+/.test(fieldName)
       if (field.type == 'grid' || field.type == 'object') {
-        field.group = field.label
+        // field.group = field.label
+        field.is_wide = true;
       }
       // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
       let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
