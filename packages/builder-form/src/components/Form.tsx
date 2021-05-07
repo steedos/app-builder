@@ -39,8 +39,8 @@ export const Form = observer((props:any) => {
     layout === 'horizontal'
       ? {
           labelAlign: 'left',
-          labelCol: { span: 8 },
-          wrapperCol: { span: 16 },
+          labelCol: { span: 6 },
+          wrapperCol: { span: 18 },
         }
       : null;
 

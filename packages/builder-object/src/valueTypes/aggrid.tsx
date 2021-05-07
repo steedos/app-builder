@@ -1,11 +1,8 @@
-import ProTable, { EditableProTable } from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import ProField from "@ant-design/pro-field";
-import { MenuOutlined } from '@ant-design/icons';
-import arrayMove from 'array-move';
+import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
+import Popover from '@salesforce/design-system-react/components/popover'; 
 
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 
@@ -23,6 +20,7 @@ const ProFieldRenderer = (props: any) => {
     fieldSchema,
   } = props;
   return (
+    
     <ProField 
       mode='read'
       valueType={valueType} 
@@ -49,7 +47,7 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
             return value;
         },
         isPopup() {
-          return false;
+          return true;
         }
     };
   });
@@ -57,21 +55,43 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
   return (
     <section className="slds-popover slds-popover slds-popover_edit" role="dialog">
       <div className="slds-popover__body">
-    <ProField 
-      mode='edit'
-      valueType={valueType} 
-      value={value}
-      onChange={(newValue)=>{
-        setValue(newValue)
-      }}
-      fieldProps={{
-        field_schema: fieldSchema
-      }}
-      />
+        <ProField 
+          mode='edit'
+          valueType={valueType} 
+          value={value}
+          onChange={(newValue)=>{
+            if (newValue?.currentTarget?.value)
+              setValue(newValue?.currentTarget?.value)
+            else
+              setValue(newValue)
+          }}
+          fieldProps={{
+            field_schema: fieldSchema
+          }}
+          />
       </div>
     </section>
   ) 
 });
+
+const RowActions = (props: any) => {
+  return (
+    <Dropdown
+      assistiveText={{ icon: 'More Options' }}
+      iconCategory="utility"
+      iconName="down"
+      iconVariant="border-filled"
+      iconSize='x-small'
+      menuPosition="overflowBoundaryElement"
+      onSelect={(value) => {
+        console.log('selected: ', value);
+      }}
+      options={[
+        { label: 'Delete', value: 'delete' }
+      ]}
+    />
+  )
+}
 
 // 表格类型字段，
 // value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
@@ -92,6 +112,7 @@ export const ObjectFieldGrid = (props) => {
 
   const columns:any[] = [{
     rowDrag: mode == 'edit',
+    hide: !(mode == 'edit'),
     width: 30,
   }];
   _.forEach(sub_fields, (field, fieldName)=>{
@@ -100,6 +121,7 @@ export const ObjectFieldGrid = (props) => {
       headerName: field.label?field.label:fieldName,
       width: field.is_wide? 300: 150,
       resizable: true,
+      filter: true,
       cellRenderer: 'proFieldRenderer',
       cellRendererParams: {
         fieldSchema: field,
@@ -118,6 +140,13 @@ export const ObjectFieldGrid = (props) => {
       // valueType: field.type,
       editable: !field.readonly,
     })
+  });
+  // 操作按钮
+  columns.push({
+    hide: !(mode == 'edit'),
+    width: 50,
+    cellEditor: 'rowActions',
+    cellRenderer: 'rowActions',
   });
 
   const onCellClicked = ($event) => {
@@ -143,14 +172,15 @@ export const ObjectFieldGrid = (props) => {
         rowDragManaged={true}
         animateRows={true}
         rowData={value}
-        rowHeight={32}
         columnDefs={columns}
         stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
+        suppressNoRowsOverlay={true}
         frameworkComponents = {{
           proFieldRenderer: ProFieldRenderer,
           proFieldEditor: ProFieldEditor,
+          rowActions: RowActions,
         }}
       />
     </div>
