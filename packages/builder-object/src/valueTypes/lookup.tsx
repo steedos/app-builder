@@ -32,13 +32,7 @@ export const LookupField = observer((props:any) => {
         }
     }
     let [referenceTo, setReferenceTo] = useState(_.isArray(referenceTos) ? defaultReferenceTo : referenceTos);
-    let defaultLabel:any;
-
-    if(_.isArray(referenceTos) && value && value.labels && value.labels.length){
-        defaultLabel=value.labels.join(",");
-        // defaultLabel=value.labels;
-    }
-    let [label, setLabel] = useState(defaultLabel);
+    let [selectItemLabel, setSelectItemLabel] = useState('');
     // optionsFunction优先options
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     // if(_.isArray(referenceTos) && value ){
@@ -56,31 +50,29 @@ export const LookupField = observer((props:any) => {
             referenceToObjectIcon = referenceToObjectSchema.icon;
         }
     }
+    let selectItem=[];
+    let recordListData:any;
+    if(referenceToObject && value){
+        const filter = value ? [[reference_to_field, '=', value]] : [];
+        const fields = [reference_to_field, referenceToLableField, "_id"];
+        const recordList: any = referenceToObject.getRecordList(filter, fields);
+        if (recordList.isLoading) return (<div><Spin/></div>);
+        recordListData = recordList.data;
+        if (recordListData && recordListData.value && recordListData.value.length > 0) {
+            let tagsValueField = reference_to_field;
+            if(reference_to_field && reference_to_field !== "_id"){
+                // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
+                tagsValueField = "_id"
+            }
+            selectItem = recordListData.value.map((recordItem: any) => { 
+                return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } 
+            });
+        }
+    }
     if(mode==='read'){
         if(value){
             if (referenceTo) {
-                if(_.isObject(valueOriginal) && !_.isArray(valueOriginal) && valueOriginal['labels']){
-                    _.forEach(valueOriginal['ids'],(idName,idIndex)=>{
-                        let lab= valueOriginal['labels'][idIndex];
-                        tags.push({label: lab, value: idName})
-                    })
-                }else{
-                    const filter = value ? [[reference_to_field, '=', value]] : [];
-                    const fields = [reference_to_field, referenceToLableField, "_id"];
-                    const recordList: any = referenceToObject.getRecordList(filter, fields);
-                    if (recordList.isLoading) return (<div><Spin/></div>);
-                    const recordListData = recordList.data;
-                    if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                        let tagsValueField = reference_to_field;
-                        if(reference_to_field && reference_to_field !== "_id"){
-                            // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
-                            tagsValueField = "_id"
-                        }
-                        tags = recordListData.value.map((recordItem: any) => { 
-                            return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } 
-                        });
-                    }
-                }
+               tags = selectItem;
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
                 options = _.isFunction(options) ? options(dependFieldValues) : options;
@@ -210,11 +202,16 @@ export const LookupField = observer((props:any) => {
         let newFieldProps:any=fieldProps;
         if(_.isArray(referenceTos)){
             labelInValue=true;
+            if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                selectItemLabel = recordListData.value.map((recordItem: any)=>{
+                    return recordItem[referenceToLableField];
+                }).join(",");
+            }
             newFieldProps = Object.assign({}, fieldProps, {
-                value: {value: fieldProps.value,label},
+                value: {value: fieldProps.value,label: selectItemLabel},
                 onChange:(values: any, option: any)=>{
-                    setLabel(values.label)
-                    onChange({o: referenceTo, ids: [values.value], labels: [values.label]})
+                    setSelectItemLabel(values.label)
+                    onChange({o: referenceTo, ids: [values.value]})
                 }
             })
         }

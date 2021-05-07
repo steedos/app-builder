@@ -41,9 +41,9 @@ export default class SObject {
         if($select){
             params.$select = $select
         }
-        if(options && options.expand){
-            params.$expand = options.expand
-        }
+        // if(options && options.expand){
+        //     params.$expand = options.expand
+        // }
         if(options){
             if(options.pageSize){
                 params.$top = options.pageSize;
