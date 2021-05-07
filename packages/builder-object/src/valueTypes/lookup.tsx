@@ -56,7 +56,8 @@ export const LookupField = observer((props:any) => {
         const filter = value ? [[reference_to_field, '=', value]] : [];
         const fields = [reference_to_field, referenceToLableField, "_id"];
         const recordList: any = referenceToObject.getRecordList(filter, fields);
-        if (recordList.isLoading) return (<div><Spin/></div>);
+        // 以下这行代码如果不注释，编辑时 多选框 每次新增一个选项刷新一次
+        // if (recordList.isLoading) return (<div><Spin/></div>);
         recordListData = recordList.data;
         if (recordListData && recordListData.value && recordListData.value.length > 0) {
             let tagsValueField = reference_to_field;
