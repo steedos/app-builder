@@ -55,6 +55,8 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
   });
   
   return (
+    <section className="slds-popover slds-popover slds-popover_edit" role="dialog">
+      <div className="slds-popover__body">
     <ProField 
       mode='edit'
       valueType={valueType} 
@@ -66,6 +68,8 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
         field_schema: fieldSchema
       }}
       />
+      </div>
+    </section>
   ) 
 });
 
@@ -139,7 +143,9 @@ export const ObjectFieldGrid = (props) => {
         rowDragManaged={true}
         animateRows={true}
         rowData={value}
+        rowHeight={32}
         columnDefs={columns}
+        stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
         frameworkComponents = {{
