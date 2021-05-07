@@ -85,7 +85,7 @@ function getListViewDropdownMenus(schema, props, options){
     <Menu>
       {
         _.values(listViews).map((_listView, i) => (
-          <Menu.Item>
+          <Menu.Item key={_listView.name}>
             <Link to={`/app/${appApiName}/${objectApiName}/grid/${_listView.name}`}>{_listView.label}</Link>
           </Menu.Item>
         ))
@@ -110,11 +110,13 @@ export const ListView = observer((props: any) => {
   const title = schema.label;
   let listView = schema.list_views[listName];
   // const listViewColumns = getListviewColumns(schema, listName);
-  const {extraButtons, dropdownMenus} = getButtons(schema, props, {actionRef: ref, history: rest.history});
+  const {extraButtons, dropdownMenus} = getButtons(schema, {
+    objectApiName, listName, ...props
+  }, {actionRef: ref, history: rest.history});
   const extra = [...extraButtons];
   if(dropdownMenus.length > 0){
     extra.push(<Dropdown
-      key="dropdown"
+      // key="dropdown"
       trigger={['click']}
       overlay={
         <Menu>
@@ -122,13 +124,15 @@ export const ListView = observer((props: any) => {
         </Menu>
       }
     >
-      <Button key="4" style={{ padding: '0 8px' }}>
+      <Button style={{ padding: '0 8px' }}>
         <EllipsisOutlined />
       </Button>
     </Dropdown>)
   }
 
-  const listViewDropdownMenus = getListViewDropdownMenus(schema, props, {})
+  const listViewDropdownMenus = getListViewDropdownMenus(schema, {
+    objectApiName, listName, ...props
+  }, {})
 
   // 切换对象时应该重置过滤条件
   ref.current && ref.current.reset();
