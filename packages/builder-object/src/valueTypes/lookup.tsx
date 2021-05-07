@@ -7,6 +7,8 @@ import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 import { Link } from "react-router-dom";
 import { getObjectRecordUrl } from "../utils";
+import { SteedosIcon } from '@steedos/builder-lightning';
+import "./lookup.less"
 
 const { Option } = Select;
 // 相关表类型字段
@@ -16,7 +18,7 @@ export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    const { reference_to, reference_sort,reference_limit, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let valueOriginal = value;
     let tags:any[] = [];
@@ -44,6 +46,16 @@ export const LookupField = observer((props:any) => {
             value=value['ids'];
         }
     //}
+    let referenceToObject,referenceToObjectSchema,referenceToLableField, referenceToObjectIcon;
+    if(referenceTo){
+        referenceToObject = Objects.getObject(referenceTo);
+        if (referenceToObject.isLoading) return (<div><Spin/></div>);
+        referenceToObjectSchema = referenceToObject.schema;
+        referenceToLableField = referenceToObjectSchema["NAME_FIELD_KEY"] ? referenceToObjectSchema["NAME_FIELD_KEY"] : "name";
+        if(referenceToObjectSchema.icon){
+            referenceToObjectIcon = referenceToObjectSchema.icon;
+        }
+    }
     if(mode==='read'){
         if(value){
             if (referenceTo) {
@@ -53,12 +65,9 @@ export const LookupField = observer((props:any) => {
                         tags.push({label: lab, value: idName})
                     })
                 }else{
-                    const object = Objects.getObject(referenceTo);
-                    if (object.isLoading) return (<div><Spin/></div>);
-                    let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                     const filter = value ? [[reference_to_field, '=', value]] : [];
                     const fields = [reference_to_field, referenceToLableField, "_id"];
-                    const recordList: any = object.getRecordList(filter, fields);
+                    const recordList: any = referenceToObject.getRecordList(filter, fields);
                     if (recordList.isLoading) return (<div><Spin/></div>);
                     const recordListData = recordList.data;
                     if (recordListData && recordListData.value && recordListData.value.length > 0) {
@@ -105,8 +114,6 @@ export const LookupField = observer((props:any) => {
                 return results;
             }
             else{
-                const object = Objects.getObject(referenceTo);
-                let referenceToLableField = object.schema["NAME_FIELD_KEY"] ? object.schema["NAME_FIELD_KEY"] : "name";
                 let filters: any = [], textFilters: any = [], keyFilters: any = [];
                 if (value){
                     // const textValue= _.isArray(referenceTos) ? value.ids: value;
@@ -211,6 +218,17 @@ export const LookupField = observer((props:any) => {
                 }
             })
         }
+        let optionItemRender;
+        if(showIcon && referenceToObjectIcon){
+            optionItemRender = (item) => {
+                return (
+                    <React.Fragment>
+                        <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={referenceToObjectIcon} size="x-small"/></span>
+                        <span>{item.label}</span>
+                    </React.Fragment>
+                    )
+            }
+        }
         const proFieldProps = {
             mode: mode,
             showSearch: true,
@@ -221,6 +239,7 @@ export const LookupField = observer((props:any) => {
             labelInValue,
             params,
             onDropdownVisibleChange,
+            optionItemRender,
             ...rest
         }
         const SelectProFieldProps = {
@@ -238,9 +257,9 @@ export const LookupField = observer((props:any) => {
         let isLoadingReferenceTosObject;
         if(needReferenceToSelect){
             _.forEach(referenceTos,(val)=>{
-                const object = Objects.getObject(val);
-                if (!object.isLoading){
-                    referenceToOptions.push({label:object.schema.label,value:val})
+                const referenceToObject = Objects.getObject(val);
+                if (!referenceToObject.isLoading){
+                    referenceToOptions.push({label:referenceToObject.schema.label,value:val})
                 }
             })
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
