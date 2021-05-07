@@ -1,12 +1,12 @@
 // eslint-disable-next-line
 import React, { useEffect, useState } from "react"
-import logo from "./logo.svg"
+// import logo from "./logo.svg"
 import "./App.css"
 
 import { SteedosProvider } from "@steedos/builder-object"
-import { ObjectExpandTable, ObjectTable } from "@steedos/builder-object"
+import { ObjectExpandTable } from "@steedos/builder-object"
 
-import { Modal, TreeSelect, Select, Input, Button } from "antd"
+import { Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
@@ -40,10 +40,10 @@ function App(props: any) {
     setSelectedUsers([...selectedUserInTab1, ...selectedUserInTab2])
   }, [selectedUserInTab1, selectedUserInTab2])
 
-  const handleOnChange = (users: any) => {
-    setSelectedUsers(users)
-    // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
-  }
+  // const handleOnChange = (users: any) => {
+  //   setSelectedUsers(users)
+  //   // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
+  // }
   const confirmChose = () => {
     ;(window.opener || window.parent).postMessage(
       {
