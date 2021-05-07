@@ -20,7 +20,7 @@ export const FieldSection = observer((props: any) => {
   
   const boxOptions = {
     templateColumns: [`repeat(1, 1fr)`, `repeat(${columns}, 1fr)`],
-    gap: '0.5rem 2rem',
+    gap: '0rem 2rem',
   }
   
   const renderChildren = (children:any) => {

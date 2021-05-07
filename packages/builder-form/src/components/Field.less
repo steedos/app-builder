@@ -1,14 +1,16 @@
 .builder-form {
   .ant-form-item.field {
     margin-bottom: 0;
+    padding-bottom: 2px;
+    padding-top: 2px;
     &.mode-read {
       border-bottom: 1px solid #dddbda;
-      &.type-object {
-        border-bottom: 0
-      }
-      &.type-grid {
-        border-bottom: 0
-      }
+      // &.type-object {
+      //   border-bottom: 0
+      // }
+      // &.type-grid {
+      //   border-bottom: 0
+      // }
     }
     &.mode-edit {
       .ant-input-number {
@@ -42,12 +44,12 @@
       }
     }
 
-    &.field.type-object > .ant-form-item-label {
-      display: none;
-    }
-    &.field.type-grid > .ant-form-item-label {
-      display: none;
-    }
+    // &.field.type-object > .ant-form-item-label {
+    //   display: none;
+    // }
+    // &.field.type-grid > .ant-form-item-label {
+    //   display: none;
+    // }
   }
 
   .slds-section__title {

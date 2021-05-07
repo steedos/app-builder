@@ -32,7 +32,7 @@ export const Field = observer((props: any) => {
     mode: fieldMode,
     valueType,
     isWide = false,
-    showInlineIcon = valueType != 'object' && valueType != 'grid',
+    showInlineIcon = true, //valueType != 'object' && valueType != 'grid',
     formItemProps = {},
     // type,
     // count,
@@ -49,15 +49,16 @@ export const Field = observer((props: any) => {
     className: `field type-${valueType} mode-${mode}`,
   }
 
-  if (valueType == 'object') {
-    formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
-    formItemPropsMerged.labelCol = { span: 0 };
-    formItemPropsMerged.wrapperCol = { span: 24 };
-  } else if (valueType == 'grid') {
-    formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
-    formItemPropsMerged.labelCol = { span: 0 };
-    formItemPropsMerged.wrapperCol = { span: 24 };
-  } else if (isWide) {
+  // if (valueType == 'object') {
+  //   formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
+  //   formItemPropsMerged.labelCol = { span: 0 };
+  //   formItemPropsMerged.wrapperCol = { span: 24 };
+  // } else if (valueType == 'grid') {
+  //   formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
+  //   formItemPropsMerged.labelCol = { span: 0 };
+  //   formItemPropsMerged.wrapperCol = { span: 24 };
+  // } else 
+  if (isWide) {
     formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
     if (context.vertical) {
       formItemPropsMerged.labelCol = { span: 4 };
