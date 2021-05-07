@@ -1,7 +1,8 @@
 
 
-.ag-theme-balham.steedos-grid {
-  font-size: 13px;
+.ag-theme-balham {
+  font-size: 13px;    
+  overflow: scroll;
   
   .ag-root-wrapper{
     overflow: visible;
@@ -27,11 +28,14 @@
       overflow: visible;
     }
   }
-  .ag-theme-balham .ag-popup-editor {
+  .ag-popup-editor {
     border: none;
     box-shadow: none;
     .slds-popover--edit .slds-popover__body, .slds-popover_edit .slds-popover__body {
       padding: 0.25rem;
     }
+  }
+  .ag-body-viewport {
+    min-height: 10px;
   }
 }

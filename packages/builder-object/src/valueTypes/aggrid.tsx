@@ -160,13 +160,17 @@ export const ObjectFieldGrid = (props) => {
     const columns:any[] = [{
       rowDrag: mode == 'edit',
       hide: !(mode == 'edit'),
-      width: 30,
+      resizable: false,
+      width: 35,
+      maxWidth: 35,
+      minWidth: 35,
     }];
     _.forEach(sub_fields, (field, fieldName)=>{
       columns.push({
         field: fieldName,
         headerName: field.label?field.label:fieldName,
         width: field.is_wide? 300: 150,
+        minWidth: field.is_wide? 300: 150,
         resizable: true,
         filter: true,
         cellRenderer: 'proFieldRenderer',
@@ -192,6 +196,9 @@ export const ObjectFieldGrid = (props) => {
     columns.push({
       hide: !(mode == 'edit'),
       width: 50,
+      maxWidth: 50,
+      minWidth: 50,
+      resizable: false,
       cellRenderer: 'rowActions',
       cellEditor: 'rowActions',
     });
@@ -211,6 +218,7 @@ export const ObjectFieldGrid = (props) => {
         onCellClicked={onCellClicked}
         onGridReady={(params) => {
           setGridApi(params.api);
+          params.api.sizeColumnsToFit();
         }}
         suppressNoRowsOverlay={true}
         frameworkComponents = {{
