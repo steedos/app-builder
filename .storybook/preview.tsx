@@ -17,7 +17,7 @@ import { withPerformance } from "storybook-addon-performance"
 import ProProvider, {zhCNIntl} from '@ant-design/pro-provider';
 import { Input, Space, Tag } from 'antd';
 
-import {SteedosProvider} from '@steedos/builder-steedos';
+import {SteedosProvider} from '@steedos/builder-object';
 import { SteedosIconSettings } from "../packages/builder-lightning/src/components/IconSettings";
 
 // import "antd/dist/antd.css";

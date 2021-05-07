@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import logo from "./logo.svg"
 import "./App.css"
 
-import { SteedosProvider } from "@steedos/builder-steedos"
+import { SteedosProvider } from "@steedos/builder-object"
 import { ObjectExpandTable, ObjectTable } from "@steedos/builder-object"
 
 import { Modal, TreeSelect, Select, Input, Button } from "antd"

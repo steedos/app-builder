@@ -85,7 +85,7 @@
   },
   "scripts": {
     "start": "cross-env node scripts/start.js",
-    "build": "cross-env node scripts/build.js",
+    "build": "cross-env node --max_old_space_size=4096 scripts/build.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

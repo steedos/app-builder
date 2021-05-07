@@ -1,6 +1,4 @@
-import { SteedosAppLauncher } from './components/AppLauncher'
-import { SteedosIcon } from './components/Icon';
-import { SteedosIconSettings } from './components/IconSettings'
-export {
-  SteedosAppLauncher, SteedosIcon, SteedosIconSettings,
-}
+export { SteedosAppLauncher } from './components/AppLauncher'
+export { SteedosListView } from './components/ListView'
+export { SteedosIcon } from './components/Icon';
+export { SteedosIconSettings } from './components/IconSettings'

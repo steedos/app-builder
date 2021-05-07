@@ -6,7 +6,9 @@
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "declarationDir": "dist/types",
+    "outDir": "dist/cjs"
   },
   "include": [
     "src"
