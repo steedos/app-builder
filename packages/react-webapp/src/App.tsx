@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { SteedosProvider } from '@steedos/builder-steedos';
+import { SteedosProvider } from '@steedos/builder-object';
 import { Settings, User } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import SLDSSettings from '@salesforce/design-system-react/components/SLDSSettings';

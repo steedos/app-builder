@@ -32,7 +32,6 @@ const options = {
         "@steedos/builder-store": "../../packages/builder-store/src/index.tsx",
         "@steedos/builder-ant-design": "../../packages/builder-ant-design/src/index.tsx",
         "@steedos/builder-form": "../../packages/builder-form/src/index.tsx",
-        "@steedos/builder-steedos": "../../packages/builder-steedos/src/index.tsx",
         "@steedos/builder-object": "../../packages/builder-object/src/index.tsx",
         "@steedos/builder-locale": "../../packages/builder-locale/src/index.tsx",
         "@emotion/core": "../../node_modules/@emotion/react",
