@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
 import { Upload, Button, message } from 'antd';
 import { Image } from "antd";
 import { Settings , API} from '@steedos/builder-store';
