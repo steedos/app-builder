@@ -11,6 +11,7 @@ import { getObjectRecordUrl } from "../utils"
 import { Spin } from 'antd';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
+import { AllModules } from '@ag-grid-enterprise/all-modules';
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import Button from '@salesforce/design-system-react/components/button'; 
 
@@ -386,14 +387,20 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     }];
     _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName]
-      const filters = 
+      let filter:any = true
+      if (["textarea", "text", "code"].includes(field.type)) {
+        filter = 'agTextColumnFilter'
+      }
+      if (["number", "percent", "currency"].includes(field.type)) {
+        filter = 'agNumberColumnFilter'
+      }
       columns.push({
         field: fieldName,
         headerName: field.label?field.label:fieldName,
         width: field.is_wide? 300: 150,
         minWidth: field.is_wide? 300: 150,
         resizable: true,
-        filter: true,
+        filter,
         flex: 1,
         sortable: true,
         cellRenderer: 'proFieldRenderer',
@@ -460,11 +467,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         pagination={true}
         paginationPageSize={50}
         rowSelection='multiple'
-        modules={[ServerSideRowModelModule]}
+        modules={AllModules}
         stopEditingWhenGridLosesFocus={true}
         serverSideDatasource={getDataSource()}
         serverSideStoreType='partial'
-        sideBar='filters'
+        sideBar={true}
         frameworkComponents = {{
           proFieldRenderer: ProFieldRenderer,
           proFieldEditor: ProFieldEditor,
