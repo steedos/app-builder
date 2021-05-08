@@ -155,9 +155,6 @@ export const LookupField = observer((props:any) => {
                         return `${key}${value == 1 ? '' : ' desc'}` 
                     }).join(",")
                 }
-                if (_.isArray(referenceTos)) {
-                    option.referenceTos = referenceTos;
-                }
                 if (reference_limit) {
                     option.pageSize = reference_limit
                 }
