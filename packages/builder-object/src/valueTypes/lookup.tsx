@@ -201,14 +201,16 @@ export const LookupField = observer((props:any) => {
         let newFieldProps:any=fieldProps;
         if(_.isArray(referenceTos)){
             labelInValue=true;
-            const recordList = referenceToObject.getRecordList(filter, fields);
-            // 根据ID获取请求 获取对应的 label。 不需要下面这行isloading判断
-            // if (recordList.isLoading) return (<div><Spin/></div>);
-            recordListData = recordList.data;
-            if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                selectItemLabel = recordListData.value.map((recordItem: any)=>{
-                    return recordItem[referenceToLableField];
-                }).join(",");
+            if(value){
+                const recordList = referenceToObject.getRecordList(filter, fields);
+                // 根据ID获取请求 获取对应的 label。 不需要下面这行isloading判断
+                // if (recordList.isLoading) return (<div><Spin/></div>);
+                recordListData = recordList.data;
+                if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                    selectItemLabel = recordListData.value.map((recordItem: any)=>{
+                        return recordItem[referenceToLableField];
+                    }).join(",");
+                }
             }
             newFieldProps = Object.assign({}, fieldProps, {
                 value: {value: fieldProps.value,label: selectItemLabel},
