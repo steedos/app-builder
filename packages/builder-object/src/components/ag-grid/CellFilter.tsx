@@ -9,7 +9,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
     valueType = 'text',
     fieldSchema,
   } = props;
-  const [value, setValue] = useState(initialValue);
+  const [filter, setFilter] = useState(initialValue);
 
   // expose AG Grid Filter Lifecycle callbacks
   useImperativeHandle(ref, () => {
@@ -18,15 +18,18 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           // },
 
           isFilterActive() {
-            return !!value
+            return !!filter
           },
 
           // this example isn't using getModel() and setModel(),
           // so safe to just leave these empty. don't do this in your code!!!
           getModel() {
-            return {
-              value,
-            }
+            if (!!filter)
+              return {
+                filterType: valueType,
+                type: 'equals',
+                filter,
+              }
           },
 
           setModel() {
@@ -36,7 +39,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
 
   useEffect(() => {
     props.filterChangedCallback()
-  }, [value]);
+  }, [filter]);
 
   return (
     <div style={{padding:5}}>
@@ -47,7 +50,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           field_schema: fieldSchema
         }}
         onChange={(value)=>{
-          setValue(value)
+          setFilter(value)
         }}
         text={initialValue}
         emptyText=''
