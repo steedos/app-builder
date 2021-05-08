@@ -352,9 +352,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             _.forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
             })
+            const filters = defaultFilters;
+            // TODO 此处需要叠加处理 params.request.fieldModel
             API.requestRecords(
               objectApiName,
-              [],
+              filters,
               fields,{
                 current: params.request.startRow,
                 sort,
@@ -384,6 +386,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     }];
     _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName]
+      const filters = 
       columns.push({
         field: fieldName,
         headerName: field.label?field.label:fieldName,
