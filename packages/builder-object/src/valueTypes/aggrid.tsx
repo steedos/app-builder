@@ -1,13 +1,11 @@
-import ProTable, { EditableProTable } from '@ant-design/pro-table';
-import ProForm from '@ant-design/pro-form';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import ProField from "@ant-design/pro-field";
-import { MenuOutlined } from '@ant-design/icons';
-import arrayMove from 'array-move';
+import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
+import Button from '@salesforce/design-system-react/components/button'; 
+import Popover from '@salesforce/design-system-react/components/popover'; 
 
-import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 
@@ -23,6 +21,7 @@ const ProFieldRenderer = (props: any) => {
     fieldSchema,
   } = props;
   return (
+    
     <ProField 
       mode='read'
       valueType={valueType} 
@@ -49,7 +48,7 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
             return value;
         },
         isPopup() {
-          return false;
+          return true;
         }
     };
   });
@@ -57,17 +56,20 @@ const ProFieldEditor = forwardRef((props: any, ref) => {
   return (
     <section className="slds-popover slds-popover slds-popover_edit" role="dialog">
       <div className="slds-popover__body">
-    <ProField 
-      mode='edit'
-      valueType={valueType} 
-      value={value}
-      onChange={(newValue)=>{
-        setValue(newValue)
-      }}
-      fieldProps={{
-        field_schema: fieldSchema
-      }}
-      />
+        <ProField 
+          mode='edit'
+          valueType={valueType} 
+          value={value}
+          onChange={(newValue)=>{
+            if (newValue?.currentTarget?.value)
+              setValue(newValue?.currentTarget?.value)
+            else
+              setValue(newValue)
+          }}
+          fieldProps={{
+            field_schema: fieldSchema
+          }}
+          />
       </div>
     </section>
   ) 
@@ -82,43 +84,53 @@ export const ObjectFieldGrid = (props) => {
   
   const {mode='read', text =[], fieldProps={}} = props;
   const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
-  
+
   _.forEach(initialValue, (row)=>{
     if (!row._id)
       row._id=uuidv4()
   })
-  const {sub_fields=[]} = fieldSchema;
   const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
+  const [gridApi, setGridApi] = useState<any>(null)
 
-  const columns:any[] = [{
-    rowDrag: mode == 'edit',
-    width: 30,
-  }];
-  _.forEach(sub_fields, (field, fieldName)=>{
-    columns.push({
-      field: fieldName,
-      headerName: field.label?field.label:fieldName,
-      width: field.is_wide? 300: 150,
-      resizable: true,
-      cellRenderer: 'proFieldRenderer',
-      cellRendererParams: {
-        fieldSchema: field,
-        valueType: field.type,
-        mode
-      },
-      cellEditor: 'proFieldEditor',
-      cellEditorParams: {
-        fieldSchema: field,
-        valueType: field.type,
-        mode,
-      },
-      // key: fieldName,
-      // dataIndex: fieldName,
-      // title: field.label?field.label:fieldName,
-      // valueType: field.type,
-      editable: !field.readonly,
-    })
-  });
+  const addRow = () => {
+    const newRow = {
+      _id: uuidv4(),
+    }
+    value.push(newRow)
+    gridApi.setRowData(value);
+    onChange(value)
+  }
+
+  const deleteRow = (props) => {
+    const selectedId = props.data?._id
+    const newValue = value.filter(function (dataItem) {
+      return dataItem._id != selectedId
+    });
+    props.api.setRowData(newValue);
+    onChange(newValue)
+  }
+
+  const RowActions = (props: any) => {
+    return (
+      <Dropdown
+        assistiveText={{ icon: 'Options' }}
+        iconCategory="utility"
+        iconName="down"
+        iconVariant="border-filled"
+        iconSize='x-small'
+        width='x-small'
+        menuPosition="overflowBoundaryElement"
+        onSelect={(option) => {
+          if (option.value === 'delete') {
+            deleteRow(props)
+          }
+        }}
+        options={[
+          { label: '删除', value: 'delete' }
+        ]}
+      />
+    )
+  }
 
   const onCellClicked = ($event) => {
     if (mode == 'read')
@@ -137,22 +149,94 @@ export const ObjectFieldGrid = (props) => {
     onChange(rowData)
   };
 
+  const getRowNodeId = function (data) {
+    return data._id;
+  };
+
+  const getColumns = ()=>{
+
+    const {sub_fields=[]} = fieldSchema;
+
+    const columns:any[] = [{
+      rowDrag: mode == 'edit',
+      hide: !(mode == 'edit'),
+      resizable: false,
+      width: 35,
+      maxWidth: 35,
+      minWidth: 35,
+    }];
+    _.forEach(sub_fields, (field, fieldName)=>{
+      columns.push({
+        field: fieldName,
+        headerName: field.label?field.label:fieldName,
+        width: field.is_wide? 300: 150,
+        minWidth: field.is_wide? 300: 150,
+        resizable: true,
+        filter: true,
+        cellRenderer: 'proFieldRenderer',
+        cellRendererParams: {
+          fieldSchema: field,
+          valueType: field.type,
+          mode
+        },
+        cellEditor: 'proFieldEditor',
+        cellEditorParams: {
+          fieldSchema: field,
+          valueType: field.type,
+          mode,
+        },
+        // key: fieldName,
+        // dataIndex: fieldName,
+        // title: field.label?field.label:fieldName,
+        // valueType: field.type,
+        editable: !field.readonly,
+      })
+    });
+    // 操作按钮
+    columns.push({
+      hide: !(mode == 'edit'),
+      width: 50,
+      maxWidth: 50,
+      minWidth: 50,
+      resizable: false,
+      cellRenderer: 'rowActions',
+      cellEditor: 'rowActions',
+    });
+    return columns
+  }
   return (
     <div className="ag-theme-balham steedos-grid">
       <AgGridReact
+        immutableData={true}
+        getRowNodeId={getRowNodeId}
         rowDragManaged={true}
         animateRows={true}
         rowData={value}
-        rowHeight={32}
-        columnDefs={columns}
+        columnDefs={getColumns()}
         stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
+        onGridReady={(params) => {
+          setGridApi(params.api);
+          params.api.sizeColumnsToFit();
+        }}
+        suppressNoRowsOverlay={true}
         frameworkComponents = {{
           proFieldRenderer: ProFieldRenderer,
           proFieldEditor: ProFieldEditor,
+          rowActions: RowActions,
         }}
       />
+      { mode == 'edit' && (
+        <Button
+          iconCategory="utility"
+          iconName="add"
+          iconPosition="left"
+          label="新建"
+          variant="base"
+          onClick={()=>addRow()}
+        />
+      )}
     </div>
   )
 }

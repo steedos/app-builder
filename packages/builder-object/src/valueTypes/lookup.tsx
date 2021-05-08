@@ -52,29 +52,30 @@ export const LookupField = observer((props:any) => {
         }
     }
     let selectItem=[];
-    let recordListData:any;
+    let recordListData: any;
+    let filter:any;
+    let fields:any;
     if(referenceToObject && value){
-        const filter = value ? [[reference_to_field, '=', value]] : [];
-        const fields = [reference_to_field, referenceToLableField, "_id"];
-        const recordList: any = referenceToObject.getRecordList(filter, fields);
-        // 以下这行代码如果不注释，编辑时 多选框 每次新增一个选项刷新一次
-        // if (recordList.isLoading) return (<div><Spin/></div>);
-        recordListData = recordList.data;
-        if (recordListData && recordListData.value && recordListData.value.length > 0) {
-            let tagsValueField = reference_to_field;
-            if(reference_to_field && reference_to_field !== "_id"){
-                // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
-                tagsValueField = "_id"
-            }
-            selectItem = recordListData.value.map((recordItem: any) => { 
-                return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } 
-            });
-        }
+        filter = [[reference_to_field, '=', value]];
+        fields = [reference_to_field, referenceToLableField, "_id"];
     }
     if(mode==='read'){
         if(value){
             if (referenceTo) {
-               tags = selectItem;
+                const recordList = referenceToObject.getRecordList(filter, fields);
+                if (recordList.isLoading) return (<div><Spin/></div>);
+                recordListData = recordList.data;
+                if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                    let tagsValueField = reference_to_field;
+                    if(reference_to_field && reference_to_field !== "_id"){
+                        // 选人字段只读时链接应该显示的是space_users的_id字段值，而不是user字段值
+                        tagsValueField = "_id"
+                    }
+                    selectItem = recordListData.value.map((recordItem: any) => { 
+                        return { value: recordItem[tagsValueField], label: recordItem[referenceToLableField] } 
+                    });
+                }
+                tags = selectItem;
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
                 options = _.isFunction(options) ? options(dependFieldValues) : options;
@@ -155,9 +156,6 @@ export const LookupField = observer((props:any) => {
                         return `${key}${value == 1 ? '' : ' desc'}` 
                     }).join(",")
                 }
-                if (_.isArray(referenceTos)) {
-                    option.referenceTos = referenceTos;
-                }
                 if (reference_limit) {
                     option.pageSize = reference_limit
                 }
@@ -204,10 +202,16 @@ export const LookupField = observer((props:any) => {
         let newFieldProps:any=fieldProps;
         if(_.isArray(referenceTos)){
             labelInValue=true;
-            if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                selectItemLabel = recordListData.value.map((recordItem: any)=>{
-                    return recordItem[referenceToLableField];
-                }).join(",");
+            if(value){
+                const recordList = referenceToObject.getRecordList(filter, fields);
+                // 根据ID获取请求 获取对应的 label。 不需要下面这行isloading判断
+                // if (recordList.isLoading) return (<div><Spin/></div>);
+                recordListData = recordList.data;
+                if (recordListData && recordListData.value && recordListData.value.length > 0) {
+                    selectItemLabel = recordListData.value.map((recordItem: any)=>{
+                        return recordItem[referenceToLableField];
+                    }).join(",");
+                }
             }
             newFieldProps = Object.assign({}, fieldProps, {
                 value: {value: fieldProps.value,label: selectItemLabel},

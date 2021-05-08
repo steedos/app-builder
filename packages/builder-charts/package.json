@@ -90,7 +90,7 @@
     "npm-install-peers": "^1.2.1",
     "prettier": "^2.2.1",
     "prompt": "^1.0.0",
-    "replace-in-file": "^3.0.0-beta.2",
+    "replace-in-file": "^6.2.0",
     "rimraf": "3.0.2",
     "rollup": "^2.42.4",
     "rollup-plugin-alias": "^2.2.0",
