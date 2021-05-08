@@ -88,6 +88,7 @@ export const ObjectFieldGrid = (props) => {
     e.api.forEachNode(function (node) {
       rowData.push(node.data);
     });
+    setValue(rowData)
     onChange(rowData)
   };
 
