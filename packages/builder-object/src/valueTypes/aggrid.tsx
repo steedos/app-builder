@@ -6,6 +6,7 @@ import Button from '@salesforce/design-system-react/components/button';
 import Popover from '@salesforce/design-system-react/components/popover'; 
 
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
+import {AllCommunityModules} from '@ag-grid-community/all-modules';
 
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 
@@ -148,6 +149,7 @@ export const ObjectFieldGrid = (props) => {
   return (
     <div className="ag-theme-balham steedos-grid">
       <AgGridReact
+        modules={AllCommunityModules}
         immutableData={true}
         getRowNodeId={getRowNodeId}
         rowDragManaged={true}
