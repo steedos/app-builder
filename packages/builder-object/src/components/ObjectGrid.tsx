@@ -11,8 +11,6 @@ import { getObjectRecordUrl } from "../utils"
 import { Spin } from 'antd';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
-import { MenuModule } from '@ag-grid-enterprise/menu';
-import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import Button from '@salesforce/design-system-react/components/button'; 
 
@@ -350,13 +348,21 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
+            const sort = []
+            _.forEach(params.request.sortModel, (sortField)=>{
+              sort.push([sortField.colId, sortField.sort])
+            })
             API.requestRecords(
               objectApiName,
               [],
-              fields,{}).then((data)=>{
+              fields,{
+                current: params.request.startRow,
+                sort,
+              }).then((data)=>{
 
                 params.success({
-                  rowData: data.value
+                  rowData: data.value,
+                  rowCount: data['@odata.count']
                 });
             })
         }
@@ -385,6 +391,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         minWidth: field.is_wide? 300: 150,
         resizable: true,
         filter: true,
+        flex: 1,
+        sortable: true,
         cellRenderer: 'proFieldRenderer',
         cellRendererParams: {
           fieldSchema: field,
@@ -442,16 +450,18 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // )
   return (
 
-    <div className="ag-theme-balham">
+    <div className="ag-theme-balham" style={{height: 500}}>
       <AgGridReact
         columnDefs={getColumns()}
         rowModelType='serverSide'
         pagination={true}
         paginationPageSize={50}
         rowSelection='multiple'
-        modules={[ServerSideRowModelModule, MenuModule, ColumnsToolPanelModule]}
+        modules={[ServerSideRowModelModule]}
         stopEditingWhenGridLosesFocus={true}
         serverSideDatasource={getDataSource()}
+        serverSideStoreType='partial'
+        sideBar='filters'
         frameworkComponents = {{
           proFieldRenderer: ProFieldRenderer,
           proFieldEditor: ProFieldEditor,
