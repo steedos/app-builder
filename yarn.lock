@@ -11,7 +11,7 @@
     orbit-camera-controller "^4.0.0"
     turntable-camera-controller "^3.0.0"
 
-"@ag-grid-community/all-modules@~25.2.0":
+"@ag-grid-community/all-modules@^25.2.0", "@ag-grid-community/all-modules@~25.2.0":
   version "25.2.0"
   resolved "https://registry.yarnpkg.com/@ag-grid-community/all-modules/-/all-modules-25.2.0.tgz#1d9e4ba4db8d5f785b6d1a933dee5adeb22ccb17"
   integrity sha512-ipRRqRYmNAZz3ifgyj9h1ebbNXJXO/A/WeiY4u7bW4vStI7Sd424pMmSVg7sWdSzo5eis1Sxw0FiNiqn3EaygQ==

@@ -31,6 +31,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@ag-grid-community/all-modules": "^25.2.0",
     "@ag-grid-community/react": "^25.2.0",
     "@ag-grid-enterprise/all-modules": "^25.2.0",
     "@ag-grid-enterprise/server-side-row-model": "^25.2.0",

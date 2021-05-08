@@ -25,7 +25,7 @@ export type FormProps<T = Record<string, any>>  = {
   fields: 字段定义数组，格式同YML
 */
 export type ObjectFormProps = {
-  objectApiName: string,
+  objectApiName?: string,
   objectSchema?: any,
   initialValues?: any,
   recordId?: string
@@ -40,10 +40,10 @@ export type ObjectFormProps = {
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
-    objectApiName = Settings.currentObjectApiName,
+    objectApiName, // = Settings.currentObjectApiName,
     initialValues = {},
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
-    recordId = Settings.currentRecordId,
+    recordId, // = Settings.currentRecordId,
     name: formId = 'default',
     mode = 'edit', 
     layout = 'vertical',
@@ -68,51 +68,51 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const fieldSchemaArray = [];
   const sections = [];
 
-  if (!objectApiName)
-    return null;
-  const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div><Spin/></div>)
+  const object = objectApiName? Objects.getObject(objectApiName): null;
+  if (object && object.isLoading) return (<div><Spin/></div>)
 
-  if (object.schema) {
-    const mergedSchema = _.defaultsDeep({}, object.schema, objectSchema);
-    fieldSchemaArray.length = 0
-    _.forEach(mergedSchema.fields, (field, fieldName) => {
-      if (!field.group || field.group == 'null' || field.group == '-')
-        field.group = '通用'
-      let isObjectField = /\w+\.\w+/.test(fieldName)
-      if (field.type == 'grid' || field.type == 'object') {
-        // field.group = field.label
-        field.is_wide = true;
-      }
-      // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
-      let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
-      if (!field.hidden && !isObjectField && !isOmitField){
-        fieldSchemaArray.push(_.defaults({name: fieldName}, field))
-      }
-    })
-    _.forEach(fieldSchemaArray, (field:any)=>{
-      fieldNames.push(field.name)
-    })
   
-    if (recordId) {
-      const recordCache = object.getRecord(recordId, fieldNames)
-      if (recordCache.isLoading)
-        return (<div><Spin/></div>)
-  
-      if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
-        const record = recordCache.data.value[0];
-        _.forEach(fieldNames, (fieldName:any)=>{
-          if (record[fieldName])
-            initialValues[fieldName] = record[fieldName];
-        })
-      } else {
-      }
+  const mergedSchema = object? _.defaultsDeep({}, object.schema, objectSchema): objectSchema;
+  fieldSchemaArray.length = 0
+  _.forEach(mergedSchema.fields, (field, fieldName) => {
+    if (!field.group || field.group == 'null' || field.group == '-')
+      field.group = '通用'
+    let isObjectField = /\w+\.\w+/.test(fieldName)
+    if (field.type == 'grid' || field.type == 'object') {
+      // field.group = field.label
+      field.is_wide = true;
+    }
+    // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
+    let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
+    if (!field.hidden && !isObjectField && !isOmitField){
+      fieldSchemaArray.push(_.defaults({name: fieldName}, field))
+    }
+  })
+  _.forEach(fieldSchemaArray, (field:any)=>{
+    fieldNames.push(field.name)
+  })
+
+  if (object && recordId) {
+    const recordCache = object.getRecord(recordId, fieldNames)
+    if (recordCache.isLoading)
+      return (<div><Spin/></div>)
+
+    if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
+      const record = recordCache.data.value[0];
+      _.forEach(fieldNames, (fieldName:any)=>{
+        if (record[fieldName])
+          initialValues[fieldName] = record[fieldName];
+      })
+    } else {
     }
   }
   
 
 
   const onFinish = async(values:any) =>{
+    if (!object) 
+      return
+    
     let result; 
     if(!recordId){     
       result = await API.insertRecord(objectApiName, values);

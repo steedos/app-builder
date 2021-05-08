@@ -15,13 +15,13 @@
     border-left-style: none;
     border-right-style: none;
   }
-  .ag-row:last-child {
-    border-bottom-style: none;
+  .ag-row:first-child {
+    border-bottom-style: solid;
   }
-  .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected),
-  .ag-cell-inline-editing.ag-cell-focus {
+  // .ag-cell-focus:not(.ag-cell-range-selected),
+  .ag-ltr .ag-has-focus .ag-cell-inline-editing.ag-cell-focus {
     overflow: visible;
-    border: none;
+    // border: none;
     background: transparent;
     .ag-react-container {
       min-width: 200px;

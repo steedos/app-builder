@@ -11,10 +11,13 @@ import { getObjectRecordUrl } from "../utils"
 import { Spin } from 'antd';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
-import { MenuModule } from '@ag-grid-enterprise/menu';
-import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+import { AllModules } from '@ag-grid-enterprise/all-modules';
+import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import Button from '@salesforce/design-system-react/components/button'; 
+import { AgGridCellEditor } from "./ag-grid/CellEditor";
+import { AgGridCellRenderer } from "./ag-grid/CellRender";
+import { AgGridCellFilter } from "./ag-grid/CellFilter";
 
 export type ObjectGridColumnProps = {
   fieldName: string
@@ -34,67 +37,6 @@ export type ObjectGridProps<T extends ObjectGridColumnProps> =
     })
   | any
 
-const ProFieldRenderer = (props: any) => {
-  const { 
-    value, 
-    valueType = 'text',
-    fieldSchema,
-  } = props;
-  return (
-    
-    <ProField 
-      mode='read'
-      valueType={valueType} 
-      fieldProps={{
-        field_schema: fieldSchema
-      }}
-      text={value}
-      emptyText=''
-      />
-  ) 
-}
-
-const ProFieldEditor = forwardRef((props: any, ref) => {
-  const { 
-    valueType = 'text',
-    fieldSchema
-  } = props;
-  const [value, setValue] = useState(props.value);
-
-  /* Component Editor Lifecycle methods */
-  useImperativeHandle(ref, () => {
-    return {
-        getValue() {
-            return value;
-        },
-        isPopup() {
-          return true;
-        }
-    };
-  });
-  
-  return (
-    <section className="slds-popover slds-popover slds-popover_edit" role="dialog">
-      <div className="slds-popover__body">
-        <ProField 
-          mode='edit'
-          valueType={valueType} 
-          value={value}
-          onChange={(newValue)=>{
-            if (newValue?.currentTarget?.value)
-              setValue(newValue?.currentTarget?.value)
-            else
-              setValue(newValue)
-          }}
-          fieldProps={{
-            field_schema: fieldSchema
-          }}
-          />
-      </div>
-    </section>
-  ) 
-});
-  
 // export const getObjectGridProColumn = (field: any, columnOption?: any) => {
 //   // 把yml中的某个字段field转成ant的ProTable中的columns属性项
 //   if (!field) {
@@ -350,13 +292,23 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
+            const sort = []
+            _.forEach(params.request.sortModel, (sortField)=>{
+              sort.push([sortField.colId, sortField.sort])
+            })
+            const filters = defaultFilters;
+            // TODO 此处需要叠加处理 params.request.fieldModel
             API.requestRecords(
               objectApiName,
-              [],
-              fields,{}).then((data)=>{
+              filters,
+              fields,{
+                current: params.request.startRow,
+                sort,
+              }).then((data)=>{
 
                 params.success({
-                  rowData: data.value
+                  rowData: data.value,
+                  rowCount: data['@odata.count']
                 });
             })
         }
@@ -375,22 +327,45 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       maxWidth: 35,
       minWidth: 35,
       checkboxSelection: true,
+      headerCheckboxSelection: true,
+      suppressMenu: true,
     }];
     _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName]
+      let filter:any = true
+      let filterParams:any = {}
+      let rowGroup = false //["select", "lookup"].includes(field.type)
+      if (["textarea", "text", "code"].includes(field.type)) {
+        filter = 'agTextColumnFilter'
+      }
+      else if (["number", "percent", "currency"].includes(field.type)) {
+        filter = 'agNumberColumnFilter'
+      }
+      else {
+        filter = 'AgGridCellFilter',
+        filterParams = {
+          fieldSchema: field,
+          valueType: field.type,
+          multiple: true
+        }
+      }
       columns.push({
         field: fieldName,
         headerName: field.label?field.label:fieldName,
         width: field.is_wide? 300: 150,
         minWidth: field.is_wide? 300: 150,
         resizable: true,
-        filter: true,
-        cellRenderer: 'proFieldRenderer',
+        filter,
+        filterParams,
+        rowGroup,
+        flex: 1,
+        sortable: true,
+        cellRenderer: 'AgGridCellRenderer',
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
         },
-        cellEditor: 'proFieldEditor',
+        cellEditor: 'AgGridCellEditor',
         cellEditorParams: {
           fieldSchema: field,
           valueType: field.type,
@@ -410,6 +385,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       resizable: false,
       cellRenderer: 'rowActions',
       cellEditor: 'rowActions',
+      suppressMenu: true,
     });
     return columns
   }
@@ -442,19 +418,22 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // )
   return (
 
-    <div className="ag-theme-balham">
+    <div className="ag-theme-balham" style={{height: 500}}>
       <AgGridReact
         columnDefs={getColumns()}
         rowModelType='serverSide'
         pagination={true}
         paginationPageSize={50}
         rowSelection='multiple'
-        modules={[ServerSideRowModelModule, MenuModule, ColumnsToolPanelModule]}
+        modules={AllModules}
         stopEditingWhenGridLosesFocus={true}
         serverSideDatasource={getDataSource()}
+        serverSideStoreType={ServerSideStoreType.Partial}
+        sideBar='filters'
         frameworkComponents = {{
-          proFieldRenderer: ProFieldRenderer,
-          proFieldEditor: ProFieldEditor,
+          AgGridCellRenderer: AgGridCellRenderer,
+          AgGridCellEditor: AgGridCellEditor,
+          AgGridCellFilter: AgGridCellFilter,
           rowActions: RowActions,
         }}
       />
