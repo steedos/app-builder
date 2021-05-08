@@ -7,6 +7,7 @@ import { Modal, TreeSelect, Select, Input, Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
 import { useEffect, useState } from "react";
+import useAntdMediaQuery from 'use-media-antd-query';
 
 export default {
   title: "Builder App",
@@ -46,6 +47,69 @@ export const SelectUsers = () => {
     window.close()
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  const organizationColumns = isMobile ? [
+    {
+      fieldName: "name",
+      hideInSearch: true,
+      sorter: true,
+    },
+    {
+      fieldName: "email",
+      hideInSearch: true,
+    },
+    {
+      fieldName: "organizations_parents",
+      hideInTable: true
+    }
+  ] : [
+    {
+      fieldName: "name",
+      sorter: true,
+    },
+    {
+      fieldName: "email",
+    },
+    {
+      fieldName: "organizations_parents",
+      hideInTable: true,
+      expandType: "tree",
+      expandReference: "organizations",
+      expandNameField: "name",
+      expandParentField: "parent"
+    }
+  ];
+  const groupColumns = isMobile ? [
+    {
+      fieldName: "name",
+      sorter: true,
+      hideInSearch: true,
+    },
+    {
+      fieldName: "email",
+      hideInSearch: true,
+    },
+    {
+      fieldName: "group__c",
+      hideInTable: true
+    },
+  ] : [
+    {
+      fieldName: "name",
+      sorter: true,
+    },
+    {
+      fieldName: "email",
+    },
+    {
+      fieldName: "group__c",
+      hideInTable: true,
+      expandType: "list",
+      expandReference: "contacts_group__c",
+      expandNameField: "name"
+    }
+  ];
   return (
     <div className="App">
       <ProCard
@@ -71,23 +135,10 @@ export const SelectUsers = () => {
             <ObjectExpandTable
               onChange={handleOnTab1Change}
               objectApiName="space_users"
-              columnFields={[
-                {
-                  fieldName: "name",
-                  sorter: true,
-                },
-                {
-                  fieldName: "email",
-                },
-                {
-                  fieldName: "organizations_parents",
-                  expandType: "tree",
-                  expandReference: "organizations",
-                  expandNameField: "name",
-                  expandParentField: "parent",
-                  hideInTable: true,
-                },
-              ]}
+              search={{
+                filterType: 'light',
+              }}
+              columnFields={organizationColumns}
             />
           </ProCard.TabPane>
           <ProCard.TabPane
@@ -102,22 +153,10 @@ export const SelectUsers = () => {
               onChange={handleOnTab2Change}
               rowKey="_id"
               objectApiName="contacts"
-              columnFields={[
-                {
-                  fieldName: "name",
-                  sorter: true,
-                },
-                {
-                  fieldName: "email",
-                },
-                {
-                  fieldName: "group__c",
-                  expandType: "list",
-                  expandReference: "contacts_group__c",
-                  expandNameField: "name",
-                  hideInTable: true,
-                },
-              ]}
+              search={{
+                filterType: 'light',
+              }}
+              columnFields={groupColumns}
             />
           </ProCard.TabPane>
         </ProCard>

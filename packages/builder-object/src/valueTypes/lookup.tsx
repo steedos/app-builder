@@ -312,7 +312,7 @@ export const FieldTreeSelect = observer((props:any)=> {
         value={value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         treeData={treeData}
-        placeholder="Please select"
+        placeholder="请选择"
         // treeDefaultExpandAll
         onChange={onChange}
         {...rest}

@@ -138,6 +138,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     defaultClassName,
     onChange,
     toolbar,
+    search,
     ...rest
   } = props
 
@@ -156,7 +157,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     _.forEach(
       columnFields,
       ({ fieldName, ...columnItem }: ObjectTableColumnProps) => {
-        if (columnItem.hideInTable) return
+        // if (columnItem.hideInTable) return
         let columnOption: any = {};
         const defaultSortOrder = getDefaultSortOrder(fieldName,sort)
         if(defaultSortOrder){
@@ -259,9 +260,21 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     }
   }
 
-  const search = isMobile? false : {
+  let searchOptions: any =  {
     filterType: 'light',
   }
+  if(isMobile){
+    searchOptions = false;
+  }
+  const proSearch = search ? search : searchOptions;
+
+  let toolbarOptions: any =  {
+    subTitle: `${totalRecords} 个项目`
+  };
+  if(isMobile){
+    toolbarOptions.settings = false;
+  }
+  const proToolbar = Object.assign({}, toolbarOptions, toolbar);
 
   return (
     <ProTable
@@ -280,10 +293,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
         __columnFields: columnFields,
         __defaultFilters: defaultFilters,
       }}
-      search={search}
-      toolbar={Object.assign({}, {
-        subTitle: `${totalRecords} 个项目`
-      }, toolbar)}
+      search={proSearch}
+      toolbar={proToolbar}
       size="small"
       className={["object-table", rest.className].join(" ")}
       {...rest}
