@@ -28,6 +28,12 @@ export const Grid = () => {
               fieldName: 'parent_id'
             },
             {
+              fieldName: 'rating'
+            },
+            {
+              fieldName: 'type'
+            },
+            {
               fieldName: 'created'
             },
             {

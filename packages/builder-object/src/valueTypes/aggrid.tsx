@@ -13,67 +13,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 import './aggrid.less';
-
-const ProFieldRenderer = (props: any) => {
-  const { 
-    value, 
-    valueType = 'text',
-    fieldSchema,
-  } = props;
-  return (
-    
-    <ProField 
-      mode='read'
-      valueType={valueType} 
-      fieldProps={{
-        field_schema: fieldSchema
-      }}
-      text={value}
-      emptyText=''
-      />
-  ) 
-}
-
-const ProFieldEditor = forwardRef((props: any, ref) => {
-  const { 
-    valueType = 'text',
-    fieldSchema
-  } = props;
-  const [value, setValue] = useState(props.value);
-
-  /* Component Editor Lifecycle methods */
-  useImperativeHandle(ref, () => {
-    return {
-        getValue() {
-            return value;
-        },
-        isPopup() {
-          return true;
-        }
-    };
-  });
-  
-  return (
-    <section className="slds-popover slds-popover slds-popover_edit" role="dialog">
-      <div className="slds-popover__body">
-        <ProField 
-          mode='edit'
-          valueType={valueType} 
-          value={value}
-          onChange={(newValue)=>{
-            if (newValue?.currentTarget?.value)
-              setValue(newValue?.currentTarget?.value)
-            else
-              setValue(newValue)
-          }}
-          fieldProps={{
-            field_schema: fieldSchema
-          }}
-          />
-      </div>
-    </section>
-  ) 
-});
+import { AgGridCellRenderer } from '../components/ag-grid/CellRender';
+import { AgGridCellEditor } from '../components/ag-grid/CellEditor';
 
 // 表格类型字段，
 // value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
@@ -173,13 +114,13 @@ export const ObjectFieldGrid = (props) => {
         minWidth: field.is_wide? 300: 150,
         resizable: true,
         filter: true,
-        cellRenderer: 'proFieldRenderer',
+        cellRenderer: 'AgGridCellRender',
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
           mode
         },
-        cellEditor: 'proFieldEditor',
+        cellEditor: 'AgGridCellEditor',
         cellEditorParams: {
           fieldSchema: field,
           valueType: field.type,
@@ -222,8 +163,8 @@ export const ObjectFieldGrid = (props) => {
         }}
         suppressNoRowsOverlay={true}
         frameworkComponents = {{
-          proFieldRenderer: ProFieldRenderer,
-          proFieldEditor: ProFieldEditor,
+          AgGridCellRenderer: AgGridCellRenderer,
+          AgGridCellEditor: AgGridCellEditor,
           rowActions: RowActions,
         }}
       />
