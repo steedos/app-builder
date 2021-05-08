@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
-import { Tag , Select, Spin } from 'antd';
+import { Tag , Select, Spin, TreeSelect } from 'antd';
 import _, { isObject, result, values } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
@@ -8,6 +8,7 @@ import FieldSelect from '@ant-design/pro-field/es/components/Select';
 import { Link } from "react-router-dom";
 import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
+import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
 
 const { Option } = Select;
@@ -227,18 +228,30 @@ export const LookupField = observer((props:any) => {
                     )
             }
         }
-        const proFieldProps = {
-            mode: mode,
-            showSearch: true,
-            showArrow: true,
-            optionFilterProp: 'label',
-            fieldProps: newFieldProps,
-            request,
-            labelInValue,
-            params,
-            onDropdownVisibleChange,
-            optionItemRender,
-            ...rest
+        let proFieldProps: any;
+        const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
+        if(isLookupTree){
+            proFieldProps = {
+                objectApiName: referenceTo,
+                onChange: newFieldProps.onChange,
+                multiple,
+                value: newFieldProps.value
+            }
+        }
+        else{
+            proFieldProps = {
+                mode: mode,
+                showSearch: true,
+                showArrow: true,
+                optionFilterProp: 'label',
+                fieldProps: newFieldProps,
+                request,
+                labelInValue,
+                params,
+                onDropdownVisibleChange,
+                optionItemRender,
+                ...rest
+            }
         }
         const SelectProFieldProps = {
             mode: mode,
@@ -263,17 +276,44 @@ export const LookupField = observer((props:any) => {
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
         }
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
+        const fieldWidth = _.isArray(referenceTos) ? "70%" : "100%";
         return (
             <React.Fragment>
                 {
                     needReferenceToSelect && 
                     (<Select style={{ width: "30%" }}  {...SelectProFieldProps} options={referenceToOptions} ></Select>)
                 }
-                <FieldSelect {...proFieldProps} style={ _.isArray(referenceTos) ? { width: "70%" } : { width: "100%" }} />
+                {isLookupTree ? (<FieldTreeSelect {...proFieldProps} style={ { width: fieldWidth } } />) : (<FieldSelect {...proFieldProps} style={ { width: fieldWidth } } />)}
 
             </React.Fragment>
         )
     }
+});
+
+export const FieldTreeSelect = observer((props:any)=> {
+    const { objectApiName, nameField = "name", parentField = "parent", filters = [], value, onChange, ...rest } = props;
+    const fields = [nameField, parentField]
+    const object = Objects.getObject(objectApiName);
+    if (object.isLoading) return (<div><Spin/></div>);
+    let treeData = [];
+    const recordList: any = object.getRecordList(filters, fields);
+    if (recordList.isLoading) return (<div><Spin/></div>);
+    const recordListData = recordList.data;
+    if (recordListData && recordListData.value && recordListData.value.length > 0) {
+        treeData = getTreeDataFromRecords(recordListData.value, nameField, parentField);
+    }
+    return (
+      <TreeSelect
+        style={{ width: '100%' }}
+        value={value}
+        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+        treeData={treeData}
+        placeholder="Please select"
+        // treeDefaultExpandAll
+        onChange={onChange}
+        {...rest}
+      />
+    );
 });
 
 export const lookup = {
