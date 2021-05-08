@@ -17,8 +17,9 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           // doesFilterPass(params) {
           // },
 
-          // isFilterActive() {
-          // },
+          isFilterActive() {
+            return !!value
+          },
 
           // this example isn't using getModel() and setModel(),
           // so safe to just leave these empty. don't do this in your code!!!
@@ -32,6 +33,10 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           }
       }
   });
+
+  useEffect(() => {
+    props.filterChangedCallback()
+  }, [value]);
 
   return (
     <div style={{padding:5}}>
