@@ -5,7 +5,7 @@ import Dropdown from '@salesforce/design-system-react/components/menu-dropdown';
 import Button from '@salesforce/design-system-react/components/button'; 
 import Popover from '@salesforce/design-system-react/components/popover'; 
 
-import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 
