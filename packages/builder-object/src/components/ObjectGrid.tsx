@@ -346,11 +346,14 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             //     params.fail();
             // }
             console.log(params)
-
+            const fields = ['name']
+            _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
+              fields.push(fieldName)
+            });
             API.requestRecords(
               objectApiName,
               [],
-              ['name'],{}).then((data)=>{
+              fields,{}).then((data)=>{
 
                 params.success({
                   rowData: data.value
