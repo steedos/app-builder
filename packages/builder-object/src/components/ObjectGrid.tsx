@@ -369,7 +369,13 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const getColumns = ()=>{
 
-    const columns:any[] = [];
+    const columns:any[] = [{
+      resizable: false,
+      width: 35,
+      maxWidth: 35,
+      minWidth: 35,
+      checkboxSelection: true,
+    }];
     _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName]
       columns.push({
@@ -440,6 +446,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       <AgGridReact
         columnDefs={getColumns()}
         rowModelType='serverSide'
+        pagination={true}
+        paginationPageSize={50}
+        rowSelection='multiple'
         modules={[ServerSideRowModelModule, MenuModule, ColumnsToolPanelModule]}
         stopEditingWhenGridLosesFocus={true}
         serverSideDatasource={getDataSource()}
