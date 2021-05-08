@@ -64,9 +64,20 @@ export const Field = observer((props: any) => {
       formItemPropsMerged.labelCol = { span: 4 };
       formItemPropsMerged.wrapperCol = { span: 24 };
     } else {
-      formItemPropsMerged.labelCol = { span: 4 };
-      formItemPropsMerged.wrapperCol = { span: 20 };
+      formItemPropsMerged.labelAlign = 'left'
+      formItemPropsMerged.labelCol = { span: 3 };
+      formItemPropsMerged.wrapperCol = { span: 21 };
     }
+  } else {
+    if (context.vertical) {
+      formItemPropsMerged.labelCol = { span: 4 };
+      formItemPropsMerged.wrapperCol = { span: 24 };
+    } else {
+      formItemPropsMerged.labelAlign = 'left'
+      formItemPropsMerged.labelCol = { span: 6 };
+      formItemPropsMerged.wrapperCol = { span: 18 };
+    }
+
   }
 
   const ProFieldWrap = observer((props: any) => {
