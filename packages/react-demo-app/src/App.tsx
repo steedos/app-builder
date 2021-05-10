@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef, useMemo } from "react"
 // import logo from "./logo.svg"
 import "./App.css"
 
@@ -12,7 +12,7 @@ import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
 import { Settings } from '@steedos/builder-store'
 import useAntdMediaQuery from 'use-media-antd-query';
-
+import { useResizeObserver } from "./use-resize-observer";
 
 function App(props: any) {
   let queryObject = queryString.parse(window.location.search.slice(1))
@@ -36,6 +36,14 @@ function App(props: any) {
   const handleOnTab2Change = (users: any) => {
     setSelectedUsersInTab2(users)
   }
+
+  const resizeSubject = useRef()
+  const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>(current.firstChild));
+  const contentRectHeight = contentRect.height;
+  const scroll = useMemo(() => {
+    const scrollHeight = contentRectHeight - 280;
+    return { y: scrollHeight }
+  }, [contentRectHeight]);
 
   useEffect(() => {
     setSelectedUsers([...selectedUserInTab1, ...selectedUserInTab2])
@@ -122,7 +130,7 @@ function App(props: any) {
   ];
   return (
     <SteedosProvider {...providerProps}>
-      <div className="App">
+      <div className="App" ref={resizeSubject}>
         <ProCard
           className="main-container"
           title=""
@@ -134,6 +142,7 @@ function App(props: any) {
             tabs={{
               type: "card",
             }}
+            // ref={resizeSubject}
           >
             <ProCard.TabPane
               key="tab1"
@@ -150,6 +159,8 @@ function App(props: any) {
                   filterType: 'light',
                 }}
                 columnFields={organizationColumns}
+                scroll={scroll}
+                debounceTime={500}
               />
             </ProCard.TabPane>
             <ProCard.TabPane
@@ -168,6 +179,8 @@ function App(props: any) {
                   filterType: 'light',
                 }}
                 columnFields={groupColumns}
+                scroll={scroll}
+                debounceTime={500}
               />
             </ProCard.TabPane>
           </ProCard>
