@@ -101,7 +101,7 @@ function App(props: any) {
       hideInSearch: true,
     },
     {
-      fieldName: "group__c",
+      fieldName: "group",
       hideInTable: true
     },
   ] : [
@@ -113,10 +113,10 @@ function App(props: any) {
       fieldName: "email",
     },
     {
-      fieldName: "group__c",
+      fieldName: "group",
       hideInTable: true,
       expandType: "list",
-      expandReference: "contacts_group__c",
+      expandReference: "contacts_group",
       expandNameField: "name"
     }
   ];
@@ -163,7 +163,7 @@ function App(props: any) {
               <ObjectExpandTable
                 onChange={handleOnTab2Change}
                 rowKey="_id"
-                objectApiName="contacts"
+                objectApiName="contacts__c"
                 search={{
                   filterType: 'light',
                 }}
