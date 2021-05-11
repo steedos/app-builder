@@ -18,7 +18,6 @@ import visualizer from 'rollup-plugin-visualizer'
 import path from 'path';
 
 const options = {
-  input: `src/webcomponents.tsx`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
   watch: {
@@ -102,24 +101,34 @@ const options = {
 };
 
 export default [
-  // // React CJS
-  // {
-  //   ...options,
-  //   output: [{ file: 'dist/builder-object.react.js', format: 'cjs', sourcemap: true }],
-  //   plugins: options.plugins.concat([
-  //     sourceMaps(),
-  //     css({ output: 'builder-object.css' })
-  //   ]),
-  // },
+  // React CJS
+  {
+    ...options,
+    input: `src/index.tsx`,
+    external: [ 'react' ],
+    output: [
+      { 
+        file: 'dist/builder-object.react.js', 
+        format: 'cjs', 
+        sourcemap: true,
+        globals: { react: 'React' }
+      }
+    ],
+    plugins: options.plugins.concat([
+      sourceMaps(),
+    ]),
+  },
   // // ES
   // {
   //   ...options,
+  //   input: `src/index.tsx`,
   //   output: [{ file: 'dist/builder-object.esm.js', format: 'es', sourcemap: true }],
   //   plugins: options.plugins.concat([sourceMaps()]),
   // },
   // UMD DEV
   {
     ...options,
+    input: `src/webcomponents.tsx`,
     output: [
       {
         file: 'dist/builder-object.umd.js',
@@ -133,22 +142,5 @@ export default [
       },
     ],
     // plugins: options.plugins.concat([uglify(), sourceMaps()]),
-  },
-  // UMD Production
-  // {
-  //   ...options,
-  //   output: [
-  //     {
-  //       file: 'dist/builder-object.umd.min.js',
-  //       name: 'BuilderObject',
-  //       format: 'umd',
-  //       sourcemap: false,
-  //       amd: {
-  //         id: '@steedos/builder-object',
-  //       },
-  //       intro: 'const global = window;',
-  //     },
-  //   ],
-  //   plugins: options.plugins.concat([uglify(), sourceMaps()]),
-  // },
-];
+  }
+]
