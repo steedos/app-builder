@@ -265,6 +265,7 @@ export const LookupField = observer((props:any) => {
             onChange: (value: any) => {
                 setReferenceTo(value)
             },
+            dropdownMatchSelectWidth:200,
             defaultValue:referenceTo
         }
         const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
@@ -289,18 +290,18 @@ export const LookupField = observer((props:any) => {
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
         }
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
-        const fieldWidth = _.isArray(referenceTos) ? "70%" : "100%";
+        const fieldWidth = _.isArray(referenceTos) ? "87%" : "100%";
         return (
             <React.Fragment>
                 {
                     needReferenceToSelect && 
-                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
+                    (<Select style={{ width: "13%" }}  {...SelectProFieldProps} >
                     {
                         _.map(referenceToOptions,(item)=>{
                             return (
                             <Option value={item.value} key={item.value}>
                                 {showIcon && item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
-                                {item.label}
+                                <span className="left_label">{item.label}</span>
                             </Option>)
                         })
                     }
