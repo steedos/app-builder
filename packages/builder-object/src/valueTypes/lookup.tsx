@@ -297,7 +297,6 @@ export const LookupField = observer((props:any) => {
                     (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
                     {
                         _.map(referenceToOptions,(item)=>{
-                            console.log('item=>',item)
                             return (
                             <Option value={item.value} key={item.value}>
                                 {showIcon && item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
