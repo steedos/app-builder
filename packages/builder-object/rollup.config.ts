@@ -84,17 +84,19 @@ const options = {
         }
       })],
       use: [["less", { javascriptEnabled: true }]],
+      extract: true,
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify( 'production' )
     }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     commonjs({
-      esmExternals: true,
-      transformMixedEsModules: true,
-      exclude: ["../../node_modules/antd/**", "../../node_modules/@ant-design/**"],
-      include: /\**node_modules\**/,
+      // esmExternals: true,
+      // transformMixedEsModules: true,
+      // exclude: ["../../node_modules/antd/**", "../../node_modules/@ant-design/**"],
+      // include: /\**node_modules\**/,
     }),
+    // css({ output: 'builder-object.css' }),
     visualizer(),
   ],
 };
