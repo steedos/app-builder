@@ -30,10 +30,10 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@ant-design/pro-card": "^1.11.6",
-    "@ant-design/pro-form": "^1.19.1",
+    "@ant-design/pro-card": "^1.11.12",
+    "@ant-design/pro-form": "^1.22.1",
     "@ant-design/pro-layout": "^6.16.3",
-    "@ant-design/pro-table": "^2.32.2",
+    "@ant-design/pro-table": "^2.35.1",
     "@chakra-ui/accordion": "^1.2.0",
     "@chakra-ui/icons": "^1.0.8",
     "@chakra-ui/layout": "^1.4.0",
