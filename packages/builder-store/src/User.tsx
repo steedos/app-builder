@@ -4,10 +4,36 @@ import { Settings } from "./Settings";
 
 export const User = types.model({
   me: types.maybeNull(types.frozen()),
+  session: types.maybeNull(types.frozen()),
   isLoading: false,
   isLoginFailed: false,
 })
 .actions(self => {
+  const setSession = (session: any) => {
+    self.session = session;
+  };
+  const loadSession = flow(function* loadSession() {
+    try {
+      self.isLoading = true;
+      // 获取user session信息
+      const session = yield API.client.validate();
+      setSession(session);
+      self.isLoading = false;
+      // self.isLoginFailed = false
+      return session;
+    } catch (error) {
+      self.isLoading = false;
+      // self.isLoginFailed = true
+      setSession(null)
+      console.error("Failed to validate", error)
+      return null;
+    }
+  });
+  const getSession = () => {
+    if (!self.session && !self.isLoginFailed)
+      loadSession();
+    return self.session
+  }
   const setMe = (user: any) => {
     self.me = user;
   };
@@ -40,13 +66,16 @@ export const User = types.model({
     }
   });
   const getMe = () => {
-    if (!self.me && !self.isLoginFailed)
+    if (!self.me && !self.isLoginFailed){
       loadMe();
+    }
     return self.me
   }
   return {
     loadMe,
     getMe, 
+    loadSession,
+    getSession, 
     login: flow(function* login(userInput, passowrd) {
       self.isLoading = true;
       let email = '';
@@ -70,7 +99,9 @@ export const User = types.model({
             API.client.setToken(data.token);
             Settings.setAuthToken(data.token)
           }
-          const me = User.loadMe();
+          const me = yield User.loadMe();
+          console.log("==API.client.getSpaceId==1=", API.client.getSpaceId());
+          yield User.loadSession();
           self.isLoading = false;
           self.isLoginFailed = false
           return me
@@ -85,6 +116,7 @@ export const User = types.model({
         try {
             yield API.client.logout();
             setMe(null)
+            setSession(null)
             Settings.setUserId(null)
             Settings.setAuthToken(null)
             Settings.setTenantId(null)

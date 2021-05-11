@@ -30,7 +30,9 @@ export const Layout = observer((props: any) => {
   User.getMe();
   if (User.isLoading)
     return (<span>Loading user...</span>)
-    
+  User.getSession();
+  if (User.isLoading)
+    return (<span>Loading session...</span>)
   if (!User.me) {
     history.push('/login');
     return (<>Please login</>);
