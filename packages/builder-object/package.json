@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build-rollup": "rollup -c rollup.config.ts",
+    "build-rollup": "export NODE_OPTIONS=--max_old_space_size=4096 && rollup -c rollup.config.ts",
     "build": "concurrently yarn:build:*",
     "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps --copy-files",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps --copy-files",
