@@ -11,6 +11,8 @@ import svg from 'rollup-plugin-svg';
 import { uglify } from 'rollup-plugin-uglify';
 const rollupPostcssLessLoader = require('rollup-plugin-postcss-webpack-alias-less-loader')
 import alias from '@rollup/plugin-alias';
+import css from 'rollup-plugin-css-only'
+
 
 import path from 'path';
 
@@ -24,22 +26,25 @@ const options = {
   plugins: [,
     // Allow json resolution
     json(),
-    nodeResolve(),
+    nodeResolve({
+      extensions: [ '.jsx', '.js', '.json', '.node' ],
+      browser: true, 
+    }),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     svg(),
-    alias({
-      entries: {
-        "@steedos/builder-sdk": "../../packages/builder-sdk/src/index.ts",
-        "@steedos/builder-store": "../../packages/builder-store/src/index.tsx",
-        "@steedos/builder-ant-design": "../../packages/builder-ant-design/src/index.tsx",
-        "@steedos/builder-form": "../../packages/builder-form/src/index.tsx",
-        "@steedos/builder-object": "../../packages/builder-object/src/index.tsx",
-        "@steedos/builder-locale": "../../packages/builder-locale/src/index.tsx",
-        "@emotion/core": "../../node_modules/@emotion/react",
-        "emotion-theming": "../../node_modules/@emotion/react",
-      }
-    }),
+    // alias({
+    //   entries: {
+    //     "@steedos/builder-sdk": "../../packages/builder-sdk/src/index.ts",
+    //     "@steedos/builder-store": "../../packages/builder-store/src/index.tsx",
+    //     "@steedos/builder-ant-design": "../../packages/builder-ant-design/src/index.tsx",
+    //     "@steedos/builder-form": "../../packages/builder-form/src/index.tsx",
+    //     "@steedos/builder-object": "../../packages/builder-object/src/index.tsx",
+    //     "@steedos/builder-locale": "../../packages/builder-locale/src/index.tsx",
+    //     "@emotion/core": "../../node_modules/@emotion/react",
+    //     "emotion-theming": "../../node_modules/@emotion/react",
+    //   }
+    // }),
     // less({
     //   extensions: ['.css', '.less'],
     //   inject: true,
@@ -47,11 +52,26 @@ const options = {
     //   include: [path.resolve(__dirname, '../../node_modules/antd'), path.resolve(__dirname, '../../node_modules/@ant-design/')],
     //   option: {javascriptEnabled: true}
     // }),
+    // babel({
+    //   plugins: [
+    //     ['import', { libraryName: 'antd', style: true }],
+    //   ],
+    //   exclude: ['node_modules/**', 'public/**'],
+    // }),
     babel({
+      include: [
+        '../../node_modules/@salesforce/design-system-react/**',
+        '../../node_modules/antd/**',
+        '../../node_modules/@ant-design/**'
+      ],
+      presets: ["@babel/preset-react", "@babel/preset-env"],
       plugins: [
         ['import', { libraryName: 'antd', style: true }],
-      ],
-      exclude: ['node_modules/**', 'public/**'],
+        ["@babel/plugin-proposal-class-properties", { loose: true }],
+        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-proposal-export-default-from',
+        '@babel/plugin-proposal-export-namespace-from',
+      ]
     }),
     postcss({
       loaders: [rollupPostcssLessLoader({
@@ -74,15 +94,19 @@ export default [
   // // React CJS
   // {
   //   ...options,
-  //   output: [{ file: 'dist/builder-form.react.js', format: 'cjs', sourcemap: true }],
-  //   plugins: options.plugins.concat([sourceMaps()]),
+  //   output: [{ file: 'dist/builder-object.react.js', format: 'cjs', sourcemap: true }],
+  //   plugins: options.plugins.concat([
+  //     sourceMaps(),
+  //     css({ output: 'builder-object.css' })
+  //   ]),
   // },
   // // ES
   // {
   //   ...options,
-  //   output: [{ file: 'dist/builder-form.esm.js', format: 'es', sourcemap: true }],
+  //   output: [{ file: 'dist/builder-object.esm.js', format: 'es', sourcemap: true }],
   //   plugins: options.plugins.concat([sourceMaps()]),
   // },
+  // UMD
   {
     ...options,
     output: [

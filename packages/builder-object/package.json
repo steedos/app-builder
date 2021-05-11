@@ -70,6 +70,7 @@
     "react-sortable-hoc": "^2.0.0",
     "react-to-webcomponent": "^1.5.1",
     "react-use": "^17.2.4",
+    "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-svg": "^2.0.0",
     "tslib": "^2.1.0",

@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 const isProd = process.env.NODE_ENV === 'production';
 let rootUrl = isProd ? '/' : process.env.REACT_APP_API_URL? process.env.REACT_APP_API_URL: 'http://localhost:5000';
-let env: any = process.env;
+
 let tenantId = localStorage.getItem('steedos:spaceId');
 let userId = localStorage.getItem('steedos:userId');
 let authToken = localStorage.getItem('steedos:token');
@@ -15,7 +15,7 @@ tenantId = config.tenantId || tenantId;
 userId = config.userId || userId;
 authToken = config.authToken || authToken;
 locale = config.locale || locale;
-env = config.env || env;
+let env = config.env;
 
 export const Settings = types
 .model('Settings', {

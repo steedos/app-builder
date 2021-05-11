@@ -1,7 +1,7 @@
 var reactComponentSymbol = Symbol.for("r2wc.reactComponent");
 var renderSymbol = Symbol.for("r2wc.reactRender");
 var shouldRenderSymbol = Symbol.for("r2wc.shouldRender");
-var _ = require('lodash');
+import _ from 'lodash';
 
 var define = {
 	// Creates a getter/setter that re-renders everytime a property is set.
@@ -91,11 +91,11 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 
 	// Setup lifecycle methods
 	targetPrototype.connectedCallback = function() {
-		this.children = []
-		this.childNodes.forEach(node => {
-			this.children.push(node)
-			console.log(node.nodeName)
-		})
+		// this.children = []
+		// this.childNodes.forEach(node => {
+		// 	this.children.push(node)
+		// 	console.log(node.nodeName)
+		// })
 
 		// Once connected, it will keep updating the innerHTML.
 		// We could add a render method to allow this as well.
@@ -112,8 +112,8 @@ export default function(ReactComponent, React, ReactDOM, options= {}) {
 					data[propName] = this[key];
 				}
 			}, this);
-			data.children = this.childNodes;
-			console.log(data)
+			// data.children = this.childNodes;
+			// console.log(data)
 			rendering = true;
 			// Container is either shadow DOM or light DOM depending on `shadow` option.
 			// const container = options.shadow ? this.shadowRoot : document.createElement('span');
