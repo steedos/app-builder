@@ -259,7 +259,6 @@ export const LookupField = observer((props:any) => {
         }
         const SelectProFieldProps = {
             mode: mode,
-            showSearch: true,
             showArrow: true,
             optionFilterProp: 'label',
             onChange: (value: any) => {
@@ -300,7 +299,7 @@ export const LookupField = observer((props:any) => {
                         _.map(referenceToOptions,(item)=>{
                             return (
                             <Option value={item.value} key={item.value}>
-                                {showIcon && item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
+                                {item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
                                 <span className="left_label">{item.label}</span>
                             </Option>)
                         })
