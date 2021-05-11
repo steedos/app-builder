@@ -123,6 +123,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       }
     }else{
       result = await API.updateRecord(objectApiName, recordId, values);
+      object.getRecord(recordId, fieldNames).loadRecord();
       if(afterUpdate){
         return afterUpdate(result);  
       }else{

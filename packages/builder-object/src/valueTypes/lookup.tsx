@@ -259,12 +259,12 @@ export const LookupField = observer((props:any) => {
         }
         const SelectProFieldProps = {
             mode: mode,
-            showSearch: true,
             showArrow: true,
             optionFilterProp: 'label',
             onChange: (value: any) => {
                 setReferenceTo(value)
             },
+            dropdownMatchSelectWidth:200,
             defaultValue:referenceTo
         }
         const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
@@ -273,19 +273,38 @@ export const LookupField = observer((props:any) => {
         if(needReferenceToSelect){
             _.forEach(referenceTos,(val)=>{
                 const referenceToObject = Objects.getObject(val);
+                referenceToObjectSchema = referenceToObject.schema;
+                let referenceToObjectLeftIcon;
+                if(referenceToObjectSchema.icon){
+                    referenceToObjectLeftIcon = referenceToObjectSchema.icon;
+                }
                 if (!referenceToObject.isLoading){
-                    referenceToOptions.push({label:referenceToObject.schema.label,value:val})
+                    if(referenceToObjectLeftIcon){
+                        referenceToOptions.push({label:referenceToObjectSchema.label,value:val,icon:referenceToObjectLeftIcon})
+                    }else{
+                        referenceToOptions.push({label:referenceToObjectSchema.label,value:val})
+                    }   
                 }
             })
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
         }
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
-        const fieldWidth = _.isArray(referenceTos) ? "70%" : "100%";
+        const fieldWidth = _.isArray(referenceTos) ? "87%" : "100%";
         return (
             <React.Fragment>
                 {
                     needReferenceToSelect && 
-                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} options={referenceToOptions} ></Select>)
+                    (<Select style={{ width: "13%" }}  {...SelectProFieldProps} >
+                    {
+                        _.map(referenceToOptions,(item)=>{
+                            return (
+                            <Option value={item.value} key={item.value}>
+                                {item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
+                                <span className="left_label">{item.label}</span>
+                            </Option>)
+                        })
+                    }
+                    </Select>)
                 }
                 {isLookupTree ? (<FieldTreeSelect {...proFieldProps} style={ { width: fieldWidth } } />) : (<FieldSelect {...proFieldProps} style={ { width: fieldWidth } } />)}
 

@@ -66,14 +66,23 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       }
       // TODO: 暂时将以下两个属性代码注释，后期优化放开
       // if(field._filtersFunction){
-      //   let filtersFunction = saveEval(`(${fieldSchema._filtersFunction})`);
-      //   fieldSchema = Object.assign({}, fieldSchema, {filtersFunction});
+      //   let filtersFunction = saveEval(`(${field._filtersFunction})`);
+      //   fieldSchema = Object.assign({}, field, {filtersFunction});
       // }
       // if(field._optionsFunction){
-      //   let optionsFunction = saveEval(`(${fieldSchema._optionsFunction})`);
+      //   let optionsFunction = saveEval(`(${field._optionsFunction})`);
       //   fieldSchema = Object.assign({}, field, {optionsFunction});
       // }
       break;
+    // TODO: 暂时将select转换隐藏
+    // case "select":
+    //   if(field._optionsFunction){
+    //     let optionsFunction = saveEval(`(${field._optionsFunction})`);
+    //     fieldSchema = Object.assign({}, field, {optionsFunction});
+    //   }else{
+    //     fieldSchema = field;
+    //   }
+    //   break;
     default:
       fieldSchema = field;
       break;
