@@ -106,7 +106,7 @@ export default [
   //   output: [{ file: 'dist/builder-object.esm.js', format: 'es', sourcemap: true }],
   //   plugins: options.plugins.concat([sourceMaps()]),
   // },
-  // UMD
+  // UMD DEV
   {
     ...options,
     output: [
@@ -122,5 +122,22 @@ export default [
       },
     ],
     // plugins: options.plugins.concat([uglify(), sourceMaps()]),
+  },
+  // UMD Production
+  {
+    ...options,
+    output: [
+      {
+        file: 'dist/builder-object.umd.min.js',
+        name: 'BuilderObject',
+        format: 'umd',
+        sourcemap: false,
+        amd: {
+          id: '@steedos/builder-object',
+        },
+        intro: 'const global = window;',
+      },
+    ],
+    plugins: options.plugins.concat([uglify(), sourceMaps()]),
   },
 ];
