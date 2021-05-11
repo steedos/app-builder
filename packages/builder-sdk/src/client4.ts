@@ -258,6 +258,12 @@ export default class SteedosClient {
 
     };
 
+    async validate(){
+        let url = this.getBaseRoute() + "/api/v4/users/validate";
+        // let body = { 'utcOffset': moment().utcOffset() / 60 };
+        let body = { 'utcOffset': 8 };
+        return await this.doFetch(url, {method: 'POST', body: JSON.stringify(body)});
+    }
 
     createUser = (user: UserProfile, token: string, inviteId: string, redirect: string) => {
         this.trackEvent('api', 'api_users_createUser');

@@ -7,6 +7,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
+import svg from 'rollup-plugin-svg';
 import { uglify } from 'rollup-plugin-uglify';
 const rollupPostcssLessLoader = require('rollup-plugin-postcss-webpack-alias-less-loader')
 import alias from '@rollup/plugin-alias';
@@ -26,6 +27,7 @@ const options = {
     nodeResolve(),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
+    svg(),
     alias({
       entries: {
         "@steedos/builder-sdk": "../../packages/builder-sdk/src/index.ts",
