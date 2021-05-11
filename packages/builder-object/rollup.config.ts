@@ -12,6 +12,7 @@ import { uglify } from 'rollup-plugin-uglify';
 const rollupPostcssLessLoader = require('rollup-plugin-postcss-webpack-alias-less-loader')
 import alias from '@rollup/plugin-alias';
 import css from 'rollup-plugin-css-only'
+import visualizer from 'rollup-plugin-visualizer'
 
 
 import path from 'path';
@@ -64,9 +65,11 @@ const options = {
         '../../node_modules/antd/**',
         '../../node_modules/@ant-design/**'
       ],
+      // exclude: 'node_modules/',
       presets: ["@babel/preset-react", "@babel/preset-env"],
       plugins: [
-        ['import', { libraryName: 'antd', style: true }],
+        ['import', { libraryName: 'antd', style: true, "libraryDirectory": "es" }, 'antd'],
+        ['import', { libraryName: 'lodash' }, 'lodash'],
         ["@babel/plugin-proposal-class-properties", { loose: true }],
         '@babel/plugin-proposal-object-rest-spread',
         '@babel/plugin-proposal-export-default-from',
@@ -86,7 +89,13 @@ const options = {
       'process.env.NODE_ENV': JSON.stringify( 'production' )
     }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    commonjs({
+      esmExternals: true,
+      transformMixedEsModules: true,
+      exclude: ["../../node_modules/antd/**", "../../node_modules/@ant-design/**"],
+      include: /\**node_modules\**/,
+    }),
+    visualizer(),
   ],
 };
 
@@ -114,7 +123,7 @@ export default [
         file: 'dist/builder-object.umd.js',
         name: 'BuilderObject',
         format: 'umd',
-        sourcemap: true,
+        sourcemap: false,
         amd: {
           id: '@steedos/builder-object',
         },
@@ -124,20 +133,20 @@ export default [
     // plugins: options.plugins.concat([uglify(), sourceMaps()]),
   },
   // UMD Production
-  {
-    ...options,
-    output: [
-      {
-        file: 'dist/builder-object.umd.min.js',
-        name: 'BuilderObject',
-        format: 'umd',
-        sourcemap: false,
-        amd: {
-          id: '@steedos/builder-object',
-        },
-        intro: 'const global = window;',
-      },
-    ],
-    plugins: options.plugins.concat([uglify(), sourceMaps()]),
-  },
+  // {
+  //   ...options,
+  //   output: [
+  //     {
+  //       file: 'dist/builder-object.umd.min.js',
+  //       name: 'BuilderObject',
+  //       format: 'umd',
+  //       sourcemap: false,
+  //       amd: {
+  //         id: '@steedos/builder-object',
+  //       },
+  //       intro: 'const global = window;',
+  //     },
+  //   ],
+  //   plugins: options.plugins.concat([uglify(), sourceMaps()]),
+  // },
 ];

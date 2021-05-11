@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 
 import { ObjectField } from '../components/ObjectField';
-import BaseForm from '@ant-design/pro-form/lib/BaseForm';
+import BaseForm from '@ant-design/pro-form/es/BaseForm';
 import { Form as AntForm } from 'antd';
 import { FieldSection } from '@steedos/builder-form';
 
