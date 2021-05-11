@@ -273,8 +273,17 @@ export const LookupField = observer((props:any) => {
         if(needReferenceToSelect){
             _.forEach(referenceTos,(val)=>{
                 const referenceToObject = Objects.getObject(val);
+                referenceToObjectSchema = referenceToObject.schema;
+                let referenceToObjectLeftIcon;
+                if(referenceToObjectSchema.icon){
+                    referenceToObjectLeftIcon = referenceToObjectSchema.icon;
+                }
                 if (!referenceToObject.isLoading){
-                    referenceToOptions.push({label:referenceToObject.schema.label,value:val})
+                    if(referenceToObjectLeftIcon){
+                        referenceToOptions.push({label:referenceToObjectSchema.label,value:val,icon:referenceToObjectLeftIcon})
+                    }else{
+                        referenceToOptions.push({label:referenceToObjectSchema.label,value:val})
+                    }   
                 }
             })
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
@@ -285,7 +294,18 @@ export const LookupField = observer((props:any) => {
             <React.Fragment>
                 {
                     needReferenceToSelect && 
-                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} options={referenceToOptions} ></Select>)
+                    (<Select style={{ width: "30%" }}  {...SelectProFieldProps} >
+                    {
+                        _.map(referenceToOptions,(item)=>{
+                            console.log('item=>',item)
+                            return (
+                            <Option value={item.value} key={item.value}>
+                                {showIcon && item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
+                                {item.label}
+                            </Option>)
+                        })
+                    }
+                    </Select>)
                 }
                 {isLookupTree ? (<FieldTreeSelect {...proFieldProps} style={ { width: fieldWidth } } />) : (<FieldSelect {...proFieldProps} style={ { width: fieldWidth } } />)}
 
