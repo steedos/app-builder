@@ -5,16 +5,18 @@ import "./App.css"
 
 import { SteedosProvider } from "@steedos/builder-object"
 import { ObjectExpandTable } from "@steedos/builder-object"
+import { observer } from "mobx-react-lite";
+import { Settings, User } from '@steedos/builder-store';
 
 import { Button } from "antd"
 import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
-import { Settings } from '@steedos/builder-store'
 import useAntdMediaQuery from 'use-media-antd-query';
 import { useResizeObserver } from "./use-resize-observer";
 
-function App(props: any) {
+export default observer((props: any) => {
+  
   let queryObject = queryString.parse(window.location.search.slice(1))
   const providerProps = {
     rootUrl: queryObject.rooturl || Settings.rootUrl || "/",
@@ -67,6 +69,18 @@ function App(props: any) {
   }
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
+
+  const userSession = User.getSession();
+  if (User.isLoading)
+    return (<span>Loading session...</span>)
+  let orgExpandFilters;
+  if(!userSession.is_space_admin){
+    const orgIds = User.getCompanyOrganizationIds();
+    if(orgIds && orgIds.length){
+      orgExpandFilters = [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]
+    }
+  }
+
   const organizationColumns = isMobile ? [
     {
       fieldName: "name",
@@ -95,7 +109,8 @@ function App(props: any) {
       expandType: "tree",
       expandReference: "organizations",
       expandNameField: "name",
-      expandParentField: "parent"
+      expandParentField: "parent",
+      expandFilters: orgExpandFilters
     }
   ];
   const groupColumns = isMobile ? [
@@ -204,6 +219,4 @@ function App(props: any) {
       </div>
     </SteedosProvider>
   )
-}
-
-export default App
+});

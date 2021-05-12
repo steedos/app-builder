@@ -37,7 +37,8 @@ export const getTreeDataFromRecords = (records: [] = [], nameField: string = "na
       if(record.parent === parent){
         let tempNode: any = {
           title: record[nameField],
-          value: record._id
+          value: record._id,
+          key: record._id
         };
         const tempChildren = getChildrenNodes(record._id);
         if(tempChildren && tempChildren.length){
@@ -55,12 +56,13 @@ export const getTreeDataFromRecords = (records: [] = [], nameField: string = "na
       const isParentExist = !!records.find((item: any)=>{
         return item._id === tempParentValue;
       });
-      isRoot == !isParentExist;
+      isRoot = !isParentExist;
     }
     if(isRoot){
       let tempNode: any = {
         title: record[nameField],
-        value: record._id
+        value: record._id,
+        key: record._id
       };
       const tempChildren = getChildrenNodes(record._id);
       if(tempChildren && tempChildren.length){

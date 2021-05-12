@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { Objects, API } from "@steedos/builder-store"
+import { getTreeDataFromRecords } from '../utils';
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
@@ -26,7 +27,7 @@ export type ObjectTreeProps =
       nameField?: string
       parentField?: string
       rootNodeValue?: string
-      filters?: string | string[]
+      filters?: string | []
       checkable?: boolean
       onChange?: () => void
     } & {
@@ -82,38 +83,48 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
 
   useEffect(() => {
     if (records) {
-      let td: any = []
-      let ek: any = []
-      let tp: any = {}
-      let _rootNodeValue = rootNodeValue
-      ;(records.value as any[]).forEach((d) => {
-        let { _id, ...rest } = d
-        let parent = rest[parentField || "parent"]
-        tp[_id] = {
-          value: _id,
-          key: _id,
-          title: d[nameField || "name"],
-          children: [],
-          _id,
-          ...rest,
-          ...(tp[_id] || {}),
-        }
-        ek.push(_id)
-        if (parent) {
-          if (tp[parent]) {
-            tp[parent].children.push(tp[_id])
-          } else tp[parent] = { children: [tp[_id]] }
-        } else if (!parent) {
-          td = [tp[_id]]
-          _rootNodeValue = _id
-        }
-      })
-      if (_rootNodeValue) {
-        td = (tp[_rootNodeValue] && [tp[_rootNodeValue]]) || []
+      const treeData = getTreeDataFromRecords(records.value, nameField, parentField);
+      console.log("===treeData===", treeData);
+      if(treeData && treeData.length){
+        setTreeData(treeData);
+        const rootNodeValues = treeData.map((treeItem)=>{
+          return treeItem.value;
+        });
+        console.log("===rootNodeValues===", rootNodeValues);
+        setExpandedKeys(rootNodeValues)
       }
-      setTreeData(td)
-      // setExpandedKeys(ek)
-      setExpandedKeys([_rootNodeValue])
+      // let td: any = []
+      // let ek: any = []
+      // let tp: any = {}
+      // let _rootNodeValue = rootNodeValue
+      // ;(records.value as any[]).forEach((d) => {
+      //   let { _id, ...rest } = d
+      //   let parent = rest[parentField || "parent"]
+      //   tp[_id] = {
+      //     value: _id,
+      //     key: _id,
+      //     title: d[nameField || "name"],
+      //     children: [],
+      //     _id,
+      //     ...rest,
+      //     ...(tp[_id] || {}),
+      //   }
+      //   ek.push(_id)
+      //   if (parent) {
+      //     if (tp[parent]) {
+      //       tp[parent].children.push(tp[_id])
+      //     } else tp[parent] = { children: [tp[_id]] }
+      //   } else if (!parent) {
+      //     td = [tp[_id]]
+      //     _rootNodeValue = _id
+      //   }
+      // })
+      // if (_rootNodeValue) {
+      //   td = (tp[_rootNodeValue] && [tp[_rootNodeValue]]) || []
+      // }
+      // setTreeData(td)
+      // // setExpandedKeys(ek)
+      // setExpandedKeys([_rootNodeValue])
     }
   }, [records])
 

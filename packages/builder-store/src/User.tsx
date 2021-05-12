@@ -30,9 +30,18 @@ export const User = types.model({
     }
   });
   const getSession = () => {
+    if(self.isLoading)
+      return null;
     if (!self.session && !self.isLoginFailed)
       loadSession();
     return self.session
+  };
+  const getCompanyOrganizationIds  = () => {
+    const session = getSession();
+    if (session && session.companies){
+      return session.companies.map((c: any)=> c.organization);
+    }
+    return []
   }
   const setMe = (user: any) => {
     self.me = user;
@@ -76,6 +85,7 @@ export const User = types.model({
     getMe, 
     loadSession,
     getSession, 
+    getCompanyOrganizationIds,
     login: flow(function* login(userInput, passowrd) {
       self.isLoading = true;
       let email = '';

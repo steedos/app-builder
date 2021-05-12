@@ -29,6 +29,7 @@ export type ObjectExpandTableColumnProps = {
   expandReference?: string //针对树显示所使用的对象名.等于树的objectApiName
   expandNameField?: string //树中用于显示的字段名
   expandParentField?: string //树中对象的父级的字段名，默认是parent,只在expand为tree时有效
+  expandFilters?: [] | string //树中过滤条件
 } & ObjectTableColumnProps
 
 export type ObjectExpandTableProps =
@@ -84,8 +85,8 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     //   selectedNodes = _.flatten(selectedNodes.map((node) => flatChildren(node)))
     // }
 
-    selectedNodes.forEach(({ _id }) => {
-      tmpTreeNodes = [...tmpTreeNodes, _id]
+    selectedNodes.forEach(({ key }) => {
+      tmpTreeNodes = [...tmpTreeNodes, key]
     })
     tmpTreeNodes = _.uniq(tmpTreeNodes)
     setSelectedExpandNode(tmpTreeNodes)
@@ -109,7 +110,8 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     nameField: string
     parentField: string
     releatedColumnField: string
-  }>(null)
+    filters?: string | []
+    }>(null)
 
   useEffect(() => {
     let expandDefine:
@@ -119,6 +121,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
           expandNameField
           expandParentField
           fieldName
+          filters
         }
       | any = props.columnFields.find(
       ({
@@ -147,6 +150,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         nameField: expandDefine.expandNameField,
         parentField: expandDefine.expandParentField,
         releatedColumnField: expandDefine.fieldName,
+        filters: expandDefine.expandFilters
       }
     )
   }, [props.columnFields])
