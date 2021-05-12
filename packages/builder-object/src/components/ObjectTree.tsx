@@ -84,13 +84,11 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
   useEffect(() => {
     if (records) {
       const treeData = getTreeDataFromRecords(records.value, nameField, parentField);
-      console.log("===treeData===", treeData);
       if(treeData && treeData.length){
         setTreeData(treeData);
         const rootNodeValues = treeData.map((treeItem)=>{
           return treeItem.value;
         });
-        console.log("===rootNodeValues===", rootNodeValues);
         setExpandedKeys(rootNodeValues)
       }
       // let td: any = []
