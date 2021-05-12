@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag , Select, Spin, TreeSelect } from 'antd';
-import "antd/dist/antd.css";
 import _, { isObject, result, values } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
