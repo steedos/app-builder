@@ -143,6 +143,7 @@ export default observer((props: any) => {
       expandNameField: "name"
     }
   ];
+  const spaceUsersFilters = ["user_accepted", "=", true];
   return (
     <SteedosProvider {...providerProps}>
       <div className="App" ref={resizeSubject}>
@@ -176,6 +177,7 @@ export default observer((props: any) => {
                 columnFields={organizationColumns}
                 scroll={scroll}
                 debounceTime={500}
+                filters={spaceUsersFilters}
               />
             </ProCard.TabPane>
             <ProCard.TabPane
