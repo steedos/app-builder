@@ -83,4 +83,11 @@
         }
     }
 }
-
+// reference_to is not array 时选中的选项在下拉框中隐藏。
+.rc-virtual-list{
+    .rc-virtual-list-holder-inner{
+        .ant-select-item-option-selected{
+            display: none;
+        }
+    }
+}
