@@ -33,7 +33,7 @@ const options = {
     // }),
     babel({
       plugins: [
-        ['import', { libraryName: 'antd', style: true }],
+        ['import', { libraryName: 'antd', "libraryDirectory": "es", style: true }],
       ],
       exclude: ['node_modules/**', 'public/**'],
     }),

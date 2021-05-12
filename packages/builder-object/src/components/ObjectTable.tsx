@@ -9,7 +9,7 @@ import ProTable, {
   RequestData,
   ProColumnType,
 } from "@ant-design/pro-table"
-import { SortOrder } from "antd/lib/table/interface"
+import { SortOrder } from "antd/es/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"

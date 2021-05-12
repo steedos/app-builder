@@ -6,7 +6,7 @@ import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
 import { Form as ProForm } from 'antd';
-import { BaseFormProps } from "@ant-design/pro-form/lib/BaseForm";
+import { BaseFormProps } from "@ant-design/pro-form/es/BaseForm";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"

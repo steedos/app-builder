@@ -9,9 +9,9 @@ import ProContext, {createIntl,
 } from '@ant-design/pro-provider';
 
 import { ConfigProvider as AntdConfigProvider } from 'antd';
-import antd_zhCN from 'antd/lib/locale/zh_CN';
-import antd_zhTW from 'antd/lib/locale/zh_TW';
-import antd_enUS from 'antd/lib/locale/zh_CN';
+import antd_zhCN from 'antd/es/locale/zh_CN';
+import antd_zhTW from 'antd/es/locale/zh_TW';
+import antd_enUS from 'antd/es/locale/zh_CN';
 
 import { IntlType } from "@ant-design/pro-table";
 

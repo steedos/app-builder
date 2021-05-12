@@ -4855,6 +4855,14 @@
     "@rollup/pluginutils" "^3.1.0"
     magic-string "^0.25.7"
 
+"@rollup/pluginutils@4", "@rollup/pluginutils@^4.1.0":
+  version "4.1.0"
+  resolved "https://r.cnpmjs.org/@rollup/pluginutils/download/@rollup/pluginutils-4.1.0.tgz#0dcc61c780e39257554feb7f77207dceca13c838"
+  integrity sha1-Dcxhx4DjkldVT+t/dyB9zsoTyDg=
+  dependencies:
+    estree-walker "^2.0.1"
+    picomatch "^2.2.2"
+
 "@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.0.9", "@rollup/pluginutils@^3.1.0":
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/@rollup/pluginutils/download/@rollup/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
@@ -4862,14 +4870,6 @@
   dependencies:
     "@types/estree" "0.0.39"
     estree-walker "^1.0.1"
-    picomatch "^2.2.2"
-
-"@rollup/pluginutils@^4.1.0":
-  version "4.1.0"
-  resolved "https://r.cnpmjs.org/@rollup/pluginutils/download/@rollup/pluginutils-4.1.0.tgz#0dcc61c780e39257554feb7f77207dceca13c838"
-  integrity sha1-Dcxhx4DjkldVT+t/dyB9zsoTyDg=
-  dependencies:
-    estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
 "@salesforce-ux/design-system@^2.14.3":
@@ -20467,6 +20467,11 @@ nanoid@^3.1.16, nanoid@^3.1.20:
   resolved "https://registry.npm.taobao.org/nanoid/download/nanoid-3.1.22.tgz?cache=0&sync_timestamp=1615820310415&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnanoid%2Fdownload%2Fnanoid-3.1.22.tgz#b35f8fb7d151990a8aebd5aa5015c03cf726f844"
   integrity sha1-s1+Pt9FRmQqK69WqUBXAPPcm+EQ=
 
+nanoid@^3.1.22:
+  version "3.1.23"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
+  integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.npm.taobao.org/nanomatch/download/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -21443,7 +21448,7 @@ onetime@^5.1.0, onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-open@^7.0.2, open@^7.0.3:
+open@^7.0.2, open@^7.0.3, open@^7.4.2:
   version "7.4.2"
   resolved "https://registry.npm.taobao.org/open/download/open-7.4.2.tgz?cache=0&sync_timestamp=1614759218873&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fopen%2Fdownload%2Fopen-7.4.2.tgz#b8147e26dcf3e426316c730089fd71edd29c2321"
   integrity sha1-uBR+Jtzz5CYxbHMAif1x7dKcIyE=
@@ -26067,6 +26072,13 @@ rollup-plugin-copy@^3.4.0:
     globby "10.0.1"
     is-plain-object "^3.0.0"
 
+rollup-plugin-css-only@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-css-only/-/rollup-plugin-css-only-3.1.0.tgz#6a701cc5b051c6b3f0961e69b108a9a118e1b1df"
+  integrity sha512-TYMOE5uoD76vpj+RTkQLzC9cQtbnJNktHPB507FzRWBVaofg7KhIqq1kGbcVOadARSozWF883Ho9KpSPKH8gqA==
+  dependencies:
+    "@rollup/pluginutils" "4"
+
 rollup-plugin-inject@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-inject/-/rollup-plugin-inject-3.0.2.tgz#e4233855bfba6c0c12a312fd6649dff9a13ee9f4"
@@ -26209,6 +26221,16 @@ rollup-plugin-uglify@^6.0.4:
     jest-worker "^24.0.0"
     serialize-javascript "^2.1.2"
     uglify-js "^3.4.9"
+
+rollup-plugin-visualizer@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.5.0.tgz#dbe9daa3a46576fb697eb62b19ed251112b85d1e"
+  integrity sha512-QUd0ZHGYn6rgogS+yzG08AvMk9J4kR1lO1cpLJCIAQhbyIGSBdqCddKWtxDsdmsxhkY/GCGw8CvoSB3MwMQOIQ==
+  dependencies:
+    nanoid "^3.1.22"
+    open "^7.4.2"
+    source-map "^0.7.3"
+    yargs "^16.2.0"
 
 rollup-pluginutils@^1.3.1, rollup-pluginutils@^1.5.1:
   version "1.5.2"
