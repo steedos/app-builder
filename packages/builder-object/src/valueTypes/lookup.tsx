@@ -325,7 +325,7 @@ export const FieldTreeSelect = observer((props:any)=> {
         treeData = getTreeDataFromRecords(recordListData.value, nameField, parentField);
     }
     let treeExpandedKeys: string[];
-    if (value) {
+    if (value && value.length) {
         if (_.isArray(value)) {
             treeExpandedKeys = value
         } else {
