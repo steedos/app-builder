@@ -72,12 +72,15 @@ export default observer((props: any) => {
 
   const userSession = User.getSession();
   if (User.isLoading)
-    return (<span>Loading session...</span>)
-  let orgExpandFilters;
+    return (<span>Loading session...</span>);
+  let spaceUsersFilters: any = ["user_accepted", "=", true];
+  let orgExpandFilters: any;
   if(!userSession.is_space_admin){
     const orgIds = User.getCompanyOrganizationIds();
     if(orgIds && orgIds.length){
-      orgExpandFilters = [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]
+      orgExpandFilters = [["_id", "=", orgIds], "or", ["parents", "=", orgIds]];
+      // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
+      spaceUsersFilters = [spaceUsersFilters, ["organizations_parents", "=", orgIds]];
     }
   }
 
@@ -143,7 +146,6 @@ export default observer((props: any) => {
       expandNameField: "name"
     }
   ];
-  const spaceUsersFilters = ["user_accepted", "=", true];
   return (
     <SteedosProvider {...providerProps}>
       <div className="App" ref={resizeSubject}>

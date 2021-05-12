@@ -44,12 +44,6 @@ export type ObjectExpandTableProps =
       })
   | any
 
-// function getTableFilter(ids: string[], key: string) {
-//   if(ids.length){
-//     return [[key, "=", ids]]
-//   }
-// }
-
 function getTableFilter(expandProps: any, selectedExpandNode: string[], defaultFilters: string | []) {
   const expandKey = expandProps && expandProps.releatedColumnField;
   let expandFilters: any;
