@@ -46,10 +46,13 @@ export type ObjectExpandTableProps =
 function getFilter(ids, key): string {
   return ids.map((id) => (key || "_id") + " eq '" + id + "'").join(" or ")
 }
-function getContainsFilter(ids, key): string {
-  return ids
-    .map((id) => "contains(" + (key || "_id") + ",'" + id + "')")
-    .join(" or ")
+function getTableFilter(ids: string[], key: string) {
+  if(ids.length){
+    return [[key, "=", ids]]
+  }
+  // return ids
+  //   .map((id) => "contains(" + (key || "_id") + ",'" + id + "')")
+  //   .join(" or ")
 }
 
 export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
@@ -190,8 +193,8 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
             // filters={getFilter(selectedUsers.length>0?selectedUsers:['__none_exisit__'], "user")}
             filters={
               expandProps &&
-              getContainsFilter(
-                selectedExpandNode.length > 0 ? selectedExpandNode : [], //: ["__none_exisit__"],//本来的意思是,如果不选任何节点,就不能搜到任何人.现有调整成不选任何节点就找到所有人.
+              getTableFilter(
+                selectedExpandNode,
                 expandProps.releatedColumnField
                 // "organizations_parents"
               )
