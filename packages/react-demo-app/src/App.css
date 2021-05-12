@@ -46,3 +46,10 @@
 .ant-pro-card-tabpane > .ant-pro-card > .ant-pro-card-body {
   padding: 12px;
 }
+
+/* tree下拉框手机端样式调整 */
+@media (max-width: 768px){
+  .ant-dropdown{
+      width: 100%;
+  }
+}
