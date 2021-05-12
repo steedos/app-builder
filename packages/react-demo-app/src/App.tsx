@@ -74,11 +74,11 @@ export default observer((props: any) => {
   if (User.isLoading)
     return (<span>Loading session...</span>);
   let spaceUsersFilters: any = ["user_accepted", "=", true];
-  let orgExpandFilters: any;
+  let orgExpandFilters: any = ["hidden", "!=", true];
   if(!userSession.is_space_admin){
     const orgIds = User.getCompanyOrganizationIds();
     if(orgIds && orgIds.length){
-      orgExpandFilters = [["_id", "=", orgIds], "or", ["parents", "=", orgIds]];
+      orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
       // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
       spaceUsersFilters = [spaceUsersFilters, ["organizations_parents", "=", orgIds]];
     }
