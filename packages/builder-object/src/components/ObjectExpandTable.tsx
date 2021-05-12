@@ -13,6 +13,7 @@ import _ from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { ActionType } from "react-table"
+import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
 
 import {
@@ -43,22 +44,42 @@ export type ObjectExpandTableProps =
       })
   | any
 
-function getFilter(ids, key): string {
-  return ids.map((id) => (key || "_id") + " eq '" + id + "'").join(" or ")
-}
-function getTableFilter(ids: string[], key: string) {
-  if(ids.length){
-    return [[key, "=", ids]]
+// function getTableFilter(ids: string[], key: string) {
+//   if(ids.length){
+//     return [[key, "=", ids]]
+//   }
+// }
+
+function getTableFilter(expandProps: any, selectedExpandNode: string[], defaultFilters: string | []) {
+  const expandKey = expandProps && expandProps.releatedColumnField;
+  let expandFilters: any;
+  if(expandKey && selectedExpandNode.length){
+    expandFilters = [expandKey, "=", selectedExpandNode];
   }
-  // return ids
-  //   .map((id) => "contains(" + (key || "_id") + ",'" + id + "')")
-  //   .join(" or ")
+  if(expandFilters){
+    if(defaultFilters && defaultFilters.length){
+      if (_.isArray(defaultFilters)) {
+          return [defaultFilters, expandFilters]
+      }
+      else {
+          const odataExpandFilters = formatFiltersToODataQuery(expandFilters);
+          return `(${defaultFilters}) and (${odataExpandFilters})`;
+      }
+    }
+    else{
+      return expandFilters;
+    }
+  }
+  else{
+    return defaultFilters;
+  }
 }
 
 export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const {
     name: ObjectExpandTableId = "default",
+    filters,
     // includeSub,
     onChange,
     ...rest
@@ -190,14 +211,16 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         <ProCard className="table-part" ghost>
           <ObjectTable
             {...rest}
-            // filters={getFilter(selectedUsers.length>0?selectedUsers:['__none_exisit__'], "user")}
+            // filters={
+            //   expandProps &&
+            //   getTableFilter(
+            //     selectedExpandNode,
+            //     expandProps.releatedColumnField
+            //     // "organizations_parents"
+            //   )
+            // }
             filters={
-              expandProps &&
-              getTableFilter(
-                selectedExpandNode,
-                expandProps.releatedColumnField
-                // "organizations_parents"
-              )
+              getTableFilter(expandProps, selectedExpandNode, filters)
             }
             // manualRequest={true}
             actionRef={tableRef}
