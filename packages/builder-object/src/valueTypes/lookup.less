@@ -64,14 +64,28 @@
             display:flex;
             .left_label_menu{
                 width:55px;
+                margin-right: -1px;
+                .ant-select-selector{
+                    border-radius: 2px 0 0 2px;
+                }
+            }
+            .left_label_menu:hover,.left_label_menu:active,.ant-select-focused{
+                .ant-select-selector{
+                    z-index: 1;
+                }
+                .ant-select-arrow{
+                    z-index: 2;
+                }
             }
             .left_label_menu + .ant-pro-filed-search-select{
                 flex:auto;
+                .ant-select-selector{
+                    border-radius: 0 2px 2px 0;
+                }
             }
         }
     }
 }
-
 // 支持的tree下拉框在webapp样式调整
 .ant-select-tree{
     .ant-select-tree-list{
