@@ -14,6 +14,7 @@ import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { useResizeObserver } from "./use-resize-observer";
+import { Spin } from 'antd';
 
 export default observer((props: any) => {
   
@@ -174,17 +175,21 @@ export default observer((props: any) => {
                   : ""
               }`}
             >
-              <ObjectExpandTable
-                onChange={handleOnTab1Change}
-                objectApiName="space_users"
-                search={{
-                  filterType: 'light',
-                }}
-                columnFields={organizationColumns}
-                scroll={scroll}
-                debounceTime={500}
-                filters={spaceUsersFilters}
-              />
+              {
+                User.isLoading ? (<Spin />) : (
+                  <ObjectExpandTable
+                    onChange={handleOnTab1Change}
+                    objectApiName="space_users"
+                    search={{
+                      filterType: 'light',
+                    }}
+                    columnFields={organizationColumns}
+                    scroll={scroll}
+                    debounceTime={500}
+                    filters={spaceUsersFilters}
+                  />
+                )
+              }
             </ProCard.TabPane>
             <ProCard.TabPane
               key="tab2"
