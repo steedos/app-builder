@@ -325,19 +325,19 @@ export const FieldTreeSelect = observer((props:any)=> {
     if (recordListData && recordListData.value && recordListData.value.length > 0) {
         treeData = getTreeDataFromRecords(recordListData.value, nameField, parentField);
     }
-    let treeExpandedKeys: string[];
+    let treeDefaultExpandedKeys: string[];
     if (value && value.length) {
         if (_.isArray(value)) {
-            treeExpandedKeys = value
+            treeDefaultExpandedKeys = value
         } else {
-            treeExpandedKeys = [value]
+            treeDefaultExpandedKeys = [value]
         }
     } else {
         if (treeData && treeData.length) {
             const rootNodeValues = treeData.map((treeItem) => {
                 return treeItem.value;
             });
-            treeExpandedKeys = rootNodeValues;
+            treeDefaultExpandedKeys = rootNodeValues;
         }
     }
     return (
@@ -348,7 +348,7 @@ export const FieldTreeSelect = observer((props:any)=> {
         treeData={treeData}
         placeholder="请选择"
         // treeDefaultExpandAll
-        treeExpandedKeys={treeExpandedKeys}
+        treeDefaultExpandedKeys={treeDefaultExpandedKeys}
         onChange={onChange}
         {...rest}
       />
