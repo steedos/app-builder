@@ -163,6 +163,7 @@ export default observer((props: any) => {
           headerBordered
         >
           <ProCard
+            style={{ height: "calc(100% - 60px)" }}
             tabs={{
               type: "card",
             }}
