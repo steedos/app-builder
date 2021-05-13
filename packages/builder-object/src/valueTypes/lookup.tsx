@@ -240,6 +240,7 @@ export const LookupField = observer((props:any) => {
                 objectApiName: referenceTo,
                 onChange: newFieldProps.onChange,
                 multiple,
+                filters: fieldFilters,
                 value: newFieldProps.value
             }
         }
