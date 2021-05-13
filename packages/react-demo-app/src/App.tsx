@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import React, { useEffect, useState, useRef, useMemo } from "react"
 // import logo from "./logo.svg"
-import "./App.css"
+import "./App.less"
 
 import { SteedosProvider } from "@steedos/builder-object"
 import { ObjectExpandTable } from "@steedos/builder-object"
