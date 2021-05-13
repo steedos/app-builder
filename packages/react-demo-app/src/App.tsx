@@ -14,6 +14,7 @@ import queryString from "querystring"
 import { getAuthToken, getSpaceId, getUserId } from "./accounts"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { useResizeObserver } from "./use-resize-observer";
+import { Spin } from 'antd';
 
 export default observer((props: any) => {
   
@@ -71,16 +72,20 @@ export default observer((props: any) => {
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   const userSession = User.getSession();
-  if (User.isLoading)
-    return (<span>Loading session...</span>);
   let spaceUsersFilters: any = ["user_accepted", "=", true];
-  let orgExpandFilters: any;
-  if(!userSession.is_space_admin){
-    const orgIds = User.getCompanyOrganizationIds();
-    if(orgIds && orgIds.length){
-      orgExpandFilters = [["_id", "=", orgIds], "or", ["parents", "=", orgIds]];
-      // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
-      spaceUsersFilters = [spaceUsersFilters, ["organizations_parents", "=", orgIds]];
+  let orgExpandFilters: any = ["hidden", "!=", true];
+  if (User.isLoading){
+    // 这里不可以直接return (<div>Loading</div>) 上面有调用useRef
+    console.log("Loading session...")
+  }
+  else{
+    if(!userSession.is_space_admin){
+      const orgIds = User.getCompanyOrganizationIds();
+      if(orgIds && orgIds.length){
+        orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
+        // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
+        spaceUsersFilters = [spaceUsersFilters, ["organizations_parents", "=", orgIds]];
+      }
     }
   }
 
@@ -109,6 +114,7 @@ export default observer((props: any) => {
     {
       fieldName: "organizations_parents",
       hideInTable: true,
+      hideInSearch: true,
       expandType: "tree",
       expandReference: "organizations",
       expandNameField: "name",
@@ -170,17 +176,21 @@ export default observer((props: any) => {
                   : ""
               }`}
             >
-              <ObjectExpandTable
-                onChange={handleOnTab1Change}
-                objectApiName="space_users"
-                search={{
-                  filterType: 'light',
-                }}
-                columnFields={organizationColumns}
-                scroll={scroll}
-                debounceTime={500}
-                filters={spaceUsersFilters}
-              />
+              {
+                User.isLoading ? (<Spin />) : (
+                  <ObjectExpandTable
+                    onChange={handleOnTab1Change}
+                    objectApiName="space_users"
+                    search={{
+                      filterType: 'light',
+                    }}
+                    columnFields={organizationColumns}
+                    scroll={scroll}
+                    debounceTime={500}
+                    filters={spaceUsersFilters}
+                  />
+                )
+              }
             </ProCard.TabPane>
             <ProCard.TabPane
               key="tab2"
