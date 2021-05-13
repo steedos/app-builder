@@ -241,6 +241,7 @@ export const LookupField = observer((props:any) => {
                 onChange: newFieldProps.onChange,
                 multiple,
                 filters: fieldFilters,
+                filtersFunction,
                 value: newFieldProps.value
             }
         }
@@ -315,12 +316,13 @@ export const LookupField = observer((props:any) => {
 });
 
 export const FieldTreeSelect = observer((props:any)=> {
-    const { objectApiName, nameField = "name", parentField = "parent", filters = [], value, onChange, ...rest } = props;
+    const { objectApiName, nameField = "name", parentField = "parent", filters = [],filtersFunction, value, onChange, ...rest } = props;
+    let filtersResult:[] =  filtersFunction ? filtersFunction(filters) : filters;
     const fields = [nameField, parentField]
     const object = Objects.getObject(objectApiName);
     if (object.isLoading) return (<div><Spin/></div>);
     let treeData = [];
-    const recordList: any = object.getRecordList(filters, fields);
+    const recordList: any = object.getRecordList(filtersResult, fields);
     if (recordList.isLoading) return (<div><Spin/></div>);
     const recordListData = recordList.data;
     if (recordListData && recordListData.value && recordListData.value.length > 0) {
