@@ -96,7 +96,6 @@ const options = {
       // include: /\**node_modules\**/,
     }),
     // css({ output: 'builder-object.css' }),
-    visualizer(),
   ],
 };
 
@@ -118,13 +117,21 @@ export default [
       sourceMaps(),
     ]),
   },
-  // // ES
-  // {
-  //   ...options,
-  //   input: `src/index.tsx`,
-  //   output: [{ file: 'dist/builder-object.esm.js', format: 'es', sourcemap: true }],
-  //   plugins: options.plugins.concat([sourceMaps()]),
-  // },
+  // ES
+  {
+    ...options,
+    input: `src/index.tsx`,
+    external: [ 'react' ],
+    output: [
+      { 
+        file: 'dist/builder-object.esm.js', 
+        format: 'es', 
+        sourcemap: true,
+        globals: { react: 'React' }
+      }
+    ],
+    plugins: options.plugins.concat([sourceMaps()]),
+  },
   // UMD DEV
   {
     ...options,
@@ -141,6 +148,12 @@ export default [
         intro: 'const global = window;',
       },
     ],
-    // plugins: options.plugins.concat([uglify(), sourceMaps()]),
+    plugins: options.plugins.concat([
+      visualizer({
+        filename: 'dist/stats.html'
+      }),
+      uglify(), 
+      sourceMaps()
+    ]),
   }
 ]

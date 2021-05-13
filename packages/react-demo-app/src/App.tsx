@@ -44,9 +44,12 @@ export default observer((props: any) => {
   const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>(current.firstChild));
   const contentRectHeight = contentRect.height;
   const scroll = useMemo(() => {
-    const scrollHeight = contentRectHeight - 280;
+    let scrollHeight = contentRectHeight - 276;
+    if(selectedUserInTab1 && selectedUserInTab1.length){
+      scrollHeight -= 64;
+    }
     return { y: scrollHeight }
-  }, [contentRectHeight]);
+  }, [contentRectHeight, selectedUserInTab1]);
 
   useEffect(() => {
     setSelectedUsers([...selectedUserInTab1, ...selectedUserInTab2])

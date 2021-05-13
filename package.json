@@ -20,7 +20,7 @@
     "prestart": "lerna clean -y && yarn && yarn bootstrap",
     "boot": "yarn prestart && yarn build",
     "start:run": "lerna bootstrap  && yarn build && lerna run start --stream",
-    "start": "yarn build && yarn start-storybook",
+    "start": "yarn start-storybook",
     "start:scope": "yarn build:scope && yarn start-storybook",
     "start:all": "yarn build && concurrently \"yarn docs dev\"  \"yarn start-storybook\" ",
     "prebuild.disabled": "yarn pkg babel-plugin build",
