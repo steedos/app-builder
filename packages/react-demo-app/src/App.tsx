@@ -114,6 +114,7 @@ export default observer((props: any) => {
     {
       fieldName: "organizations_parents",
       hideInTable: true,
+      hideInSearch: true,
       expandType: "tree",
       expandReference: "organizations",
       expandNameField: "name",
