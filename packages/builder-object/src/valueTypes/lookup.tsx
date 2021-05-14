@@ -350,6 +350,7 @@ export const FieldTreeSelect = observer((props:any)=> {
       <TreeSelect
         treeNodeFilterProp="title"
         allowClear
+        showSearch={true}
         style={{ width: '100%' }}
         value={value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
