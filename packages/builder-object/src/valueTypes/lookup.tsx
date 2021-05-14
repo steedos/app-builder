@@ -111,54 +111,57 @@ export const LookupField = observer((props:any) => {
             }
             else{
                 let filters: any = [], textFilters: any = [], keyFilters: any = [];
-                if (value){
-                    // const textValue= _.isArray(referenceTos) ? value.ids: value;
-                    textFilters = [reference_to_field, '=', value];
-                }
-                if (params.keyWords){
-                    keyFilters = [referenceToLableField, 'contains', params.keyWords];
-                }
-                let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
-                if (filtersOfField.length) {
-                    if (keyFilters.length) {
-                        if (_.isArray(filtersOfField)) {
-                            keyFilters = [filtersOfField, keyFilters]
-                        }
-                        else {
-                            const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
-                            keyFilters = `(${filtersOfField}) and (${odataKeyFilters})`;
-                        }
-                    }
-                    else {
-                        keyFilters = filtersOfField;
-                    }
-                }
-                if (textFilters.length && keyFilters.length) {
-                    if (_.isArray(keyFilters)) {
-                        filters = [textFilters, 'or', keyFilters]
-                    }
-                    else {
-                        const odataTextFilters = formatFiltersToODataQuery(textFilters);
-                        filters = `(${odataTextFilters}) or (${keyFilters})`;
-                    }
-                }
-                else if (textFilters.length && !open) {
-                    filters = textFilters;
-                }
-                else if (keyFilters.length) {
-                    filters = keyFilters;
-                }
                 let fields = [reference_to_field, referenceToLableField];
                 // console.log("===filters===", filters);
                 let option: any = {};
-                if (reference_sort) {
-                    option.sort = _.map(reference_sort, (value, key) => { 
-                        if(fields.indexOf(key)<0){ fields.push(key) };
-                        return `${key}${value == 1 ? '' : ' desc'}` 
-                    }).join(",")
-                }
-                if (reference_limit) {
-                    option.pageSize = reference_limit
+                if(params.open){
+                    if (reference_sort) {
+                        option.sort = _.map(reference_sort, (value, key) => { 
+                            if(fields.indexOf(key)<0){ fields.push(key) };
+                            return `${key}${value == 1 ? '' : ' desc'}` 
+                        }).join(",")
+                    }
+                    if (reference_limit) {
+                        option.pageSize = reference_limit
+                    }
+                    if (value){
+                        textFilters = [reference_to_field, '=', value];
+                    }
+                    if (params.keyWords){
+                        keyFilters = [referenceToLableField, 'contains', params.keyWords];
+                    }
+                    let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+                    if (filtersOfField.length) {
+                        if (keyFilters.length) {
+                            if (_.isArray(filtersOfField)) {
+                                keyFilters = [filtersOfField, keyFilters]
+                            }
+                            else {
+                                const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+                                keyFilters = `(${filtersOfField}) and (${odataKeyFilters})`;
+                            }
+                        }
+                        else {
+                            keyFilters = filtersOfField;
+                        }
+                    }
+                    if (textFilters.length && keyFilters.length) {
+                        if (_.isArray(keyFilters)) {
+                            filters = [textFilters, 'or', keyFilters]
+                        }
+                        else {
+                            const odataTextFilters = formatFiltersToODataQuery(textFilters);
+                            filters = `(${odataTextFilters}) or (${keyFilters})`;
+                        }
+                    }
+                    else if (textFilters.length && !open) {
+                        filters = textFilters;
+                    }
+                    else if (keyFilters.length) {
+                        filters = keyFilters;
+                    }
+                }else{
+                    filters = filter;
                 }
                 let data = await API.requestRecords(referenceTo, filters, fields, option);
 
