@@ -52,13 +52,10 @@ export const LookupField = observer((props:any) => {
             referenceToObjectIcon = referenceToObjectSchema.icon;
         }
     }
-    let selectItem=[];
-    let recordListData: any;
-    let filter:any;
-    let fields:any;
+    let selectItem = [], recordListData: any, filter: any, fields: any;
     if(referenceToObject && value){
         filter = [[reference_to_field, '=', value]];
-        fields = [reference_to_field, referenceToLableField, "_id"];
+        fields = _.uniq([reference_to_field, referenceToLableField, "_id"]);
     }
     if(mode==='read'){
         if(value){
