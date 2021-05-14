@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite"
 import useAntdMediaQuery from 'use-media-antd-query';
 
 import ExpandableSection from '@salesforce/design-system-react/components/expandable-section';
-import _ from 'lodash';
+import { forEach } from 'lodash';
 
 export const FieldSection = observer((props: any) => {
 
@@ -25,7 +25,7 @@ export const FieldSection = observer((props: any) => {
   
   const renderChildren = (children:any) => {
     const result: any[] = []
-    _.forEach(children, (child:any) => {
+    forEach(children, (child:any) => {
       result.push(child)
       return child
     })

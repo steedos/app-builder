@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep} from 'lodash';
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
@@ -72,9 +72,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   if (object && object.isLoading) return (<div><Spin/></div>)
 
   
-  const mergedSchema = object? _.defaultsDeep({}, object.schema, objectSchema): objectSchema;
+  const mergedSchema = object? defaultsDeep({}, object.schema, objectSchema): objectSchema;
   fieldSchemaArray.length = 0
-  _.forEach(mergedSchema.fields, (field, fieldName) => {
+  forEach(mergedSchema.fields, (field, fieldName) => {
     if (!field.group || field.group == 'null' || field.group == '-')
       field.group = '通用'
     let isObjectField = /\w+\.\w+/.test(fieldName)
@@ -85,10 +85,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
     let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
     if (!field.hidden && !isObjectField && !isOmitField){
-      fieldSchemaArray.push(_.defaults({name: fieldName}, field))
+      fieldSchemaArray.push(defaults({name: fieldName}, field))
     }
   })
-  _.forEach(fieldSchemaArray, (field:any)=>{
+  forEach(fieldSchemaArray, (field:any)=>{
     fieldNames.push(field.name)
   })
 
@@ -99,7 +99,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
     if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
       const record = recordCache.data.value[0];
-      _.forEach(fieldNames, (fieldName:any)=>{
+      forEach(fieldNames, (fieldName:any)=>{
         if (record[fieldName])
           initialValues[fieldName] = record[fieldName];
       })
@@ -133,11 +133,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const getSection = (sectionName, options) => {
-    const sectionFields = _.filter(fieldSchemaArray, { 'group': sectionName });
+    const sectionFields = filter(fieldSchemaArray, { 'group': sectionName });
     const columns = isModalForm ? 2 : undefined
     return (
       <FieldSection title={sectionName} key={sectionName} columns={columns} {...options}>
-        {_.map(sectionFields, (field:any)=>{
+        {map(sectionFields, (field:any)=>{
           const fieldProps = {
             key: field.name,
             name: field.name,
@@ -154,10 +154,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   }
 
   const getSections = () => {
-     const sections = _.groupBy(fieldSchemaArray, 'group');
+     const sections = groupBy(fieldSchemaArray, 'group');
      const dom = [];
      const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
-     _.forEach(sections, (value, key) => {
+     forEach(sections, (value, key) => {
       dom.push(getSection(key, options))
     })
     return dom;

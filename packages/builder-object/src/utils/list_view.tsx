@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { find, intersection, union, each, isObject, compact} from 'lodash';
 
 export function isRecentListView(listViewName: string) {
   return listViewName === "recent"
@@ -20,7 +20,7 @@ export function getObjectDefaultView(objectSchema: any) {
   // 原来Creator.getObjectDefaultView函数逻辑
   // TODO:待切换视图功能完成后应该需要改为默认取第一个视图
   const listViews = objectSchema.list_views;
-  return _.find(listViews, function(listView, key) {
+  return find(listViews, function(listView, key) {
     return listView.name === "all" || key === "all";
   });
 }
@@ -33,14 +33,14 @@ export function getObjectDefaultExtraColumns(objectSchema: any){
 
 export function getObjectExtraColumns(objectSchema: any, relatedObjectApiName: string){
   // 原来_getExtraColumns函数逻辑
-  let extra_columns = _.intersection(["owner", "company_id", "company_ids", "locked"], _.keys(objectSchema.fields));
+  let extra_columns = intersection(["owner", "company_id", "company_ids", "locked"], keys(objectSchema.fields));
 	if(!relatedObjectApiName && objectSchema.enable_tree){
 		extra_columns.push("parent")
 		extra_columns.push("children")
   }
 	let defaultExtraColumns = getObjectDefaultExtraColumns(objectSchema)
 	if(defaultExtraColumns){
-		extra_columns = _.union(extra_columns, defaultExtraColumns);
+		extra_columns = union(extra_columns, defaultExtraColumns);
   }
 	return extra_columns
 }
@@ -49,10 +49,10 @@ export function getObjectDepandOnFields(objectSchema: any, columns: any){
 	// 原来_depandOnFields函数逻辑
 	const fields = objectSchema.fields
 	let depandOnFields = []
-	_.each(columns, (column)=>{
+	each(columns, (column)=>{
     const dependOn = fields[column] && fields[column].depend_on;
 		if(dependOn){
-			depandOnFields = _.union(depandOnFields, dependOn);
+			depandOnFields = union(depandOnFields, dependOn);
     }
   });
 	return depandOnFields
@@ -62,8 +62,8 @@ export function unionSelectColumnsWithExtraAndDepandOn(objectSchema: any, column
 	// 原来Creator.unionSelectColumnsWithExtraAndDepandOn函数逻辑
   // # extra_columns不需要显示在表格上
 	const extra_columns = getObjectExtraColumns(objectSchema, relatedObjectApiName)
-	let selectColumns = _.union(columns, extra_columns)
-	selectColumns = _.union(selectColumns, getObjectDepandOnFields(objectSchema, selectColumns))
+	let selectColumns = union(columns, extra_columns)
+	selectColumns = union(selectColumns, getObjectDepandOnFields(objectSchema, selectColumns))
 	return selectColumns
 }
 
@@ -89,7 +89,7 @@ export function getListviewColumns(objectSchema: any, listName: string, relatedO
 
   columns = columns.map(function(column: any) {
     var n: string;
-    if (_.isObject(column)) {
+    if (isObject(column)) {
       n = (column as any).field;
     } else {
       n = column;
@@ -105,7 +105,7 @@ export function getListviewColumns(objectSchema: any, listName: string, relatedO
 		// 附件列表需要这个字段判断权限
     columns.push("parent");
   }
-  columns = _.compact(columns)
+  columns = compact(columns)
   return columns;
 }
 

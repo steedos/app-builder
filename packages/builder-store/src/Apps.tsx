@@ -1,6 +1,6 @@
 import { flow, types } from "mobx-state-tree";
 import { API } from './API';
-import _ from 'lodash';
+import { each, keys} from 'lodash';
 
 export const AppMenuModel = types.model({
     id: types.identifier,
@@ -27,7 +27,7 @@ export const Apps = types.model({
         }
     })
     function setMenus(menus) {
-        _.each(menus, function(menu){
+        each(menus, function(menu){
             self.menus.put(menu);
         })
     }
@@ -46,7 +46,7 @@ export const Apps = types.model({
             if(menus.size > 0){
                 app = menus.get(self.currentAppId);
                 if(!app){
-                    app = menus.get(_.keys(menus.toJSON())[0]);
+                    app = menus.get(keys(menus.toJSON())[0]);
                 }
               }
         }

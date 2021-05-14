@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { forEach, isArray } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import ProField from "@ant-design/pro-field";
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
@@ -27,11 +27,11 @@ export const ObjectFieldGrid = (props) => {
   const {mode='read', text =[], fieldProps={}} = props;
   const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
 
-  _.forEach(initialValue, (row)=>{
+  forEach(initialValue, (row)=>{
     if (!row._id)
       row._id=uuidv4()
   })
-  const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
+  const [value, setValue] = useState<any>(initialValue && isArray(initialValue)? initialValue : [])
   const [gridApi, setGridApi] = useState<any>(null)
 
   const addRow = () => {
@@ -108,7 +108,7 @@ export const ObjectFieldGrid = (props) => {
       maxWidth: 35,
       minWidth: 35,
     }];
-    _.forEach(sub_fields, (field, fieldName)=>{
+    forEach(sub_fields, (field, fieldName)=>{
       columns.push({
         field: fieldName,
         headerName: field.label?field.label:fieldName,

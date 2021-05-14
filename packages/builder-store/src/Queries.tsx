@@ -1,6 +1,6 @@
 import { flow, types } from "mobx-state-tree";
 import { API } from './API';
-import _ from 'lodash';
+import { each, union, concat, keys} from 'lodash';
 
 
 export const QueryModel = types.model({
@@ -16,11 +16,11 @@ export const QueryModel = types.model({
                 rows: results
             }
             let columns = [];
-            _.each(results, function(result){
-                columns = _.union(_.concat(columns, _.keys(result))); 
+            each(results, function(result){
+                columns = union(concat(columns, keys(result))); 
             })
 
-            _.each(columns, function(column){
+            each(columns, function(column){
                 data.columns.push({type: '', name: column})
             })
             self.data = data

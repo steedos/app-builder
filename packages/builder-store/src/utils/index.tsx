@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { each, isArray, forEach, isObject, isString, keys, isFunction} from 'lodash';
 export function saveEval(js: string){
 	try{
 		return eval(js)
@@ -18,7 +18,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     case "object":
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
-      _.each(objectConfig.fields, (fieldItem, key) => {
+      each(objectConfig.fields, (fieldItem, key) => {
         const reg = new RegExp(`^${fieldNameForReg}\\.\\\w+$`); //以fieldName开头，且用.号连接下一个字段名
         // if(key.startsWith(`${fieldName}.`)){
         if(reg.test(key)){
@@ -35,7 +35,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     case "grid":
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
-      _.each(objectConfig.fields, (fieldItem, key) => {
+      each(objectConfig.fields, (fieldItem, key) => {
         const reg = new RegExp(`^${fieldNameForReg}\\.\\$\\.\\\w+$`); //以fieldName开头，且后面接着用.$.号连接下一个字段名
         // if(key.startsWith(`${fieldName}.$.`)){
         if(reg.test(key)){
@@ -98,7 +98,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
  export function getFieldsSchema(objectConfig: any) {
   let fieldsSchema: any = {}
   // console.log("convertFieldsSchema===", objectConfig.name, JSON.stringify(objectConfig.fields));
-  _.each(objectConfig.fields, (field, fieldName) => {
+  each(objectConfig.fields, (field, fieldName) => {
     if(/\w+\.($\.)?(\w+)?/.test(fieldName)){
       // 所有的members.users、instances.$._id、sharing.$之类的复合字段会根据需要自动加到sub_fields中，所以不用再加到fieldsSchema中
       return;
@@ -138,19 +138,19 @@ const getListViewSchema = (listView: any)=>{
     let filters = saveEval(`(${listView._filters})`);
     return Object.assign({}, listView, {filters});
   }
-  else if(_.isArray(listView.filters)){
-    _.forEach(listView.filters, function(filter: any, _index) {
-      if (_.isArray(filter)) {
-        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "FUNCTION") {
+  else if(isArray(listView.filters)){
+    forEach(listView.filters, function(filter: any, _index) {
+      if (isArray(filter)) {
+        if (filter.length === 4 && isString(filter[2]) && filter[3] === "FUNCTION") {
           filter[2] = saveEval("(" + filter[2] + ")");
           filter.pop();
         }
-        if (filter.length === 4 && _.isString(filter[2]) && filter[3] === "DATE") {
+        if (filter.length === 4 && isString(filter[2]) && filter[3] === "DATE") {
           filter[2] = new Date(filter[2]);
           return filter.pop();
         }
-      } else if (_.isObject(filter) as any) {
-        if (_.isString(filter && filter._value)) {
+      } else if (isObject(filter) as any) {
+        if (isString(filter && filter._value)) {
           return filter.value = saveEval("(" + filter._value + ")");
         } else if (filter._is_date === true) {
           return filter.value = new Date(filter.value);
@@ -171,7 +171,7 @@ const getListViewSchema = (listView: any)=>{
  */
  export function getListViewsSchema(objectConfig: any) {
   let listViewsSchema: any = {}
-  _.each(objectConfig.list_views, (listView, listName) => {
+  each(objectConfig.list_views, (listView, listName) => {
     const listViewSchema = getListViewSchema(listView);
     if(listViewSchema){
       listViewsSchema[listName] = listViewSchema;
@@ -197,9 +197,9 @@ export function getObjectOdataExpandFields(object: any,columns: string[]) {
   expand_fields = [];
   fields = object.fields;
   if (!columns || columns.length ==0) {
-    columns = _.keys(fields);
+    columns = keys(fields);
   }
-  _.each(columns,(n)=>{
+  each(columns,(n)=>{
     var ref1, ref2;
     if(fields){
       if (((ref1 = fields[n]) != null ? ref1.type : void 0) === "master_detail" || ((ref2 = fields[n]) != null ? ref2.type : void 0) === "lookup") {
@@ -224,24 +224,24 @@ export function convertRecordsForLookup(data, fieldsSchema) {
   let recoreds=data && data.value;
   if(recoreds && recoreds.length){
     data.value = recoreds.map((record: any)=>{
-      _.each(record, (fieldValue, key)=>{
+      each(record, (fieldValue, key)=>{
         if(fieldValue){
           const fieldSchema = fieldsSchema && fieldsSchema[key];
           if(fieldSchema && ['lookup', 'master_detail'].indexOf(fieldSchema.type) > -1 && fieldSchema.reference_to){
             let fieldReferenceTo :any;
             if(fieldSchema.reference_to){
               fieldReferenceTo=fieldSchema.reference_to;
-              if(_.isFunction(fieldReferenceTo)){
+              if(isFunction(fieldReferenceTo)){
                 fieldReferenceTo = fieldReferenceTo();
               }
             }
             if(fieldReferenceTo && fieldReferenceTo.length){
-              if(!_.isArray(fieldValue)){
+              if(!isArray(fieldValue)){
                 fieldValue=[fieldValue];
               }
               let referenceTo:any, ids=[], labels=[];
               
-              _.forEach(fieldValue,(val)=>{
+              forEach(fieldValue,(val)=>{
                 referenceTo=val['reference_to.o'];
                 if(referenceTo){
                   const id = val["_id"];
@@ -255,7 +255,7 @@ export function convertRecordsForLookup(data, fieldsSchema) {
                 }
               })
               if(referenceTo){
-                if( _.isArray(fieldReferenceTo)){
+                if( isArray(fieldReferenceTo)){
                   record[key].o = referenceTo;
                   if(ids && ids.length){
                     record[key].ids = ids;

@@ -12,7 +12,7 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { observer } from "mobx-react-lite"
-import _ from 'lodash'
+import { isBoolean } from 'lodash'
 
 import { Forms } from '@steedos/builder-store';
 
@@ -59,7 +59,7 @@ export const Form = observer((props:any) => {
 
   let _submitter = false
   if(form.mode !='read'){
-    _submitter = _.isBoolean(submitter) ? submitter : submitter || defSubmitter;
+    _submitter = isBoolean(submitter) ? submitter : submitter || defSubmitter;
   }
 
   const contentRender = (items:any, submitter:any) => {

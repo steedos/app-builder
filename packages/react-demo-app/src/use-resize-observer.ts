@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import _ from 'lodash';
+import { isFunction } from 'lodash';
 
 export function useResizeObserver(targetRef, query?: Function) {
 	const [contentRect, setContentRect] = useState({});
 	const resizeObserver = useRef(null);
 	
-	if(!_.isFunction(query)){
+	if(!isFunction(query)){
 		query = (current: any)=>(current)
 	}
 

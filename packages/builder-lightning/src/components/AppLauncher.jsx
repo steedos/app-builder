@@ -16,16 +16,16 @@ import customSprite from '@salesforce-ux/design-system/assets/icons/custom-sprit
 import standardSprite from '@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg';
 import utilitySprite from '@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg';
 import Icon from '@salesforce/design-system-react/components/icon'; 
-import _ from 'lodash';
+import { each, unionBy, filter} from 'lodash';
 
 function getTabs(apps){
 	let tabs = [];
-	_.each(apps, function(app){
-		_.each(app.children, (tab)=>{
+	each(apps, function(app){
+		each(app.children, (tab)=>{
 			tabs.push(Object.assign({}, tab, {appApiName: app.id}))
 		})
 	})
-	return _.unionBy(tabs, "id");;
+	return unionBy(tabs, "id");;
 }
 
 export class SteedosAppLauncher extends React.Component {
@@ -89,7 +89,7 @@ export class SteedosAppLauncher extends React.Component {
 							triggerOnClick={this.triggerOnClick}
 						>
 							<AppLauncherExpandableSection title="所有应用程序">
-								{_.filter(apps, (app)=> { return app.name.indexOf(this.state.search) > -1; })?.map((app, i) => (
+								{filter(apps, (app)=> { return app.name.indexOf(this.state.search) > -1; })?.map((app, i) => (
 									<AppLauncherTile
 										key={app.id}
 										description={app.description}
@@ -108,7 +108,7 @@ export class SteedosAppLauncher extends React.Component {
 							</AppLauncherExpandableSection>
 							<hr />
 							<AppLauncherExpandableSection title="所有项目">
-								{_.filter(tabs, (tab)=> { return tab.name.indexOf(this.state.search) > -1; })?.map((tab, i) => (
+								{filter(tabs, (tab)=> { return tab.name.indexOf(this.state.search) > -1; })?.map((tab, i) => (
 									<AppLauncherLink key={tab.id} search={this.state.search} onClick={(e)=>{return this.onClick(tab,e)}} >{tab.name}</AppLauncherLink>
 								))}
 							</AppLauncherExpandableSection>

@@ -1,6 +1,6 @@
 import ProTable, { EditableProTable } from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
-import _ from 'lodash';
+import { forEach, isArray} from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import ProField from "@ant-design/pro-field";
@@ -43,12 +43,12 @@ export const ObjectFieldGrid = (props) => {
   const {mode='read', text =[], fieldProps={}} = props;
   const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
   
-  _.forEach(initialValue, (row)=>{
+  forEach(initialValue, (row)=>{
     if (!row._id)
       row._id=uuidv4()
   })
   const {sub_fields=[]} = fieldSchema;
-  const [value, setValue] = useState<any>(initialValue && _.isArray(initialValue)? initialValue : [])
+  const [value, setValue] = useState<any>(initialValue && isArray(initialValue)? initialValue : [])
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() =>
     value.map((item) => item._id),
   );
@@ -61,7 +61,7 @@ export const ObjectFieldGrid = (props) => {
     render: () => <span />,
     renderFormItem: () => <DragHandle />,
   }];
-  _.forEach(sub_fields, (field, fieldName)=>{
+  forEach(sub_fields, (field, fieldName)=>{
     columns.push({
       width: field.is_wide? 200: 100,
       key: fieldName,

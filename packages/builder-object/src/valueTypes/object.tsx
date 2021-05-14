@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { forEach } from 'lodash';
 import React, { useState } from 'react';
 import { Grid, GridItem, Flex, Box } from '@chakra-ui/layout'
 
@@ -63,7 +63,7 @@ export const ObjectFieldObject = (props:any) => {
 
   const getFields = ()=> {
     const fields = [];
-    _.forEach(sub_fields, (field:any, fieldName)=>{
+    forEach(sub_fields, (field:any, fieldName)=>{
       const fieldItemProps = {
         key: fieldName,
         name: fieldName,

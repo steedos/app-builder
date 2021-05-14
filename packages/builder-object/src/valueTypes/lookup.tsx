@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag , Select, Spin, TreeSelect } from 'antd';
 import "antd/es/tree-select/style/index.css";
-import _, { isObject, result, values } from 'lodash';
+import { isFunction, isArray, isObject, uniq, filter, map, forEach} from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
@@ -24,21 +24,21 @@ export const LookupField = observer((props:any) => {
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let valueOriginal = value;
     let tags:any[] = [];
-    let referenceTos = _.isFunction(reference_to) ? reference_to() : reference_to;
+    let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
     let defaultReferenceTo:any;
-    if(_.isArray(referenceTos)){
+    if(isArray(referenceTos)){
         if(value && value.o){
             defaultReferenceTo = value.o;
         }else{
             defaultReferenceTo = referenceTos[0];
         }
     }
-    let [referenceTo, setReferenceTo] = useState(_.isArray(referenceTos) ? defaultReferenceTo : referenceTos);
+    let [referenceTo, setReferenceTo] = useState(isArray(referenceTos) ? defaultReferenceTo : referenceTos);
     let [selectItemLabel, setSelectItemLabel] = useState('');
     // optionsFunction优先options
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
-    // if(_.isArray(referenceTos) && value ){
-        if(_.isObject(value) && !_.isArray(value)){
+    // if(isArray(referenceTos) && value ){
+        if(isObject(value) && !isArray(value)){
             value=value['ids'];
         }
     //}
@@ -52,15 +52,15 @@ export const LookupField = observer((props:any) => {
             referenceToObjectIcon = referenceToObjectSchema.icon;
         }
     }
-    let selectItem = [], recordListData: any, filter: any, fields: any;
+    let selectItem = [], recordListData: any, referenceTofilters: any, fields: any;
     if(referenceToObject && value){
-        filter = [[reference_to_field, '=', value]];
-        fields = _.uniq([reference_to_field, referenceToLableField, "_id"]);
+        referenceTofilters = [[reference_to_field, '=', value]];
+        fields = uniq([reference_to_field, referenceToLableField, "_id"]);
     }
     if(mode==='read'){
         if(value){
             if (referenceTo) {
-                const recordList = referenceToObject.getRecordList(filter, fields);
+                const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
                 if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
@@ -76,8 +76,8 @@ export const LookupField = observer((props:any) => {
                 tags = selectItem;
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
-                options = _.isFunction(options) ? options(dependFieldValues) : options;
-                tags = _.filter(options,(optionItem: any)=>{
+                options = isFunction(options) ? options(dependFieldValues) : options;
+                tags = filter(options,(optionItem: any)=>{
                     return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
                 })
             }
@@ -100,7 +100,7 @@ export const LookupField = observer((props:any) => {
             // console.log("===request===params, props==", params, props);
             // console.log("===request===reference_to==", reference_to);
 
-            if(_.isFunction(options)) {
+            if(isFunction(options)) {
                 dependOnValues.__keyWords = params.keyWords;
                 dependOnValues.__referenceTo = referenceTo;
                 const results = await options(dependOnValues);
@@ -113,7 +113,7 @@ export const LookupField = observer((props:any) => {
                 let option: any = {};
                 if(params.open){
                     if (reference_sort) {
-                        option.sort = _.map(reference_sort, (value, key) => { 
+                        option.sort = map(reference_sort, (value, key) => { 
                             if(fields.indexOf(key)<0){ fields.push(key) };
                             return `${key}${value == 1 ? '' : ' desc'}` 
                         }).join(",")
@@ -130,7 +130,7 @@ export const LookupField = observer((props:any) => {
                     let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
                     if (filtersOfField.length) {
                         if (keyFilters.length) {
-                            if (_.isArray(filtersOfField)) {
+                            if (isArray(filtersOfField)) {
                                 keyFilters = [filtersOfField, keyFilters]
                             }
                             else {
@@ -143,7 +143,7 @@ export const LookupField = observer((props:any) => {
                         }
                     }
                     if (textFilters.length && keyFilters.length) {
-                        if (_.isArray(keyFilters)) {
+                        if (isArray(keyFilters)) {
                             filters = [textFilters, 'or', keyFilters]
                         }
                         else {
@@ -158,7 +158,7 @@ export const LookupField = observer((props:any) => {
                         filters = keyFilters;
                     }
                 }else{
-                    filters = filter;
+                    filters = referenceTofilters;
                 }
                 let data = await API.requestRecords(referenceTo, filters, fields, option);
 
@@ -177,14 +177,14 @@ export const LookupField = observer((props:any) => {
                 request = requestFun;
             }
             else if (options) {
-                if (_.isArray(options)) {
+                if (isArray(options)) {
                     fieldProps.options = options;
-                } else if (_.isFunction(options)) {
+                } else if (isFunction(options)) {
                     request = requestFun;
                 }
             }
         }else{ // 最后一种情况 没有referenceTo 只有options 或 optionsFunction 
-            if (_.isFunction(options)) {
+            if (isFunction(options)) {
                 request = async (params: any, props: any) => {
                     dependFieldValues.__keyWords = params.keyWords;
                     const results = await options(dependFieldValues);
@@ -201,10 +201,10 @@ export const LookupField = observer((props:any) => {
         }
 
         let newFieldProps:any=fieldProps;
-        if(_.isArray(referenceTos)){
+        if(isArray(referenceTos)){
             labelInValue=true;
             if(value){
-                const recordList = referenceToObject.getRecordList(filter, fields);
+                const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
                 // 根据ID获取请求 获取对应的 label。 不需要下面这行isloading判断
                 // if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
@@ -270,11 +270,11 @@ export const LookupField = observer((props:any) => {
             dropdownMatchSelectWidth:172,
             defaultValue:referenceTo
         }
-        const needReferenceToSelect = _.isArray(referenceTos) && !_.isArray(options)
+        const needReferenceToSelect = isArray(referenceTos) && !isArray(options)
         let referenceToOptions:any = [];
         let isLoadingReferenceTosObject;
         if(needReferenceToSelect){
-            _.forEach(referenceTos,(val)=>{
+            forEach(referenceTos,(val)=>{
                 const referenceToObject = Objects.getObject(val);
                 referenceToObjectSchema = referenceToObject.schema;
                 let referenceToObjectLeftIcon;
@@ -298,7 +298,7 @@ export const LookupField = observer((props:any) => {
                     needReferenceToSelect && 
                     (<Select   {...SelectProFieldProps} className="left_label_menu">
                     {
-                        _.map(referenceToOptions,(item)=>{
+                        map(referenceToOptions,(item)=>{
                             return (
                             <Option value={item.value} key={item.value}>
                                 {item.icon ? <span role="img" aria-label="smile" className="anticon anticon-smile"><SteedosIcon name={item.icon} size="x-small"/></span> : null}
@@ -330,7 +330,7 @@ export const FieldTreeSelect = observer((props:any)=> {
     }
     let treeDefaultExpandedKeys: string[];
     if (value && value.length) {
-        if (_.isArray(value)) {
+        if (isArray(value)) {
             treeDefaultExpandedKeys = value
         } else {
             treeDefaultExpandedKeys = [value]

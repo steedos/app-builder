@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'antd';
 import { ChartDesign, ChartDesignProps, CHART_OBJECT_APINAME } from './chartDesign'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { API } from '@steedos/builder-store';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 import './chartDesignModal.less';
 
 export const ChartDesignModal = observer((props: ChartDesignProps) => {
@@ -25,7 +25,7 @@ export const ChartDesignModal = observer((props: ChartDesignProps) => {
             // form.resetFields();
             // onCreate(values);
             let record: any = {type: values.type, label: values.label};
-            if(!_.isEmpty(editOptions)){
+            if(!isEmpty(editOptions)){
               record.options = editOptions
             }
             API.updateRecord(CHART_OBJECT_APINAME, chartId, record).then((value)=>{

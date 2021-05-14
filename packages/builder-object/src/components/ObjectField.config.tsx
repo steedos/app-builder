@@ -1,5 +1,5 @@
 import { Builder } from '@builder.io/react';
-import _ from 'lodash';
+import { clone } from 'lodash';
 import { ObjectField } from "./ObjectField";
 
 export const configObjectField: any = {
@@ -19,7 +19,7 @@ export const configObjectField: any = {
 };
 
 export const registerObjectFieldComponent = (fieldNames: string[]) => {
-  let configInputs = _.clone(configObjectField.inputs);
+  let configInputs = clone(configObjectField.inputs);
   configInputs.unshift({
     name: 'fieldName', 
     type: 'string', 

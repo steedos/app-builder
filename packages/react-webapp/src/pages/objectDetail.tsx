@@ -4,7 +4,7 @@ import { ObjectForm } from '@steedos/builder-object';
 import { Button, Dropdown, Menu, Card, message, Space, Modal } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Forms, Objects } from '@steedos/builder-store';
-import * as _ from 'lodash';
+import { each, isString, isBoolean, includes, find} from 'lodash';
 import { observer } from "mobx-react-lite";
 import { Link, useHistory, useParams } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
@@ -14,7 +14,7 @@ import { ChartDesignModal } from '@steedos/builder-charts';
 function getRelatedList(objectSchema){
   const detailsInfo = objectSchema.details;
   const relatedList = [];
-  _.each(detailsInfo, function(detailInfo){
+  each(detailsInfo, function(detailInfo){
     const index = detailInfo.indexOf(".");
     const objectApiName = detailInfo.substr(0,index);
     const fieldApiName = detailInfo.substr(index+1);
@@ -74,10 +74,10 @@ export const ObjectDetail = observer((props: any) => {
   dropdownMenus.push(<Menu.Item key="deleteRecord" onClick={()=> Modal.confirm({title:"", content: "删除此记录？",onOk: deleteRecord})}>删除</Menu.Item>)
 
   if(schema.actions){
-    _.each(schema.actions, function(action: any, actionApiName: string){
+    each(schema.actions, function(action: any, actionApiName: string){
       let visible = false;
       
-      if(_.isString(action._visible)){
+      if(isString(action._visible)){
         try {
           const visibleFunction = eval(`(${action._visible})`);
           visible = visibleFunction(objectApiName, recordId, recordPermissions, record)
@@ -86,11 +86,11 @@ export const ObjectDetail = observer((props: any) => {
         }
       }
 
-      if(_.isBoolean(action._visible)){
+      if(isBoolean(action._visible)){
         visible = action._visible
       }
 
-      if(visible && _.includes(['record', 'record_only'], action.on) && actionApiName != 'standard_edit'){
+      if(visible && includes(['record', 'record_only'], action.on) && actionApiName != 'standard_edit'){
         extraButtons.push(<Button key={actionApiName} onClick={action.todo} type={actionApiName === 'standard_edit' ? "primary":"default"}>{action.label}</Button>)
       }
       if(visible && action.on === 'record_more'&& actionApiName != 'standard_delete'){
@@ -135,7 +135,7 @@ export const ObjectDetail = observer((props: any) => {
     tabList.push({tab: object.schema.label, key: `related-${item.objectApiName}-${item.fieldApiName}`});
   })
 
-  if(!_.find(tabList, function(tab){return tab.key === tabActiveKey})){
+  if(!find(tabList, function(tab){return tab.key === tabActiveKey})){
     setTabActiveKey(`${objectApiName}-detail`)
   }
   return (

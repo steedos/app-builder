@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { cloneDeep, forEach } from 'lodash'
 import React from 'react'
 import { Builder, BuilderComponent, builder, withChildren } from '@builder.io/react';
 
@@ -6,10 +6,10 @@ import { Builder, BuilderComponent, builder, withChildren } from '@builder.io/re
 export function withFunctions(Component:any, functionNames: string[]) {
   return (props:any) => {
     let {initialValues, onFinish, onValuesChange, children, ...rest} = props
-    let newProps = _.cloneDeep(props)
+    let newProps = cloneDeep(props)
 
     // 确保函数在编辑状态下无效，以避免编辑工具一直报错。
-    _.forEach(functionNames, (name)=>{
+    forEach(functionNames, (name)=>{
       if (typeof props[name] === 'string'){
         if (Builder.isEditing) {
           newProps[name] = null

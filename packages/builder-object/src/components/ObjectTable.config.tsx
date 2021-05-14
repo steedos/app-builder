@@ -1,6 +1,6 @@
 import { Builder } from '@builder.io/react';
 import { Component, Input } from '@builder.io/sdk';
-import _ from 'lodash';
+import { clone } from 'lodash';
 import { ObjectTable } from "./ObjectTable";
 
 export const configObjectTable: Component = {
@@ -12,7 +12,7 @@ export const configObjectTable: Component = {
 };
 
 export const registerObjectTableComponent = (fieldNames: string[] | { label: string; value: any; helperText?: string }[]) => {
-  let configInputs: Input[] = _.clone(configObjectTable.inputs) as Input[];
+  let configInputs: Input[] = clone(configObjectTable.inputs) as Input[];
   configInputs.push({
     name: 'columnFields', 
     type: 'list', 

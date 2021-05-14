@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import _ from 'lodash';
+import { isFunction, filter,} from 'lodash';
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 
 export const select = {
@@ -8,9 +8,9 @@ export const select = {
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
     let tags:any;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
-    options = _.isFunction(options) ? options(dependFieldValues) : options;
+    options = isFunction(options) ? options(dependFieldValues) : options;
     const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
-    tags = _.filter(options,(optionItem: any)=>{
+    tags = filter(options,(optionItem: any)=>{
         return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
     })
     return (<React.Fragment>{tags.map((tagItem, index)=>{return (
@@ -33,7 +33,7 @@ export const select = {
     let request:any;
     let onDropdownVisibleChange:any;
 
-    if(_.isFunction(options)){
+    if(isFunction(options)){
       request = async (params: any, props: any) => {
         dependFieldValues.__keyWords = params.keyWords;
         const results = await options(dependFieldValues);
