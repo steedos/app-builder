@@ -48,6 +48,7 @@ export const LookupField = observer((props:any) => {
         if (referenceToObject.isLoading) return (<div><Spin/></div>);
         referenceToObjectSchema = referenceToObject.schema;
         referenceToLableField = referenceToObjectSchema["NAME_FIELD_KEY"] ? referenceToObjectSchema["NAME_FIELD_KEY"] : "name";
+        // TODO: organizations.object.yml 文件里后续也要添加一个类似enable_tree属性 parent_field。
         referenceParentField = referenceToObjectSchema.parent_field || "parent"
         if(referenceToObjectSchema.icon){
             referenceToObjectIcon = referenceToObjectSchema.icon;
