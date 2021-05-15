@@ -374,9 +374,7 @@ export const FieldTreeSelect = observer((props:any)=> {
         // treeDefaultExpandAll
         treeDefaultExpandedKeys={treeDefaultExpandedKeys}
         onDropdownVisibleChange={(open: boolean) => {
-            if (open) {
-                setParams({ open, openTag: new Date() });
-            }
+            setParams({ open, openTag: new Date() });
         }}
         onChange={onChange}
         {...rest}
