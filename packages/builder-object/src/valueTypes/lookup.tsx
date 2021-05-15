@@ -336,7 +336,9 @@ export const FieldTreeSelect = observer((props:any)=> {
     let treeNameField = nameField;
     if(objectApiName==='organizations'){
         fields.push('name')
-        treeNameField = 'name'
+        if(params.open){
+            treeNameField = 'name'
+        }
     }
     const recordList: any = object.getRecordList(filtersResult, fields);
     if (recordList.isLoading) return (<div><Spin/></div>);
