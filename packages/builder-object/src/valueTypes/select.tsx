@@ -49,7 +49,8 @@ export const select = {
         params,
         onDropdownVisibleChange,
       }
-    }else{
+    }else if(options){
+      //options为空时不能直接覆盖fieldProps.options中的值，因为要允许直接给控件fieldProps.options赋值
       props.fieldProps.options = options;
     }
     proFieldProps.showSearch=true;
