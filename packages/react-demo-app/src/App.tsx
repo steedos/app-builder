@@ -68,7 +68,7 @@ export default observer((props: any) => {
       "*"
     )
 
-    window.close()
+    // window.close()
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
   const colSize = useAntdMediaQuery();
