@@ -242,7 +242,6 @@ export const LookupField = observer((props:any) => {
         let proFieldProps: any;
         const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         if(isLookupTree){
-            console.log("==isLookupTree=fieldFilters===", fieldFilters);
             //主要用到了newFieldProps中的onChange和value属性
             proFieldProps = Object.assign({}, {...newFieldProps}, {
                 objectApiName: referenceTo,
