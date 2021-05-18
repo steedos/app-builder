@@ -77,6 +77,8 @@ export default observer((props: any) => {
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
+  const toolbar = isMobile ? {subTitle: false} : null;
+
   const userSession = User.getSession();
   let defaultSaceUsersFilters: any = ["user_accepted", "=", true];
   let orgExpandFilters: any = ["hidden", "!=", true];
@@ -175,8 +177,7 @@ export default observer((props: any) => {
     filterType: 'light',
   };
   let spaceUserSearchBar: any;
-  // if(isMobile){
-  if(true){
+  if(isMobile){
     spaceUserSearchConfig = false;
     spaceUserSearchBar = ()=> [(
       <Form
@@ -195,7 +196,6 @@ export default observer((props: any) => {
             reference_to: "organizations",
             filters: orgExpandFilters
           }}
-          width="200px"
         />
       </Form>
     )]
@@ -236,6 +236,7 @@ export default observer((props: any) => {
                     debounceTime={500}
                     filters={spaceUsersFilters}
                     toolBarRender={spaceUserSearchBar}
+                    toolbar={toolbar}
                   />
                 )
               }
