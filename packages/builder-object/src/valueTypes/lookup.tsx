@@ -357,7 +357,7 @@ export const FieldTreeSelect = observer((props:any)=> {
     }
     let treeDefaultExpandedKeys: string[];
     const recordList: any = object.getRecordList(filters, fields);
-    // if (recordList.isLoading) return (<div><Spin/></div>);
+    if (recordList.isLoading) return (<div><Spin/></div>);
     const recordListData = recordList.data;
     if (recordListData && recordListData.value && recordListData.value.length > 0) {
         treeData = getTreeDataFromRecords(recordListData.value, treeNameField, parentField);
@@ -378,12 +378,13 @@ export const FieldTreeSelect = observer((props:any)=> {
     }
     return (
       <TreeSelect
-        loading={recordList.isLoading}
+        // loading={recordList.isLoading}
         treeNodeFilterProp="title"
         allowClear
         showSearch={true}
         style={{ width: '100%' }}
-        value={recordList.isLoading ? null: value}
+        value={value}
+        // value={recordList.isLoading ? null: value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         treeData={treeData}
         placeholder="请选择"
