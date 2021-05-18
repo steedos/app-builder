@@ -101,9 +101,11 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const tableRef = useRef<ActionType>()
 
-  useEffect(() => {
-    tableRef.current?.reload()
-  }, [tableRef.current])
+  // 不懂为什么要加这个useEffect，加上的坏处是手机上切换到联系人列表后，切换顶部的联系人分类时会请求space_users数据
+  // 不加的话也没发现什么坏处，即手机和PC上从用户选项卡切换到联系人选项卡都能正常请求数据
+  // useEffect(() => {
+  //   tableRef.current?.reload()
+  // }, [tableRef.current])
 
   const [expandProps, setExpandProps] = useState<{
     type: string
