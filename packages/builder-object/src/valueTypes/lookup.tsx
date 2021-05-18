@@ -242,16 +242,16 @@ export const LookupField = observer((props:any) => {
         let proFieldProps: any;
         const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         if(isLookupTree){
-            proFieldProps = {
+            console.log("==isLookupTree=fieldFilters===", fieldFilters);
+            //主要用到了newFieldProps中的onChange和value属性
+            proFieldProps = Object.assign({}, {...newFieldProps}, {
                 objectApiName: referenceTo,
-                onChange: newFieldProps.onChange,
                 multiple,
                 filters: fieldFilters,
                 filtersFunction,
-                value: newFieldProps.value,
                 nameField: referenceToLableField,
                 parentField: referenceParentField
-            }
+            })
         }
         else{
             proFieldProps = {
@@ -325,10 +325,23 @@ export const LookupField = observer((props:any) => {
 
 export const FieldTreeSelect = observer((props:any)=> {
     const [params, setParams] = useState({open: false,openTag: null});
-    const { objectApiName, nameField = "name", parentField = "parent", filters = [],filtersFunction, value, onChange, ...rest } = props;
-    let filtersResult:any[] =  filtersFunction ? filtersFunction(filters) : filters;
-    if(!params.open){
-        filtersResult = [['_id', '=', value]];
+    const { objectApiName, nameField = "name", parentField = "parent", filters: fieldFilters = [],filtersFunction, value, onChange, ...rest } = props;
+    let filters: any[] | string =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+    const keyFilters: any = ['_id', '=', value];
+    if(params.open){
+        if(value && value.length && filters && filters.length){
+            if (isArray(filters)) {
+                filters = [keyFilters, "or", filters]
+            }
+            else {
+                const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+                filters = `(${odataKeyFilters}) or (${filters})`;
+            }
+        }
+    }
+    else{
+        // 未展开下拉菜单时，只请求value对应的记录，value为空时为null，正好返回空数据
+        filters = keyFilters;
     }
     let fields = [nameField, parentField]
     const object = Objects.getObject(objectApiName);
@@ -341,7 +354,7 @@ export const FieldTreeSelect = observer((props:any)=> {
             treeNameField = 'name'
         }
     }
-    const recordList: any = object.getRecordList(filtersResult, fields);
+    const recordList: any = object.getRecordList(filters, fields);
     if (recordList.isLoading) return (<div><Spin/></div>);
     const recordListData = recordList.data;
     if (recordListData && recordListData.value && recordListData.value.length > 0) {
