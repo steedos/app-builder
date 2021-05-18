@@ -325,9 +325,10 @@ export const LookupField = observer((props:any) => {
 
 export const FieldTreeSelect = observer((props:any)=> {
     const [params, setParams] = useState({open: false,openTag: null});
+    const [opened, setOpened] = useState(false);
     const { objectApiName, nameField = "name", parentField = "parent", filters = [],filtersFunction, value, onChange, ...rest } = props;
     let filtersResult:any[] =  filtersFunction ? filtersFunction(filters) : filters;
-    if(!params.open){
+    if(!params.open && !opened){
         filtersResult = [['_id', '=', value]];
     }
     let fields = [nameField, parentField]
@@ -376,6 +377,9 @@ export const FieldTreeSelect = observer((props:any)=> {
         treeDefaultExpandedKeys={treeDefaultExpandedKeys}
         open={params.open}
         onDropdownVisibleChange={(open: boolean) => {
+            if (open && !opened) {
+                setOpened(true)
+            }
             setParams({ open, openTag: new Date() });
         }}
         onChange={onChange}
