@@ -1,0 +1,10 @@
+{
+  "name": "@steedos/builder-form-designer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "fr-generator": "^2.0.2"
+  },
+  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-form-designer"
+}
