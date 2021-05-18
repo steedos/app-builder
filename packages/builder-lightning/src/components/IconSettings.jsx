@@ -8,11 +8,20 @@ import Icon from '@salesforce/design-system-react/components/icon';
 
 export class SteedosIconSettings extends React.Component {
 	render() {
-		let { children } = this.props;
-		return (
-			<IconSettings actionSprite={actionSprite} standardSprite={standardSprite} customSprite={customSprite} utilitySprite={utilitySprite}>
-				{children}
-			</IconSettings>
-		);
+		let { children, iconPath } = this.props;
+		if(iconPath){
+			return (
+				<IconSettings iconPath={iconPath}>
+					{children}
+				</IconSettings>
+			);
+		}else{
+			return (
+				<IconSettings actionSprite={actionSprite} standardSprite={standardSprite} customSprite={customSprite} utilitySprite={utilitySprite}>
+					{children}
+				</IconSettings>
+			);
+		}
+		
 	}
 }

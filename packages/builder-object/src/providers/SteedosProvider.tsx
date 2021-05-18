@@ -21,6 +21,7 @@ export function SteedosProvider(props: any) {
     userId = localStorage.getItem('steedos:userId'),
     authToken = localStorage.getItem('steedos:token'),
     locale,
+    iconPath,
   } = props;
 
   Settings.setRootUrl(rootUrl);
@@ -40,7 +41,7 @@ export function SteedosProvider(props: any) {
 
   return (
     <SteedosContext.Provider value={{}}>
-      <SteedosIconSettings>
+      <SteedosIconSettings iconPath={iconPath}>
         <ObjectProvider {...objectProviderProps}>
           {props.children}
         </ObjectProvider>
