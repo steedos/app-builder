@@ -224,7 +224,7 @@ export const LookupField = observer((props:any) => {
                 value: {value: fieldProps.value,label: selectItemLabel},
                 onChange:(values: any, option: any)=>{
                     setSelectItemLabel(values.label)
-                    onChange({o: referenceTo, ids: [values.value]})
+                    onChange({o: referenceTo, ids: (values.value ? [values.value] : [])})
                 }
             })
         }
