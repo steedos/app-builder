@@ -35,7 +35,12 @@ declare global {
   interface Window {
       Creator: any
   }
+  interface Window {
+    Meteor: any
+  }
 }
 
-window.Creator = {};
-window.Creator.Objects = {};
+if(!window.Meteor){
+  window.Creator = {};
+  window.Creator.Objects = {};
+}
