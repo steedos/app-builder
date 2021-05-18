@@ -358,24 +358,22 @@ export const FieldTreeSelect = observer((props:any)=> {
     let treeDefaultExpandedKeys: string[];
     const recordList: any = object.getRecordList(filters, fields);
     // if (recordList.isLoading) return (<div><Spin/></div>);
-    if(!recordList.isLoading){
-        const recordListData = recordList.data;
-        if (recordListData && recordListData.value && recordListData.value.length > 0) {
-            treeData = getTreeDataFromRecords(recordListData.value, treeNameField, parentField);
-        }
-        if (value && value.length) {
-            if (isArray(value)) {
-                treeDefaultExpandedKeys = value
-            } else {
-                treeDefaultExpandedKeys = [value]
-            }
+    const recordListData = recordList.data;
+    if (recordListData && recordListData.value && recordListData.value.length > 0) {
+        treeData = getTreeDataFromRecords(recordListData.value, treeNameField, parentField);
+    }
+    if (value && value.length) {
+        if (isArray(value)) {
+            treeDefaultExpandedKeys = value
         } else {
-            if (treeData && treeData.length) {
-                const rootNodeValues = treeData.map((treeItem) => {
-                    return treeItem.value;
-                });
-                treeDefaultExpandedKeys = rootNodeValues;
-            }
+            treeDefaultExpandedKeys = [value]
+        }
+    } else {
+        if (treeData && treeData.length) {
+            const rootNodeValues = treeData.map((treeItem) => {
+                return treeItem.value;
+            });
+            treeDefaultExpandedKeys = rootNodeValues;
         }
     }
     return (
@@ -385,7 +383,7 @@ export const FieldTreeSelect = observer((props:any)=> {
         allowClear
         showSearch={true}
         style={{ width: '100%' }}
-        value={value}
+        value={recordList.isLoading ? null: value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         treeData={treeData}
         placeholder="请选择"
