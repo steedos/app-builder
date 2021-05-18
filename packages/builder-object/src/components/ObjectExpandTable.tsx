@@ -79,32 +79,15 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     ...rest
   } = props
 
-  const [selectedUsers, setSelectedUsers] = useState([])
   const [selectedExpandNode, setSelectedExpandNode] = useState([])
 
-  // const flatChildren = (node) => {
-  //   return [
-  //     node,
-  //     ...(node.children.length > 0
-  //       ? _.flatten(node.children.map((c) => flatChildren(c)))
-  //       : [null]),
-  //   ].filter((a) => a)
-  // }
-  const handleExpandContentChange = (selectedNodes) => {
-    //原先是过滤用户ID的。现有调整成过滤组织ID的方式
-    // let tmpUsers=[]
-    // selectedNodes.forEach(({ users }) => { tmpUsers = [...tmpUsers, ...users] });
-    // tmpUsers = _.uniq(tmpUsers);
-    //setSelectedUsers(tmpUsers)
-
+  const handleExpandContentChange = (selectedNodes: object[], keyField?: string) => {
+    if(!keyField){
+      keyField = "key";
+    }
     let tmpTreeNodes = []
-
-    // if (includeSub) {
-    //   selectedNodes = _.flatten(selectedNodes.map((node) => flatChildren(node)))
-    // }
-
-    selectedNodes.forEach(({ key }) => {
-      tmpTreeNodes = [...tmpTreeNodes, key]
+    selectedNodes.forEach((node) => {
+      tmpTreeNodes = [...tmpTreeNodes, node[keyField]]
     })
     tmpTreeNodes = _.uniq(tmpTreeNodes)
     setSelectedExpandNode(tmpTreeNodes)
@@ -118,9 +101,11 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const tableRef = useRef<ActionType>()
 
-  useEffect(() => {
-    tableRef.current?.reload()
-  }, [tableRef.current])
+  // 不懂为什么要加这个useEffect，加上的坏处是手机上切换到联系人列表后，切换顶部的联系人分类时会请求space_users数据
+  // 不加的话也没发现什么坏处，即手机和PC上从用户选项卡切换到联系人选项卡都能正常请求数据
+  // useEffect(() => {
+  //   tableRef.current?.reload()
+  // }, [tableRef.current])
 
   const [expandProps, setExpandProps] = useState<{
     type: string
@@ -184,7 +169,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
             {expandProps.type == "tree" && (
               <ObjectTree
                 {...expandProps}
-                onChange={handleExpandContentChange}
+                onChange={(values: any)=>{
+                  handleExpandContentChange(values, "key");
+                }}
               />
             )}
             {expandProps.type == "list" && (
@@ -197,7 +184,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
                   } = expandProps
                   return expandPropsRest
                 })()}
-                onChange={handleExpandContentChange}
+                onChange={(values: any)=>{
+                  handleExpandContentChange(values, "_id");
+                }}
               />
             )}
           </ProCard>
@@ -205,14 +194,6 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         <ProCard className="table-part" ghost>
           <ObjectTable
             {...rest}
-            // filters={
-            //   expandProps &&
-            //   getTableFilter(
-            //     selectedExpandNode,
-            //     expandProps.releatedColumnField
-            //     // "organizations_parents"
-            //   )
-            // }
             filters={
               getTableFilter(expandProps, selectedExpandNode, filters)
             }

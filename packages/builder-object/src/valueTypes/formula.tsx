@@ -7,7 +7,7 @@ export const formula = {
   render: (text: any, props: any) => {
     return (<span>{text}</span>)
   },
-  renderFormItem: (_: any, props: any) => {
-    return (<span></span>)
+  renderFormItem: (text: any, props: any) => {
+    return (<span>{text}</span>)
   }
 }

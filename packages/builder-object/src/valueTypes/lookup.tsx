@@ -48,6 +48,7 @@ export const LookupField = observer((props:any) => {
         if (referenceToObject.isLoading) return (<div><Spin/></div>);
         referenceToObjectSchema = referenceToObject.schema;
         referenceToLableField = referenceToObjectSchema["NAME_FIELD_KEY"] ? referenceToObjectSchema["NAME_FIELD_KEY"] : "name";
+        // TODO: organizations.object.yml 文件里后续也要添加一个类似enable_tree属性 parent_field。
         referenceParentField = referenceToObjectSchema.parent_field || "parent"
         if(referenceToObjectSchema.icon){
             referenceToObjectIcon = referenceToObjectSchema.icon;
@@ -223,7 +224,7 @@ export const LookupField = observer((props:any) => {
                 value: {value: fieldProps.value,label: selectItemLabel},
                 onChange:(values: any, option: any)=>{
                     setSelectItemLabel(values.label)
-                    onChange({o: referenceTo, ids: [values.value]})
+                    onChange({o: referenceTo, ids: (values.value ? [values.value] : [])})
                 }
             })
         }
@@ -241,16 +242,15 @@ export const LookupField = observer((props:any) => {
         let proFieldProps: any;
         const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         if(isLookupTree){
-            proFieldProps = {
+            //主要用到了newFieldProps中的onChange和value属性
+            proFieldProps = Object.assign({}, {...newFieldProps}, {
                 objectApiName: referenceTo,
-                onChange: newFieldProps.onChange,
                 multiple,
                 filters: fieldFilters,
                 filtersFunction,
-                value: newFieldProps.value,
                 nameField: referenceToLableField,
                 parentField: referenceParentField
-            }
+            })
         }
         else{
             proFieldProps = {
@@ -324,10 +324,25 @@ export const LookupField = observer((props:any) => {
 
 export const FieldTreeSelect = observer((props:any)=> {
     const [params, setParams] = useState({open: false,openTag: null});
-    const { objectApiName, nameField = "name", parentField = "parent", filters = [],filtersFunction, value, onChange, ...rest } = props;
-    let filtersResult:any[] =  filtersFunction ? filtersFunction(filters) : filters;
-    if(!params.open){
-        filtersResult = [['_id', '=', value]];
+    const [opened, setOpened] = useState(false);
+    const { objectApiName, nameField = "name", parentField = "parent", filters: fieldFilters = [],filtersFunction, value, onChange, ...rest } = props;
+    let filters: any[] | string =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+    const keyFilters: any = ['_id', '=', value];
+    if(params.open){
+        if(value && value.length && filters && filters.length){
+            if (isArray(filters)) {
+                filters = [keyFilters, "or", filters]
+            }
+            else {
+                const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+                filters = `(${odataKeyFilters}) or (${filters})`;
+            }
+        }
+    }
+    if(!params.open && !opened){
+        // 未展开下拉菜单时，只请求value对应的记录，value为空时为null，正好返回空数据
+        // 加opened条件是因为之前请求过完整数据就没必要再按keyFilters请求一次部分数据，避免下次再点开下拉菜单时请求整棵树。
+        filters = keyFilters;
     }
     let fields = [nameField, parentField]
     const object = Objects.getObject(objectApiName);
@@ -336,15 +351,17 @@ export const FieldTreeSelect = observer((props:any)=> {
     let treeNameField = nameField;
     if(objectApiName==='organizations'){
         fields.push('name')
-        treeNameField = 'name'
+        if(params.open){
+            treeNameField = 'name'
+        }
     }
-    const recordList: any = object.getRecordList(filtersResult, fields);
+    let treeDefaultExpandedKeys: string[];
+    const recordList: any = object.getRecordList(filters, fields);
     if (recordList.isLoading) return (<div><Spin/></div>);
     const recordListData = recordList.data;
     if (recordListData && recordListData.value && recordListData.value.length > 0) {
         treeData = getTreeDataFromRecords(recordListData.value, treeNameField, parentField);
     }
-    let treeDefaultExpandedKeys: string[];
     if (value && value.length) {
         if (isArray(value)) {
             treeDefaultExpandedKeys = value
@@ -361,20 +378,24 @@ export const FieldTreeSelect = observer((props:any)=> {
     }
     return (
       <TreeSelect
+        // loading={recordList.isLoading}
         treeNodeFilterProp="title"
         allowClear
         showSearch={true}
         style={{ width: '100%' }}
         value={value}
+        // value={recordList.isLoading ? null: value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         treeData={treeData}
         placeholder="请选择"
         // treeDefaultExpandAll
         treeDefaultExpandedKeys={treeDefaultExpandedKeys}
+        open={params.open}
         onDropdownVisibleChange={(open: boolean) => {
-            if (open) {
-                setParams({ open, openTag: new Date() });
+            if (open && !opened) {
+                setOpened(true)
             }
+            setParams({ open, openTag: new Date() });
         }}
         onChange={onChange}
         {...rest}

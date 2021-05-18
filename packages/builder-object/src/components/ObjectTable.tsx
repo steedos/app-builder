@@ -266,7 +266,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   if(isMobile){
     searchOptions = false;
   }
-  const proSearch = search ? search : searchOptions;
+  const proSearch = search || search === false ? search : searchOptions;
 
   let toolbarOptions: any =  {
     subTitle: `${totalRecords} 个项目`
