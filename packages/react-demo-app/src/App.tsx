@@ -100,7 +100,6 @@ export default observer((props: any) => {
   }
 
   useEffect(() => {
-    console.log("===useEffect===setSpaceUsersFilters===");
     if(User.isLoading){
       return;
     }
