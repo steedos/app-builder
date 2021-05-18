@@ -35,6 +35,8 @@ export default observer((props: any) => {
   const [selectedUserInTab2, setSelectedUsersInTab2] = useState([])
   const [selectedOrgForMobile, setSelectedOrgForMobile] = useState()
   const [spaceUsersFilters, setSpaceUsersFilters] = useState([])
+  const [selectedContactForMobile, setSelectedContactForMobile] = useState()
+  const [contactsFilters, setContactsFilters] = useState([])
 
   const handleOnTab1Change = (users: any) => {
     setSelectedUsersInTab1(users)
@@ -98,6 +100,7 @@ export default observer((props: any) => {
   }
 
   useEffect(() => {
+    console.log("===useEffect===setSpaceUsersFilters===");
     if(User.isLoading){
       return;
     }
@@ -108,6 +111,18 @@ export default observer((props: any) => {
       setSpaceUsersFilters(defaultSaceUsersFilters)
     }
   }, [selectedOrgForMobile])
+
+  useEffect(() => {
+    if(User.isLoading){
+      return;
+    }
+    if(selectedContactForMobile){
+      setContactsFilters([["group", "=", selectedContactForMobile]])
+    }
+    else{
+      setContactsFilters([])
+    }
+  }, [selectedContactForMobile])
 
   const organizationColumns = isMobile ? [
     {
@@ -167,22 +182,24 @@ export default observer((props: any) => {
     {
       fieldName: "group",
       hideInTable: true,
+      hideInSearch: true,
       expandType: "list",
       expandReference: "contacts_group",
       expandNameField: "name"
     }
   ];
 
-  let spaceUserSearchConfig: any = {
+  let searchConfig: any = {
     filterType: 'light',
   };
   let spaceUserSearchBar: any;
+  let contactSearchBar: any;
   if(isMobile){
-    spaceUserSearchConfig = false;
+    searchConfig = false;
     spaceUserSearchBar = ()=> [(
       <Form
         onValuesChange={(changeValues: any)=>{
-          console.log(changeValues)
+          console.log("=spaceUserSearchBar=changeValues===", changeValues)
           setSelectedOrgForMobile(changeValues.organizations_parents);
         }}
       >
@@ -195,6 +212,25 @@ export default observer((props: any) => {
           fieldSchema={{
             reference_to: "organizations",
             filters: orgExpandFilters
+          }}
+        />
+      </Form>
+    )]
+    contactSearchBar = ()=> [(
+      <Form
+        onValuesChange={(changeValues: any)=>{
+          console.log("=contactSearchBar=changeValues===", changeValues)
+          setSelectedContactForMobile(changeValues.group);
+        }}
+      >
+        <Field 
+          name="group"
+          showSearch
+          valueType="lookup"
+          mode="edit"
+          placeholder="请选择所属分组"
+          fieldSchema={{
+            reference_to: "contacts_group"
           }}
         />
       </Form>
@@ -230,7 +266,7 @@ export default observer((props: any) => {
                   <ObjectExpandTable
                     onChange={handleOnTab1Change}
                     objectApiName="space_users"
-                    search={spaceUserSearchConfig}
+                    search={searchConfig}
                     columnFields={organizationColumns}
                     scroll={scroll}
                     debounceTime={500}
@@ -253,12 +289,13 @@ export default observer((props: any) => {
                 onChange={handleOnTab2Change}
                 rowKey="_id"
                 objectApiName="contacts__c"
-                search={{
-                  filterType: 'light',
-                }}
+                search={searchConfig}
                 columnFields={groupColumns}
                 scroll={scroll}
                 debounceTime={500}
+                filters={contactsFilters}
+                toolBarRender={contactSearchBar}
+                toolbar={toolbar}
               />
             </ProCard.TabPane>
           </ProCard>
