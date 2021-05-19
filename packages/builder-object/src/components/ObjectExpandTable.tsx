@@ -158,6 +158,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     )
   }, [props.columnFields])
 
+  // 当ObjectTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
+  const tablePartWidth = rest.scroll && expandProps && expandProps.type && "calc(100% - 366px)";
+
   return (
     <>
       <ProCard
@@ -191,7 +194,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
             )}
           </ProCard>
         )}
-        <ProCard className="table-part" ghost>
+        <ProCard className="table-part" colSpan={tablePartWidth} ghost>
           <ObjectTable
             {...rest}
             filters={
