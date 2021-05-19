@@ -1,11 +1,12 @@
 import React from 'react'
 import ProField from "@ant-design/pro-field";
 
-export const ObjectField = (props) => {
-  const {fieldName, valueType, value, ...rest} = props
+export const date = (props) => {
+  const {value, ...rest} = props
+
   return (<ProField 
-    mode='read'
-    valueType={valueType} 
+    mode='edit'
+    valueType='date' 
     // fieldProps={{
     //   field_schema: fieldSchema
     // }}
