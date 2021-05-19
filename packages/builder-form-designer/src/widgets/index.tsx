@@ -1,5 +1,7 @@
-import {ObjectField} from './field';
+import {text} from './text';
+import { date } from './date';
 
 export const widgets = {
-  ObjectField,
+  text,
+  // date,
 }

@@ -1,69 +1,84 @@
-export const getFields = (objectApiName) => {
+export const getWidgets = () => {
   return [
     {
-      text: '名称',
-      name: 'name',
-      widget: 'ObjectField',
+      text: '文本',
+      name: 'text',
+      widget: 'text',
       schema: {
-        title: '名称',
+        title: '文本',
         type: 'string',
+        widget: 'text',
       },
       setting: {
-        fieldName: {
-          title: '字段名',
-          type: 'string',
-        },
       },
     },
     {
-      text: '所有者',
-      name: 'owner',
-      widget: 'ObjectField',
+      text: '日期',
+      name: 'date',
+      widget: 'date',
       schema: {
-        title: '所有者',
-        type: 'string',
+        title: '日期',
+        label: '日期',
+        type: 'date',
+        widget: 'date',
       },
       setting: {
-        minLength: {
-          title: '最短字数',
-          type: 'number',
-        },
       },
-    }
+    },
   ]
 }
 
-export const getRelatedLists = (objectApiName) => {
-  return [{
-
-  }]
-}
-
-export const getSettings = (objectApiName) => {
+export const getSettings = () => {
 
   return [
     {
-      title: '字段',
-      widgets: getFields(objectApiName),
+      title: '基础组件',
+      widgets: getWidgets(),
       show: true,
       useCommon: false, 
     },
-    // {
-    //   title: '相关子表',
-    //   widgets: getRelatedLists(objectApiName),
-    //   show: true,
-    //   useCommon: false,
-    // }
   ]
 }
 
 export const getCommonSettings = () => {
   return {
     $id: {
-      title: 'ID',
+      title: 'API名称',
       description: '数据存储的名称/英文/必填',
       type: 'string',
       widget: 'idInput',
+    },
+    title: {
+      title: '显示名',
+      type: 'string',
+    },
+    required: {
+      title: '必填',
+      type: 'boolean',
+    },
+    // placeholder: {
+    //   title: '占位符',
+    //   type: 'string',
+    // },
+    // disabled: {
+    //   title: '禁用',
+    //   type: 'boolean',
+    // },
+    readOnly: {
+      title: '只读',
+      type: 'boolean',
+    },
+    // hidden: {
+    //   title: '隐藏',
+    //   type: 'boolean',
+    // },
+    default: {
+      title: '默认值',
+      type: 'string',
+    },
+    description: {
+      title: '备注',
+      type: 'string',
     },
   }
 }
