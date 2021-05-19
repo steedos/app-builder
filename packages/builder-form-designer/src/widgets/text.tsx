@@ -1,15 +1,10 @@
 import React from 'react'
-import ProField from "@ant-design/pro-field";
+import { SteedosField } from './SteedosField';
 
 export const text = (props) => {
-  const {value, ...rest} = props
-  return (<ProField 
-    mode='edit'
+
+  return (<SteedosField 
     valueType='text' 
-    // fieldProps={{
-    //   field_schema: fieldSchema
-    // }}
-    text={value}
-    emptyText=''
+    {...props}
     />)
 }

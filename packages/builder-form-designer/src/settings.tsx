@@ -6,7 +6,7 @@ export const getWidgets = () => {
       widget: 'text',
       schema: {
         title: '文本',
-        type: 'text',
+        type: 'string',
         widget: 'text',
       },
       setting: {
@@ -43,42 +43,42 @@ export const getSettings = () => {
 export const getCommonSettings = () => {
   return {
     $id: {
-      title: '字段名',
+      title: 'API名称',
       description: '数据存储的名称/英文/必填',
       type: 'string',
       widget: 'idInput',
     },
     title: {
-      title: '标签',
-      type: 'string',
-    },
-    description: {
-      title: '说明',
-      type: 'string',
-    },
-    default: {
-      title: '默认值',
+      title: '显示名',
       type: 'string',
     },
     required: {
       title: '必填',
       type: 'boolean',
     },
-    placeholder: {
-      title: '占位符',
-      type: 'string',
-    },
-    disabled: {
-      title: '禁用',
-      type: 'boolean',
-    },
+    // placeholder: {
+    //   title: '占位符',
+    //   type: 'string',
+    // },
+    // disabled: {
+    //   title: '禁用',
+    //   type: 'boolean',
+    // },
     readOnly: {
       title: '只读',
       type: 'boolean',
     },
-    hidden: {
-      title: '隐藏',
-      type: 'boolean',
+    // hidden: {
+    //   title: '隐藏',
+    //   type: 'boolean',
+    // },
+    default: {
+      title: '默认值',
+      type: 'string',
+    },
+    description: {
+      title: '备注',
+      type: 'string',
     },
   }
 }

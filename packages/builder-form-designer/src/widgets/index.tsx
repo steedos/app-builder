@@ -3,5 +3,5 @@ import { date } from './date';
 
 export const widgets = {
   text,
-  date,
+  // date,
 }
