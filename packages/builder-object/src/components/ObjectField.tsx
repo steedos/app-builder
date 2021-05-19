@@ -15,10 +15,10 @@ export type ObjectFieldProps = {
   fieldSchema: any,
 }
 
-export const ObjectField = observer((props: any) => {
+export const ObjectField = (props: any) => {
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
-  const { objectApiName, fieldName, fieldSchema } = props
+  const { objectApiName, fieldName, fieldSchema, ...rest } = props
   
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
@@ -27,7 +27,6 @@ export const ObjectField = observer((props: any) => {
   /*
     TODO: fieldSchema 如果不存在，应该从对象中获取，但是对象应该从 store 中获取，而不是请求。
   */
-  
   // 从对象定义中生成字段信息。
   let mode = Forms.loadById(formId).mode;
   let formFieldProps: any = {
@@ -42,6 +41,7 @@ export const ObjectField = observer((props: any) => {
     readonly: fieldSchema.readonly,
     isWide: fieldSchema.is_wide,
     fieldSchema,
+    ...rest
   }
 
   if (mode == "edit") {
@@ -69,7 +69,7 @@ export const ObjectField = observer((props: any) => {
   }
 
   const dependOn = fieldSchema.depend_on ? fieldSchema.depend_on : []
-
+  console.log(`ObjectField`, formFieldProps)
   return (
     <ProFormDependency name={dependOn}>
       {(dependFieldValues) => {
@@ -82,4 +82,4 @@ export const ObjectField = observer((props: any) => {
       }}
     </ProFormDependency>
   )
-});
+};

@@ -15,6 +15,73 @@ import Button from '@salesforce/design-system-react/components/button';
 
 import './Field.less'
 
+const ProFieldWrap = observer((props: any) => {
+  const {
+    formId,
+    showInlineIcon,
+    readonly, 
+    mode, 
+    fieldSchema,
+    fieldProps,
+    dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
+
+  const proFieldProps = {
+    emptyText: '',
+    fieldProps: Object.assign({}, fieldProps, {
+      field_schema: fieldSchema,
+      depend_field_values: dependFieldValues,
+    }),
+    ...rest
+  }
+
+  if (!readonly && mode === 'edit') {
+    return <ProField mode='edit' {...proFieldProps} />
+
+  }
+
+  const onInlineEdit = () => {
+    Forms.loadById(formId).setMode('edit')
+  };
+  const inlineIconOpacity = 0.4
+  const inlineIcon = readonly ?
+    <Button
+      iconCategory="utility"
+      iconName="lock"
+      iconSize="small"
+      iconVariant="container"
+      iconClassName="slds-button__icon slds-button__icon_hint"
+      variant="icon"/> :
+    <Button
+      iconCategory="utility"
+      iconName="edit"
+      iconSize="small"
+      iconVariant="container"
+      iconClassName="slds-button__icon slds-button__icon_hint"
+      variant="icon"
+      //<EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}
+      onClick={() => {
+        onInlineEdit()
+      }}
+    />
+
+
+  const containerOptions = {
+  }
+
+  return (
+    <Flex
+      {...containerOptions}
+      role="group"
+      onDoubleClick={() => { if (!readonly) onInlineEdit(); }}
+    >
+      <Box flex="1"><ProField mode='read' {...proFieldProps} /></Box>
+      {showInlineIcon && (<Box width="16px">{inlineIcon}</Box>)}
+    </Flex>
+  )
+})
+
+
+
 export const Field = observer((props: any) => {
   const context = React.useContext(FormContext);
   const formId = context.name ? context.name : 'default';
@@ -80,81 +147,18 @@ export const Field = observer((props: any) => {
 
   }
 
-  const ProFieldWrap = observer((props: any) => {
-
-    const { 
-      readonly, 
-      mode, 
-      fieldSchema,
-      fieldProps,
-      dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
-
-    const proFieldProps = {
-      emptyText: '',
-      fieldProps: Object.assign({}, fieldProps, {
-        field_schema: fieldSchema,
-        depend_field_values: dependFieldValues,
-      }),
-      ...rest
-    }
-
-    if (!readonly && mode === 'edit') {
-      return <ProField mode='edit' {...proFieldProps} />
-
-    }
-
-    const onInlineEdit = () => {
-      Forms.loadById(formId).setMode('edit')
-    };
-    const inlineIconOpacity = 0.4
-    const inlineIcon = readonly ?
-      <Button
-        iconCategory="utility"
-        iconName="lock"
-        iconSize="small"
-        iconVariant="container"
-        iconClassName="slds-button__icon slds-button__icon_hint"
-        variant="icon"/> :
-      <Button
-        iconCategory="utility"
-        iconName="edit"
-        iconSize="small"
-        iconVariant="container"
-        iconClassName="slds-button__icon slds-button__icon_hint"
-        variant="icon"
-        //<EditIcon color='gray.600' opacity={inlineIconOpacity} _groupHover={{ opacity: 1 }}
-        onClick={() => {
-          onInlineEdit()
-        }}
-      />
-
-
-    const containerOptions = {
-    }
-
-    return (
-      <Flex
-        {...containerOptions}
-        role="group"
-        onDoubleClick={() => { if (!readonly) onInlineEdit(); }}
-      >
-        <Box flex="1"><ProField mode='read' {...proFieldProps} /></Box>
-        {showInlineIcon && (<Box width="16px">{inlineIcon}</Box>)}
-      </Flex>
-    )
-  })
-
   const ProFormField = createField<ProFormItemProps<InputProps>>(
 
     (props: ProFormItemProps<InputProps>) => {
       return (
-        <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} />
+        <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
       )
     },
     {
       valueType,
     },
   );
+  return <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
   return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 

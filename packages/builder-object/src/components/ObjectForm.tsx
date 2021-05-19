@@ -14,6 +14,8 @@ import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
 
+import { Render } from '../render/Render';
+
 import './ObjectForm.less'
 
 export type FormProps<T = Record<string, any>>  = {
@@ -58,9 +60,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
   const [proForm] = ProForm.useForm();
- 
-  const form = Forms.loadById(formId)
-  form.setMode(mode);
+
+  useEffect(() => {
+    const form = Forms.loadById(formId)
+    form.setMode(mode);
+  }, [mode]);
+  
 
   // const [fieldSchemas, setFieldSchemas] = useState([]);
   // const [fieldNames, setFieldNames] = useState([]);
@@ -73,6 +78,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   
   const mergedSchema = object? defaultsDeep({}, object.schema, objectSchema): objectSchema;
+  mergedSchema.type = 'object'
   fieldSchemaArray.length = 0
   forEach(mergedSchema.fields, (field, fieldName) => {
     if (!field.group || field.group == 'null' || field.group == '-')
@@ -165,6 +171,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
   proForm.setFieldsValue(initialValues)
+  console.log('run object form.......');
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -183,7 +190,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       {...rest}
     >
       {children}
-      {getSections()}
+      {/* {getSections()} */}
+      <Render schema={mergedSchema} debounceInput={false} initialValues={initialValues}></Render>
     </Form>
   )
 });
