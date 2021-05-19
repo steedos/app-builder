@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useRef} from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Tag , Select, Spin, TreeSelect } from 'antd';
 import "antd/es/tree-select/style/index.css";
@@ -11,6 +11,8 @@ import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
+import PlusOutlined from "@ant-design/icons/es/icons/PlusOutlined";
+import { ObjectForm } from '@steedos/builder-object';
 
 const { Option } = Select;
 // 相关表类型字段
@@ -18,9 +20,10 @@ const { Option } = Select;
 // 参数 props.reference_to:
 export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
+    const resizeSubject:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction } = fieldSchema;
+    let { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let valueOriginal = value;
     let tags:any[] = [];
@@ -241,6 +244,31 @@ export const LookupField = observer((props:any) => {
         }
         let proFieldProps: any;
         const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
+        let dropdownRender;
+        if(create && referenceTo){
+            dropdownRender = (menu)=>{
+            return (
+                <React.Fragment>
+                    {menu}
+                    <ObjectForm
+                        // initialValues={initialValues} 
+                        key="standard_new" 
+                        title={`新建 ${referenceToObjectSchema.label}`} 
+                        mode="edit" 
+                        isModalForm={true} 
+                        objectApiName={referenceTo} 
+                        name={`form-new-${referenceTo}`} 
+                        submitter={false}
+                        trigger={
+                            <a className="add_button text-blue-600 hover:text-blue-500 hover:underlin"  onClick={()=>{ resizeSubject.current.blur() }} >
+                                <PlusOutlined className="add_button"  /> 新建 {referenceToObjectSchema.label}
+                            </a>
+                        } 
+                    />
+                </React.Fragment>
+            )
+            }
+        }
         if(isLookupTree){
             //主要用到了newFieldProps中的onChange和value属性
             proFieldProps = Object.assign({}, {...newFieldProps}, {
@@ -264,6 +292,7 @@ export const LookupField = observer((props:any) => {
                 params,
                 onDropdownVisibleChange,
                 optionItemRender,
+                dropdownRender,
                 ...rest
             }
         }
@@ -315,7 +344,7 @@ export const LookupField = observer((props:any) => {
                     }
                     </Select>)
                 }
-                {isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect {...proFieldProps}  />)}
+                {isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={resizeSubject} {...proFieldProps}  />)}
 
             </React.Fragment>
         )
