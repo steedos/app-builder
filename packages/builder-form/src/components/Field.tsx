@@ -24,7 +24,6 @@ const ProFieldWrap = observer((props: any) => {
     fieldSchema,
     fieldProps,
     dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
-
   const proFieldProps = {
     emptyText: '',
     fieldProps: Object.assign({}, fieldProps, {
@@ -151,7 +150,7 @@ export const Field = observer((props: any) => {
     const ProFormField = createField<ProFormItemProps<InputProps>>(
       (props: ProFormItemProps<InputProps>) => {
         return (
-          <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
+          <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} showInlineIcon={showInlineIcon}/>
         )
       },
       {
@@ -161,7 +160,7 @@ export const Field = observer((props: any) => {
     FieldsMap[`${valueType}_${mode}`] = ProFormField;
   }
   const SField = FieldsMap[`${valueType}_${mode}`];
-  return (<SField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  return (<SField formId={formId} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {
