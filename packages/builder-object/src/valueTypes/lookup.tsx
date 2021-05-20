@@ -299,7 +299,7 @@ export const LookupField = observer((props:any) => {
                 ...rest
             }
         }
-        const SelectProFieldProps = {
+        const referenceToSelectProps = {
             mode: mode,
             showArrow: true,
             optionFilterProp: 'label',
@@ -335,7 +335,7 @@ export const LookupField = observer((props:any) => {
             <React.Fragment>
                 {
                     needReferenceToSelect && 
-                    (<Select   {...SelectProFieldProps} className="left_label_menu">
+                    (<Select   {...referenceToSelectProps} className="left_label_menu">
                     {
                         map(referenceToOptions,(item)=>{
                             return (
