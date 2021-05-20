@@ -39,9 +39,15 @@ export const transformProps = props => {
     controlProps.value = _value;
   }
   const _onChange = (...args) => {
-    console.log(`_onChange......`, args);
-    const newValue = defaultGetValueFromEvent(_valuePropName, ...args);
-    onChange(newValue);
+    if(schema.type ==='date'){
+      onChange(args[1]);  
+    }else if(schema.type === 'datetime'){
+      onChange(args[1]);  
+    }else{
+      const newValue = defaultGetValueFromEvent(_valuePropName, ...args);
+      onChange(newValue);
+    }
+    
   };
   if (trigger && typeof trigger === 'string') {
     controlProps[trigger] = _onChange;

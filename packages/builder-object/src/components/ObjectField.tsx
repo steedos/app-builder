@@ -69,6 +69,7 @@ export const ObjectField = (props: any) => {
   }
 
   const dependOn = fieldSchema.depend_on ? fieldSchema.depend_on : []
+
   return (
     <ProFormDependency name={dependOn}>
       {(dependFieldValues) => {

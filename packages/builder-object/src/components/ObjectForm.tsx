@@ -115,9 +115,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   
 
 
-  const onFinish = async(values:any) =>{
+  const onFinish = async(formValues:any) =>{
     if (!object) 
       return
+
+    const values = useForm.getValues();
     
     let result; 
     if(!recordId){     
@@ -171,8 +173,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
   proForm.setFieldsValue(initialValues)
-  console.log('run object form.......', mergedSchema);
-  const useForm: any = RenderFormUseForm({formData: initialValues});
 
   const getRenderSchema = (schema)=>{
     const renderSchema = cloneDeep(schema)
@@ -190,8 +190,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     renderSchema.fields = sectionsSchema;
     return renderSchema;
   }
-
-
+  const useForm: any = RenderFormUseForm({formData: initialValues});
   return (
     <Form 
       // formFieldComponent = {ObjectField}
