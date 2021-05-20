@@ -7,6 +7,7 @@ import { useQuery } from 'react-query'
 import { Form } from '@steedos/builder-form';
 import { Form as ProForm } from 'antd';
 import { BaseFormProps } from "@ant-design/pro-form/es/BaseForm";
+import { ModalFormProps } from "@ant-design/pro-form";
 import type { ProFieldFCMode } from '@ant-design/pro-utils';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
@@ -19,7 +20,7 @@ import './ObjectForm.less'
 export type FormProps<T = Record<string, any>>  = {
   mode?: 'read' | 'edit',
   editable?: boolean,
-} & BaseFormProps
+} & BaseFormProps & ModalFormProps
 
 /*
   fields: 字段定义数组，格式同YML
