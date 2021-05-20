@@ -261,7 +261,7 @@ export const LookupField = observer((props:any) => {
                         submitter={false}
                         trigger={
                             <a className="add_button text-blue-600 hover:text-blue-500 hover:underlin"  onClick={()=>{ resizeSubject.current.blur() }} >
-                                <PlusOutlined className="add_button"  /> 新建 {referenceToObjectSchema.label}
+                                <PlusOutlined  /> 新建 {referenceToObjectSchema.label}
                             </a>
                         } 
                     />
