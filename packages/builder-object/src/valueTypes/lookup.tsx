@@ -20,7 +20,7 @@ const { Option } = Select;
 // 参数 props.reference_to:
 export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
-    const resizeSubject:any = useRef()
+    const selectRef:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     let { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create } = fieldSchema;
@@ -260,7 +260,10 @@ export const LookupField = observer((props:any) => {
                         name={`form-new-${referenceTo}`} 
                         submitter={false}
                         trigger={
-                            <a className="add_button text-blue-600 hover:text-blue-500 hover:underlin"  onClick={()=>{ resizeSubject.current.blur() }} >
+                            <a className="add_button text-blue-600 hover:text-blue-500 hover:underlin"  onClick={()=>{
+                                // 新建弹出后新建按钮应该隐藏掉
+                                selectRef.current.blur();
+                            }} >
                                 <PlusOutlined className="add_button"  /> 新建 {referenceToObjectSchema.label}
                             </a>
                         } 
@@ -344,7 +347,7 @@ export const LookupField = observer((props:any) => {
                     }
                     </Select>)
                 }
-                {isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={resizeSubject} {...proFieldProps}  />)}
+                {isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps}  />)}
 
             </React.Fragment>
         )
