@@ -23,9 +23,8 @@ export const LookupField = observer((props:any) => {
     const selectRef:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    let { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create } = fieldSchema;
+    let { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, modal_schema } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
-    let valueOriginal = value;
     let tags:any[] = [];
     let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
     let defaultReferenceTo:any;
@@ -181,6 +180,8 @@ export const LookupField = observer((props:any) => {
             }
         }
 
+        let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || referenceTo === "space_users";
+
         if (referenceTo){ // 含有reference_to
             if (!options) {
                 request = requestFun;
@@ -284,6 +285,14 @@ export const LookupField = observer((props:any) => {
             })
         }
         else{
+            let proFieldPropsForModal = {};
+            if(showModal){
+                proFieldPropsForModal = {
+                    showSearch: false,
+                    onDropdownVisibleChange: false,
+                    open: false
+                }
+            }
             proFieldProps = {
                 mode: mode,
                 showSearch: true,
@@ -296,7 +305,8 @@ export const LookupField = observer((props:any) => {
                 onDropdownVisibleChange,
                 optionItemRender,
                 dropdownRender,
-                ...rest
+                ...rest, 
+                ...proFieldPropsForModal
             }
         }
         const referenceToSelectProps = {
