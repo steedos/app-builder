@@ -47,3 +47,12 @@
     }
   }
 }
+
+.ant-table{
+  &.ant-table-fixed-header{
+    .ant-table-body{
+      // 当使用proTable组件的scroll属性来实现固定表头时，没显示滚动条应该不显示滚动条样式
+      overflow-y: auto!important;
+    }
+  }
+}
