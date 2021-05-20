@@ -100,7 +100,7 @@ const CoreRender = ({
   ...rest
 }) => {
 
-  if ((schema.type != 'object') && schema.hidden || (isBoolean(schema.visible_on) && !schema.visible_on)) {
+  if (schema.hidden || (isBoolean(schema.visible_on) && !schema.visible_on)) {
     return null;
   }
   // 样式的逻辑全放在这层

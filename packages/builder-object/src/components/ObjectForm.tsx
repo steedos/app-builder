@@ -188,6 +188,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
      })
     })
     renderSchema.fields = sectionsSchema;
+    delete renderSchema.hidden
     return renderSchema;
   }
   const useForm: any = RenderFormUseForm({formData: initialValues});
