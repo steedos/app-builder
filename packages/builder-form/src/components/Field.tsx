@@ -147,25 +147,21 @@ export const Field = observer((props: any) => {
 
   }
 
-  const ProFormField = createField<ProFormItemProps<InputProps>>(
-
-    (props: ProFormItemProps<InputProps>) => {
-      return (
-        <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
-      )
-    },
-    {
-      valueType,
-    },
-  );
-
-  if(FieldsMap[`${valueType}_${mode}`]){
-    const SField = FieldsMap[`${valueType}_${mode}`];
-    return (<SField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  if(!FieldsMap[`${valueType}_${mode}`]){
+    const ProFormField = createField<ProFormItemProps<InputProps>>(
+      (props: ProFormItemProps<InputProps>) => {
+        return (
+          <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
+        )
+      },
+      {
+        valueType,
+      },
+    );
+    FieldsMap[`${valueType}_${mode}`] = ProFormField;
   }
-  FieldsMap[`${valueType}_${mode}`] = ProFormField;
-  // return <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  const SField = FieldsMap[`${valueType}_${mode}`];
+  return (<SField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {
