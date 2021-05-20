@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 // import RenderList from './RenderChildren/RenderList';
 import RenderObject from './RenderChildren/RenderObject';
+import RenderSection from './RenderChildren/RenderSection';
 import RenderField from './RenderField';
 import { useStore, useStore2 } from '../utils/hooks';
 import { isBoolean } from 'lodash';
@@ -11,6 +12,7 @@ import {
   isListType,
   isCheckBoxType,
   isObjType,
+  isSectionType,
   getValueByPath,
   getDataPath,
   clone,
@@ -34,18 +36,19 @@ const Core = ({
   const { displayType, column, labelWidth, readOnly } = useStore2();
   const item = _item ? _item : flatten[id];
   if (!item) return null;
-
-  let dataPath = getDataPath(id, dataIndex);
-  const _value = getValueByPath(formData, dataPath);
   let schema = clone(item.schema); // TODO: 用deepClone，函数啥的才能正常copy，但是deepClone的代价是不是有点大，是否应该让用户避免schema里写函数
-  console.log(`isEditing`, isEditing, item.schema)
+  let dataPath = getDataPath(id, dataIndex);
+  // 分组下的字段值提到顶层处理
+  if(schema.group){
+    dataPath = dataPath.split('.')[1];
+  }
+  const _value = getValueByPath(formData, dataPath);
   // 节流部分逻辑，编辑时不执行
   if (isEditing && snapShot.current) {
     schema = snapShot.current;
   } else {
-    console.log(`isEditing...else.`)
     if (schemaContainsExpression(schema)) {
-      console.log(`parseAllExpression`, formData)
+      console.log(`parseAllExpression`, schema, formData)
       schema = parseAllExpression(schema, formData, dataPath);
     }
     snapShot.current = schema;
@@ -106,6 +109,7 @@ const CoreRender = ({
     schema.displayType || rest.displayType || displayType || 'column';
   const isList = isListType(schema);
   const isObj = isObjType(schema);
+  const isSection = isSectionType(schema);
   const isCheckBox = isCheckBoxType(schema, readOnly);
 
   const hasChildren = item.children && item.children.length > 0;
@@ -132,6 +136,16 @@ const CoreRender = ({
         {item.children}
       </RenderObject>
   );
+  const sectionChidren = (
+    <RenderSection
+        dataIndex={dataIndex}
+        displayType={_displayType}
+        title={schema.label}
+        hideTitle={schema.hideTitle}
+      >
+        {item.children}
+      </RenderSection>
+  )
 
   // const listChildren = (
   //   <RenderList
@@ -151,7 +165,10 @@ const CoreRender = ({
   if (hasChildren) {
     if (isObj) {
       _children = objChildren;
-    } else if (isList) {
+    }else if(isSection){
+      _children = sectionChidren;
+    }
+    else if (isList) {
       // _children = listChildren;
     }
   } else if (isCheckBox) {

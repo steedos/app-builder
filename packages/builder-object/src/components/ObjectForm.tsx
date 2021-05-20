@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import { forEach, defaults, groupBy, filter, map, defaultsDeep} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, cloneDeep} from 'lodash';
 import { useQuery } from 'react-query'
 
 import { Form } from '@steedos/builder-form';
@@ -171,8 +171,27 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
   proForm.setFieldsValue(initialValues)
-  console.log('run object form.......');
+  console.log('run object form.......', mergedSchema);
   const useForm: any = RenderFormUseForm({formData: initialValues});
+
+  const getRenderSchema = (schema)=>{
+    const renderSchema = cloneDeep(schema)
+    const sectionsSchema = {};
+    const sections = groupBy(fieldSchemaArray, 'group');
+    const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
+    forEach(sections, (value, key) => {
+     if(!sectionsSchema[key]){
+      sectionsSchema[key] = {label: key, type: 'section', fields: {}, hideTitle: options.titleHidden};
+     }
+     forEach(value, (item)=>{
+      sectionsSchema[key].fields[item.name] = item
+     })
+    })
+    renderSchema.fields = sectionsSchema;
+    return renderSchema;
+  }
+
+
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -192,7 +211,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     >
       {children}
       {/* {getSections()} */}
-      <RenderForm form={useForm} schema={mergedSchema} debounceInput={false}></RenderForm>
+      <RenderForm form={useForm} schema={getRenderSchema(mergedSchema)} debounceInput={false}></RenderForm>
     </Form>
   )
 });

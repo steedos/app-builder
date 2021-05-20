@@ -103,6 +103,13 @@ export function isObjType(schema) {
   return schema && schema.type === 'object' && schema.fields;
 }
 
+export function isSectionType(schema){
+  return (
+    schema &&
+    schema.type === 'section' && schema.fields
+  );
+}
+
 // TODO: 支持非对象类型数组项
 export function isListType(schema) {
   return (
@@ -122,6 +129,15 @@ export function flattenSchema(_schema = {}, name = '#', parent, result = {}) {
   }
   const children = [];
   if (isObjType(schema)) {
+    Object.entries(schema.fields).forEach(([key, value]) => {
+      const _key = isListType(value) ? key + '[]' : key;
+      const uniqueName = _name === '#' ? _key : _name + '.' + _key;
+      children.push(uniqueName);
+      flattenSchema(value, uniqueName, _name, result);
+    });
+    // schema.fields = {};
+  }
+  if (isSectionType(schema)) {
     Object.entries(schema.fields).forEach(([key, value]) => {
       const _key = isListType(value) ? key + '[]' : key;
       const uniqueName = _name === '#' ? _key : _name + '.' + _key;
@@ -639,7 +655,7 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
   let result:any = {};
   let singleResult: any = {};
   if (schema.hidden === true) return result;
-  if (isObjType(schema)) {
+  if (isObjType(schema) || isSectionType(schema)) {
     result.type = 'object';
     if (isRequired && schema.required === true) {
       result.required = true;
@@ -915,7 +931,7 @@ export const translateMessage = (msg, schema) => {
 const changeSchema = (_schema, singleChange) => {
   let schema = clone(_schema);
   schema = singleChange(schema);
-  if (isObjType(schema)) {
+  if (isObjType(schema) || isSectionType(schema)) {
     let requiredKeys = [];
     if (Array.isArray(schema.required)) {
       requiredKeys = schema.required;

@@ -98,7 +98,7 @@ const ExtendedWidget = ({
   };
 
   const finalProps = transformProps(widgetProps);
-  if(schema.type === 'object'){
+  if(schema.type === 'object' || schema.type === 'section'){
     return <> {children}</>
   }
   return <ObjectField {...finalProps} />;
