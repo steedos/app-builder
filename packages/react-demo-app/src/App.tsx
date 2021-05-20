@@ -1,5 +1,7 @@
 // eslint-disable-next-line
 import React, { useEffect, useState, useRef, useMemo } from "react"
+import { Alert } from 'antd';
+import 'antd/es/alert/style/index.css';
 // import logo from "./logo.svg"
 import "./App.less"
 
@@ -84,6 +86,7 @@ export default observer((props: any) => {
   const userSession = User.getSession();
   let defaultSaceUsersFilters: any = ["user_accepted", "=", true];
   let orgExpandFilters: any = ["hidden", "!=", true];
+  let errorMessage:any;
   if (User.isLoading){
     // 这里不可以直接return (<div>Loading</div>) 上面有调用useRef
     console.log("Loading session...")
@@ -95,6 +98,10 @@ export default observer((props: any) => {
         orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
         // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
         defaultSaceUsersFilters = [defaultSaceUsersFilters, ["organizations_parents", "=", orgIds]];
+      }
+      else{
+        console.error('您的账户未分配到任何分部，无法查看通讯录信息，请联系系统管理员！')
+        errorMessage = <Alert message="您的账户没有权限访问此内容，请联络系统管理员。" type="warning" />
       }
     }
   }
@@ -265,7 +272,7 @@ export default observer((props: any) => {
               }`}
             >
               {
-                User.isLoading ? (<Spin />) : (
+                User.isLoading ? (<Spin />) : ( errorMessage ? errorMessage :
                   <ObjectExpandTable
                     onChange={handleOnTab1Change}
                     objectApiName="space_users"
