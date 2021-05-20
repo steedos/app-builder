@@ -80,7 +80,7 @@ const ProFieldWrap = observer((props: any) => {
   )
 })
 
-
+const FieldsMap = {};
 
 export const Field = observer((props: any) => {
   const context = React.useContext(FormContext);
@@ -158,7 +158,13 @@ export const Field = observer((props: any) => {
       valueType,
     },
   );
-  return <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
+
+  if(FieldsMap[`${valueType}_${mode}`]){
+    const SField = FieldsMap[`${valueType}_${mode}`];
+    return (<SField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  }
+  FieldsMap[`${valueType}_${mode}`] = ProFormField;
+  // return <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} formId={formId} showInlineIcon={showInlineIcon}/>
   return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 

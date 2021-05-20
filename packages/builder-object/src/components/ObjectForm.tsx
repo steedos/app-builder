@@ -14,7 +14,7 @@ import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
 
-import { Render } from '../render/Render';
+import RenderForm, { useForm as RenderFormUseForm } from '../render/RenderForm';
 
 import './ObjectForm.less'
 
@@ -172,6 +172,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
   proForm.setFieldsValue(initialValues)
   console.log('run object form.......');
+  const useForm: any = RenderFormUseForm({formData: initialValues});
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -191,7 +192,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     >
       {children}
       {/* {getSections()} */}
-      <Render schema={mergedSchema} debounceInput={false} initialValues={initialValues}></Render>
+      <RenderForm form={useForm} schema={mergedSchema} debounceInput={false}></RenderForm>
     </Form>
   )
 });
