@@ -235,6 +235,10 @@ export default observer((props: any) => {
       </Form>
     )]
   }
+  let pagination;
+  if(isMobile){
+    pagination={ showSizeChanger:false, showTotal: null }
+  }
   return (
     <SteedosProvider {...providerProps}>
       <div className="App" ref={resizeSubject}>
@@ -272,6 +276,7 @@ export default observer((props: any) => {
                     filters={spaceUsersFilters}
                     toolBarRender={spaceUserSearchBar}
                     toolbar={toolbar}
+                    pagination={pagination}
                   />
                 )
               }
@@ -295,6 +300,7 @@ export default observer((props: any) => {
                 filters={contactsFilters}
                 toolBarRender={contactSearchBar}
                 toolbar={toolbar}
+                pagination={pagination}
               />
             </ProCard.TabPane>
           </ProCard>

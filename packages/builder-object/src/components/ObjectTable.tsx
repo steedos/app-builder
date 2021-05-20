@@ -139,6 +139,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     onChange,
     toolbar,
     search,
+    pagination,
     ...rest
   } = props
 
@@ -282,7 +283,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       columns={proColumns}
       rowKey={rest.rowKey || "_id"}
       rowSelection={rest.rowSelection || { onChange }}
-      pagination={{ ...rest.pagination, hideOnSinglePage: true }}
+      pagination={{ ...pagination, hideOnSinglePage: true}}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
       onChange={() => {
