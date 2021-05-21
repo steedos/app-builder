@@ -1,26 +1,25 @@
 import React, { useState, useEffect, useContext, useMemo } from "react"
 import { Modal, ConfigProvider } from "antd"
-import { ObjectTable, ObjectTableProps } from ".."
-import type { ModalProps } from 'antd';
+import { ObjectTableProps, ObjectExpandTableProps } from ".."
 import { createPortal } from 'react-dom';
 import { omit } from "lodash"
+import type { ModalProps } from 'antd';
+// import { ModalCommonProps } from "../utils"
 
-export type ModalCommonProps = {
-  trigger?: JSX.Element,
-  onFinish?: (value: any) => Promise<boolean | void>;
-  visible?: ModalProps['visible'];
-  onVisibleChange?: (visible: boolean) => void;
-  modalProps?: Omit<ModalProps, 'visible'>;
-  title?: ModalProps['title'];
-  width?: ModalProps['width'];
-}
-
-export type ObjectTableModalProps = {
+export type ObjectModalProps = {
   isDrawer?: boolean
-  onChange?: (value: any) => void;
-} & ModalCommonProps & ObjectTableProps<any>
+  trigger?: JSX.Element
+  onFinish?: (value: any) => Promise<boolean | void>
+  onChange?: (value: any) => void
+  visible?: ModalProps['visible']
+  onVisibleChange?: (visible: boolean) => void
+  modalProps?: Omit<ModalProps, 'visible'>
+  title?: ModalProps['title']
+  width?: ModalProps['width']
+  contentComponent: React.FunctionComponent
+} & ObjectTableProps<any> & ObjectExpandTableProps
 
-export const ObjectTableModal = ({
+export const ObjectModal = ({
   isDrawer = false,
   trigger,
   onFinish,
@@ -29,8 +28,9 @@ export const ObjectTableModal = ({
   title,
   width,
   onChange,
+  contentComponent: ContentComponent,
   ...rest
-}: ObjectTableModalProps) => {
+}: ObjectModalProps) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
@@ -59,7 +59,6 @@ export const ObjectTableModal = ({
       return modalProps?.getContainer;
     }
     return context?.getPopupContainer?.(document.body);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context, modalProps, visible]);
 
   return (
@@ -89,7 +88,7 @@ export const ObjectTableModal = ({
               }
             }}
           >
-            <ObjectTable
+            <ContentComponent
               {...omit(rest, ['visible', 'title', 'onChange'])}
               onChange={handleOnChange}
             />

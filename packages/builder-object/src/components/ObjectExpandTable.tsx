@@ -94,9 +94,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     tableRef.current?.reload()
   }
 
-  const handleTableRowChose = (selectedRowKeys, selectedRows) => {
-    // console.log(selectedRowKeys, selectedRows);
-    onChange && onChange(selectedRows)
+  const handleTableRowChose = (keys: any, rows: any) => {
+    // console.log(keys, rows);
+    onChange && onChange(keys, rows)
   }
 
   const tableRef = useRef<ActionType>()

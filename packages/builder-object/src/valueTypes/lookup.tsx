@@ -12,7 +12,8 @@ import { SteedosIcon } from '@steedos/builder-lightning';
 import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
-import { ObjectForm, ObjectTableModal } from "../components";
+import { isString } from "lodash"
+import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
@@ -346,9 +347,11 @@ export const LookupField = observer((props:any) => {
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
 
         const lookupInput = isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps} />);
-        const onModalFinish = (modalSelectedValue: any)=>{
-            // console.log("==modalSelectedValue==", modalSelectedValue);
-            onChange(multiple ?  modalSelectedValue : modalSelectedValue[0]);
+        const onModalFinish = (selectedRowKeys: any, selectedRows: any)=>{
+            // console.log("==selectedRowKeys==", selectedRowKeys);
+            // console.log("==selectedRows==", selectedRows);
+            let changedValue = multiple ? selectedRowKeys : selectedRowKeys[0];
+            onChange(changedValue);
             setParams({ open:false, openTag: new Date() });
         }
         return (
@@ -368,7 +371,8 @@ export const LookupField = observer((props:any) => {
                     </Select>)
                 }
                 {showModal ? (
-                    <ObjectTableModal
+                    <ObjectModal
+                        contentComponent={ObjectExpandTable}
                         title={`选择 ${referenceToObjectSchema.label}`}
                         objectApiName={referenceTo}
                         // rowSelection={{type: rowSelectionType }}
