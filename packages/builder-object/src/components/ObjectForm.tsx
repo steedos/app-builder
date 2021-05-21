@@ -14,7 +14,7 @@ import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
 
-import RenderForm, { useForm as RenderFormUseForm } from '../render/RenderForm';
+import FormRender, { useForm as RenderFormUseForm } from '../render/RenderForm';
 
 import './ObjectForm.less'
 
@@ -191,7 +191,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     delete renderSchema.hidden
     return renderSchema;
   }
-  const useForm: any = RenderFormUseForm({formData: initialValues});
+  let useForm: any = RenderFormUseForm({formData: initialValues});
+  const onReset = ()=>{
+    useForm.resetValues(initialValues)
+  }
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -206,12 +209,13 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isDrawerForm={isDrawerForm}
       trigger={trigger}
       onFinish={onFinish}
+      onReset={onReset}
       visible={visible}
       {...rest}
     >
       {children}
       {/* {getSections()} */}
-      <RenderForm form={useForm} schema={getRenderSchema(mergedSchema)} debounceInput={false}></RenderForm>
+      <FormRender form={useForm} schema={getRenderSchema(mergedSchema)} debounceInput={false}></FormRender>
     </Form>
   )
 });

@@ -48,7 +48,7 @@ const Core = ({
     schema = snapShot.current;
   } else {
     if (schemaContainsExpression(schema)) {
-      console.log(`parseAllExpression`, schema, formData)
+      // console.log(`parseAllExpression`, schema, formData)
       schema = parseAllExpression(schema, formData, dataPath);
     }
     snapShot.current = schema;

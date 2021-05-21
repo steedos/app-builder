@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useMemo, useState } from 'react';
 import { useSet } from './hooks';
-import { set, sortedUniqBy, merge } from 'lodash-es';
+import { set, sortedUniqBy, merge, each } from 'lodash-es';
 import { processData, transformDataWithBind2 } from './processData';
 import { generateDataSkeleton, flattenSchema, clone } from './utils';
 
@@ -150,6 +150,13 @@ export const useForm = (props?) => {
     _setData({ ..._data.current });
   };
 
+  const resetValues = (values)=>{
+    each(values, (value, path)=>{
+      set(_data.current, path, value);
+    })
+    resetFields();
+  }
+
   // TODO: 全局的没有path, 这个函数要这么写么。。全局的，可以path = #
   // errorFields: [
   //   { name: 'a.b.c', errors: ['Please input your Password!', 'something else is wrong'] },
@@ -268,6 +275,7 @@ export const useForm = (props?) => {
     touchedKeys: _touchedKeys.current,
     allTouched,
     // methods
+    resetValues,
     touchKey,
     removeTouched,
     onItemChange,
