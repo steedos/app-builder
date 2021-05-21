@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import _ from "lodash"
+import { map, forEach } from "lodash"
 import ProField from "@ant-design/pro-field";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import useAntdMediaQuery from 'use-media-antd-query';
@@ -95,7 +95,7 @@ function getDefaultSortOrder(fieldName: any, sort:any){
     if (typeof sort === 'string' && sort.length > 0) {
       let arr = [];
       arr = sort.split(',');
-      sortValue = _.map(arr, (value, key) => {
+      sortValue = map(arr, (value, key) => {
         if (value.indexOf(' ')) {
           return arr[key] = value.split(' ');
         } else {
@@ -106,7 +106,7 @@ function getDefaultSortOrder(fieldName: any, sort:any){
       sortValue = sort;
     }
     if (sortValue.length > 0) {
-      _.forEach(sortValue, (ele) => {
+      forEach(sortValue, (ele) => {
         if (ele[0] === fieldName) {
           sortDirection = ele[1] === 'desc' ? 'descend' : 'ascend';
         }
@@ -164,7 +164,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // let defaultSort: any = {};
   // const proColumns = []
   // if (object.schema && object.schema.fields) {
-  //   _.forEach(
+  //   forEach(
   //     columnFields,
   //     ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
   //       if (columnItem.hideInTable) return
@@ -222,7 +222,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     
 //     if (__defaultFilters && __defaultFilters.length) {
 //       if(keyFilters && keyFilters.length){
-//         if (_.isArray(__defaultFilters)) {
+//         if (isArray(__defaultFilters)) {
 //             filters = [__defaultFilters, keyFilters]
 //         }
 //         else {
@@ -244,7 +244,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 //     })
 //     // TODO: ant.design的bug（defaultSortOrder 和 sorter存在时sort没获取到设置的初始值），所以这里
 //     // 设置下sort的初始值， 后期修复这个bug后以下三行代码可以 删除。
-//     if(_.isEmpty(sort) && !_.isEmpty(defaultSort)){
+//     if(isEmpty(sort) && !isEmpty(defaultSort)){
 //       sort = defaultSort;
 //     }
 //     const result = await API.requestRecords(
@@ -289,11 +289,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             // }
             console.log(params)
             const fields = ['name']
-            _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
+            forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
             const sort = []
-            _.forEach(params.request.sortModel, (sortField)=>{
+            forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
             })
             const filters = defaultFilters;
@@ -330,7 +330,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       headerCheckboxSelection: true,
       suppressMenu: true,
     }];
-    _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
+    forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName]
       let filter:any = true
       let filterParams:any = {}

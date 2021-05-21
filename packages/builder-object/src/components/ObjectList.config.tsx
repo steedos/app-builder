@@ -1,6 +1,6 @@
 import { Builder } from "@builder.io/react"
 import { Component, Input } from "@builder.io/sdk"
-import _ from "lodash"
+import { clone } from "lodash"
 import { ObjectList } from "./ObjectList"
 
 export const configObjectList: Component = {
@@ -10,7 +10,7 @@ export const configObjectList: Component = {
 }
 
 export const registerObjectListComponent = (fieldNames: string[]) => {
-  let configInputs: Input[] = _.clone(configObjectList.inputs) as Input[]
+  let configInputs: Input[] = clone(configObjectList.inputs) as Input[]
   configInputs.unshift({
     name: "fieldName",
     type: "string",

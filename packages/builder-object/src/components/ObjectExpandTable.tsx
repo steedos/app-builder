@@ -9,7 +9,7 @@
  */
 
 import ProCard from "@ant-design/pro-card"
-import _ from "lodash"
+import { isArray , uniq } from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { ActionType } from "react-table"
@@ -52,7 +52,7 @@ function getTableFilter(expandProps: any, selectedExpandNode: string[], defaultF
   }
   if(expandFilters){
     if(defaultFilters && defaultFilters.length){
-      if (_.isArray(defaultFilters)) {
+      if (isArray(defaultFilters)) {
           return [defaultFilters, expandFilters]
       }
       else {
@@ -89,7 +89,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     selectedNodes.forEach((node) => {
       tmpTreeNodes = [...tmpTreeNodes, node[keyField]]
     })
-    tmpTreeNodes = _.uniq(tmpTreeNodes)
+    tmpTreeNodes = uniq(tmpTreeNodes)
     setSelectedExpandNode(tmpTreeNodes)
     tableRef.current?.reload()
   }

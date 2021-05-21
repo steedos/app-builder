@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
-import _ from "lodash"
+import { isFunction, forEach, isObject, filter, isString} from "lodash"
 import { ObjectTable } from "./"
 import {
   ProColumnType
@@ -62,14 +62,14 @@ function getListViewFilters(listView, props){
   if(!filters){
     filters = listView.filters;
   }
-  if(_.isFunction(filters)){
+  if(isFunction(filters)){
     try {
       filters = filters()
     } catch (error) {
       console.warn(`list view filter error: `, error)
     }
   }
-  filters = _.isFunction(filters) ? [] : filters;
+  filters = isFunction(filters) ? [] : filters;
   if(!filter_scope){
     filter_scope = listView.filter_scope;
   }
@@ -106,8 +106,8 @@ function getListviewColumns(objectSchema: any, listName: any){
 function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey: string){
   let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
-    _.forEach(listViewColumns, (column: any) => {
-      const fieldName: string = _.isObject(column) ? (column as any).field : column;
+    forEach(listViewColumns, (column: any) => {
+      const fieldName: string = isObject(column) ? (column as any).field : column;
       let columnOption: any = { fieldName };
       if(fieldName === nameFieldKey){
         columnOption.render = (dom: any, record: any)=>{
@@ -119,8 +119,8 @@ function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey:
   }
   //作为相关表时，不显示关系键
   if(master){
-    return _.filter(columnFields, (columnField)=>{
-      if(_.isString(columnField)){
+    return filter(columnFields, (columnField)=>{
+      if(isString(columnField)){
         return columnField != master.relatedFieldApiName
       }
       return columnField.fieldName != master.relatedFieldApiName
