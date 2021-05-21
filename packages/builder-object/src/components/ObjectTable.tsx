@@ -142,7 +142,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     pagination,
     ...rest
   } = props
-
+  
   const [totalRecords, setTotalRecords] = useState(0)
 
   const colSize = useAntdMediaQuery();
@@ -276,13 +276,15 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     toolbarOptions.settings = false;
   }
   const proToolbar = Object.assign({}, toolbarOptions, toolbar);
+  // 默认显示多选勾选框；可以设置 rest.rowSelection 为false，不显示单选和多选。
+  const rowSelection = rest.rowSelection !== false && Object.assign({ onChange }, rest.rowSelection);
 
   return (
     <ProTable
       request={request}
       columns={proColumns}
       rowKey={rest.rowKey || "_id"}
-      rowSelection={rest.rowSelection || { onChange }}
+      rowSelection={rowSelection}
       pagination={{ ...pagination, hideOnSinglePage: true}}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
