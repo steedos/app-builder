@@ -3,7 +3,6 @@ import { useStore, useStore2, useTools } from '../../utils/hooks';
 import useDebouncedCallback from '../../utils/useDebounce';
 import { getValueByPath, isCheckBoxType, isObjType } from '../../utils/utils';
 import ExtendedWidget from './ExtendedWidget';
-import ErrorMessage from './ErrorMessage';
 // TODO: 之后不要直接用get，收口到一个内部方法getValue，便于全局 ctrl + f 查找
 const RenderField = props => {
   const {
