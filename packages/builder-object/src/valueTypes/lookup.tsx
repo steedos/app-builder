@@ -1,6 +1,6 @@
 import React, { useState , useRef} from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
-import { Tag , Select, Spin, TreeSelect, Modal } from 'antd';
+import { Select, Spin, TreeSelect } from 'antd';
 import "antd/es/tree-select/style/index.css";
 import { isFunction, isArray, isObject, uniq, filter, map, forEach} from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
@@ -11,9 +11,8 @@ import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
-import PlusOutlined from "@ant-design/icons/es/icons/PlusOutlined";
-import { ObjectForm } from '@steedos/builder-object';
-import { ObjectTable } from "../components/ObjectTable";
+import { PlusOutlined } from "@ant-design/icons";
+import { ObjectForm, ObjectTableModal } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
@@ -21,8 +20,6 @@ const { Option } = Select;
 // 参数 props.reference_to:
 export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedOption, setSelectedOption] = useState([])
     const selectRef:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
@@ -344,18 +341,11 @@ export const LookupField = observer((props:any) => {
             isLoadingReferenceTosObject = referenceToOptions.length !== referenceTos.length;
         }
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
-        const showModalEvent = () => {
-            setIsModalVisible(true);
-        };
-        const handleOk = () => {
-            // onChange(selectedOption)
-            setIsModalVisible(false);
-        };
-        const handleCancel = () => {
-            setIsModalVisible(false);
-        };
-        const selectOptionChange = (option: any) => {
-            setSelectedOption(option)
+
+        const lookupInput = isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps} />);
+        const onModalFinish = (modalSelectedValue: any)=>{
+            console.log("==modalSelectedValue==", modalSelectedValue);
+            onChange(multiple ?  modalSelectedValue : modalSelectedValue[0]);
         }
         return (
             <React.Fragment>
@@ -373,20 +363,20 @@ export const LookupField = observer((props:any) => {
                     }
                     </Select>)
                 }
-                {isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps} onClick={ showModal ? showModalEvent : null} />)}
-                <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                <ObjectTable
-                    onChange={selectOptionChange}
-                    objectApiName={referenceTo}
-                    // TODO: 暂时写死
-                    columnFields={[
-                        {
-                            fieldName: "name"
-                        }
-                    ]}
-                    filters={[]}
-                />
-                </Modal>
+                {showModal ? (
+                    <ObjectTableModal
+                        title={`选择 ${referenceToObjectSchema.label}`}
+                        objectApiName={referenceTo}
+                        columnFields={[
+                            {
+                                fieldName: "name"
+                            }
+                        ]}
+                        filters={[]}
+                        trigger={lookupInput} 
+                        onFinish={onModalFinish}
+                    />
+                ) : lookupInput}
             </React.Fragment>
         )
     }

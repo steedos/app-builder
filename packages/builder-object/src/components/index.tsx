@@ -1,6 +1,7 @@
 export * from "./ObjectForm"
 export * from "./ObjectField"
 export * from "./ObjectTable"
+export * from "./ObjectTableModal"
 export * from "./ObjectTree"
 export * from "./ObjectList"
 export * from "./ObjectExpandTable"
