@@ -8,7 +8,6 @@ const RenderSection = ({
   hideTitle,
   title
 }) => {
-    console.log(`RenderSection children...`, hideTitle)
   return (
     <FieldSection title={title} titleHidden={hideTitle}>
       {children.map((child, i) => {

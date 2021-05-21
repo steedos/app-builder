@@ -6,7 +6,6 @@ import { Ctx, StoreCtx, Store2Ctx } from '../utils/hooks';
 import { mapping as defaultMapping } from '../utils/mapping';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-
 const defaultBeforeFinish = props => {
   console.log('beforeFinish:', props);
 };
@@ -222,7 +221,7 @@ function App({
                 : null}
               <Core debugCss={debugCss} />
             </div>
-          </Ctx.Provider>
+            </Ctx.Provider>
         </Store2Ctx.Provider>
       </StoreCtx.Provider>
     </ConfigProvider>

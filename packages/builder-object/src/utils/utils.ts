@@ -652,7 +652,9 @@ export const removeEmptyItemFromList = formData => {
 };
 
 export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
-  console.log(`getDescriptorFromSchema`)
+  if(schema.type !='object' && schema.type !='array' && schema.type !='section' && schema.type != 'number' && schema.type != 'boolean'){
+    schema.type = 'string';
+  }
   let result:any = {};
   let singleResult: any = {};
   if (schema.hidden === true) return result;
@@ -668,10 +670,19 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       if (Array.isArray(schema.required) && schema.required.indexOf(key) > -1) {
         item.required = true;
       }
-      result.fields[key] = getDescriptorFromSchema({
-        schema: item,
-        isRequired: item.required,
-      });
+      if(isSectionType(item)){
+        const sFields = getDescriptorFromSchema({
+          schema: item,
+          isRequired: item.required,
+        })
+        result.fields = sFields.fields;
+      }else{
+        result.fields[key] = getDescriptorFromSchema({
+          schema: item,
+          isRequired: item.required,
+        });
+      }
+      
     });
   } else if (isListType(schema)) {
     result.type = 'array';
@@ -825,7 +836,6 @@ export const formatPathFromValidator = err => {
 // path = 'x.y'
 // return {required: true, message?: 'xxxx'}
 export const isPathRequired = (path, schema) => {
-  console.log(`isPathRequired`, path, schema);
   let pathArr = path.split('.');
   while (pathArr.length > 0) {
     let [_path, ...rest] = pathArr;

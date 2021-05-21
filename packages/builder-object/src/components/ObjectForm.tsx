@@ -12,8 +12,8 @@ import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
-import { Spin } from 'antd';
-
+import { Spin, Modal } from 'antd';
+import { translateMessage } from '../utils/utils';
 import FormRender, { useForm as RenderFormUseForm } from '../render/RenderForm';
 
 import './ObjectForm.less'
@@ -113,13 +113,24 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     }
   }
   
+  const submitForm = ()=>{
+    useForm.submit();
+  }
 
-
-  const onFinish = async(formValues:any) =>{
+  const onFinish = async(values, errors) =>{
+    if(errors && errors.length > 0){
+      errors.forEach((error)=>{
+        const schema = mergedSchema.fields[error.name];
+        schema.title = schema.label;
+        Modal.error({
+          title: translateMessage(error.error[0], schema),
+        });
+      })
+      return;
+    }
     if (!object) 
       return
-
-    const values = useForm.getValues();
+    // const values = useForm.getValues();
     
     let result; 
     if(!recordId){     
@@ -184,6 +195,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       sectionsSchema[key] = {label: key, type: 'section', fields: {}, hideTitle: options.titleHidden};
      }
      forEach(value, (item)=>{
+      item.title = item.label;
       sectionsSchema[key].fields[item.name] = item
      })
     })
@@ -208,14 +220,14 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isModalForm={isModalForm}
       isDrawerForm={isDrawerForm}
       trigger={trigger}
-      onFinish={onFinish}
+      onFinish={submitForm}
       onReset={onReset}
       visible={visible}
       {...rest}
     >
       {children}
       {/* {getSections()} */}
-      <FormRender form={useForm} schema={getRenderSchema(mergedSchema)} debounceInput={false}></FormRender>
+      <FormRender onFinish={onFinish} form={useForm} schema={getRenderSchema(mergedSchema)} debounceInput={false}></FormRender>
     </Form>
   )
 });

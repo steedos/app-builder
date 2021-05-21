@@ -121,7 +121,6 @@ export const useForm = (props?) => {
   // }, []);
 
   useEffect(() => {
-    console.log(`useEffect validateAll`, _touchedKeys.current)
     validateAll({
       formData: _data.current,
       schema: schemaRef.current,
@@ -249,6 +248,52 @@ export const useForm = (props?) => {
     _setData(newData);
   };
 
+  const submit = () => {
+    setState({ isValidating: true, allTouched: true, isSubmitting: false });
+    //  https://formik.org/docs/guides/form-submission
+    // TODO: 更多的处理，注意处理的时候一定要是copy一份formData，否则submitData会和表单操作实时同步的。。而不是submit再变动了
+
+    // 开始校验。如果校验写在每个renderField，也会有问题，比如table第一页以外的数据是不渲染的，所以都不会触发，而且校验还有异步问题
+    validateAll({
+      formData: _data.current,
+      schema: schemaRef.current,
+      touchedKeys: [],
+      isRequired: true,
+      locale: localeRef.current,
+      validateMessages: validateMessagesRef.current,
+    })
+      .then(errors => {
+        // 如果有错误，也不停止校验和提交，在onFinish里让用户自己搞
+        if (errors && errors.length > 0) {
+          setState({
+            errorFields: errors,
+          });
+        }
+        if (typeof beforeFinishRef.current === 'function') {
+          Promise.resolve(processData(_data.current, flatten)).then(res => {
+            setState({
+              isValidating: true,
+              isSubmitting: false,
+              outsideValidating: true,
+              submitData: res,
+            });
+          });
+          return;
+        }
+        Promise.resolve(processData(_data.current, flatten)).then(res => {
+          setState({
+            isValidating: false,
+            isSubmitting: true,
+            submitData: res,
+          });
+        });
+      })
+      .catch(err => {
+        // 不应该走到这边的
+        console.log('submit error:', err);
+      });
+  };
+
   const resetFields = () => {
     setState({
       formData: {},
@@ -299,6 +344,7 @@ export const useForm = (props?) => {
     setValues,
     getValues,
     resetFields,
+    submit,
     submitData,
     errorFields,
     isValidating,

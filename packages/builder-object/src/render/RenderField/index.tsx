@@ -3,6 +3,7 @@ import { useStore, useStore2, useTools } from '../../utils/hooks';
 import useDebouncedCallback from '../../utils/useDebounce';
 import { getValueByPath, isCheckBoxType, isObjType } from '../../utils/utils';
 import ExtendedWidget from './ExtendedWidget';
+import ErrorMessage from './ErrorMessage';
 // TODO: 之后不要直接用get，收口到一个内部方法getValue，便于全局 ctrl + f 查找
 const RenderField = props => {
   const {
@@ -40,7 +41,6 @@ const RenderField = props => {
 
   // TODO: 优化一下，只有touch还是false的时候，setTouched
   const onChange = value => {
-    console.log(`onChange`, value, debounceInput, dataPath);
     // 动过的key，算被touch了, 这里之后要考虑动的来源
     if(_schema.group){
       touchKey(`${_schema.group}.${dataPath}`);

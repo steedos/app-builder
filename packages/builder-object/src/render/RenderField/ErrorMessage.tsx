@@ -1,6 +1,5 @@
 import React from 'react';
 import { translateMessage } from '../../utils/utils';
-
 const ErrorMessage = ({ message, schema, hideValidation }) => {
   let msg = '';
   if (typeof message === 'string') msg = message;

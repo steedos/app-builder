@@ -21,13 +21,12 @@ export const validateAll = ({
   locale = 'cn',
   validateMessages = {},
 }) => {
-  console.log(`validateAll`, formData, schema)
   if (Object.keys(schema).length === 0) return Promise.resolve();
   const descriptor = getDescriptorFromSchema({
     schema,
     isRequired,
   }).fields;
-  console.log(descriptor, '&&&& descriptor', formData);
+  // console.log(descriptor, '&&&& descriptor', formData);
 
   let touchVerifyList = [];
 
@@ -41,7 +40,6 @@ export const validateAll = ({
         key = key.split('.')[1]
       }
       const val = get(formData, key);
-      console.log(`keyRequired`, formData, key, keyRequired, val, keySchema)
       const nullValue = [undefined, null, ''].indexOf(val) > -1; // 注意 0 不是
       const isEmptyMultiSelect = Array.isArray(val) && val.length === 0;
       if ((nullValue || isEmptyMultiSelect) && keyRequired.required) {
