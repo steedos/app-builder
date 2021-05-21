@@ -97,8 +97,11 @@ export const LookupField = observer((props:any) => {
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
-        if (multiple)
+        let rowSelectionType="radio";
+        if (multiple){
             fieldProps.mode = 'multiple';
+            rowSelectionType="checkbox";
+        } 
 
         let dependOnValues: any = dependFieldValues;
         let request: any;
@@ -344,8 +347,9 @@ export const LookupField = observer((props:any) => {
 
         const lookupInput = isLookupTree ? (<FieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps} />);
         const onModalFinish = (modalSelectedValue: any)=>{
-            console.log("==modalSelectedValue==", modalSelectedValue);
+            // console.log("==modalSelectedValue==", modalSelectedValue);
             onChange(multiple ?  modalSelectedValue : modalSelectedValue[0]);
+            setParams({ open:false, openTag: new Date() });
         }
         return (
             <React.Fragment>
@@ -367,6 +371,7 @@ export const LookupField = observer((props:any) => {
                     <ObjectTableModal
                         title={`选择 ${referenceToObjectSchema.label}`}
                         objectApiName={referenceTo}
+                        // rowSelection={{type: rowSelectionType }}
                         columnFields={[
                             {
                                 fieldName: "name"
