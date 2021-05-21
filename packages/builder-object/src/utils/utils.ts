@@ -652,22 +652,24 @@ export const removeEmptyItemFromList = formData => {
 };
 
 export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
-  if(schema.type !='object' && schema.type !='array' && schema.type !='section' && schema.type != 'number' && schema.type != 'boolean'){
-    schema.type = 'string';
+  const _schema = cloneDeep(schema);
+  // TODO 此判断不完善
+  if(_schema.type !='object' && _schema.type !='array' && _schema.type !='section' && _schema.type != 'number' && _schema.type != 'boolean'){
+    _schema.type = 'string';
   }
   let result:any = {};
   let singleResult: any = {};
-  if (schema.hidden === true) return result;
-  if (isObjType(schema) || isSectionType(schema)) {
+  if (_schema.hidden === true) return result;
+  if (isObjType(_schema) || isSectionType(_schema)) {
     result.type = 'object';
-    if (isRequired && schema.required === true) {
+    if (isRequired && _schema.required === true) {
       result.required = true;
     }
     result.fields = {};
-    Object.keys(schema.fields).forEach(key => {
-      const item = schema.fields[key];
+    Object.keys(_schema.fields).forEach(key => {
+      const item = _schema.fields[key];
       // 兼容旧的！
-      if (Array.isArray(schema.required) && schema.required.indexOf(key) > -1) {
+      if (Array.isArray(_schema.required) && _schema.required.indexOf(key) > -1) {
         item.required = true;
       }
       if(isSectionType(item)){
@@ -684,22 +686,22 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       }
       
     });
-  } else if (isListType(schema)) {
+  } else if (isListType(_schema)) {
     result.type = 'array';
-    if (isRequired && schema.required === true) {
+    if (isRequired && _schema.required === true) {
       result.required = true;
     }
-    if (schema.min) {
-      result.min = schema.min;
+    if (_schema.min) {
+      result.min = _schema.min;
     }
-    if (schema.max) {
-      result.max = schema.max;
+    if (_schema.max) {
+      result.max = _schema.max;
     }
     result.defaultField = { type: 'object', fields: {} }; // 目前就默认只有object类型的 TODO:
-    Object.keys(schema.items.fields).forEach(key => {
-      const item = schema.items.fields[key];
+    Object.keys(_schema.items.fields).forEach(key => {
+      const item = _schema.items.fields[key];
       // 兼容旧的！
-      if (Array.isArray(schema.required) && schema.required.indexOf(key) > -1) {
+      if (Array.isArray(_schema.required) && _schema.required.indexOf(key) > -1) {
         item.required = true;
       }
       result.defaultField.fields[key] = getDescriptorFromSchema({
@@ -710,13 +712,13 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
   } else {
     // 单个的逻辑
     const processRule = item => {
-      if (schema.type) return { ...item, type: schema.type };
+      if (_schema.type) return { ...item, type: _schema.type };
       if (item.pattern && typeof item.pattern === 'string') {
         return { ...item, pattern: new RegExp(item.pattern) };
       }
       return item;
     };
-    const { required, ...rest } = schema;
+    const { required, ...rest } = _schema;
 
     ['type', 'pattern', 'min', 'max', 'len'].forEach(key => {
       if (Object.keys(rest).indexOf(key) > -1) {
@@ -724,7 +726,7 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       }
     });
 
-    switch (schema.type) {
+    switch (_schema.type) {
       case 'range':
         singleResult.type = 'array';
         break;
@@ -734,24 +736,24 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       default:
         break;
     }
-    switch (schema.format) {
+    switch (_schema.format) {
       case 'email':
       case 'url':
-        singleResult.type = schema.format;
+        singleResult.type = _schema.format;
         break;
       default:
         break;
     }
 
     let requiredRule;
-    if (isRequired && schema.required === true) {
+    if (isRequired && _schema.required === true) {
       requiredRule = { required: true };
     }
 
-    if (schema.rules) {
-      if (Array.isArray(schema.rules)) {
+    if (_schema.rules) {
+      if (Array.isArray(_schema.rules)) {
         const _rules = [];
-        schema.rules.forEach(item => {
+        _schema.rules.forEach(item => {
           if (item.required === true) {
             if (isRequired) {
               requiredRule = item;
@@ -761,9 +763,9 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
           }
         });
         result = [singleResult, ..._rules];
-      } else if (isObject(schema.rules)) {
+      } else if (isObject(_schema.rules)) {
         // TODO: 规范上不允许rules是object，省一点事儿
-        result = [singleResult, processRule(schema.rules)];
+        result = [singleResult, processRule(_schema.rules)];
       } else {
         result = singleResult;
       }
@@ -779,7 +781,7 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       }
     }
 
-    if (schema.format === 'image') {
+    if (_schema.format === 'image') {
       const imgValidator = {
         validator: (rule, value) => {
           const pattern = /([/|.|w|s|-])*.(jpg|gif|png|bmp|apng|webp|jpeg|json)/;
