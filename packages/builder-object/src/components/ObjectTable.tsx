@@ -140,6 +140,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     toolbar,
     search,
     pagination,
+    rowSelection,
     ...rest
   } = props
   
@@ -277,14 +278,14 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   }
   const proToolbar = Object.assign({}, toolbarOptions, toolbar);
   // 默认显示多选勾选框；可以设置 rest.rowSelection 为false，不显示单选和多选。
-  const rowSelection = rest.rowSelection !== false && Object.assign({ onChange }, rest.rowSelection);
+  const rowSelectionOptions = rowSelection !== false && Object.assign({ onChange }, rowSelection);
 
   return (
     <ProTable
       request={request}
       columns={proColumns}
       rowKey={rest.rowKey || "_id"}
-      rowSelection={rowSelection}
+      rowSelection={{...rowSelectionOptions}}
       pagination={{ ...pagination, hideOnSinglePage: true}}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
