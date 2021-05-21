@@ -101,7 +101,7 @@ const ExtendedWidget = ({
   if(schema.type === 'object' || schema.type === 'section'){
     return <> {children}</>
   }
-  return <ObjectField {...finalProps} />;
+  return <ObjectField {...finalProps} ><div className={`ant-form-item-explain ant-form-item-explain-error`}>必填</div></ObjectField>;
   // return <ProField mode="edit" {...finalProps} />;
 };
 

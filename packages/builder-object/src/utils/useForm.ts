@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useMemo, useState } from 'react';
+import { validateAll } from './validator/validator';
 import { useSet } from './hooks';
 import { set, sortedUniqBy, merge, each } from 'lodash-es';
 import { processData, transformDataWithBind2 } from './processData';
@@ -119,6 +120,19 @@ export const useForm = (props?) => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    console.log(`useEffect validateAll`, _touchedKeys.current)
+    validateAll({
+      formData: _data.current,
+      schema: schemaRef.current,
+      isRequired: allTouched,
+      touchedKeys: _touchedKeys.current,
+      locale: localeRef.current,
+      validateMessages: validateMessagesRef.current,
+    }).then(res => {
+      _setErrors(res);
+    });
+  }, [JSON.stringify(_data.current), allTouched]);
 
   useEffect(() => {
     const flatten = flattenSchema(schemaRef.current, "#", null, {}) || {};

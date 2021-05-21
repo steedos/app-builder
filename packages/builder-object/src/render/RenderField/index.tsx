@@ -3,6 +3,7 @@ import { useStore, useStore2, useTools } from '../../utils/hooks';
 import useDebouncedCallback from '../../utils/useDebounce';
 import { getValueByPath, isCheckBoxType, isObjType } from '../../utils/utils';
 import ExtendedWidget from './ExtendedWidget';
+import ErrorMessage from './ErrorMessage';
 // TODO: 之后不要直接用get，收口到一个内部方法getValue，便于全局 ctrl + f 查找
 const RenderField = props => {
   const {
@@ -42,7 +43,11 @@ const RenderField = props => {
   const onChange = value => {
     console.log(`onChange`, value, debounceInput, dataPath);
     // 动过的key，算被touch了, 这里之后要考虑动的来源
-    touchKey(dataPath);
+    if(_schema.group){
+      touchKey(`${_schema.group}.${dataPath}`);
+    }else{
+      touchKey(dataPath);
+    }
     // 开始编辑，节流
     if (debounceInput) {
       setEditing(true);
@@ -106,21 +111,23 @@ const RenderField = props => {
 
   // checkbox必须单独处理，布局太不同了
   if (isCheckBoxType(_schema, _readOnly)) {
-    return (
+    return (<>
       <ExtendedWidget {...widgetProps} />
+      </>
     );
   }
 
   if (isObjType(_schema)) {
-    return (
+    return (<>
       <ExtendedWidget
           {...widgetProps}
         />
+        </>
     );
   }
-
-  return (
+  return (<>
     <ExtendedWidget {...widgetProps} />
+    </>
   );
 };
 

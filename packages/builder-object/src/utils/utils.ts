@@ -652,6 +652,7 @@ export const removeEmptyItemFromList = formData => {
 };
 
 export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
+  console.log(`getDescriptorFromSchema`)
   let result:any = {};
   let singleResult: any = {};
   if (schema.hidden === true) return result;
@@ -669,7 +670,7 @@ export const getDescriptorFromSchema = ({ schema, isRequired = true }) => {
       }
       result.fields[key] = getDescriptorFromSchema({
         schema: item,
-        isRequired,
+        isRequired: item.required,
       });
     });
   } else if (isListType(schema)) {
@@ -824,12 +825,13 @@ export const formatPathFromValidator = err => {
 // path = 'x.y'
 // return {required: true, message?: 'xxxx'}
 export const isPathRequired = (path, schema) => {
+  console.log(`isPathRequired`, path, schema);
   let pathArr = path.split('.');
   while (pathArr.length > 0) {
     let [_path, ...rest] = pathArr;
     _path = _path.split('[')[0];
     let childSchema;
-    if (isObjType(schema)) {
+    if (isObjType(schema) || isSectionType(schema)) {
       childSchema = schema.fields[_path];
     } else if (isListType(schema)) {
       childSchema = schema.items.properties[_path];
@@ -851,6 +853,26 @@ export const isPathRequired = (path, schema) => {
       }
     }
     return result;
+  }
+};
+
+export const getSchemaByPath = (path, schema) => {
+  let pathArr = path.split('.');
+  while (pathArr.length > 0) {
+    let [_path, ...rest] = pathArr;
+    _path = _path.split('[')[0];
+    let childSchema;
+    if (isObjType(schema) || isSectionType(schema)) {
+      childSchema = schema.fields[_path];
+    } else if (isListType(schema)) {
+      childSchema = schema.items.properties[_path];
+    }
+    pathArr = rest;
+    if (childSchema) {
+      return getSchemaByPath(rest.join('.'), childSchema);
+    }else{
+      return schema;
+    }
   }
 };
 
