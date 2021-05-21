@@ -375,7 +375,7 @@ export const LookupField = observer((props:any) => {
                         contentComponent={ObjectExpandTable}
                         title={`选择 ${referenceToObjectSchema.label}`}
                         objectApiName={referenceTo}
-                        // rowSelection={{type: rowSelectionType }}
+                        rowSelection={{type: rowSelectionType }}
                         columnFields={[
                             {
                                 fieldName: "name"
