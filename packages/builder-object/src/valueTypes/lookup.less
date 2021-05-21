@@ -1,20 +1,24 @@
 // 选中的选项附带的icon样式
-.ant-select {
-    .ant-select-selection-item{
-        display: flex;
-        // 单选
-        .anticon-smile{
+.type-lookup{
+    .ant-select {
+        .ant-select-selection-item{
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-right: 7px;
-        }
-        // 多选
-        .ant-select-selection-item-content{
-            display: flex;
+            // 单选
+            .anticon-smile{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-right: 7px;
+            }
+            // 多选
+            .ant-select-selection-item-content{
+                display: flex;
+            }
         }
     }
 }
+
+// TODO: 目前没有 class=type-lookup 在其上方。
 // 下拉框中选项附带的icon样式
 .ant-select-dropdown{
     .rc-virtual-list-holder-inner{
@@ -29,6 +33,7 @@
         }
     }
 }
+// TODO: 暂时在lookup 和 select中是统一有效，后期再检查下其它的。
 // 多选时 删除 图标样式调整
 .ant-select-selector{
     .ant-select-selection-overflow-item{
@@ -39,13 +44,14 @@
         }
     }
 }
+// TODO: 暂时在lookup 和 select中是统一有效，后期再检查下其它的。
 // 光标移到下拉框上时显示的右边删除图标 样式垂直居中调整
 .ant-select{
     .ant-select-clear{
         margin-top: -8px;
     }
 }
-.ant-row{
+.type-lookup{
     .ant-form-item-control-input{
         .ant-select-selector{
             .anticon-smile{
@@ -58,7 +64,7 @@
     }
 }
 // reference_to is array 两个联动的下拉框样式调整
-.mode-edit{
+.type-lookup.mode-edit{
     .ant-form-item-control{
         .ant-form-item-control-input-content{
             display:flex;
@@ -86,6 +92,7 @@
         }
     }
 }
+// TODO: 暂时在lookup 和 select中是统一有效，后期再检查下其它的。
 // reference_to is not array 时选中的选项在下拉框中隐藏。
 .rc-virtual-list{
     .rc-virtual-list-holder-inner{
@@ -98,7 +105,7 @@
 .add_button{
     display: flex;
     flex-wrap: nowrap;
-    padding: 5px 12px;
+    padding: 4px 8px 4px 10px;
     cursor: pointer;
     .anticon{
         display: flex;

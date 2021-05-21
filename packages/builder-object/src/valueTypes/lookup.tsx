@@ -268,7 +268,7 @@ export const LookupField = observer((props:any) => {
                                 // 新建弹出后新建按钮应该隐藏掉
                                 selectRef.current.blur();
                             }} >
-                                <PlusOutlined className="add_button"  /> 新建 {referenceToObjectSchema.label}
+                                <PlusOutlined /> 新建 {referenceToObjectSchema.label}
                             </a>
                         } 
                     />
