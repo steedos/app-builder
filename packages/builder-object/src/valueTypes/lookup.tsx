@@ -387,7 +387,7 @@ export const LookupField = observer((props:any) => {
                                 hideInTable: true,
                             }
                         ]}
-                        filters={[]}
+                        filters={filtersFunction ? filtersFunction(fieldFilters) : fieldFilters}
                         trigger={lookupInput} 
                         onFinish={onModalFinish}
                     />
