@@ -17,6 +17,10 @@ export const User = types.model({
       self.isLoading = true;
       // 获取user session信息
       const session = yield API.client.validate();
+      /**临时请求bootstrap接口拿到所有对象信息给Creator.Objects赋值，这样包括任务对象的“相关项”字段在内的optionsFunction函数都能正常执行*/
+      const bootstrap = yield API.client.bootstrap();
+      const Creator = window.Creator;
+      Creator.Objects = bootstrap.objects;
       setSession(session);
       self.isLoading = false;
       // self.isLoginFailed = false
