@@ -6,13 +6,10 @@ import ProTable, {
   ProColumnType,
 } from "@ant-design/pro-table"
 import { SortOrder } from "antd/es/table/interface"
-import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
-import { getObjectRecordUrl } from "../utils"
 import { Spin } from 'antd';
 import "./ObjectTable.less"
-import { Link } from "react-router-dom"
 // export type TableProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
 //   mode?: ProFieldFCMode,
 //   editable?: boolean,
