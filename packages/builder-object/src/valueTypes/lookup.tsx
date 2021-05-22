@@ -13,7 +13,7 @@ import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
 import { isString } from "lodash"
-import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal } from "../components";
+import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal, SpaceUsersModal } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
@@ -277,6 +277,7 @@ export const LookupField = observer((props:any) => {
             )
             }
         }
+        let modalDom: any;
         if(isLookupTree){
             //主要用到了newFieldProps中的onChange和value属性
             proFieldProps = Object.assign({}, {...newFieldProps}, {
@@ -296,6 +297,35 @@ export const LookupField = observer((props:any) => {
                     onDropdownVisibleChange: false,
                     open: false
                 }
+                modalDom = (trigger: any)=>{
+                    let ModalComponent = ObjectModal;
+                    let modalPorps = {
+                        contentComponent: ObjectExpandTable,
+                        title: `选择 ${referenceToObjectSchema.label}`,
+                        objectApiName: referenceTo,
+                        rowSelection: {type: rowSelectionType },
+                        columnFields:[
+                            {
+                                fieldName: "name"
+                            }
+                        ],
+                        filters: [],
+                        trigger,
+                        onFinish: onModalFinish
+                    };
+                    if(referenceTo === "space_users"){
+                        ModalComponent = SpaceUsersModal;
+                        Object.assign(modalPorps, {
+                            columnFields: null //使用SpaceUsersModal默认定义的columnFields
+                        })
+                    }
+                    else{
+                        
+                    }
+                    return (
+                        <ModalComponent {...modalPorps}/>
+                    )
+                };
             }
             proFieldProps = {
                 mode: mode,
@@ -370,22 +400,7 @@ export const LookupField = observer((props:any) => {
                     }
                     </Select>)
                 }
-                {showModal ? (
-                    <ObjectModal
-                        contentComponent={ObjectExpandTable}
-                        title={`选择 ${referenceToObjectSchema.label}`}
-                        objectApiName={referenceTo}
-                        rowSelection={{type: rowSelectionType }}
-                        columnFields={[
-                            {
-                                fieldName: "name"
-                            }
-                        ]}
-                        filters={[]}
-                        trigger={lookupInput} 
-                        onFinish={onModalFinish}
-                    />
-                ) : lookupInput}
+                {showModal ? modalDom(lookupInput) : lookupInput}
             </React.Fragment>
         )
     }
