@@ -17,7 +17,6 @@
   ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build:rollup": "export NODE_OPTIONS=--max_old_space_size=4096 && rollup -c rollup.config.ts",
     "build": "concurrently yarn:build:*",
     "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps --copy-files",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps --copy-files",
@@ -30,6 +29,7 @@
     "lint:src": "eslint src --ext .ts,.tsx --config ../../.eslintrc",
     "lint:types": "tsc --noEmit"
   },
+  "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@ant-design/pro-card": "^1.11.6",
     "@ant-design/pro-field": "^1.14.0",
@@ -47,6 +47,7 @@
     "@steedos/builder-locale": "1.0.0",
     "@steedos/builder-store": "1.0.0",
     "@steedos/filters": "^1.23.22",
+    "ag-grid-community": "^25.2.1",
     "array-move": "^3.0.1",
     "fs-extra-promise": "^1.0.1",
     "lodash": "^4.17.21",
@@ -65,13 +66,7 @@
     "react-sortable-hoc": "^2.0.0",
     "react-to-webcomponent": "^1.5.1",
     "react-use": "^17.2.4",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-node-polyfills": "^0.2.1",
-    "rollup-plugin-svg": "^2.0.0",
-    "rollup-plugin-visualizer": "^5.5.0",
-    "tslib": "^2.1.0",
-    "web-components-with-react": "^1.2.1",
-    "webcomponents-in-react": "^1.0.1"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
@@ -96,15 +91,6 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^6.2.0",
     "rimraf": "3.0.2",
-    "rollup": "^2.42.4",
-    "rollup-plugin-alias": "^2.2.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-re": "^1.0.7",
-    "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-sourcemaps": "^0.6.3",
-    "rollup-plugin-typescript2": "^0.30.0",
     "semantic-release": "^17.2.3",
     "ts-jest": "26.4.4",
     "ts-node": "^9.1.1",

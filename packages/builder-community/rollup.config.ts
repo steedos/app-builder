@@ -101,22 +101,22 @@ const options = {
 
 export default [
   // React CJS
-  {
-    ...options,
-    input: `src/index.tsx`,
-    external: [ 'react' ],
-    output: [
-      { 
-        file: 'dist/builder-object.react.js', 
-        format: 'cjs', 
-        sourcemap: true,
-        globals: { react: 'React' }
-      }
-    ],
-    plugins: options.plugins.concat([
-      sourceMaps(),
-    ]),
-  },
+  // {
+  //   ...options,
+  //   input: `src/index.tsx`,
+  //   external: [ 'react' ],
+  //   output: [
+  //     { 
+  //       file: 'dist/builder-community.react.js', 
+  //       format: 'cjs', 
+  //       sourcemap: true,
+  //       globals: { react: 'React' }
+  //     }
+  //   ],
+  //   plugins: options.plugins.concat([
+  //     sourceMaps(),
+  //   ]),
+  // },
   // ES
   {
     ...options,
@@ -124,36 +124,41 @@ export default [
     external: [ 'react' ],
     output: [
       { 
-        file: 'dist/builder-object.esm.js', 
+        file: 'dist/builder-community.esm.js', 
         format: 'es', 
         sourcemap: true,
         globals: { react: 'React' }
       }
     ],
-    plugins: options.plugins.concat([sourceMaps()]),
-  },
-  // UMD DEV
-  {
-    ...options,
-    input: `src/webcomponents.tsx`,
-    output: [
-      {
-        file: 'dist/builder-object.umd.js',
-        name: 'BuilderObject',
-        format: 'umd',
-        sourcemap: false,
-        amd: {
-          id: '@steedos/builder-object',
-        },
-        intro: 'const global = window;',
-      },
-    ],
     plugins: options.plugins.concat([
       visualizer({
         filename: 'dist/stats.html'
       }),
-      uglify(), 
       sourceMaps()
     ]),
-  }
+  },
+  // UMD DEV
+  // {
+  //   ...options,
+  //   input: `src/webcomponents.tsx`,
+  //   output: [
+  //     {
+  //       file: 'dist/builder-community.umd.js',
+  //       name: 'BuilderObject',
+  //       format: 'umd',
+  //       sourcemap: false,
+  //       amd: {
+  //         id: '@steedos/builder-community',
+  //       },
+  //       intro: 'const global = window;',
+  //     },
+  //   ],
+  //   plugins: options.plugins.concat([
+  //     visualizer({
+  //       filename: 'dist/stats.html'
+  //     }),
+  //     uglify(), 
+  //     sourceMaps()
+  //   ]),
+  // }
 ]
