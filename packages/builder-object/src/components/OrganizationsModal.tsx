@@ -17,13 +17,6 @@ export const OrganizationsModal = ({
       fieldName: "name",
       hideInSearch: true,
       sorter: true,
-    },{
-      fieldName: "email",
-      hideInSearch: true,
-    },{
-      fieldName: "user",
-      hideInSearch: true,
-      hideInTable: true,
     }]
   }
   return (
