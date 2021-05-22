@@ -1,12 +1,8 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import { map, forEach, isArray, isEmpty} from "lodash"
-import { ObjectContext } from "../"
-import { useQuery } from "react-query"
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import useAntdMediaQuery from 'use-media-antd-query';
 import ProTable, {
-  ProTableProps,
-  RequestData,
   ProColumnType,
 } from "@ant-design/pro-table"
 import { SortOrder } from "antd/es/table/interface"
