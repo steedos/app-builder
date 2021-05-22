@@ -376,9 +376,15 @@ export const LookupField = observer((props:any) => {
                         title={`选择 ${referenceToObjectSchema.label}`}
                         objectApiName={referenceTo}
                         rowSelection={{type: rowSelectionType }}
+                        // space_user 默认传的是_id
+                        rowKey={reference_to_field}
                         columnFields={[
                             {
                                 fieldName: "name"
+                            },
+                            {
+                                fieldName: "user",
+                                hideInTable: true,
                             }
                         ]}
                         filters={[]}
