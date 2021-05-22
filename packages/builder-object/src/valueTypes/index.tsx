@@ -17,7 +17,7 @@ import { formula } from './formula';
 import { summary } from './summary';
 import { autonumber } from './autonumber';
 
-export const valueTypes = {
+export const StandardValueTypes = {
     boolean,
     currency,
     datetime,

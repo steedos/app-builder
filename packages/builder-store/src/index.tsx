@@ -5,6 +5,8 @@ import { Settings } from './Settings';
 import { Apps } from './Apps'
 import { User } from './User'
 import { Queries } from './Queries';
+import { ComponentRegistry } from './ComponentRegistry';
+
 const stores = {
   Forms,
   Objects,
@@ -13,6 +15,7 @@ const stores = {
   Apps,
   User,
   Queries,
+  ComponentRegistry
 };
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -26,7 +29,8 @@ export {
   API,
   Apps,
   User,
-  Queries
+  Queries,
+  ComponentRegistry
 }
 
 export default stores;
