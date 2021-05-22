@@ -11,7 +11,7 @@ import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
-import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal, SpaceUsersModal, ObjectFieldTreeSelect } from "../components";
+import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
@@ -182,8 +182,6 @@ export const LookupField = observer((props:any) => {
             }
         }
 
-        let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || referenceTo === "space_users";
-
         if (referenceTo){ // 含有reference_to
             if (!options) {
                 request = requestFun;
@@ -246,7 +244,6 @@ export const LookupField = observer((props:any) => {
             }
         }
         let proFieldProps: any;
-        const isLookupTree = referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         let dropdownRender;
         if(create && referenceTo){
             dropdownRender = (menu)=>{
@@ -275,6 +272,8 @@ export const LookupField = observer((props:any) => {
             )
             }
         }
+        let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || ["space_users", "organizations"].indexOf(referenceTo) > -1;
+        const isLookupTree = !showModal && referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         let modalDom: any;
         if(isLookupTree){
             //主要用到了newFieldProps中的onChange和value属性
@@ -323,8 +322,8 @@ export const LookupField = observer((props:any) => {
                             columnFields: null //使用SpaceUsersModal默认定义的columnFields
                         })
                     }
-                    else{
-                        
+                    else if(referenceTo === "organizations"){
+                        ModalComponent = OrganizationsModal;
                     }
                     return (
                         <ModalComponent {...modalPorps}/>
