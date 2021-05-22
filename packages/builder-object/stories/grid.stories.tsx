@@ -1,4 +1,4 @@
-import { ObjectGrid, ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
+import { ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
@@ -9,7 +9,7 @@ import queryString from "querystring"
 import { useEffect, useState } from "react";
 
 export default {
-  title: "Object Grid",
+  title: "Object Table",
 }
 
 export const Table = () => {
@@ -159,40 +159,5 @@ export const ListViewToolbar = () => {
       >
         
       </ObjectListView>
-  )
-}
-
-export const Grid = () => {
-  return (
-      <ObjectGrid objectApiName='accounts' 
-        pagination={{
-          pageSize:3
-        }}
-        sort="created desc,name desc"
-        columnFields={
-          [
-            {
-              fieldName: 'name'
-            },
-            {
-              fieldName: 'parent_id'
-            },
-            {
-              fieldName: 'rating'
-            },
-            {
-              fieldName: 'type'
-            },
-            {
-              fieldName: 'created'
-            },
-            {
-              fieldName: 'created_by'
-            },
-          ]
-        }
-      >
-        
-      </ObjectGrid>
   )
 }
