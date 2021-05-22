@@ -37,6 +37,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
           fieldProps={{
             field_schema: fieldSchema
           }}
+          allowClear={false}
           />
       </div>
     </section>
