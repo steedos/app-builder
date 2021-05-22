@@ -17,7 +17,6 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
 
 import {
-  ObjectContext,
   ObjectList,
   ObjectTable,
   ObjectTableColumnProps,

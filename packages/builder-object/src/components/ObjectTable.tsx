@@ -1,7 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from "lodash"
-import { ObjectContext } from "../"
-import { useQuery } from "react-query"
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import useAntdMediaQuery from 'use-media-antd-query';
 import ProTable, {

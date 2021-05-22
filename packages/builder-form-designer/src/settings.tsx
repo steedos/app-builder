@@ -10,6 +10,10 @@ export const getWidgets = () => {
         widget: 'text',
       },
       setting: {
+        label: {
+          title: '显示名',
+          type: 'string',
+        },
       },
     },
     {
