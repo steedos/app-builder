@@ -138,6 +138,8 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   } = props
   
   const [totalRecords, setTotalRecords] = useState(0)
+  // selectedRowKeys为了实现表格的默认选中值
+  const [selectedRowKeys, setSelectedRowKeys] = useState(rowSelection.selectedRowKeys)
 
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
@@ -271,8 +273,17 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   }
   const proToolbar = Object.assign({}, toolbarOptions, toolbar);
   // 默认显示多选勾选框；可以设置 rest.rowSelection 为false，不显示单选和多选。
-  const rowSelectionOptions = rowSelection !== false && Object.assign({ onChange }, rowSelection);
-
+  // const rowSelectionOptions = rowSelection !== false && Object.assign({ onChange }, rowSelection);
+  const rowSelectionOptions = rowSelection !== false && Object.assign(rowSelection,{ 
+    selectedRowKeys,
+    onChange: (keys, rows) => {
+      if (onChange) {
+        onChange(keys, rows);
+        setSelectedRowKeys(keys);
+      }
+    } 
+  });
+  
   return (
     <ProTable
       request={request}
