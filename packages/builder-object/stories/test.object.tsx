@@ -24,9 +24,9 @@ export default {
       label: '照片'
     },
     */
-    contracts: {
+    accounts: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: '合同',
       multiple: true,
@@ -55,17 +55,17 @@ export default {
         // return "((amount ge 15) and (amount le 40))"
       }
     },
-    contractsNo: {
+    accountsNo: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       reference_to_field: "no",
       type: 'lookup',
       label: '合同编号',
       multiple: true,
     },
-    contracts_sort: {
+    accounts_sort: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: 'reference_sort',
       reference_sort: {
@@ -73,16 +73,16 @@ export default {
         amount: -1,
       },
     },
-    contracts_reference_limit: {
+    accounts_reference_limit: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: 'reference_limit',
       reference_limit: 3,
     },
-    contracts_filtersFunction: {
+    accounts_filtersFunction: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: 'filters(Function)',
       filters:[['amount','between',[0,10000]]],
@@ -92,9 +92,9 @@ export default {
         // return "((amount ge 15) and (amount le 40))"
       }
     },
-    contracts_optionsFunction: {
+    accounts_optionsFunction: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: 'options(Function)',
       options:[
@@ -111,14 +111,14 @@ export default {
         return column;
       },
     },
-    contracts_multiple: {
+    accounts_multiple: {
       group:'lookup测试',
-      reference_to: 'contracts',
+      reference_to: 'accounts',
       type: 'lookup',
       label: 'multiple',
       multiple: true,
     },
-    contracts2: {
+    accounts2: {
       group:'lookup测试',
       type: 'lookup',
       label: '无reference_to/只读',
@@ -130,10 +130,10 @@ export default {
       ],
     }, 
 
-    contracts_reference_to_func: {
+    accounts_reference_to_func: {
       reference_to:()=>{
-        return 'contracts'
-        // return ['contracts','contract_types'];
+        return 'accounts'
+        // return ['accounts','contract_types'];
       },
       group:'lookup测试',
       type: 'lookup',
@@ -182,20 +182,20 @@ export default {
       ],
       multiple: false,
     },
-    contracts_func_big: {
+    accounts_func_big: {
       reference_to: 'contract_types',
       type: 'lookup',
       label: '合同分类',
       group: "select测试",
       multiple: true,
     },
-    contracts_func_small: {
+    accounts_func_small: {
       type: 'select',
       label: 'option is func',
       group: "select测试",
-      depend_on: ["contracts_func_big"],
+      depend_on: ["accounts_func_big"],
       optionsFunction: async (values: any) => {
-        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_func_big]], ["_id",'name'], {'pageSize':'10'});
+        const data = await API.requestRecords('accounts', [["contract_type", "=", values.accounts_func_big]], ["_id",'name'], {'pageSize':'10'});
         const results = data.value.map((item: any) => {
             return {
                 label: item.name,
@@ -230,7 +230,7 @@ export default {
       }
     },
     
-    contracts_big: {
+    accounts_big: {
       type: 'lookup',
       label: '合同分类',
       group: "lookup联动",
@@ -240,35 +240,35 @@ export default {
         { label: '三级合同', value: 'three' }
       ]
     },
-    contracts_small: {
+    accounts_small: {
       type: 'lookup',
       label: '合同各类明细',
       group: "lookup联动",
-      depend_on: ["contracts_big"],
+      depend_on: ["accounts_big"],
       optionsFunction: (values: any) => {
         const smallData = {
           one : [{ label: '11合同', value: 'one-1' }, { label: '12合同', value: 'one-2' }],
           two : [{ label: '21合同', value: 'two-1' }, { label: '22合同', value: 'two-2' }],
           three: [{ label: '31合同', value: 'three-1' }, { label: '32合同', value: 'three-2' }],
         };
-        return smallData[values.contracts_big]
+        return smallData[values.accounts_big]
       }
     },
-    contracts_refeto_big: {
+    accounts_refeto_big: {
       reference_to: 'contract_types',
       type: 'lookup',
       label: '合同分类',
       group: "lookup联动有reference_to",
       multiple: true,
     },
-    contracts_refeto_small: {
-      reference_to: 'contracts',
+    accounts_refeto_small: {
+      reference_to: 'accounts',
       type: 'lookup',
       label: '合同',
       group: "lookup联动有reference_to",
-      depend_on: ["contracts_refeto_big"],
+      depend_on: ["accounts_refeto_big"],
       optionsFunction: async (values: any) => {
-        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_refeto_big]], ["_id",'name'], {'pageSize':'10'});
+        const data = await API.requestRecords('accounts', [["contract_type", "=", values.accounts_refeto_big]], ["_id",'name'], {'pageSize':'10'});
         const results = data.value.map((item: any) => {
             return {
                 label: item.name,
@@ -278,21 +278,21 @@ export default {
         return results;
       }
     },
-    contracts_re_big: {
+    accounts_re_big: {
       reference_to: 'contract_types',
       type: 'lookup',
       label: '1合同分类',
       group: "no reference_to func request",
       multiple: true,
     },
-    contracts_re_small: {
-      // reference_to: 'contracts',
+    accounts_re_small: {
+      // reference_to: 'accounts',
       type: 'lookup',
       label: '1合同',
       group: "no reference_to func request",
-      depend_on: ["contracts_re_big"],
+      depend_on: ["accounts_re_big"],
       optionsFunction: async (values: any) => {
-        const data = await API.requestRecords('contracts', [["contract_type", "=", values.contracts_re_big]], ["_id",'name'], {'pageSize':'10'});
+        const data = await API.requestRecords('accounts', [["contract_type", "=", values.accounts_re_big]], ["_id",'name'], {'pageSize':'10'});
         const results = data.value.map((item: any) => {
             return {
                 label: item.name,
