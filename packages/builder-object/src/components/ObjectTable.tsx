@@ -126,7 +126,6 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   const {
     objectApiName,
     columnFields = [],
-    filters: defaultFilters,
     sort,
     defaultClassName,
     onChange,
@@ -147,6 +146,20 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
   const object = Objects.getObject(objectApiName);
   const selfTableRef = useRef(null)
   if (object.isLoading) return (<div><Spin/></div>)
+
+  const rowKeyValue=rest.rowKey || "_id";
+  let defaultFilters = rest.filters;
+  let defaultValue: any = rowSelection && rowSelection.selectedRowKeys;
+  if(defaultFilters && defaultFilters.length && defaultValue && defaultValue.length){
+    const valueFilters = [rowKeyValue, '=', defaultValue];
+    if (isArray(defaultFilters)) {
+      defaultFilters = [defaultFilters, 'or', valueFilters]
+    }
+    else {
+        const odataValueFilters = formatFiltersToODataQuery(valueFilters);
+        defaultFilters = `(${defaultFilters}) or (${odataValueFilters})`;
+    }
+  }
 
   let defaultSort: any = {};
   const proColumns = []
@@ -288,7 +301,7 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
     <ProTable
       request={request}
       columns={proColumns}
-      rowKey={rest.rowKey || "_id"}
+      rowKey={rowKeyValue}
       rowSelection={{...rowSelectionOptions}}
       pagination={{ ...pagination, hideOnSinglePage: true}}
       columnEmptyText={false}
