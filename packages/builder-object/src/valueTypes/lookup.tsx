@@ -11,7 +11,7 @@ import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
-import { ObjectForm, ObjectTable, ObjectExpandTable, ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
+import { ObjectForm, ObjectTable, ObjectExpandTable,ObjectListView, ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
@@ -297,7 +297,7 @@ export const LookupField = observer((props:any) => {
                 modalDom = (trigger: any)=>{
                     let ModalComponent = ObjectModal;
                     let modalPorps = {
-                        contentComponent: ObjectExpandTable,
+                        contentComponent: ObjectListView,
                         title: `选择 ${referenceToObjectSchema.label}`,
                         objectApiName: referenceTo,
                         rowSelection: {
@@ -307,11 +307,6 @@ export const LookupField = observer((props:any) => {
                         },
                         // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
                         rowKey: reference_to_field,
-                        columnFields:[
-                            {
-                                fieldName: "name"
-                            }
-                        ],
                         filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
                         trigger,
                         onFinish: onModalFinish

@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import { isFunction, forEach, isObject, filter, isString} from "lodash"
-import { ObjectTable } from "./"
+import { ObjectTable, ObjectExpandTable } from "./"
 import {
   ProColumnType
 } from "@ant-design/pro-table"
@@ -144,7 +144,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const filters = getListViewFilters(listView, props);
 
   return (
-    <ObjectTable
+    <ObjectExpandTable
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
