@@ -101,22 +101,22 @@ const options = {
 
 export default [
   // React CJS
-  // {
-  //   ...options,
-  //   input: `src/index.tsx`,
-  //   external: [ 'react' ],
-  //   output: [
-  //     { 
-  //       file: 'dist/builder-community.react.js', 
-  //       format: 'cjs', 
-  //       sourcemap: true,
-  //       globals: { react: 'React' }
-  //     }
-  //   ],
-  //   plugins: options.plugins.concat([
-  //     sourceMaps(),
-  //   ]),
-  // },
+  {
+    ...options,
+    input: `src/index.tsx`,
+    external: [ 'react' ],
+    output: [
+      { 
+        file: 'dist/builder-community.react.js', 
+        format: 'cjs', 
+        sourcemap: true,
+        globals: { react: 'React' }
+      }
+    ],
+    plugins: options.plugins.concat([
+      sourceMaps(),
+    ]),
+  },
   // ES
   {
     ...options,
