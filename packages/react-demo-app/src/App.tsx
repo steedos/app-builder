@@ -7,6 +7,7 @@ import { SteedosProvider } from "@steedos/builder-object"
 import { ObjectExpandTable } from "@steedos/builder-object"
 import { observer } from "mobx-react-lite";
 import { Settings, User } from '@steedos/builder-store';
+import { Form,Field } from '@steedos/builder-form';
 
 import { Button } from "antd"
 import ProCard from "@ant-design/pro-card"
@@ -32,6 +33,10 @@ export default observer((props: any) => {
   const [selectedUser, setSelectedUsers] = useState([])
   const [selectedUserInTab1, setSelectedUsersInTab1] = useState([])
   const [selectedUserInTab2, setSelectedUsersInTab2] = useState([])
+  const [selectedOrgForMobile, setSelectedOrgForMobile] = useState()
+  const [spaceUsersFilters, setSpaceUsersFilters] = useState([])
+  const [selectedContactForMobile, setSelectedContactForMobile] = useState()
+  const [contactsFilters, setContactsFilters] = useState([])
 
   const handleOnTab1Change = (users: any) => {
     setSelectedUsersInTab1(users)
@@ -68,14 +73,16 @@ export default observer((props: any) => {
       "*"
     )
 
-    window.close()
+    // window.close()
     // setSelectedEmails(users.map(({ name, email }) => `${name}<${email}>`))
   }
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
+  const toolbar = isMobile ? {subTitle: false} : null;
+
   const userSession = User.getSession();
-  let spaceUsersFilters: any = ["user_accepted", "=", true];
+  let defaultSaceUsersFilters: any = ["user_accepted", "=", true];
   let orgExpandFilters: any = ["hidden", "!=", true];
   if (User.isLoading){
     // 这里不可以直接return (<div>Loading</div>) 上面有调用useRef
@@ -87,10 +94,34 @@ export default observer((props: any) => {
       if(orgIds && orgIds.length){
         orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
         // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
-        spaceUsersFilters = [spaceUsersFilters, ["organizations_parents", "=", orgIds]];
+        defaultSaceUsersFilters = [defaultSaceUsersFilters, ["organizations_parents", "=", orgIds]];
       }
     }
   }
+
+  useEffect(() => {
+    if(User.isLoading){
+      return;
+    }
+    if(selectedOrgForMobile){
+      setSpaceUsersFilters([defaultSaceUsersFilters, ["organizations_parents", "=", selectedOrgForMobile]])
+    }
+    else{
+      setSpaceUsersFilters(defaultSaceUsersFilters)
+    }
+  }, [selectedOrgForMobile])
+
+  useEffect(() => {
+    if(User.isLoading){
+      return;
+    }
+    if(selectedContactForMobile){
+      setContactsFilters([["group", "=", selectedContactForMobile]])
+    }
+    else{
+      setContactsFilters([])
+    }
+  }, [selectedContactForMobile])
 
   const organizationColumns = isMobile ? [
     {
@@ -150,11 +181,60 @@ export default observer((props: any) => {
     {
       fieldName: "group",
       hideInTable: true,
+      hideInSearch: true,
       expandType: "list",
       expandReference: "contacts_group",
       expandNameField: "name"
     }
   ];
+
+  let searchConfig: any = {
+    filterType: 'light',
+  };
+  let spaceUserSearchBar: any;
+  let contactSearchBar: any;
+  if(isMobile){
+    searchConfig = false;
+    spaceUserSearchBar = ()=> [(
+      <Form
+        onValuesChange={(changeValues: any)=>{
+          console.log("=spaceUserSearchBar=changeValues===", changeValues)
+          setSelectedOrgForMobile(changeValues.organizations_parents);
+        }}
+      >
+        <Field 
+          name="organizations_parents"
+          showSearch
+          valueType="lookup"
+          mode="edit"
+          placeholder="请选择所属组织"
+          fieldSchema={{
+            reference_to: "organizations",
+            filters: orgExpandFilters
+          }}
+        />
+      </Form>
+    )]
+    contactSearchBar = ()=> [(
+      <Form
+        onValuesChange={(changeValues: any)=>{
+          console.log("=contactSearchBar=changeValues===", changeValues)
+          setSelectedContactForMobile(changeValues.group);
+        }}
+      >
+        <Field 
+          name="group"
+          showSearch
+          valueType="lookup"
+          mode="edit"
+          placeholder="请选择所属分组"
+          fieldSchema={{
+            reference_to: "contacts_group"
+          }}
+        />
+      </Form>
+    )]
+  }
   return (
     <SteedosProvider {...providerProps}>
       <div className="App" ref={resizeSubject}>
@@ -185,13 +265,13 @@ export default observer((props: any) => {
                   <ObjectExpandTable
                     onChange={handleOnTab1Change}
                     objectApiName="space_users"
-                    search={{
-                      filterType: 'light',
-                    }}
+                    search={searchConfig}
                     columnFields={organizationColumns}
                     scroll={scroll}
                     debounceTime={500}
                     filters={spaceUsersFilters}
+                    toolBarRender={spaceUserSearchBar}
+                    toolbar={toolbar}
                   />
                 )
               }
@@ -208,12 +288,13 @@ export default observer((props: any) => {
                 onChange={handleOnTab2Change}
                 rowKey="_id"
                 objectApiName="contacts__c"
-                search={{
-                  filterType: 'light',
-                }}
+                search={searchConfig}
                 columnFields={groupColumns}
                 scroll={scroll}
                 debounceTime={500}
+                filters={contactsFilters}
+                toolBarRender={contactSearchBar}
+                toolbar={toolbar}
               />
             </ProCard.TabPane>
           </ProCard>

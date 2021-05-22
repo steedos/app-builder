@@ -108,7 +108,7 @@ export const Field = observer((props: any) => {
     ...rest
   } = props
 
-  const mode = Forms.loadById(formId).mode
+  const mode = fieldMode ? fieldMode : Forms.loadById(formId).mode
   const formItemPropsMerged = {
     ...attributes,
     ...formItemProps,

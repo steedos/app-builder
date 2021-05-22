@@ -234,7 +234,7 @@
   resolved "https://registry.npm.taobao.org/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha1-SAsCX0sg73/o9H1KSEbk/uhOoGw=
 
-"@ant-design/icons@^4.0.0", "@ant-design/icons@^4.1.0", "@ant-design/icons@^4.6.2":
+"@ant-design/icons@^4.0.0", "@ant-design/icons@^4.0.2", "@ant-design/icons@^4.1.0", "@ant-design/icons@^4.6.2":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-4.6.2.tgz#290f2e8cde505ab081fda63e511e82d3c48be982"
   integrity sha512-QsBG2BxBYU/rxr2eb8b2cZ4rPKAPBpzAR+0v6rrZLp/lnyvflLH3tw1vregK+M7aJauGWjIGNdFmUfpAOtw25A==
@@ -4768,6 +4768,21 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
+"@react-dnd/asap@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@react-dnd/asap/-/asap-4.0.0.tgz#b300eeed83e9801f51bd66b0337c9a6f04548651"
+  integrity sha512-0XhqJSc6pPoNnf8DhdsPHtUhRzZALVzYMTzRwV4VI6DJNJ/5xxfL9OQUwb8IH5/2x7lSf7nAZrnzUD+16VyOVQ==
+
+"@react-dnd/invariant@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@react-dnd/invariant/-/invariant-2.0.0.tgz#09d2e81cd39e0e767d7da62df9325860f24e517e"
+  integrity sha512-xL4RCQBCBDJ+GRwKTFhGUW8GXa4yoDfJrPbLblc3U09ciS+9ZJXJ3Qrcs/x2IODOdIE5kQxvMmE2UKyqUictUw==
+
+"@react-dnd/shallowequal@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-2.0.0.tgz#a3031eb54129f2c66b2753f8404266ec7bf67f0a"
+  integrity sha512-Pc/AFTdwZwEKJxFJvlxrSmGe/di+aAOBn60sremrpLo6VI/6cmiUYNNwlI5KNYttg7uypzA3ILPMPgxB2GYZEg==
+
 "@redash/viz@^0.1.1":
   version "0.1.1"
   resolved "https://registry.nlark.com/@redash/viz/download/@redash/viz-0.1.1.tgz#30865f7312ce10d8607ea667da374aff0b641dea"
@@ -7286,6 +7301,13 @@ acorn@^8.0.5:
   resolved "https://registry.npm.taobao.org/acorn/download/acorn-8.1.0.tgz?cache=0&sync_timestamp=1615305874483&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Facorn%2Fdownload%2Facorn-8.1.0.tgz#52311fd7037ae119cbb134309e901aa46295b3fe"
   integrity sha1-UjEf1wN64RnLsTQwnpAapGKVs/4=
 
+add-dom-event-listener@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/add-dom-event-listener/-/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
+  integrity sha512-WCxx1ixHT0GQU9hb0KI/mhgRQhnU+U3GvwY6ZvVjYq8rsihIGoaIOUbY0yMPBxLH5MDtr0kz3fisWGNcbWW7Jw==
+  dependencies:
+    object-assign "4.x"
+
 add-line-numbers@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/add-line-numbers/download/add-line-numbers-1.0.1.tgz#48dbbdea47dbd234deafeac6c93cea6f70b4b7e3"
@@ -7647,6 +7669,54 @@ antd@^4.15.0:
     scroll-into-view-if-needed "^2.2.25"
     warning "^4.0.3"
 
+antd@^4.4.2:
+  version "4.15.5"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-4.15.5.tgz#c54bf3a8a7e537c57395165b47c6caa4f9ea4860"
+  integrity sha512-zpdwZmdxZfSCVq6t329jXzq4oHZDDrMsD3L/bNilBJz9Y8yJZ0b4wGrWK7TSRipP2KcUB5Udm+bmfv2RBuzzNA==
+  dependencies:
+    "@ant-design/colors" "^6.0.0"
+    "@ant-design/icons" "^4.6.2"
+    "@ant-design/react-slick" "~0.28.1"
+    "@babel/runtime" "^7.12.5"
+    array-tree-filter "^2.1.0"
+    classnames "^2.2.6"
+    copy-to-clipboard "^3.2.0"
+    lodash "^4.17.21"
+    moment "^2.25.3"
+    rc-cascader "~1.4.0"
+    rc-checkbox "~2.3.0"
+    rc-collapse "~3.1.0"
+    rc-dialog "~8.5.1"
+    rc-drawer "~4.3.0"
+    rc-dropdown "~3.2.0"
+    rc-field-form "~1.20.0"
+    rc-image "~5.2.4"
+    rc-input-number "~7.1.0"
+    rc-mentions "~1.5.0"
+    rc-menu "~8.10.0"
+    rc-motion "^2.4.0"
+    rc-notification "~4.5.2"
+    rc-pagination "~3.1.6"
+    rc-picker "~2.5.10"
+    rc-progress "~3.1.0"
+    rc-rate "~2.9.0"
+    rc-resize-observer "^1.0.0"
+    rc-select "~12.1.6"
+    rc-slider "~9.7.1"
+    rc-steps "~4.1.0"
+    rc-switch "~3.2.0"
+    rc-table "~7.13.0"
+    rc-tabs "~11.7.0"
+    rc-textarea "~0.3.0"
+    rc-tooltip "~5.1.1"
+    rc-tree "~4.1.0"
+    rc-tree-select "~4.3.0"
+    rc-trigger "^5.2.1"
+    rc-upload "~4.2.0-alpha.0"
+    rc-util "^5.9.4"
+    scroll-into-view-if-needed "^2.2.25"
+    warning "^4.0.3"
+
 any-observable@^0.3.0:
   version "0.3.0"
   resolved "https://registry.npm.taobao.org/any-observable/download/any-observable-0.3.0.tgz#af933475e5806a67d0d7df090dd5e8bef65d119b"
@@ -7999,6 +8069,11 @@ async-validator@^3.0.3:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.5.1.tgz#cd62b9688b2465f48420e27adb47760ab1b5559f"
   integrity sha512-DDmKA7sdSAJtTVeNZHrnr2yojfFaoeW8MfQN8CeuXg8DDQHTqKk9Fdv38dSvnesHoO8MUwMI2HphOeSyIF+wmQ==
+
+async-validator@^3.5.1:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-3.5.2.tgz#68e866a96824e8b2694ff7a831c1a25c44d5e500"
+  integrity sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==
 
 async@0.9.x, async@~0.9.0:
   version "0.9.2"
@@ -9115,7 +9190,7 @@ babel-preset-react@^6.24.1:
     babel-plugin-transform-react-jsx-source "^6.22.0"
     babel-preset-flow "^6.23.0"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@6.x, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.npm.taobao.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -10596,7 +10671,7 @@ color-string@^1.5.4:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^3.0.0, color@^3.1.3:
+color@^3.0.0, color@^3.1.2, color@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npm.taobao.org/color/download/color-3.1.3.tgz#ca67fb4e7b97d611dcde39eceed422067d91596e"
   integrity sha1-ymf7TnuX1hHc3jns7tQiBn2RWW4=
@@ -10763,10 +10838,22 @@ compare-versions@^3.6.0:
   resolved "https://registry.npm.taobao.org/compare-versions/download/compare-versions-3.6.0.tgz#1a5689913685e5a87637b8d3ffca75514ec41d62"
   integrity sha1-GlaJkTaF5ah2N7jT/8p1UU7EHWI=
 
+component-classes@^1.2.5:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/component-classes/-/component-classes-1.2.6.tgz#c642394c3618a4d8b0b8919efccbbd930e5cd691"
+  integrity sha1-xkI5TDYYpNiwuJGe/Mu9kw5c1pE=
+  dependencies:
+    component-indexof "0.0.3"
+
 component-emitter@^1.2.1:
   version "1.3.0"
   resolved "https://registry.npm.taobao.org/component-emitter/download/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
   integrity sha1-FuQHD7qK4ptnnyIVhT7hgasuq8A=
+
+component-indexof@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/component-indexof/-/component-indexof-0.0.3.tgz#11d091312239eb8f32c8f25ae9cb002ffe8d3c24"
+  integrity sha1-EdCRMSI5648yyPJa6csAL/6NPCQ=
 
 compose-function@3.0.3:
   version "3.0.3"
@@ -11112,6 +11199,11 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.npm.taobao.org/copy-descriptor/download/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
+copy-text-to-clipboard@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/copy-text-to-clipboard/-/copy-text-to-clipboard-2.2.0.tgz#329dd6daf8c42034c763ace567418401764579ae"
+  integrity sha512-WRvoIdnTs1rgPMkgA2pUOa/M4Enh2uzCwdKsOMYNAJiz/4ZvEJgmbF4OmninPmlFdAWisfeh0tH+Cpf7ni3RqQ==
+
 copy-to-clipboard@3.3.1, copy-to-clipboard@^3.0.8, copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
   version "3.3.1"
   resolved "https://registry.npm.taobao.org/copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
@@ -11288,7 +11380,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.3, create-react-class@^15.6.2, create-react-class@^15.7.0:
+create-react-class@15.x, create-react-class@^15.5.3, create-react-class@^15.6.2, create-react-class@^15.7.0:
   version "15.7.0"
   resolved "https://registry.npm.taobao.org/create-react-class/download/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"
   integrity sha1-dJnXyi5pu1HRP69ZvQTwxlodbB4=
@@ -11393,6 +11485,14 @@ crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/crypto-random-string/download/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha1-7yp6lm7BEIM4g2m6oC6+rSKbMNU=
+
+css-animation@^1.3.2:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/css-animation/-/css-animation-1.6.1.tgz#162064a3b0d51f958b7ff37b3d6d4de18e17039e"
+  integrity sha512-/48+/BaEaHRY6kNQ2OIPzKf9A6g8WjZYjhiNDNuIVbsm5tXCGIAsHDjB4Xu1C4vXJtUWZo26O68OQkDpNBaPog==
+  dependencies:
+    babel-runtime "6.x"
+    component-classes "^1.2.5"
 
 css-blank-pseudo@^0.1.4:
   version "0.1.4"
@@ -12440,6 +12540,15 @@ dir-glob@^3.0.0, dir-glob@^3.0.1:
   integrity sha1-Vtv3PZkqSpO6FYT0U0Bj/S5BcX8=
   dependencies:
     path-type "^4.0.0"
+
+dnd-core@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-14.0.0.tgz#973ab3470d0a9ac5a0fa9021c4feba93ad12347d"
+  integrity sha512-wTDYKyjSqWuYw3ZG0GJ7k+UIfzxTNoZLjDrut37PbcPGNfwhlKYlPUqjAKUjOOv80izshUiqusaKgJPItXSevA==
+  dependencies:
+    "@react-dnd/asap" "^4.0.0"
+    "@react-dnd/invariant" "^2.0.0"
+    redux "^4.0.5"
 
 dns-equal@^1.0.0:
   version "1.0.0"
@@ -14420,6 +14529,20 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+form-render@1.x:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/form-render/-/form-render-1.3.2.tgz#8c1c06e84f67417f83c6800341832a9250bec9a6"
+  integrity sha512-LU/9zf7SHdM37z31Q43UWYjpcyRkBoYzX9BxPc6f1nvctj3VuBjSiPJQIb71Wnby8cLfG+WpPaoIeVvYpWh9GQ==
+  dependencies:
+    "@ant-design/icons" "^4.0.2"
+    async-validator "^3.5.1"
+    color "^3.1.2"
+    lodash-es "^4.17.21"
+    moment "^2.24.0"
+    nanoid "^3.1.20"
+    rc-color-picker "^1.2.6"
+    react-sortable-hoc "^1.11.0"
+
 format@^0.2.0:
   version "0.2.2"
   resolved "https://registry.npm.taobao.org/format/download/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
@@ -14429,6 +14552,22 @@ forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.npm.taobao.org/forwarded/download/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
+
+fr-generator@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/fr-generator/-/fr-generator-2.0.2.tgz#8e1d139b0e50aaa8f37c4c9e1fc577b3e41f1508"
+  integrity sha512-v718yuHul1/wp13Brn9fYfcr1Hq4kvdj/cT8K8CSlSvIBS5+p6H54/8aCgPJmfWoCfTRA/2fDYbhExKkFiASiQ==
+  dependencies:
+    antd "^4.4.2"
+    clone "^2.1.2"
+    copy-text-to-clipboard "^2.2.0"
+    form-render "1.x"
+    moment "^2.27.0"
+    nanoid "^3.1.22"
+    rc-color-picker "^1.2.6"
+    react-dnd "^14.0.2"
+    react-dnd-html5-backend "^14.0.0"
+    react-sortable-hoc "^2.0.0"
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -19087,7 +19226,7 @@ lockfile@^1.0.4:
   dependencies:
     signal-exit "^3.0.2"
 
-lodash-es@^4.17.10, lodash-es@^4.17.15:
+lodash-es@^4.17.10, lodash-es@^4.17.15, lodash-es@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npm.taobao.org/lodash-es/download/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=
@@ -21260,7 +21399,7 @@ oauth-sign@~0.9.0:
   resolved "https://registry.npm.taobao.org/oauth-sign/download/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha1-R6ewFrqmi1+g7PPe4IqFxnmsZFU=
 
-object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@4.x, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npm.taobao.org/object-assign/download/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -23842,7 +23981,7 @@ r-json@^1.2.5:
   resolved "https://registry.npm.taobao.org/r-json/download/r-json-1.2.10.tgz#62a73d9cafa7eabf670e5c2812c27bdb220a968b"
   integrity sha1-Yqc9nK+n6r9nDlwoEsJ72yIKlos=
 
-raf@^3.4.1:
+raf@^3.4.0, raf@^3.4.1:
   version "3.4.1"
   resolved "https://r.cnpmjs.org/raf/download/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha1-B0LpmkplUvRF1z4+4DKK8P8e3jk=
@@ -23918,6 +24057,16 @@ raw-loader@^4.0.1:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
+rc-align@2.x:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/rc-align/-/rc-align-2.4.5.tgz#c941a586f59d1017f23a428f0b468663fb7102ab"
+  integrity sha512-nv9wYUYdfyfK+qskThf4BQUSIadeI/dCsfaMZfNEoxm9HwOIioQ+LyqmMK6jWHAZQgOzMLaqawhuBXlF63vgjw==
+  dependencies:
+    babel-runtime "^6.26.0"
+    dom-align "^1.7.0"
+    prop-types "^15.5.8"
+    rc-util "^4.0.4"
+
 rc-align@^4.0.0:
   version "4.0.9"
   resolved "https://registry.yarnpkg.com/rc-align/-/rc-align-4.0.9.tgz#46d8801c4a139ff6a65ad1674e8efceac98f85f2"
@@ -23928,6 +24077,19 @@ rc-align@^4.0.0:
     dom-align "^1.7.0"
     rc-util "^5.3.0"
     resize-observer-polyfill "^1.5.1"
+
+rc-animate@2.x:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/rc-animate/-/rc-animate-2.11.1.tgz#2666eeb6f1f2a495a13b2af09e236712278fdb2c"
+  integrity sha512-1NyuCGFJG/0Y+9RKh5y/i/AalUCA51opyyS/jO2seELpgymZm2u9QV3xwODwEuzkmeQ1BDPxMLmYLcTJedPlkQ==
+  dependencies:
+    babel-runtime "6.x"
+    classnames "^2.2.6"
+    css-animation "^1.3.2"
+    prop-types "15.x"
+    raf "^3.4.0"
+    rc-util "^4.15.3"
+    react-lifecycles-compat "^3.0.4"
 
 rc-cascader@~1.4.0:
   version "1.4.2"
@@ -23958,6 +24120,17 @@ rc-collapse@~3.1.0:
     rc-motion "^2.3.4"
     rc-util "^5.2.1"
     shallowequal "^1.1.0"
+
+rc-color-picker@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/rc-color-picker/-/rc-color-picker-1.2.6.tgz#6cd516e46c6dd6f60a192590e1dc6080032b246d"
+  integrity sha512-AaC9Pg7qCHSy5M4eVbqDIaNb2FC4SEw82GOHB2C4R/+vF2FVa/r5XA+Igg5+zLPmAvBLhz9tL4MAfkRA8yWNJw==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.8"
+    rc-trigger "1.x"
+    rc-util "^4.0.2"
+    tinycolor2 "^1.4.1"
 
 rc-dialog@~8.5.0, rc-dialog@~8.5.1:
   version "8.5.2"
@@ -24014,6 +24187,15 @@ rc-input-number@~7.0.1:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
     rc-util "^5.0.1"
+
+rc-input-number@~7.1.0:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/rc-input-number/-/rc-input-number-7.1.1.tgz#f8cd48b351ad9aa578b227b68bef8ce65f5f55ba"
+  integrity sha512-xKeg+cQuhFZK4PkV+m7bvnVJgJPV02bSCAnuKx7HhGA/O8a+7chbW2AFiP0UZcuAMmZe+nE0oS1Gxe0RkRqdHQ==
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.5"
+    rc-util "^5.9.8"
 
 rc-mentions@~1.5.0:
   version "1.5.3"
@@ -24211,6 +24393,14 @@ rc-tooltip@^5.0.1, rc-tooltip@~5.1.0:
     "@babel/runtime" "^7.11.2"
     rc-trigger "^5.0.0"
 
+rc-tooltip@~5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/rc-tooltip/-/rc-tooltip-5.1.1.tgz#94178ed162d0252bc4993b725f5dc2ac0fccf154"
+  integrity sha512-alt8eGMJulio6+4/uDm7nvV+rJq9bsfxFDCI0ljPdbuoygUscbsMYb6EQgwib/uqsXQUvzk+S7A59uYHmEgmDA==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    rc-trigger "^5.0.0"
+
 rc-tree-select@~4.3.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/rc-tree-select/-/rc-tree-select-4.3.1.tgz#4881bae5f6a5d696c5f61e52ad9489313f356eb4"
@@ -24233,6 +24423,18 @@ rc-tree@^4.0.0, rc-tree@~4.1.0:
     rc-util "^5.0.0"
     rc-virtual-list "^3.0.1"
 
+rc-trigger@1.x:
+  version "1.11.5"
+  resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-1.11.5.tgz#f88f9f84e0e79f8e0ef1c8d1bf8ac2208b715620"
+  integrity sha512-MBuUPw1nFzA4K7jQOwb7uvFaZFjXGd00EofUYiZ+l/fgKVq8wnLC0lkv36kwqM7vfKyftRo2sh7cWVpdPuNnnw==
+  dependencies:
+    babel-runtime "6.x"
+    create-react-class "15.x"
+    prop-types "15.x"
+    rc-align "2.x"
+    rc-animate "2.x"
+    rc-util "4.x"
+
 rc-trigger@^5.0.0, rc-trigger@^5.0.4, rc-trigger@^5.1.2, rc-trigger@^5.2.1:
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/rc-trigger/-/rc-trigger-5.2.3.tgz#8c55046ab432d7b52d51c69afb57ebb5bbe37e17"
@@ -24253,6 +24455,17 @@ rc-upload@~4.2.0-alpha.0:
     classnames "^2.2.5"
     rc-util "^5.2.0"
 
+rc-util@4.x, rc-util@^4.0.2, rc-util@^4.0.4, rc-util@^4.15.3:
+  version "4.21.1"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-4.21.1.tgz#88602d0c3185020aa1053d9a1e70eac161becb05"
+  integrity sha512-Z+vlkSQVc1l8O2UjR3WQ+XdWlhj5q9BMQNLk2iOBch75CqPfrJyGtcWMcnhRlNuDu0Ndtt4kLVO8JI8BrABobg==
+  dependencies:
+    add-dom-event-listener "^1.1.0"
+    prop-types "^15.5.10"
+    react-is "^16.12.0"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^1.1.0"
+
 rc-util@^5.0.0, rc-util@^5.0.1, rc-util@^5.0.6, rc-util@^5.4.0:
   version "5.8.1"
   resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-5.8.1.tgz#e3630abfb92b40becb31476cee136d65e80e02e0"
@@ -24266,6 +24479,15 @@ rc-util@^5.0.5, rc-util@^5.0.7, rc-util@^5.2.0, rc-util@^5.2.1, rc-util@^5.3.0, 
   version "5.9.8"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.9.8.tgz#dfcacc1f7b7c45fa18ab786e2b530dd0509073f1"
   integrity sha512-typLSHYGf5irvGLYQshs0Ra3aze086h0FhzsAkyirMunYZ7b3Te8gKa5PVaanoHaZa9sS6qx98BxgysoRP+6Tw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    react-is "^16.12.0"
+    shallowequal "^1.1.0"
+
+rc-util@^5.12.2, rc-util@^5.9.8:
+  version "5.12.2"
+  resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.12.2.tgz#41572687a2cd174fdaec028da756d288e398e9f8"
+  integrity sha512-kzqG2lHY4oZsoj5Svov12K+9wi0xQHvGzfbLlsF1PDEH1aTbgdNTwlE7mejc3MGEr+7bNHa4+T5ZemCS8vQ1Gw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     react-is "^16.12.0"
@@ -24389,6 +24611,24 @@ react-dev-utils@^11.0.3:
     shell-quote "1.7.2"
     strip-ansi "6.0.0"
     text-table "0.2.0"
+
+react-dnd-html5-backend@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-14.0.0.tgz#28d660a2ad1e07447c34a65cd25f7de8f1657194"
+  integrity sha512-2wAQqRFC1hbRGmk6+dKhOXsyQQOn3cN8PSZyOUeOun9J8t3tjZ7PS2+aFu7CVu2ujMDwTJR3VTwZh8pj2kCv7g==
+  dependencies:
+    dnd-core "14.0.0"
+
+react-dnd@^14.0.2:
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-14.0.2.tgz#57266baec92b887301f81fa3b77f87168d159733"
+  integrity sha512-JoEL78sBCg8SzjOKMlkR70GWaPORudhWuTNqJ56lb2P8Vq0eM2+er3ZrMGiSDhOmzaRPuA9SNBz46nHCrjn11A==
+  dependencies:
+    "@react-dnd/invariant" "^2.0.0"
+    "@react-dnd/shallowequal" "^2.0.0"
+    dnd-core "14.0.0"
+    fast-deep-equal "^3.1.3"
+    hoist-non-react-statics "^3.3.2"
 
 react-docgen-typescript-loader@^3.7.2:
   version "3.7.2"
@@ -24831,7 +25071,7 @@ react-slick@^0.23.2:
     prettier "^1.14.3"
     resize-observer-polyfill "^1.5.0"
 
-react-sortable-hoc@^1.10.1:
+react-sortable-hoc@^1.10.1, react-sortable-hoc@^1.11.0:
   version "1.11.0"
   resolved "https://registry.npm.taobao.org/react-sortable-hoc/download/react-sortable-hoc-1.11.0.tgz#fe4022362bbafc4b836f5104b9676608a40a278f"
   integrity sha1-/kAiNiu6/EuDb1EEuWdmCKQKJ48=
@@ -25305,6 +25545,13 @@ reduce-simplicial-complex@^1.0.0:
     cell-orientation "^1.0.1"
     compare-cell "^1.0.0"
     compare-oriented-cell "^1.0.1"
+
+redux@^4.0.5:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.1.0.tgz#eb049679f2f523c379f1aff345c8612f294c88d4"
+  integrity sha512-uI2dQN43zqLWCt6B/BMGRMY6db7TTY4qeHHfGeKb3EOhmOKjU3KdWvNLJyqaHRksv/ErdNH7cFZWg9jXtewy4g==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 refractor@^2.4.1:
   version "2.10.1"
