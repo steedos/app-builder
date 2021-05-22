@@ -3,10 +3,20 @@ import React from "react";
 
 import { getSnapshot } from "mobx-state-tree";
 import { SteedosClient } from '@steedos/builder-sdk';
-import { SteedosContext } from '..';
-import { ObjectProvider } from "@steedos/builder-object";
+import { FormProvider } from "@steedos/builder-form";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { Settings, API } from "@steedos/builder-store";
 import { SteedosIconSettings } from "@steedos/builder-lightning";
+import { valueTypes } from '../valueTypes'
+import { SteedosContext } from './SteedosContext';
+
+const defaultQueryClientConfig: any = {
+  defaultOptions: {
+    queries:{
+      refetchOnWindowFocus: false
+    }
+  }
+}
 
 /*
 参数：
@@ -20,6 +30,7 @@ export function SteedosProvider(props: any) {
     tenantId = localStorage.getItem('steedos:spaceId'),
     userId = localStorage.getItem('steedos:userId'),
     authToken = localStorage.getItem('steedos:token'),
+    queryClient = new QueryClient(defaultQueryClientConfig),
     locale,
     iconPath,
   } = props;
@@ -42,9 +53,11 @@ export function SteedosProvider(props: any) {
   return (
     <SteedosContext.Provider value={{}}>
       <SteedosIconSettings iconPath={iconPath}>
-        <ObjectProvider {...objectProviderProps}>
-          {props.children}
-        </ObjectProvider>
+        <QueryClientProvider client={queryClient}>
+          <FormProvider locale={locale} valueTypeMap={valueTypes}>
+            {props.children}
+          </FormProvider>
+        </QueryClientProvider>
       </SteedosIconSettings>
     </SteedosContext.Provider>
   )

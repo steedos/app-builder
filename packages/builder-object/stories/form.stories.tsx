@@ -31,7 +31,7 @@ export const JsonForm = () => {
     contractsNo:['2021-009'],
     populationType: ['1','2'],
     // contracts_reference_to_func: {o:'contract_types',ids:['fcxTeWMEvgdMQnvwZ'],labels:["合同分类1"]},
-    contracts_reference_to_func: 'ebqwa4viwcwMZa7MY',
+    // contracts_reference_to_func: 'ebqwa4viwcwMZa7MY',
     object: {
       sub1: 'sub1',
       sub2: true,
