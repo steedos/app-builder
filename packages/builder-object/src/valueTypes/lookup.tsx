@@ -304,12 +304,14 @@ export const LookupField = observer((props:any) => {
                         title: `选择 ${referenceToObjectSchema.label}`,
                         objectApiName: referenceTo,
                         rowSelection: {type: rowSelectionType },
+                        // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
+                        rowKey={reference_to_field},
                         columnFields:[
                             {
                                 fieldName: "name"
                             }
                         ],
-                        filters: [],
+                        filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
                         trigger,
                         onFinish: onModalFinish
                     };
