@@ -305,6 +305,7 @@ export const LookupField = observer((props:any) => {
                             // 在proTable中defaultSelectedRowKeys暂时无效，不能使用。selectedRowKeys类型是 [] 。
                             selectedRowKeys: isArray(value) ? value : [value]
                         },
+                        multiple,
                         // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
                         rowKey: reference_to_field,
                         filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
