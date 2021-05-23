@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useContext, useMemo } from "react"
 import { Modal, ConfigProvider } from "antd"
-import { ObjectTableProps, ObjectExpandTableProps } from ".."
+import { 
+  ObjectTable, ObjectTableProps, 
+  ObjectExpandTable, ObjectExpandTableProps, 
+  ObjectTree, ObjectTreeProps,
+  ObjectListView, ObjectListViewProps, 
+  Organizations, OrganizationsProps,
+  SpaceUsers, SpaceUsersProps,
+} from ".."
 import { createPortal } from 'react-dom';
-import { omit } from "lodash"
+import { omit, isArray } from "lodash"
 import type { ModalProps } from 'antd';
-// import { ModalCommonProps } from "../utils"
 
 export type ObjectModalProps = {
   isDrawer?: boolean
@@ -16,8 +22,11 @@ export type ObjectModalProps = {
   modalProps?: Omit<ModalProps, 'visible'>
   title?: ModalProps['title']
   width?: ModalProps['width']
-  contentComponent: React.FunctionComponent
-} & ObjectTableProps<any> & ObjectExpandTableProps
+  contentComponent: React.FunctionComponent,
+  multiple?: any
+  value?: any
+} & ObjectTableProps<any> & ObjectExpandTableProps & ObjectTreeProps & ObjectListViewProps<any>
+  & OrganizationsProps & SpaceUsersProps
 
 export const ObjectModal = ({
   isDrawer = false,
@@ -29,6 +38,8 @@ export const ObjectModal = ({
   width,
   onChange,
   contentComponent: ContentComponent,
+  multiple,
+  value,
   ...rest
 }: ObjectModalProps) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
@@ -61,6 +72,29 @@ export const ObjectModal = ({
     return context?.getPopupContainer?.(document.body);
   }, [context, modalProps, visible]);
 
+  let contentComponentProps: any = {};
+  if([ObjectTable, ObjectExpandTable, ObjectListView, SpaceUsers].indexOf(ContentComponent) > -1){
+    // 底层使用的是ObjectTable时multiple及value属性实现逻辑
+    let rowSelectionType="radio";
+    if (multiple){
+        rowSelectionType="checkbox";
+    }
+    Object.assign(contentComponentProps, {
+      rowSelection: {
+        type: rowSelectionType ,
+        // 在proTable中defaultSelectedRowKeys目前无效。只能用selectedRowKeys实现相关功能。
+        // 如果proTable后续版本defaultSelectedRowKeys能生效的话可以考虑直接换成defaultSelectedRowKeys。
+        selectedRowKeys: isArray(value) ? value : [value]
+      }
+    });
+  }
+  else if([ObjectTree, Organizations].indexOf(ContentComponent) > -1){
+    // 底层使用的是ObjectTree时multiple及value属性实现逻辑
+    Object.assign(contentComponentProps, {
+      multiple,
+      defaultSelectedKeys: isArray(value) ? value : [value]
+    });
+  }
   return (
     <>
       {createPortal(
@@ -89,6 +123,7 @@ export const ObjectModal = ({
             }}
           >
             <ContentComponent
+              {...contentComponentProps}
               {...omit(rest, ['visible', 'title', 'onChange'])}
               onChange={handleOnChange}
             />

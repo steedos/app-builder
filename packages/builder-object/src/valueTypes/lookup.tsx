@@ -96,11 +96,9 @@ export const LookupField = observer((props:any) => {
             </React.Fragment>
         )})}</React.Fragment>)
     }else{
-        let rowSelectionType="radio";
         if (multiple){
             fieldProps.mode = 'multiple';
-            rowSelectionType="checkbox";
-        } 
+        }
 
         let dependOnValues: any = dependFieldValues;
         let request: any;
@@ -300,12 +298,8 @@ export const LookupField = observer((props:any) => {
                         contentComponent: ObjectListView,
                         title: `选择 ${referenceToObjectSchema.label}`,
                         objectApiName: referenceTo,
-                        rowSelection: {
-                            type: rowSelectionType ,
-                            // 在proTable中defaultSelectedRowKeys暂时无效，不能使用。selectedRowKeys类型是 [] 。
-                            selectedRowKeys: isArray(value) ? value : [value]
-                        },
                         multiple,
+                        value,
                         // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
                         rowKey: reference_to_field,
                         filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
