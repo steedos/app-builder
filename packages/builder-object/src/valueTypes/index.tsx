@@ -10,14 +10,14 @@ import { url } from './url';
 import { lookup } from './lookup';
 import { master_detail } from './master_detail';
 import { object } from './object';
-import { grid } from './aggrid';
+import { grid } from './grid';
 import { image } from './image';
 import { avatar } from './avatar';
 import { formula } from './formula';
 import { summary } from './summary';
 import { autonumber } from './autonumber';
 
-export const valueTypes = {
+export const StandardValueTypes = {
     boolean,
     currency,
     datetime,

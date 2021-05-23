@@ -2,7 +2,8 @@
   "name": "@steedos/app-builder",
   "version": "0.0.1",
   "workspaces": [
-    "packages/**"
+    "packages/**",
+    "apps/**"
   ],
   "repository": "https://github.com/steedos/app-builder",
   "author": "Jack Zhuang <50353452+hotlong@users.noreply.github.com>",

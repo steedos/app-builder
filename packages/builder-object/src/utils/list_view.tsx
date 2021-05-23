@@ -1,4 +1,4 @@
-import { find, intersection, union, each, isObject, compact} from 'lodash';
+import { find, intersection, union, each, isObject, compact, keys} from 'lodash';
 
 export function isRecentListView(listViewName: string) {
   return listViewName === "recent"

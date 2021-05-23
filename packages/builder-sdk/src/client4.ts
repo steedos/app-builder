@@ -265,6 +265,11 @@ export default class SteedosClient {
         return await this.doFetch(url, {method: 'POST', body: JSON.stringify(body)});
     }
 
+    async bootstrap(){
+        let url = this.getBootstrapRoute();
+        return await this.doFetch(url, {method: 'GET'});
+    }
+
     createUser = (user: UserProfile, token: string, inviteId: string, redirect: string) => {
         this.trackEvent('api', 'api_users_createUser');
 

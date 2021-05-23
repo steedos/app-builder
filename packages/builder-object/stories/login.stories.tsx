@@ -8,7 +8,7 @@ import { Alert, message, Button, Space } from 'antd';
 
 
 export default {
-  title: "Login",
+  title: "Steedos",
 }
 
 
@@ -109,4 +109,8 @@ const LoginComponent = observer(() => {
 
 export const Login = () => {
     return <LoginComponent/>
+}
+
+export const Logout = () => {
+    return 
 }

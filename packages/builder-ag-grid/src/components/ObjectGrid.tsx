@@ -7,7 +7,7 @@ import { SortOrder } from "antd/es/table/interface"
 import { ParamsType } from "@ant-design/pro-provider"
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
-import { getObjectRecordUrl } from "../utils"
+import { getObjectRecordUrl } from "../../../builder-object/src/utils"
 import { Spin } from 'antd';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
@@ -15,9 +15,9 @@ import { AllModules } from '@ag-grid-enterprise/all-modules';
 import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import Button from '@salesforce/design-system-react/components/button'; 
-import { AgGridCellEditor } from "./ag-grid/CellEditor";
-import { AgGridCellRenderer } from "./ag-grid/CellRender";
-import { AgGridCellFilter } from "./ag-grid/CellFilter";
+import { AgGridCellEditor } from "./CellEditor";
+import { AgGridCellRenderer } from "./CellRender";
+import { AgGridCellFilter } from "./CellFilter";
 
 export type ObjectGridColumnProps = {
   fieldName: string

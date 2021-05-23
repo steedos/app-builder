@@ -1,5 +1,5 @@
 {
-  "name": "@steedos/builder-object",
+  "name": "@steedos/builder-ag-grid",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/cjs/index.js",
@@ -30,6 +30,10 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@ag-grid-community/all-modules": "^25.2.0",
+    "@ag-grid-community/react": "^25.2.0",
+    "@ag-grid-enterprise/all-modules": "^25.2.0",
+    "@ag-grid-enterprise/server-side-row-model": "^25.2.0",
     "@ant-design/icons": "^4.6.2",
     "@ant-design/pro-card": "^1.11.6",
     "@ant-design/pro-field": "^1.14.0",
@@ -66,6 +70,10 @@
     "react-sortable-hoc": "^2.0.0",
     "react-to-webcomponent": "^1.5.1",
     "react-use": "^17.2.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "rollup-plugin-svg": "^2.0.0",
+    "rollup-plugin-visualizer": "^5.5.0",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
@@ -91,6 +99,15 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^6.2.0",
     "rimraf": "3.0.2",
+    "rollup": "^2.42.4",
+    "rollup-plugin-alias": "^2.2.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-re": "^1.0.7",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript2": "^0.30.0",
     "semantic-release": "^17.2.3",
     "ts-jest": "26.4.4",
     "ts-node": "^9.1.1",
@@ -100,5 +117,5 @@
     "typedoc": "^0.11.0",
     "validate-commit-msg": "^2.12.2"
   },
-  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-object"
+  "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-ag-grid"
 }

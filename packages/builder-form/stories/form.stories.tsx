@@ -20,107 +20,107 @@ declare var window;
 
 const apiKey = 'e9ada5daeb6a4627bc2560d29916c080';
 
-export const Editor = () => {
+// export const Editor = () => {
 
-  if (!window.hasEditor) {
-    const script = document.createElement("script");
-    script.src = "https://cdn.builder.io/js/editor";
-    script.async = true;
-    document.body.appendChild(script);
-    window.hasEditor = true;
-  }
+//   if (!window.hasEditor) {
+//     const script = document.createElement("script");
+//     script.src = "https://cdn.builder.io/js/editor";
+//     script.async = true;
+//     document.body.appendChild(script);
+//     window.hasEditor = true;
+//   }
 
-  const BuilderEditor = adapt("builder-editor");
-  const builderOptions = {
-    // useDefaultStyles: true,
-    // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=builder-form--preview&viewMode=story',
-  };
+//   const BuilderEditor = adapt("builder-editor");
+//   const builderOptions = {
+//     // useDefaultStyles: true,
+//     // hideAnimateTab: true,
+//     previewUrl: 'http://localhost:6006/iframe.html?id=builder-form--preview&viewMode=story',
+//   };
 
-  const initialContent = {
-    data: {
-      blocks: [{
-        "@type": "@builder.io/sdk:Element",
-        "@version": 2,
-        "id": "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
-        "component": {
-          "name": "Text",
-          "options": {
-            "text": "<p>Steedos App Builder</p>"
-          }
-        },
-      }]
-    }
-  }
-  return (
-    <BuilderEditor
-      class="absolute top-0 right-0 bottom-0 left-0 width-full"
-      onChange={(e:any) => {
-        console.log(e)
-      }}
-      data={initialContent}
-      env='production'
-      options={builderOptions}/>
-  ) 
-}
+//   const initialContent = {
+//     data: {
+//       blocks: [{
+//         "@type": "@builder.io/sdk:Element",
+//         "@version": 2,
+//         "id": "builder-0e6f5d94e39e41f0bc39bd42b55cd457",
+//         "component": {
+//           "name": "Text",
+//           "options": {
+//             "text": "<p>Steedos App Builder</p>"
+//           }
+//         },
+//       }]
+//     }
+//   }
+//   return (
+//     <BuilderEditor
+//       class="absolute top-0 right-0 bottom-0 left-0 width-full"
+//       onChange={(e:any) => {
+//         console.log(e)
+//       }}
+//       data={initialContent}
+//       env='production'
+//       options={builderOptions}/>
+//   ) 
+// }
 
-export const Fiddle = () => {
+// export const Fiddle = () => {
 
-  if (!window.hasFiddle) {
-    const script = document.createElement("script");
-    script.src = "https://cdn.builder.io/js/fiddle";
-    script.async = true;
-    document.body.appendChild(script);
-    window.hasFiddle = true;
-  }
+//   if (!window.hasFiddle) {
+//     const script = document.createElement("script");
+//     script.src = "https://cdn.builder.io/js/fiddle";
+//     script.async = true;
+//     document.body.appendChild(script);
+//     window.hasFiddle = true;
+//   }
 
-  const BuilderFiddle = adapt("builder-fiddle");
-  const builderOptions = {
-    // useDefaultStyles: true,
-    // hideAnimateTab: true,
-    previewUrl: 'http://localhost:6006/iframe.html?id=builder-form--preview&viewMode=story',
-  };
-  const builderData = {}
-  return (
-    <BuilderFiddle
-      class="absolute top-0 right-0 bottom-0 left-0 width-full"
-      onChange={(e:any) => {
-        console.log(e)
-      }}
-      data={{}}
-      env='production'
-      options={builderOptions}/>
-  ) 
-}
+//   const BuilderFiddle = adapt("builder-fiddle");
+//   const builderOptions = {
+//     // useDefaultStyles: true,
+//     // hideAnimateTab: true,
+//     previewUrl: 'http://localhost:6006/iframe.html?id=builder-form--preview&viewMode=story',
+//   };
+//   const builderData = {}
+//   return (
+//     <BuilderFiddle
+//       class="absolute top-0 right-0 bottom-0 left-0 width-full"
+//       onChange={(e:any) => {
+//         console.log(e)
+//       }}
+//       data={{}}
+//       env='production'
+//       options={builderOptions}/>
+//   ) 
+// }
 
 
-export const Preview = () => {
+// export const Preview = () => {
 
-  builder.init(apiKey);
+//   builder.init(apiKey);
 
-  require('../src/builder-widgets');
+//   require('../src/builder-widgets');
 
-  const context = {hello: 'context'}
-  const data =  {
-    initialValues: {name: 'Hello World!'},
-    columns: 3,
-  }
-  const content = {} //require('./contract.form.builder.json');
-  const bcProps = {
-    apiKey,
-    // content,
-    context,
-    data,
-    onStateChange: (newData: any) => {
-    }
-  }
-  return (
-    <FormProvider locale="zh_CN">
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent> 
-    </FormProvider>
-  )
-}
+//   const context = {hello: 'context'}
+//   const data =  {
+//     initialValues: {name: 'Hello World!'},
+//     columns: 3,
+//   }
+//   const content = {} //require('./contract.form.builder.json');
+//   const bcProps = {
+//     apiKey,
+//     // content,
+//     context,
+//     data,
+//     onStateChange: (newData: any) => {
+//     }
+//   }
+//   return (
+//     <FormProvider locale="zh_CN">
+//       <BuilderComponent {...bcProps}>
+//       </BuilderComponent> 
+//     </FormProvider>
+//   )
+// }
 
 
 
@@ -187,32 +187,6 @@ export const FormVertical= () => {
         </BuilderComponent> 
       </Form>
     </FormProvider>
-  )
-}
-
-
-
-export const TableSimple = () => {
-
-  require('../src/builder-widgets');
-
-  builder.init(apiKey);
-
-  const content = require('./table-simple.builder.json');
-  // const content = yaml.load(fs.readFileSync(__dirname + '/table-simple.builder.yml', 'utf8'));
-  const data =  {
-    formMode: 'read',
-  }
-  const bcProps = {
-    apiKey,
-    content,
-    data,
-    onStateChange: (newData: any) => {
-    }
-  }
-  return (
-      <BuilderComponent {...bcProps}>
-      </BuilderComponent> 
   )
 }
 

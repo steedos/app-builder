@@ -14,8 +14,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 import './aggrid.less';
-import { AgGridCellRenderer } from '../components/ag-grid/CellRender';
-import { AgGridCellEditor } from '../components/ag-grid/CellEditor';
+import { AgGridCellRenderer } from '../components/CellRender';
+import { AgGridCellEditor } from '../components/CellEditor';
 
 // 表格类型字段，
 // value格式：{ gridField: [{subField1: 666, subField2: 'yyy'}] }
