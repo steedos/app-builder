@@ -135,13 +135,14 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     listName = "all",
     columnFields,
     filters,
+    listSchema,
     ...rest
   } = props
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 
-  let listView = schema.list_views[listName];
-  const listViewColumns = getListviewColumns(schema, listName);
+  let listView = listSchema ? listSchema : schema.list_views[listName];
+  const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
   if(!columnFields || columnFields.length==0){
     columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   }

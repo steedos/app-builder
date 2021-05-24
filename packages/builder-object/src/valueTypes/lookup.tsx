@@ -2,7 +2,7 @@ import React, { useState , useRef} from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Select, Spin } from 'antd';
 import "antd/es/tree-select/style/index.css";
-import { isFunction, isArray, isObject, uniq, filter, map, forEach} from 'lodash';
+import { isFunction, isArray, isObject, uniq, filter, map, forEach, isString, isEmpty} from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
@@ -22,7 +22,7 @@ export const LookupField = observer((props:any) => {
     const selectRef:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    let { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, modal_schema } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, modal_schema } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
     let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
@@ -294,7 +294,7 @@ export const LookupField = observer((props:any) => {
                 }
                 modalDom = (trigger: any)=>{
                     let ModalComponent = ObjectModal;
-                    let modalPorps = {
+                    let modalPorps:any = {
                         contentComponent: ObjectListView,
                         title: `选择 ${referenceToObjectSchema.label}`,
                         objectApiName: referenceTo,
@@ -306,6 +306,14 @@ export const LookupField = observer((props:any) => {
                         trigger,
                         onFinish: onModalFinish
                     };
+                    if(modal_schema){
+                        if(isObject(modal_schema) && !isEmpty(modal_schema)){
+                            modalPorps.listSchema = modal_schema;
+                        }
+                        if(isString(modal_schema)){
+                            modalPorps.listName = modal_schema;
+                        }
+                    }                
                     if(referenceTo === "space_users"){
                         ModalComponent = SpaceUsersModal;
                         Object.assign(modalPorps, {
