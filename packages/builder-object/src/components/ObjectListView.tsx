@@ -133,6 +133,8 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   let {
     objectApiName,
     listName = "all",
+    columnFields,
+    filters,
     ...rest
   } = props
   const object = Objects.getObject(objectApiName);
@@ -140,8 +142,12 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const schema = object.schema; 
   let listView = schema.list_views[listName];
   const listViewColumns = getListviewColumns(schema, listName);
-  const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
-  const filters = getListViewFilters(listView, props);
+  if(!columnFields || columnFields.length==0){
+    columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
+  }
+  if(!filters || filters.length==0){
+    filters = getListViewFilters(listView, props);
+  }
 
   return (
     <ObjectExpandTable
