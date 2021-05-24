@@ -1,5 +1,5 @@
 import React from "react"
-import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps } from ".."
+import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
 import { omit } from "lodash"
 
 export type SpaceUsersModalProps = {
@@ -24,6 +24,14 @@ export const SpaceUsersModal = ({
       fieldName: "user",
       hideInSearch: true,
       hideInTable: true,
+    },{
+      fieldName: "organizations_parents",
+      hideInTable: true,
+      hideInSearch: true,
+      expandComponent: Organizations,
+      expandReference: "organizations",
+      expandNameField: "name",
+      expandParentField: "parent",
     }]
   }
   return (

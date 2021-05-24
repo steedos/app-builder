@@ -26,6 +26,7 @@ import {
 
 export type ObjectExpandTableColumnProps = {
   expandType?: "tree" | "list" //两种扩展内容形式
+  expandComponent?: React.FunctionComponent,
   expandReference?: string //针对树显示所使用的对象名.等于树的objectApiName
   expandNameField?: string //树中用于显示的字段名
   expandParentField?: string //树中对象的父级的字段名，默认是parent,只在expand为tree时有效
@@ -80,16 +81,8 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const [selectedExpandNode, setSelectedExpandNode] = useState([])
 
-  const handleExpandContentChange = (selectedNodes: object[], keyField?: string) => {
-    if(!keyField){
-      keyField = "key";
-    }
-    let tmpTreeNodes = []
-    selectedNodes.forEach((node) => {
-      tmpTreeNodes = [...tmpTreeNodes, node[keyField]]
-    })
-    tmpTreeNodes = uniq(tmpTreeNodes)
-    setSelectedExpandNode(tmpTreeNodes)
+  const handleExpandContentChange = (keys: any, rows: any) => {
+    setSelectedExpandNode(keys)
     tableRef.current?.reload()
   }
 
@@ -106,59 +99,84 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   //   tableRef.current?.reload()
   // }, [tableRef.current])
 
-  const [expandProps, setExpandProps] = useState<{
-    type: string
-    objectApiName: string
-    nameField: string
-    parentField: string
-    releatedColumnField: string
-    filters?: string | []
-    }>(null)
+  // 估计当时外包加这个useEffect是为了可以动态设置expandProps属性，应该不需要动态功能
+  // const [expandProps, setExpandProps] = useState<{
+  //   type: string
+  //   objectApiName: string
+  //   nameField: string
+  //   parentField: string
+  //   releatedColumnField: string
+  //   filters?: string | []
+  //   }>(null)
 
-  useEffect(() => {
-    let expandDefine:
-      | {
-          expandType
-          expandReference
-          expandNameField
-          expandParentField
-          fieldName
-          filters
-        }
-      | any = props.columnFields.find(
-      ({
-        expandType,
-        expandReference,
-        expandNameField,
-        expandParentField,
-        fieldName,
-      }) => {
-        if (expandType) {
-          return {
-            expandType,
-            expandReference,
-            expandNameField,
-            expandParentField,
-            fieldName,
-          }
-        }
-      }
-    )
+  // useEffect(() => {
+  //   let expandDefine:
+  //     | {
+  //         expandType
+  //         expandComponent
+  //         expandReference
+  //         expandNameField
+  //         expandParentField
+  //         fieldName
+  //         filters
+  //       }
+  //     | any = props.columnFields.find(
+  //     ({
+  //       expandType,
+  //       expandComponent,
+  //       expandReference,
+  //       expandNameField,
+  //       expandParentField,
+  //       fieldName,
+  //     }) => {
+  //       if (expandType) {
+  //         return {
+  //           expandType,
+  //           expandReference,
+  //           expandNameField,
+  //           expandParentField,
+  //           fieldName,
+  //         }
+  //       }
+  //     }
+  //   )
 
-    setExpandProps(
-      expandDefine && {
-        type: expandDefine.expandType,
-        objectApiName: expandDefine.expandReference,
-        nameField: expandDefine.expandNameField,
-        parentField: expandDefine.expandParentField,
-        releatedColumnField: expandDefine.fieldName,
-        filters: expandDefine.expandFilters
-      }
-    )
-  }, [props.columnFields])
+  //   setExpandProps(
+  //     expandDefine && {
+  //       type: expandDefine.expandType,
+  //       objectApiName: expandDefine.expandReference,
+  //       nameField: expandDefine.expandNameField,
+  //       parentField: expandDefine.expandParentField,
+  //       releatedColumnField: expandDefine.fieldName,
+  //       filters: expandDefine.expandFilters
+  //     }
+  //   )
+  // }, [props.columnFields])
+
+  const expandDefine = props.columnFields.find((columnFieldItem: any)=> {
+    return columnFieldItem.expandType || columnFieldItem.expandComponent;
+  });
+  let ExpandComponent = expandDefine && expandDefine.expandComponent;
+  let expandType = expandDefine && expandDefine.expandType;
+  if(!ExpandComponent && expandType){
+    if(expandType === "tree"){
+      ExpandComponent = ObjectTree;
+    }
+    else if(expandType === "list"){
+      ExpandComponent = ObjectList;
+    }
+  }
+
+  const expandProps = ExpandComponent && {
+    objectApiName: expandDefine.expandReference,
+    nameField: expandDefine.expandNameField,
+    parentField: expandDefine.expandParentField,
+    releatedColumnField: expandDefine.fieldName,
+    filters: expandDefine.expandFilters
+  };
 
   // 当ObjectTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
-  const tablePartWidth = rest.scroll && expandProps && expandProps.type && "calc(100% - 366px)";
+  const tablePartWidth = rest.scroll && ExpandComponent && "calc(100% - 366px)";
 
   return (
     <>
@@ -166,13 +184,19 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         split="vertical"
         className={["object-expand-table", rest.className].join(" ")}
       >
-        {expandProps && expandProps.type && (
+        {ExpandComponent && (
           <ProCard colSpan="340px" className="expand-part">
-            {expandProps.type == "tree" && (
+            <ExpandComponent
+              {...expandProps}
+              onChange={(keys: any, rows: any)=>{
+                handleExpandContentChange(keys, rows);
+              }}
+            />
+            {/* {expandProps.type == "tree" && (
               <ObjectTree
                 {...expandProps}
-                onChange={(values: any)=>{
-                  handleExpandContentChange(values, "key");
+                onChange={(keys: any, rows: any)=>{
+                  handleExpandContentChange(keys, rows);
                 }}
               />
             )}
@@ -186,11 +210,11 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
                   } = expandProps
                   return expandPropsRest
                 })()}
-                onChange={(values: any)=>{
-                  handleExpandContentChange(values, "_id");
+                onChange={(keys: any, rows: any)=>{
+                  handleExpandContentChange(keys, rows);
                 }}
               />
-            )}
+            )} */}
           </ProCard>
         )}
         <ProCard className="table-part" colSpan={tablePartWidth} ghost>
