@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom";
 import ProSkeleton from '@ant-design/pro-skeleton';
 import { RightContent } from '../components/GlobalHeader/RightContent';
 import { SteedosIcon } from '@steedos/builder-lightning';
-import { Image } from 'antd';
+import { Image, Spin } from 'antd';
 import { Objects} from '@steedos/builder-store';
 import { Settings, User } from '@steedos/builder-store';
 
@@ -29,10 +29,12 @@ export const Layout = observer((props: any) => {
 
   User.getMe();
   if (User.isLoading)
-    return (<span>Loading user...</span>)
+    // return (<span>Loading user...</span>)
+    return (<span><Spin/></span>)
   User.getSession();
   if (User.isLoading)
-    return (<span>Loading session...</span>)
+    // return (<span>Loading session...</span>)
+    return (<span><Spin/></span>)
   if (!User.me) {
     history.push('/login');
     return (<>Please login</>);
