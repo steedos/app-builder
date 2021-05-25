@@ -29,7 +29,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
           valueType={valueType} 
           value={value}
           onChange={(newValue)=>{
-            if (newValue?.currentTarget?.value)
+            if (newValue?.currentTarget)
               setValue(newValue?.currentTarget?.value)
             else
               setValue(newValue)
