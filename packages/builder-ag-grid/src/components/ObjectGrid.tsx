@@ -143,7 +143,7 @@ const FilterTypesMap = {
   'equals': '=',
   'notEqual': '!=',
   'contains': 'contains',
-  'notcontains': 'notcontains',
+  'notContains': 'notcontains',
   'startsWith': 'startswith',
   'endsWith': '=', //TODO 不支持
   'lessThan': '<',
