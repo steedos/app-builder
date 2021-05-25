@@ -7,12 +7,23 @@ export const AgGridCellRenderer = (props: any) => {
   const { 
     value, 
     valueType = 'text',
+    render,
     fieldSchema,
+    data,
   } = props;
+
+  let _render = null;
+
+  if(render){
+    _render = (dom)=>{
+      return render(dom, data)
+    }
+  }
   return (
     
     <ProField 
       mode='read'
+      render = {_render}
       valueType={valueType} 
       fieldProps={{
         field_schema: fieldSchema
