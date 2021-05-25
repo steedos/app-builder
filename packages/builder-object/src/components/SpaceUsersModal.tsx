@@ -36,6 +36,10 @@ export const SpaceUsersModal = ({
   }
   return (
     <ObjectModal
+      width='80%'
+      modalProps={{
+        style:{ maxWidth: '1200px', minWidth: '800px'}
+      }}
       contentComponent={SpaceUsers}
       {...props}
       {...omit(rest, ['objectApiName', 'contentComponent'])}
