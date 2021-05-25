@@ -1,7 +1,7 @@
 import React from "react"
 import { Alert, Spin } from 'antd';
 import { User } from '@steedos/builder-store';
-import { ObjectExpandTable, ObjectExpandTableProps } from ".."
+import { ObjectExpandTable, ObjectExpandTableProps, ObjectListView } from ".."
 import { observer } from "mobx-react-lite"
 import { omit } from "lodash"
 
@@ -54,7 +54,7 @@ export const SpaceUsers = observer(({
   }
   return (
     User.isLoading ? (<Spin />) : ( errorMessage ? errorMessage :
-      <ObjectExpandTable
+      <ObjectListView
         filters={filters}
         objectApiName="space_users"
         {...props}
