@@ -331,7 +331,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       suppressMenu: true,
     }];
     _.forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
-      const field = object.schema.fields[fieldName]
+      const field = object.schema.fields[fieldName];
+      let fieldRender = null;
+      if((columnItem as any).render){
+        fieldRender = (columnItem as any).render
+      }
       let filter:any = true
       let filterParams:any = {}
       let rowGroup = false //["select", "lookup"].includes(field.type)
@@ -364,6 +368,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
+          render: fieldRender
         },
         cellEditor: 'AgGridCellEditor',
         cellEditorParams: {
@@ -426,7 +431,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         paginationPageSize={50}
         rowSelection='multiple'
         modules={AllModules}
-        stopEditingWhenGridLosesFocus={true}
+        stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
         serverSideStoreType={ServerSideStoreType.Partial}
         sideBar='filters'
