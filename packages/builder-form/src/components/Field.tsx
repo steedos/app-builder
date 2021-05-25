@@ -61,8 +61,8 @@ export const Field = observer((props: any) => {
   if (isWide) {
     formItemPropsMerged.style = {gridColumn: 'span 2/span 2'};
     if (context.vertical) {
-      formItemPropsMerged.labelCol = { span: 24 };
-      formItemPropsMerged.wrapperCol = { span: 24 };
+      // formItemPropsMerged.labelCol = { span: 24 };
+      // formItemPropsMerged.wrapperCol = { span: 24 };
     } else {
       formItemPropsMerged.labelAlign = 'left'
       formItemPropsMerged.labelCol = { span: 3 };
@@ -70,8 +70,8 @@ export const Field = observer((props: any) => {
     }
   } else {
     if (context.vertical) {
-      formItemPropsMerged.labelCol = { span: 24 };
-      formItemPropsMerged.wrapperCol = { span: 24 };
+      // formItemPropsMerged.labelCol = { span: 24 };
+      // formItemPropsMerged.wrapperCol = { span: 24 };
     } else {
       formItemPropsMerged.labelAlign = 'left'
       formItemPropsMerged.labelCol = { span: 6 };
