@@ -169,7 +169,7 @@ const filterModelToOdataFilters = (filterModel)=>{
       if(value.condition1){
         filter.push([key, FilterTypesMap[value.condition1.type], value.condition1.filter]);
       }
-      filter.push(value.operator);
+      filter.push(value.operator.toLocaleLowerCase());
       if(value.condition2){
         filter.push([key, FilterTypesMap[value.condition2.type], value.condition2.filter]);
       }
