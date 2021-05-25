@@ -12,7 +12,7 @@ import { SteedosIcon } from '@steedos/builder-lightning';
 import { getTreeDataFromRecords } from '../utils';
 import "./lookup.less"
 import PlusOutlined from "@ant-design/icons/es/icons/PlusOutlined";
-import { ObjectForm } from '@steedos/builder-object';
+import { ObjectForm } from '../components';
 
 const { Option } = Select;
 // 相关表类型字段
