@@ -145,6 +145,7 @@ export const ObjectModal = ({
                 modalProps?.onOk?.(e);
               }
             }}
+            maskClosable={false}
           >
             <ContentComponent
               {...contentComponentProps}
