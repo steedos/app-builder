@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import _ from "lodash"
-import { ObjectTable } from "./"
+// import { ObjectTable } from "./"
+import { ObjectGrid as ObjectTable } from '@steedos/builder-ag-grid';
 import {
   ProColumnType
 } from "@ant-design/pro-table"
@@ -129,6 +130,40 @@ function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey:
   return columnFields;
 }
 
+function getRowButtons(objectSchema) {
+  let { name: objectApiName } = objectSchema
+  const buttons: any[] = [];
+  console.log(`objectSchema.actions`, objectSchema.actions)
+  _.each(objectSchema.actions, function (action: any, actionApiName: string) {
+    if (!_.includes(['record', 'record_more', 'list_item'], action.on)) {
+      return;
+    }
+    let visible = false;
+    if (_.isString(action._visible)) {
+      try {
+        const visibleFunction = eval(`(${action._visible})`);
+        visible = visibleFunction(objectApiName)
+      } catch (error) {
+        // console.error(error, action._visible)
+      }
+    }
+    if (_.isBoolean(action._visible)) {
+      visible = action._visible
+    }
+    let todo = action._todo || action.todo;
+    if (_.isString(todo) && todo.startsWith("function")) {
+      try {
+        todo = eval(`(${todo})`);
+      } catch (error) {
+        console.error(error, todo)
+      }
+    }
+    buttons.push({label: action.label, todo: todo, visible: visible});
+  });
+  console.log(`buttons`, buttons)
+  return buttons
+}
+
 export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   let {
     objectApiName,
@@ -142,12 +177,13 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const listViewColumns = getListviewColumns(schema, listName);
   const columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   const filters = getListViewFilters(listView, props);
-
+  const rowButtons = getRowButtons(schema);
   return (
     <ObjectTable
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
+      rowButtons={rowButtons}
       // className={["object-listview", rest.className].join(" ")}
       {...rest}
     />
