@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext, useMemo } from "react"
+import React, { useState, useEffect, useContext, useMemo, useRef } from "react"
+import { useResizeObserver } from "../utils/use-resize-observer";
 import { Modal, ConfigProvider } from "antd"
 import { 
   ObjectTable, ObjectTableProps, 
@@ -11,6 +12,7 @@ import {
 import { createPortal } from 'react-dom';
 import { omit, isArray } from "lodash"
 import type { ModalProps } from 'antd';
+import "./ObjectModal.less"
 
 export type ObjectModalProps = {
   isDrawer?: boolean
@@ -47,6 +49,20 @@ export const ObjectModal = ({
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
 
+  const resizeSubject = useRef()
+  const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>{
+    return current
+  }, visible);
+  const contentRectHeight = contentRect.height;
+  const contentRectWidth = contentRect.width * 0.8;
+  const scroll = useMemo(() => {
+    let scrollHeight = contentRectHeight - 100 - 55 - 24 -24 -32 -24-53- 24 -100-50;
+    if(selectedRowKeys && selectedRowKeys.length){
+      scrollHeight -= 64;
+    }
+    let scrollWidth = contentRectWidth - 340 - 24*3;
+    return {x:scrollWidth, y: scrollHeight }
+  }, [contentRectHeight]);
   useEffect(() => {
     if (visible && rest.visible) {
       onVisibleChange?.(true);
@@ -98,7 +114,15 @@ export const ObjectModal = ({
   return (
     <>
       {createPortal(
-        <div onClick={(e) => e.stopPropagation()}>
+        <div className="object-modal" ref={resizeSubject} onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          }}
+        >
           <Modal
             title={title}
             width={width || 800}
@@ -125,6 +149,7 @@ export const ObjectModal = ({
             <ContentComponent
               {...contentComponentProps}
               {...omit(rest, ['visible', 'title', 'onChange'])}
+              scroll={scroll}
               onChange={handleOnChange}
             />
           </Modal>

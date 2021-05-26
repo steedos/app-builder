@@ -1,6 +1,8 @@
-import React from "react"
+import React,{ useState, useMemo, useRef, useEffect } from "react"
+import { useResizeObserver } from "../utils/use-resize-observer";
 import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
 import { omit } from "lodash"
+import "./SpaceUsersModal.less"
 
 export type SpaceUsersModalProps = {
 } & SpaceUsersProps & Omit<ObjectModalProps, 'contentComponent'>
@@ -38,7 +40,11 @@ export const SpaceUsersModal = ({
     <ObjectModal
       width='80%'
       modalProps={{
-        style:{ maxWidth: '1200px', minWidth: '800px'}
+        style:{ 
+          maxWidth: '1200px', 
+          minWidth: '800px', 
+          overflow: 'hidden'
+        }
       }}
       contentComponent={SpaceUsers}
       {...props}
