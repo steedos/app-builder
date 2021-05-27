@@ -44,7 +44,8 @@ export const ObjectModal = ({
   value,
   ...rest
 }: ObjectModalProps) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const defaultValue = (value && value.length && (isArray(value) ? value : [value])) || []
+  const [selectedRowKeys, setSelectedRowKeys] = useState(defaultValue)
   const [selectedRows, setSelectedRows] = useState([])
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
@@ -56,13 +57,16 @@ export const ObjectModal = ({
   const contentRectHeight = contentRect.height;
   const contentRectWidth = contentRect.width * 0.8;
   const scroll = useMemo(() => {
-    let scrollHeight = contentRectHeight - 100 - 55 - 24 -24 -32 -24-53- 24 -100-50;
+    //TODO: 481后期需要换掉，换成灵活的变量值
+    let scrollHeight = contentRectHeight - 481;
     if(selectedRowKeys && selectedRowKeys.length){
       scrollHeight -= 64;
     }
-    let scrollWidth = contentRectWidth - 340 - 24*3;
-    return {x:scrollWidth, y: scrollHeight }
-  }, [contentRectHeight]);
+    //TODO: （ contentRectWidth - 340 - 12*3 ）后期需要换掉，换成灵活的变量值
+    let scrollWidth = contentRectWidth - 340 - 12*3;
+    // return {x:scrollWidth, y: scrollHeight }
+    return {y: scrollHeight }
+  }, [contentRectHeight, selectedRowKeys]);
   useEffect(() => {
     if (visible && rest.visible) {
       onVisibleChange?.(true);
