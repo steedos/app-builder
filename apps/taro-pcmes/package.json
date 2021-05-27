@@ -3,5 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "repository": "https://github.com/steedos/app-builder/tree/master/apps/taro-pcmes"
 }
