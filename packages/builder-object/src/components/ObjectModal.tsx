@@ -49,24 +49,23 @@ export const ObjectModal = ({
   const [selectedRows, setSelectedRows] = useState([])
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
-
-  const resizeSubject = useRef()
+  const resizeSubject:any = useRef()
   const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>{
     return current
   }, visible);
   const contentRectHeight = contentRect.height;
-  const contentRectWidth = contentRect.width * 0.8;
+
   const scroll = useMemo(() => {
-    //TODO: 481后期需要换掉，换成灵活的变量值
+    //TODO: 481是表格外其它元素高度总和； 后期需要换掉，换成灵活的变量值
     let scrollHeight = contentRectHeight - 481;
     if(selectedRowKeys && selectedRowKeys.length){
       scrollHeight -= 64;
     }
-    //TODO: （ contentRectWidth - 340 - 12*3 ）后期需要换掉，换成灵活的变量值
-    let scrollWidth = contentRectWidth - 340 - 12*3;
-    // return {x:scrollWidth, y: scrollHeight }
-    return {y: scrollHeight }
-  }, [contentRectHeight, selectedRowKeys]);
+    const modalWidth = resizeSubject.current && resizeSubject.current.querySelector(".object-modal .ant-modal-body") && resizeSubject.current.querySelector(".object-modal .ant-modal-body").offsetWidth;
+    const modalLeftPartWidth =  resizeSubject.current && resizeSubject.current.querySelector(".object-modal .expand-part") && resizeSubject.current.querySelector(".object-modal .expand-part").offsetWidth;
+    const scrollWidth =  modalWidth - modalLeftPartWidth - 100;
+    return {x:scrollWidth, y: scrollHeight }
+  }, [contentRectHeight, selectedRowKeys, visible]);
   useEffect(() => {
     if (visible && rest.visible) {
       onVisibleChange?.(true);
