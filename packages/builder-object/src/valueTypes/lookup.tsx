@@ -213,7 +213,7 @@ export const LookupField = observer((props:any) => {
             labelInValue=true;
             if(value){
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
-                // 根据ID获取请求 获取对应的 label。 不需要下面这行isloading判断
+                // 下拉框选中某个选项，获取其对应的lable。因为如果加下面的isloading判断，就会在重新选择其它选项时会有isLoading状态的效果， 所以不需要下面这行isloading判断。
                 // if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
