@@ -1,4 +1,5 @@
 import React,{ useState, useMemo, useRef, useEffect } from "react"
+import { Form,Field } from '@steedos/builder-form';
 import { useResizeObserver } from "../utils/use-resize-observer";
 import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
 import { omit } from "lodash"
@@ -12,6 +13,7 @@ export const SpaceUsersModal = ({
   columnFields,
   ...rest
 }: SpaceUsersModalProps) => {
+  const [selectedOrgForMobile, setSelectedOrgForMobile] = useState()
   let props = {
     columnFields
   };
@@ -56,12 +58,42 @@ export const SpaceUsersModal = ({
   }
   let modalPropsStyle = isMobile ? null : style;
   const toolbar = isMobile ? {subTitle: false} : null;
+
+  let searchConfig: any = {
+    filterType: 'light',
+  };
+  let spaceUserSearchBar: any;
+  if(isMobile){
+    searchConfig = false;
+    spaceUserSearchBar = ()=> [(
+      <Form
+        onValuesChange={(changeValues: any)=>{
+          console.log("=aaaaa=", changeValues)
+          // TODO: 选中部门 返回对应值
+          // setSelectedOrgForMobile(changeValues.organizations_parents);
+        }}
+      >
+        <Field 
+          name="organizations_parents"
+          showSearch
+          valueType="lookup"
+          mode="edit"
+          placeholder="请选择所属组织"
+          fieldSchema={{
+            reference_to: "organizations",
+          }}
+        />
+      </Form>
+    )]
+  }
+
   return (
     <ObjectModal
       width={width}
       modalProps={
         modalPropsStyle
       }
+      toolBarRender={spaceUserSearchBar}
       toolbar={toolbar}
       contentComponent={SpaceUsers}
       {...props}
