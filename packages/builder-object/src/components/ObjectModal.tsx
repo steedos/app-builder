@@ -65,7 +65,8 @@ export const ObjectModal = ({
     const modalWidth = resizeSubject.current && resizeSubject.current.querySelector(".object-modal .ant-modal-body") && resizeSubject.current.querySelector(".object-modal .ant-modal-body").offsetWidth;
     const modalLeftPartWidth =  resizeSubject.current && resizeSubject.current.querySelector(".object-modal .expand-part") && resizeSubject.current.querySelector(".object-modal .expand-part").offsetWidth;
     const scrollWidth =  modalWidth - modalLeftPartWidth - 100;
-    return {x:scrollWidth, y: scrollHeight }
+    // TODO: scrollWidth && scrollHeight为NaN时定个固定值（100%）。固定值在实际中不会被应用到。 只是为了不报错。 
+    return {x:scrollWidth ? scrollWidth : '100%', y: scrollHeight ? scrollHeight : '100%'}
   }, [contentRectHeight, selectedRowKeys, visible]);
   useEffect(() => {
     if (visible && rest.visible) {
