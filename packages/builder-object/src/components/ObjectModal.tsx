@@ -55,10 +55,13 @@ export const ObjectModal = ({
     return current
   }, visible);
   const contentRectHeight = contentRect.height;
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   const scroll = useMemo(() => {
     //TODO: 481是表格外其它元素高度总和； 后期需要换掉，换成灵活的变量值
     let scrollHeight = contentRectHeight - 481;
+    if( isMobile ){ scrollHeight += 200 }
     if(selectedRowKeys && selectedRowKeys.length){
       scrollHeight -= 64;
     }
@@ -116,8 +119,7 @@ export const ObjectModal = ({
       defaultSelectedKeys: isArray(value) ? value : [value]
     });
   }
-  const colSize = useAntdMediaQuery();
-  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  
   let modalMobileStyle:any = {
     top: '0px',
     height: '100%',
