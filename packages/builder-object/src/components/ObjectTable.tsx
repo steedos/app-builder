@@ -296,14 +296,17 @@ export const ObjectTable = observer((props: ObjectTableProps<any>) => {
       setSelectedRowKeys(keys);
     } 
   });
-
+  let expandPagination:any;
+  if(isMobile){
+    expandPagination={ showSizeChanger:false, showTotal: null }
+  }
   return (
     <ProTable
       request={request}
       columns={proColumns}
       rowKey={rowKeyValue}
       rowSelection={{...rowSelectionOptions}}
-      pagination={{ ...pagination, hideOnSinglePage: true}}
+      pagination={{ ...pagination, hideOnSinglePage: true, ...expandPagination}}
       columnEmptyText={false}
       actionRef={rest.actionRef || selfTableRef}
       onChange={() => {

@@ -61,7 +61,7 @@ export const ObjectModal = ({
   const scroll = useMemo(() => {
     //TODO: 481是表格外其它元素高度总和； 后期需要换掉，换成灵活的变量值
     let scrollHeight = contentRectHeight - 481;
-    if( isMobile ){ scrollHeight += 200 }
+    if( isMobile ){ scrollHeight += 224 }
     if(selectedRowKeys && selectedRowKeys.length){
       scrollHeight -= 64;
     }
@@ -125,6 +125,7 @@ export const ObjectModal = ({
     height: '100%',
     margin: '0px',
     padding: '0px',
+    maxWidth: '100%'
   }
   modalMobileStyle = isMobile ? modalMobileStyle : null; 
 
