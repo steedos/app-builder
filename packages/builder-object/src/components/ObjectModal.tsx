@@ -128,7 +128,7 @@ export const ObjectModal = ({
   return (
     <>
       {createPortal(
-        <div className="object-modal" ref={resizeSubject} onClick={(e) => e.stopPropagation()}
+        <div className={`object-modal ${!visible && 'hidden'}`} ref={resizeSubject} onClick={(e) => e.stopPropagation()}
           style={{
             position: "absolute",
             top: 0,
