@@ -13,6 +13,7 @@ import { createPortal } from 'react-dom';
 import { omit, isArray } from "lodash"
 import type { ModalProps } from 'antd';
 import "./ObjectModal.less"
+import useAntdMediaQuery from 'use-media-antd-query';
 
 export type ObjectModalProps = {
   isDrawer?: boolean
@@ -114,6 +115,16 @@ export const ObjectModal = ({
       defaultSelectedKeys: isArray(value) ? value : [value]
     });
   }
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  let modalMobileStyle:any = {
+    top: '0px',
+    height: '100%',
+    margin: '0px',
+    padding: '0px',
+  }
+  modalMobileStyle = isMobile ? modalMobileStyle : null; 
+
   return (
     <>
       {createPortal(
@@ -127,6 +138,9 @@ export const ObjectModal = ({
           }}
         >
           <Modal
+            style={
+              modalMobileStyle
+            }
             title={title}
             width={width || 800}
             {...modalProps}

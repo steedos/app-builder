@@ -3,6 +3,7 @@ import { useResizeObserver } from "../utils/use-resize-observer";
 import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
 import { omit } from "lodash"
 import "./SpaceUsersModal.less"
+import useAntdMediaQuery from 'use-media-antd-query';
 
 export type SpaceUsersModalProps = {
 } & SpaceUsersProps & Omit<ObjectModalProps, 'contentComponent'>
@@ -36,18 +37,23 @@ export const SpaceUsersModal = ({
       expandParentField: "parent",
     }]
   }
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  let width = isMobile ? '100%' : '80%'; 
+  let style={ 
+    maxWidth: '1200px', 
+    minWidth: '800px', 
+    // TODO: modal高度设置，200px后续要修改成灵活设置的变量值
+    height: 'calc(100% - 200px)',
+    overflow: 'hidden'
+  }
+  let modalPropsStyle = isMobile ? null : style;
   return (
     <ObjectModal
-      width='80%'
-      modalProps={{
-        style:{ 
-          maxWidth: '1200px', 
-          minWidth: '800px', 
-          // TODO: modal高度设置，200px后续要修改成灵活设置的变量值
-          height: 'calc(100% - 200px)',
-          overflow: 'hidden'
-        }
-      }}
+      width={width}
+      modalProps={
+        modalPropsStyle
+      }
       contentComponent={SpaceUsers}
       {...props}
       {...omit(rest, ['objectApiName', 'contentComponent'])}

@@ -15,6 +15,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { ActionType } from "react-table"
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
+import useAntdMediaQuery from 'use-media-antd-query';
 
 import {
   ObjectList,
@@ -176,8 +177,12 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   };
 
   // 当ObjectTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
-  const tablePartWidth = rest.scroll && ExpandComponent && "calc(100% - 366px)";
+  let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
 
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  let width = isMobile ? '100%' : "340px"; 
+  tablePartWidth = isMobile ? '100%' : tablePartWidth;
   return (
     <>
       <ProCard
@@ -185,7 +190,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         className={["object-expand-table", rest.className].join(" ")}
       >
         {ExpandComponent && (
-          <ProCard colSpan="340px" className="expand-part">
+          <ProCard colSpan={width} className="expand-part">
             <ExpandComponent
               {...expandProps}
               onChange={(keys: any, rows: any)=>{
