@@ -6,9 +6,9 @@ const toPath = (_path) => path.join(process.cwd(), _path)
 
 module.exports = {
   stories: ["../packages/**/stories/*.stories.tsx"],
-  addons: [
-    '@storybook/preset-ant-design'
-  ],
+  // addons: [
+  //   '@storybook/preset-ant-design'
+  // ],
   // addons: [
   //   "storybook-addon-performance/register",
   //   "@storybook/addon-a11y",
@@ -20,6 +20,25 @@ module.exports = {
       tsconfigPath: path.resolve(__dirname, "../tsconfig.json"),
     }
   },
+
+  babel: (config = {}) => {
+    const { plugins = [] } = config;
+    return {
+      ...config,
+      plugins: [
+        ...plugins,
+        [
+          'import',
+          {
+            libraryName: 'antd',
+            style: true,
+            "libraryDirectory": "es"
+          },
+        ],
+      ],
+    };
+  },
+
   webpackFinal: async (config) => {
 
     if (config.resolve.plugins) {
@@ -28,31 +47,27 @@ module.exports = {
       config.resolve.plugins = [new TsconfigPathsPlugin()];
     }
     //Make whatever fine-grained changes you need
-    // config.module.rules.push({
-    //   test: /\.less$/,
-    //   use: [
-    //     { 
-    //       loader: 'style-loader', 
-    //     }, 
-    //     { 
-    //       loader: 'css-loader', 
-    //       options: {
-    //         importLoaders: 1,
-    //         modules: true,
-    //       }
-    //     }, 
-    //     { 
-    //       loader: 'less-loader',
-    //       options: {
-    //         lessOptions: { // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
-    //           javascriptEnabled: true,
-    //         },
-    //       },
-    //     },
-    //   ],
-    //   include: [path.resolve(__dirname,"../packages"),path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
-    //   // include: path.resolve(__dirname, '../node_modules/')
-    // });
+    config.module.rules.push({
+      test: /\.less$/,
+      use: [
+        { 
+          loader: 'style-loader', 
+        }, 
+        { 
+          loader: 'css-loader', 
+        }, 
+        { 
+          loader: 'less-loader',
+          options: {
+            lessOptions: { // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
+              javascriptEnabled: true,
+            },
+          },
+        },
+      ],
+      // include: [path.resolve(__dirname,"../packages"),path.resolve(__dirname, '../node_modules/antd'), path.resolve(__dirname, '../node_modules/@ant-design/')],
+      // include: path.resolve(__dirname, '../node_modules/')
+    });
 
     config.module.rules.push({
         test: /\.jsx?$/,

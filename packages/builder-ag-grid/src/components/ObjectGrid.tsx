@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import { map, forEach } from "lodash"
+import {map, forEach, compact} from "lodash"
 import ProField from "@ant-design/pro-field";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import useAntdMediaQuery from 'use-media-antd-query';
@@ -137,6 +137,46 @@ const RowActions = (props: any) => {
       ]}
     />
   )
+}
+
+const FilterTypesMap = {
+  'equals': '=',
+  'notEqual': '!=',
+  'contains': 'contains',
+  'notContains': 'notcontains',
+  'startsWith': 'startswith',
+  'endsWith': '=', //TODO 不支持
+  'lessThan': '<',
+  'lessThanOrEqual': '<=',
+  'greaterThan': '>',
+  'greaterThanOrEqual': '>=',
+  'empty': 'empty' //TODO 不支持
+}
+
+/**
+ * 
+ * @param filterModel 
+ */
+
+const filterModelToOdataFilters = (filterModel)=>{
+  const filters = [];
+  forEach(filterModel, (value, key)=>{
+    if(value.filter){
+      const filter = [key, FilterTypesMap[value.type], value.filter];
+      filters.push(filter);
+    }else if(value.operator){
+      const filter = [];
+      if(value.condition1){
+        filter.push([key, FilterTypesMap[value.condition1.type], value.condition1.filter]);
+      }
+      filter.push(value.operator.toLocaleLowerCase());
+      if(value.condition2){
+        filter.push([key, FilterTypesMap[value.condition2.type], value.condition2.filter]);
+      }
+      filters.push(filter);
+    }
+  })
+  return filters;
 }
 
 export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
@@ -296,7 +336,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
             })
-            const filters = defaultFilters;
+            const filters = compact([].concat(defaultFilters).concat(filterModelToOdataFilters(params.request.filterModel)));
             // TODO 此处需要叠加处理 params.request.fieldModel
             API.requestRecords(
               objectApiName,
@@ -331,7 +371,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       suppressMenu: true,
     }];
     forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
-      const field = object.schema.fields[fieldName]
+      const field = object.schema.fields[fieldName];
+      let fieldRender = null;
+      if((columnItem as any).render){
+        fieldRender = (columnItem as any).render
+      }
       let filter:any = true
       let filterParams:any = {}
       let rowGroup = false //["select", "lookup"].includes(field.type)
@@ -364,6 +408,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
+          render: fieldRender
         },
         cellEditor: 'AgGridCellEditor',
         cellEditorParams: {
@@ -426,7 +471,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         paginationPageSize={50}
         rowSelection='multiple'
         modules={AllModules}
-        stopEditingWhenGridLosesFocus={true}
+        stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
         serverSideStoreType={ServerSideStoreType.Partial}
         sideBar='filters'

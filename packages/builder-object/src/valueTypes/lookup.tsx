@@ -11,7 +11,8 @@ import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
-import { ObjectForm, ObjectTable, ObjectExpandTable,ObjectListView, ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
+import { ObjectForm, ObjectTable, ObjectExpandTable,ObjectListView, 
+    ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
 
 const { Option } = Select;
 // 相关表类型字段
