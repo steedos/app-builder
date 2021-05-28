@@ -15,6 +15,17 @@ export const SpaceUsersModal = ({
   let props = {
     columnFields
   };
+  const colSize = useAntdMediaQuery();
+  const isMobile = (colSize === 'sm' || colSize === 'xs');
+  let expandProps:any;
+  if(!isMobile){
+    expandProps={
+      expandComponent: Organizations,
+      expandReference: "organizations",
+      expandNameField: "name",
+      expandParentField: "parent",
+    }
+  }
   if(!props.columnFields){
     props.columnFields = [{
       fieldName: "name",
@@ -31,14 +42,10 @@ export const SpaceUsersModal = ({
       fieldName: "organizations_parents",
       hideInTable: true,
       hideInSearch: true,
-      expandComponent: Organizations,
-      expandReference: "organizations",
-      expandNameField: "name",
-      expandParentField: "parent",
+      ...expandProps,
     }]
   }
-  const colSize = useAntdMediaQuery();
-  const isMobile = (colSize === 'sm' || colSize === 'xs');
+
   let width = isMobile ? '100%' : '80%'; 
   let style={ 
     maxWidth: '1200px', 
