@@ -29,11 +29,11 @@ export const SpaceUsersModal = ({
   if(!props.columnFields){
     props.columnFields = [{
       fieldName: "name",
-      hideInSearch: true,
+      hideInSearch: isMobile ? true : false,
       sorter: true,
     },{
       fieldName: "email",
-      hideInSearch: true,
+      hideInSearch: isMobile ? true : false,
     },{
       fieldName: "user",
       hideInSearch: true,
