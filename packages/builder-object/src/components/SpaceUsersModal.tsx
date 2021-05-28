@@ -55,12 +55,14 @@ export const SpaceUsersModal = ({
     overflow: 'hidden'
   }
   let modalPropsStyle = isMobile ? null : style;
+  const toolbar = isMobile ? {subTitle: false} : null;
   return (
     <ObjectModal
       width={width}
       modalProps={
         modalPropsStyle
       }
+      toolbar={toolbar}
       contentComponent={SpaceUsers}
       {...props}
       {...omit(rest, ['objectApiName', 'contentComponent'])}
