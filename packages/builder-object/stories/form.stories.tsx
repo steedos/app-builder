@@ -93,7 +93,6 @@ export const FormModal = () => {
     <React.Fragment>
       <ObjectForm 
         layout='horizontal' 
-        isModalForm={true} 
         title={`合同信息`} 
         trigger={<Button type="primary" >弹出SchemaForm</Button>}
         objectSchema={
@@ -123,7 +122,6 @@ export const FormModal = () => {
         objectApiName="accounts"
         // recordId={process.env.STEEDOS_CURRENT_RECORD_ID}
         layout='horizontal' 
-        isModalForm={true} 
         title={`新建客户`} 
         trigger={<Button type="primary" >弹出ObjectForm示例</Button>}
         initialValues={{name:"张三"}}
