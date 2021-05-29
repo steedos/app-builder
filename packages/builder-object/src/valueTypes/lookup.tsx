@@ -296,7 +296,6 @@ export const LookupField = observer((props:any) => {
                 modalDom = (trigger: any)=>{
                     let ModalComponent = ObjectModal;
                     let modalPorps:any = {
-                        contentComponent: ObjectListView,
                         title: `选择 ${referenceToObjectSchema.label}`,
                         objectApiName: referenceTo,
                         multiple,

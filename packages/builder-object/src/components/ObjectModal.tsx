@@ -58,6 +58,8 @@ export const ObjectModal = ({
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
+  // 设置默认值
+  ContentComponent = ContentComponent ? ContentComponent : ObjectListView;
   const scroll = useMemo(() => {
     //TODO: 481是表格外其它元素高度总和； 后期需要换掉，换成灵活的变量值
     let scrollHeight = contentRectHeight - 481;
