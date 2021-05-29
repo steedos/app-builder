@@ -94,7 +94,7 @@ export const Form = observer((props:any) => {
   }
 
   let FormComponent = BaseForm;
-  if(isModalForm){
+  if(isModalForm || trigger){
     FormComponent = ModalForm
   }
 
