@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter} from "lodash"
+import {forEach, compact, filter, keys} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -11,7 +11,7 @@ import Dropdown from '@salesforce/design-system-react/components/menu-dropdown';
 import { AgGridCellEditor } from "./CellEditor";
 import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
-import { Modal } from 'antd';
+import { Modal, Drawer, Button, Space } from 'antd';
 
 export type ObjectGridColumnProps = {
   fieldName: string
@@ -85,6 +85,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     ...rest
   } = props
   const [totalRecords, setTotalRecords] = useState(0)
+  const [editedMap, setEditedMap] = useState({})
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const [modal] = Modal.useModal();
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
@@ -109,7 +111,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             //     // inform grid request failed
             //     params.fail();
             // }
-            console.log(params)
             const fields = ['name']
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
@@ -186,6 +187,14 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         flex: 1,
         sortable: true,
         cellRenderer: 'AgGridCellRenderer',
+        // cellClassRules: {
+        //   "slds-is-edited": (params) => {
+        //     const editedMap: any= params.colDef.editedMap
+        //     if(editedMap){
+        //       return editedMap[params.data._id]?.isEdited
+        //     }
+        //   }
+        // },
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
@@ -255,6 +264,47 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     )
   }
 
+  const onCellValueChanged = (params) => {
+    if(!editedMap[params.data._id]){
+      editedMap[params.data._id] = {};
+    }
+    editedMap[params.data._id][params.colDef.field] = params.value;
+    setTimeout(function(){
+      // setDrawerVisible(true);
+      (document.getElementsByClassName('ant-drawer-open')[0] as any).style.display=''
+    }, 300)
+    // if(!params.colDef.editedMap){
+    //   params.colDef.editedMap = {};
+    // }
+    // params.colDef.editedMap[params.data._id] = {
+    //   isEdited: true
+    // }
+  };
+
+  const onRowValueChanged = (params)=>{
+    console.log(`onRowValueChanged params`, params)
+  }
+
+
+  const cancel = ()=>{
+    // setDrawerVisible(false);
+    (document.getElementsByClassName('ant-drawer-open')[0] as any).style.display='none'
+    setEditedMap({})
+  }
+
+  const onSortChanged = (event)=>{
+    return false;
+  }
+
+  const updateMany = async ()=>{
+    // result = await API.updateRecord(objectApiName, recordId, values);
+    const ids = keys(editedMap);
+    for await (const id of ids) {
+      await API.updateRecord(objectApiName, id, editedMap[id]);
+    }
+    cancel();
+  }
+
   return (
 
     <div className="ag-theme-balham" style={{height: 500}}>
@@ -262,6 +312,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         columnDefs={getColumns(rowButtons)}
         rowModelType='serverSide'
         pagination={true}
+        onSortChanged={onSortChanged}
         paginationPageSize={50}
         rowSelection='multiple'
         modules={AllModules}
@@ -269,6 +320,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         serverSideDatasource={getDataSource()}
         serverSideStoreType={ServerSideStoreType.Partial}
         sideBar='filters'
+        undoRedoCellEditing={true}
+        onCellValueChanged={onCellValueChanged}
+        onRowValueChanged={onRowValueChanged}
+        context={{editedMap: editedMap}}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,
           AgGridCellEditor: AgGridCellEditor,
@@ -276,6 +331,20 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           rowActions: RowActions,
         }}
       />
+      <Drawer
+        placement={"bottom"}
+        closable={false}
+        visible={true}
+        mask={false}
+        maskClosable={false}
+        style={{height: "60px", display: "none"}}
+        bodyStyle={{padding: "12px", textAlign: "center"}}
+      >
+        <Space>
+          <Button onClick={cancel}>取消</Button>
+          <Button onClick={updateMany} type="primary" >确定</Button>
+        </Space>
+      </Drawer>
     </div>
   )
 })
