@@ -154,7 +154,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   //   )
   // }, [props.columnFields])
 
-  const expandDefine = props.columnFields.find((columnFieldItem: any)=> {
+  const expandDefine = props.columnFields && props.columnFields.find((columnFieldItem: any)=> {
     return columnFieldItem.expandType || columnFieldItem.expandComponent;
   });
   let ExpandComponent = expandDefine && expandDefine.expandComponent;
