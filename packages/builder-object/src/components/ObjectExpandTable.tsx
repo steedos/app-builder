@@ -82,6 +82,10 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const [selectedExpandNode, setSelectedExpandNode] = useState([])
 
+  const selfTableRef = useRef<ActionType>();
+  // 支持从外面传入 actionRef 值
+  const tableRef = rest.actionRef || selfTableRef;
+
   const handleExpandContentChange = (keys: any, rows: any) => {
     setSelectedExpandNode(keys)
     tableRef.current?.reload()
@@ -91,8 +95,6 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     // console.log(keys, rows);
     onChange && onChange(keys, rows)
   }
-
-  const tableRef = useRef<ActionType>()
 
   // 不懂为什么要加这个useEffect，加上的坏处是手机上切换到联系人列表后，切换顶部的联系人分类时会请求space_users数据
   // 不加的话也没发现什么坏处，即手机和PC上从用户选项卡切换到联系人选项卡都能正常请求数据
