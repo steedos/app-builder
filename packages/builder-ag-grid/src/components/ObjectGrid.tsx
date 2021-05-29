@@ -292,8 +292,12 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     setEditedMap({})
   }
 
-  const onSortChanged = (event)=>{
-    return false;
+  const onSortChanged = async (event)=>{
+    cancel();
+  }
+
+  const onFilterChanged = async (event)=>{
+    cancel();
   }
 
   const updateMany = async ()=>{
@@ -313,6 +317,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         rowModelType='serverSide'
         pagination={true}
         onSortChanged={onSortChanged}
+        onFilterChanged={onFilterChanged}
         paginationPageSize={50}
         rowSelection='multiple'
         modules={AllModules}
