@@ -1,8 +1,9 @@
 import React,{ useState, useMemo, useRef, useEffect } from "react"
 import { Form,Field } from '@steedos/builder-form';
+import { formatFiltersToODataQuery } from '@steedos/filters';
 import { useResizeObserver } from "../utils/use-resize-observer";
 import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
-import { omit } from "lodash"
+import { omit, isArray } from "lodash"
 import "./SpaceUsersModal.less"
 import useAntdMediaQuery from 'use-media-antd-query';
 
@@ -11,9 +12,29 @@ export type SpaceUsersModalProps = {
 
 export const SpaceUsersModal = ({
   columnFields,
+  filters: defaultFilters,
   ...rest
 }: SpaceUsersModalProps) => {
   const [selectedOrgForMobile, setSelectedOrgForMobile] = useState()
+  console.log('defaultFilters==>',defaultFilters)
+  let orgFilters: any;
+  if(selectedOrgForMobile && (selectedOrgForMobile as string | []).length){
+    orgFilters = ["organizations_parents", "=", selectedOrgForMobile];
+  }
+  let filters: string | any[];
+  if(defaultFilters && defaultFilters.length){
+    if (isArray(defaultFilters)) {
+        filters = [defaultFilters, orgFilters]
+    }
+    else {
+        const odataOrgFilters = formatFiltersToODataQuery(orgFilters);
+        filters = `(${defaultFilters}) and (${odataOrgFilters})`;
+    }
+  }
+  else{
+    filters =  orgFilters;
+  }
+
   let props = {
     columnFields
   };
@@ -68,9 +89,7 @@ export const SpaceUsersModal = ({
     spaceUserSearchBar = ()=> [(
       <Form
         onValuesChange={(changeValues: any)=>{
-          console.log("=aaaaa=", changeValues)
-          // TODO: 选中部门 返回对应值
-          // setSelectedOrgForMobile(changeValues.organizations_parents);
+          setSelectedOrgForMobile(changeValues.organizations_parents);
         }}
       >
         <Field 
@@ -93,6 +112,7 @@ export const SpaceUsersModal = ({
       modalProps={
         modalPropsStyle
       }
+      filters={filters}
       toolBarRender={spaceUserSearchBar}
       toolbar={toolbar}
       contentComponent={SpaceUsers}
