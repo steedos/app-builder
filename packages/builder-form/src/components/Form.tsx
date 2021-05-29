@@ -29,6 +29,7 @@ export const Form = observer((props:any) => {
     submitter,
     isModalForm,
     isDrawerForm,
+    modalProps,
     trigger,
     ...rest
   } = props
@@ -50,13 +51,17 @@ export const Form = observer((props:any) => {
       resetText: '取消',
       submitText: '提交',
     },
-    resetButtonProps: {
-      onClick: () => {
-        form.setMode('read')
-      },
-    },
+    // resetButtonProps: {
+    //   onClick: () => {
+    //     form.setMode('read')
+    //   },
+    // },
+    // 这里不可以设置resetButtonProps属性，因为弹出窗口功能中依赖了resetButtonProps.onClick属性来关闭窗口，设置这个属性会把关闭窗口功能覆盖了
+    // 实在要设置resetButtonProps属性，就需要在这里实现弹出窗口的visible功能
+    onReset: ()=>{
+      form.setMode('read')
+    }
   }
-
   let _submitter = false
   if(form.mode !='read'){
     _submitter = isBoolean(submitter) ? submitter : submitter || defSubmitter;
@@ -80,6 +85,12 @@ export const Form = observer((props:any) => {
     submitter: _submitter,
     trigger,
     contentRender,
+    modalProps: {
+      // 默认加destroyOnClose这个是为了弹出Form时点击取消按钮能重置表单项值
+      // 还有另一个可能的方案是设置modalProps?.onCancel属性，并在其中调用一次表单重围函数
+      destroyOnClose: true,
+      ...modalProps,
+    },
   }
 
   let FormComponent = BaseForm;
