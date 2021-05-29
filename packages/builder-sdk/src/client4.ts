@@ -10,6 +10,7 @@ import { ServerError } from './types/errors';
 import { Space } from './types/spaces';
 import SObject from './sobject';
 import Graphql from './graphql';
+import Action from './action';
 
 const HEADER_AUTH = 'Authorization';
 const HEADER_BEARER = 'Bearer';
@@ -58,6 +59,7 @@ export default class SteedosClient {
 
     sobjects = {};
     graphql = new Graphql(this);
+    action = new Action();
     
     getUrl() {
         if(!this.url){

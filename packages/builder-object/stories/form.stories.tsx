@@ -13,7 +13,7 @@ export default {
   title: "Object Form",
 }
 
-export const JsonForm = () => {
+export const SchemaForm = () => {
   const initialValues = {
     boolean__c: true,
     datetime__c: new Date(),
@@ -88,6 +88,54 @@ export const FormVertical = () => {
   )
 }
 
+export const FormModal = () => {
+  return (
+    <React.Fragment>
+      <ObjectForm 
+        layout='horizontal' 
+        isModalForm={true} 
+        title={`合同信息`} 
+        trigger={<Button type="primary" >弹出SchemaForm</Button>}
+        objectSchema={
+          {
+            fields:{
+              name: {
+                type: 'text',
+                label: "名称"
+              },
+              amount: {
+                type: 'currency',
+                label: "金额"
+              }
+            }
+          }
+        }
+        initialValues={{name:"合同", amount: "69000"}}
+        onFinish={async (values)=>{
+          console.log("values:", values);
+          return true;
+        }}
+        >
+      </ObjectForm>
+      <br />
+      <br />
+      <ObjectForm 
+        objectApiName="accounts"
+        // recordId={process.env.STEEDOS_CURRENT_RECORD_ID}
+        layout='horizontal' 
+        isModalForm={true} 
+        title={`新建客户`} 
+        trigger={<Button type="primary" >弹出ObjectForm示例</Button>}
+        initialValues={{name:"张三"}}
+        onFinish={async (values)=>{
+          console.log("values:", values);
+          return true;
+        }}
+        >
+      </ObjectForm>
+    </React.Fragment>
+  )
+}
 
 export const IframeTest = () => {
   return (

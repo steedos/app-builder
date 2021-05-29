@@ -1,9 +1,9 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import { forEach, defaults, groupBy, filter, map, defaultsDeep} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean} from 'lodash';
 import { useQuery } from 'react-query'
-
+// import { FooterToolbar } from '@ant-design/pro-layout';
 import { Form } from '@steedos/builder-form';
 import { Form as ProForm } from 'antd';
 import { BaseFormProps } from "@ant-design/pro-form/es/BaseForm";
@@ -36,7 +36,8 @@ export type ObjectFormProps = {
   trigger?: any
   afterUpdate?: Function,
   afterInsert?: Function,
-  visible?: boolean
+  visible?: boolean,
+  // showFooterToolbar?: boolean
 } & FormProps
 
 export const ObjectForm = observer((props:ObjectFormProps) => {
@@ -50,6 +51,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     layout = 'vertical',
     children,
     submitter,
+    // showFooterToolbar,
     isModalForm,
     isDrawerForm,
     afterUpdate,
@@ -163,6 +165,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     })
     return dom;
   }
+
+  // if(isObject(submitter) && showFooterToolbar){
+  //   (submitter as any).render = (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
+  // }
+
+
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
   proForm.setFieldsValue(initialValues)
