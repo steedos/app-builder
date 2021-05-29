@@ -16,7 +16,6 @@ export const SpaceUsersModal = ({
   ...rest
 }: SpaceUsersModalProps) => {
   const [selectedOrgForMobile, setSelectedOrgForMobile] = useState()
-  console.log('defaultFilters==>',defaultFilters)
   let orgFilters: any;
   if(selectedOrgForMobile && (selectedOrgForMobile as string | []).length){
     orgFilters = ["organizations_parents", "=", selectedOrgForMobile];
