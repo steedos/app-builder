@@ -4,7 +4,7 @@ import {
   ObjectTable, ObjectTableProps, 
   ObjectExpandTable, ObjectExpandTableProps, 
   ObjectTree, ObjectTreeProps,
-  ObjectListView, ObjectListViewProps, 
+  ObjectListView, ObjectModalListView, ObjectListViewProps, 
   Organizations, OrganizationsProps,
   SpaceUsers, SpaceUsersProps,
 } from ".."
@@ -54,7 +54,7 @@ export const ObjectModal = ({
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   // 设置默认值
-  ContentComponent = ContentComponent ? ContentComponent : ObjectListView;
+  ContentComponent = ContentComponent ? ContentComponent : ObjectModalListView;
 
   const handleOnChange = (keys: any, rows: any) => {
     setSelectedRowKeys(keys);
@@ -76,7 +76,7 @@ export const ObjectModal = ({
   }, [context, modalProps, visible]);
 
   let contentComponentProps: any = {};
-  if([ObjectTable, ObjectExpandTable, ObjectListView, SpaceUsers].indexOf(ContentComponent) > -1){
+  if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent) > -1){
     // 底层使用的是ObjectTable时multiple及value属性实现逻辑
     let rowSelectionType="radio";
     if (multiple){
