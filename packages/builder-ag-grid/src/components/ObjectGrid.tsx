@@ -12,6 +12,7 @@ import { AgGridCellEditor } from "./CellEditor";
 import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
 import { Modal, Drawer, Button, Space } from 'antd';
+import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
 export type ObjectGridColumnProps = {
   fieldName: string
@@ -87,9 +88,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const [totalRecords, setTotalRecords] = useState(0)
   const [editedMap, setEditedMap] = useState({})
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [modal] = Modal.useModal();
-  const colSize = useAntdMediaQuery();
-  const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
+  // const [modal] = Modal.useModal();
+  // const colSize = useAntdMediaQuery();
+  // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
 
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div><Spin/></div>)
@@ -226,6 +227,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         rowButtons: rowButtons
       }
     });
+    console.log(`ObjectGrid columns`, columns);
     return columns
   }
 
@@ -311,14 +313,16 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   return (
 
-    <div className="ag-theme-balham" style={{height: 500}}>
+    <div className="ag-theme-balham" style={{height: "100%", flex: "1 1 auto",overflow:"hidden"}}>
       <AgGridReact
         columnDefs={getColumns(rowButtons)}
+        paginationAutoPageSize={false}
+        localeText={AG_GRID_LOCALE_ZH_CN}
         rowModelType='serverSide'
         pagination={true}
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
-        paginationPageSize={50}
+        paginationPageSize={20}
         rowSelection='multiple'
         modules={AllModules}
         stopEditingWhenGridLosesFocus={false}
