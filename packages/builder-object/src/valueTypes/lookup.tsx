@@ -6,7 +6,7 @@ import { isFunction, isArray, isObject, uniq, filter, map, forEach, isString, is
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
-import { Link } from "react-router-dom";
+import { Link } from "../components/Link";
 import { getObjectRecordUrl } from "../utils";
 import { SteedosIcon } from '@steedos/builder-lightning';
 import "./lookup.less"

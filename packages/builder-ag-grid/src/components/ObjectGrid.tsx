@@ -88,7 +88,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   } = props
   const [totalRecords, setTotalRecords] = useState(0)
   const [editedMap, setEditedMap] = useState({})
-  const [drawerVisible, setDrawerVisible] = useState(false);
+  // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
   // const colSize = useAntdMediaQuery();
   // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;

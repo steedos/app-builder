@@ -7,7 +7,7 @@ import {
 } from "@ant-design/pro-table"
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
-import { Link } from "react-router-dom";
+import { Link } from "./Link";
 import { getObjectRecordUrl } from "../utils"
 
 export type ObjectListViewColumnProps = {
@@ -171,8 +171,10 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     columnFields,
     filters,
     listSchema,
+    inReact,
     ...rest
   } = props
+  console.log(`ObjectListView state`, this)
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 
