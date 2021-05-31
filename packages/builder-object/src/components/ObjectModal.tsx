@@ -49,7 +49,6 @@ export const ObjectModal = ({
   const [selectedRows, setSelectedRows] = useState([])
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
-  const resizeSubject:any = useRef()
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
@@ -111,7 +110,7 @@ export const ObjectModal = ({
   return (
     <>
       {createPortal(
-        <div className={`object-modal ${!visible && 'hidden'}`} ref={resizeSubject} onClick={(e) => e.stopPropagation()}
+        <div className={`object-modal ${!visible && 'hidden'}`} onClick={(e) => e.stopPropagation()}
           style={{
             position: "absolute",
             top: 0,
