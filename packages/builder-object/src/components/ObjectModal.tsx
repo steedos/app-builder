@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from "react"
-import { useResizeObserver } from "../utils/use-resize-observer";
 import { Modal, ConfigProvider } from "antd"
 import { 
   ObjectTable, ObjectTableProps, 
@@ -51,33 +50,11 @@ export const ObjectModal = ({
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
   const resizeSubject:any = useRef()
-  const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>{
-    return current
-  }, visible);
-  const contentRectHeight = contentRect.height;
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   // 设置默认值
   ContentComponent = ContentComponent ? ContentComponent : ObjectListView;
-  const scroll = useMemo(() => {
-    //TODO: 481是表格外其它元素高度总和； 后期需要换掉，换成灵活的变量值
-    let scrollHeight = contentRectHeight - 481;
-    if( isMobile ){ scrollHeight += 204 }
-    if(selectedRowKeys && selectedRowKeys.length){
-      scrollHeight -= 64;
-    }
-    const modalWidth = resizeSubject.current && resizeSubject.current.querySelector(".object-modal .ant-modal-body") && resizeSubject.current.querySelector(".object-modal .ant-modal-body").offsetWidth;
-    const modalLeftPartWidth =  resizeSubject.current && resizeSubject.current.querySelector(".object-modal .expand-part") && resizeSubject.current.querySelector(".object-modal .expand-part").offsetWidth;
-    const scrollWidth =  modalWidth - modalLeftPartWidth - 100;
-    // TODO: scrollWidth && scrollHeight为NaN时定个固定值（100%）。固定值在实际中不会被应用到。 只是为了不报错。 
-    return {x:scrollWidth ? scrollWidth : '100%', y: scrollHeight ? scrollHeight : '100%'}
-  }, [contentRectHeight, selectedRowKeys, visible]);
-  useEffect(() => {
-    if (visible && rest.visible) {
-      onVisibleChange?.(true);
-    }
-  }, [visible]);
 
   const handleOnChange = (keys: any, rows: any) => {
     setSelectedRowKeys(keys);
@@ -173,7 +150,6 @@ export const ObjectModal = ({
             <ContentComponent
               {...contentComponentProps}
               {...omit(rest, ['visible', 'title', 'onChange'])}
-              scroll={scroll}
               onChange={handleOnChange}
             />
           </Modal>

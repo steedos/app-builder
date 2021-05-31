@@ -1,7 +1,6 @@
 import React,{ useState, useMemo, useRef, useEffect } from "react"
 import { Form,Field } from '@steedos/builder-form';
 import { formatFiltersToODataQuery } from '@steedos/filters';
-import { useResizeObserver } from "../utils/use-resize-observer";
 import { SpaceUsers, SpaceUsersProps, ObjectModal, ObjectModalProps, Organizations } from ".."
 import { omit, isArray } from "lodash"
 import "./SpaceUsersModal.less"
