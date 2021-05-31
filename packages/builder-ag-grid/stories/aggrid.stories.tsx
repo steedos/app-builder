@@ -11,6 +11,7 @@ export const Grid = () => {
           pageSize:3
         }}
         sort="created desc,name desc"
+        rowSelection="single"
         columnFields={
           [
             {

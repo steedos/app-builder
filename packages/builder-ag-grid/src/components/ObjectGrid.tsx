@@ -83,6 +83,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     onChange,
     toolbar,
     rowButtons,
+    rowSelection = 'multiple',
     ...rest
   } = props
   const [totalRecords, setTotalRecords] = useState(0)
@@ -147,7 +148,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       maxWidth: 35,
       minWidth: 35,
       checkboxSelection: true,
-      headerCheckboxSelection: true,
+      headerCheckboxSelection: true, //仅rowModelType等于Client-Side时才生效
       suppressMenu: true,
     }];
     forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
@@ -323,7 +324,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
         paginationPageSize={20}
-        rowSelection='multiple'
+        rowSelection={rowSelection}
         modules={AllModules}
         stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
