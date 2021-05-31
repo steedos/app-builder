@@ -127,7 +127,8 @@ export const ObjectModal = ({
             title={title}
             width={width || 800}
             {...modalProps}
-            getContainer={false}
+            // getContainer={false}
+            destroyOnClose={true}
             visible={visible}
             onCancel={(e) => {
               setVisible(false);
