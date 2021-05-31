@@ -72,7 +72,7 @@ export const SpaceUsersModal = ({
     maxWidth: '1200px', 
     minWidth: '800px', 
     // TODO: modal高度设置，200px后续要修改成灵活设置的变量值
-    height: 'calc(100% - 200px)',
+    height: 'calc(100% - 100px)',
     overflow: 'hidden'
   }
   let modalPropsStyle = isMobile ? null : style;

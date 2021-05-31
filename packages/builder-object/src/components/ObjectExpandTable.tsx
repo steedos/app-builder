@@ -16,6 +16,7 @@ import { ActionType } from "react-table"
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
 import useAntdMediaQuery from 'use-media-antd-query';
+import { ObjectGrid } from '@steedos/builder-ag-grid';
 
 import {
   ObjectList,
@@ -37,6 +38,7 @@ export type ObjectExpandTableColumnProps = {
 export type ObjectExpandTableProps =
   | ({
       name?: string
+      tableComponent?: React.FunctionComponent,
       //parentField: string //当前对象的父级对象，用于树形结构呈现时使用
       onChange: ([any]) => void
       columnFields: ObjectExpandTableColumnProps[]
@@ -74,6 +76,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const {
     name: ObjectExpandTableId = "default",
+    tableComponent: TableComponent = ObjectGrid,
     filters,
     // includeSub,
     onChange,
@@ -225,7 +228,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
           </ProCard>
         )}
         <ProCard className="table-part" colSpan={tablePartWidth} ghost>
-          <ObjectTable
+          <TableComponent
             {...rest}
             filters={
               getTableFilter(expandProps, selectedExpandNode, filters)

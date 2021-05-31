@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import { isFunction, forEach, isObject, filter, isString, each, includes, isBoolean, } from "lodash"
-// import { ObjectExpandTable } from "./"
-import { ObjectGrid as ObjectExpandTable } from '@steedos/builder-ag-grid';
+import { ObjectExpandTable } from "./"
+// import { ObjectGrid as ObjectExpandTable } from '@steedos/builder-ag-grid';
 import {
   ProColumnType
 } from "@ant-design/pro-table"
@@ -58,7 +58,7 @@ export const getObjectListViewProColumn = (field: any) => {
   return proColumnProps
 }
 
-function getListViewFilters(listView, props){
+export const getListViewFilters = (listView, props) => {
   let { filters, filter_scope, master } = props;
   if(!filters){
     filters = listView.filters;
@@ -91,7 +91,7 @@ function getListViewFilters(listView, props){
   return filters;
 }
 
-function getListviewColumns(objectSchema: any, listName: any){
+export const getListviewColumns = (objectSchema: any, listName: any) => {
   let listView = objectSchema.list_views[listName];
   let listViewColumns = listView && listView.columns;
   if(!listViewColumns){
@@ -104,7 +104,7 @@ function getListviewColumns(objectSchema: any, listName: any){
   return listViewColumns;
 }
 
-function getListViewColumnFields(listViewColumns: any, props: any, nameFieldKey: string){
+export const getListViewColumnFields = (listViewColumns: any, props: any, nameFieldKey: string) => {
   let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
     forEach(listViewColumns, (column: any) => {

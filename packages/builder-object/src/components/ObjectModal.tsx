@@ -4,7 +4,7 @@ import {
   ObjectTable, ObjectTableProps, 
   ObjectExpandTable, ObjectExpandTableProps, 
   ObjectTree, ObjectTreeProps,
-  ObjectListView, ObjectListViewProps, 
+  ObjectListView, ObjectModalListView, ObjectListViewProps, 
   Organizations, OrganizationsProps,
   SpaceUsers, SpaceUsersProps,
 } from ".."
@@ -49,12 +49,11 @@ export const ObjectModal = ({
   const [selectedRows, setSelectedRows] = useState([])
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
-  const resizeSubject:any = useRef()
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
 
   // 设置默认值
-  ContentComponent = ContentComponent ? ContentComponent : ObjectListView;
+  ContentComponent = ContentComponent ? ContentComponent : ObjectModalListView;
 
   const handleOnChange = (keys: any, rows: any) => {
     setSelectedRowKeys(keys);
@@ -76,7 +75,7 @@ export const ObjectModal = ({
   }, [context, modalProps, visible]);
 
   let contentComponentProps: any = {};
-  if([ObjectTable, ObjectExpandTable, ObjectListView, SpaceUsers].indexOf(ContentComponent) > -1){
+  if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent) > -1){
     // 底层使用的是ObjectTable时multiple及value属性实现逻辑
     let rowSelectionType="radio";
     if (multiple){
@@ -111,7 +110,7 @@ export const ObjectModal = ({
   return (
     <>
       {createPortal(
-        <div className={`object-modal ${!visible && 'hidden'}`} ref={resizeSubject} onClick={(e) => e.stopPropagation()}
+        <div className={`object-modal ${!visible && 'hidden'}`} onClick={(e) => e.stopPropagation()}
           style={{
             position: "absolute",
             top: 0,
@@ -127,7 +126,8 @@ export const ObjectModal = ({
             title={title}
             width={width || 800}
             {...modalProps}
-            getContainer={false}
+            // getContainer={false}
+            destroyOnClose={true}
             visible={visible}
             onCancel={(e) => {
               setVisible(false);
