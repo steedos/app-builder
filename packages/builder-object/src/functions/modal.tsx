@@ -2,7 +2,7 @@ import * as React from "react"
 import ReactDOM from "react-dom";
 import { ObjectForm } from "../";
 
-export function showModal(component: React.FunctionComponent, componentParams: any, modalParams: any) {
+export const showModal = (component: React.FunctionComponent, componentParams: any, modalParams: any) => {
   if(!component){
     component = ObjectForm
   }
@@ -11,7 +11,10 @@ export function showModal(component: React.FunctionComponent, componentParams: a
     return;
   }
   let triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
-  if(!triggerDom){
+  if(triggerDom){
+    (triggerDom as any).click()
+  }
+  else{
     const Component: any = component;
     let modalRoot = document.getElementById('steedos-modal-root');
     if (!modalRoot) {
@@ -19,12 +22,14 @@ export function showModal(component: React.FunctionComponent, componentParams: a
       modalRoot.setAttribute('id', 'steedos-modal-root');
       document.body.appendChild(modalRoot)
     }
-    let trigger = React.createElement("button", {className: `hidden, steedos-modal-trigger-${componentParams.name}`});
+    let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
     ReactDOM.render(React.createElement(Component,{
       ...componentParams,
       trigger
     }), modalRoot)
-    triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
+    setTimeout(()=>{
+      triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
+      triggerDom && (triggerDom as any).click();
+    }, 500);
   }
-  triggerDom && (triggerDom as any).click()
 }

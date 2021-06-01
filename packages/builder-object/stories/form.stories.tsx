@@ -93,7 +93,6 @@ export const FormModal = () => {
   const schemaFormProps = {
     layout: 'horizontal',
     title: `合同信息`,
-    trigger: (<Button type="primary" >弹出SchemaForm</Button>),
     objectSchema: {
       fields:{
         name: {
@@ -117,7 +116,6 @@ export const FormModal = () => {
     // recordId: {process.env.STEEDOS_CURRENT_RECORD_ID},
     layout: 'horizontal',
     title: `新建客户`,
-    trigger: (<Button type="primary" >弹出ObjectForm示例</Button>),
     initialValues: {name:"张三"},
     onFinish: async (values)=>{
       console.log("values:", values);
@@ -126,11 +124,17 @@ export const FormModal = () => {
   }
   return (
     <React.Fragment>
-      <ObjectForm {...schemaFormProps}>
+      <ObjectForm 
+        {...schemaFormProps}
+        trigger={<Button type="primary" >弹出SchemaForm</Button>}
+      >
       </ObjectForm>
       <br />
       <br />
-      <ObjectForm {...objectFormProps}>
+      <ObjectForm
+        {...objectFormProps}
+        trigger={<Button type="primary" >弹出ObjectForm示例</Button>}
+      >
       </ObjectForm>
       <br />
       <br />
