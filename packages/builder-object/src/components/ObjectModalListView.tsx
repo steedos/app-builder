@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import { isFunction, forEach, isObject, filter, isString, each, includes, isBoolean, } from "lodash"
 import { ObjectListViewProps, getListviewColumns, getListViewColumnFields, getListViewFilters } from "./"
-import { ObjectGrid as ObjectExpandTable } from '@steedos/builder-ag-grid';
+import { ObjectExpandTable } from "./"
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
 
