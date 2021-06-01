@@ -8,12 +8,12 @@ export type Options = {
     pageSize: number,
     current: number,
     sort: any,
-    // $top?: Number,
-    // $skip?: Number,
-    // $orderby?: Number,
-    // $count?: boolean,
-    // $filter?: Filters,
-    // $select?: Fields,
+    $top?: number,
+    $skip?: number,
+    $orderby?: number,
+    $count?: boolean,
+    $filter?: Filters,
+    $select?: Fields,
     expand?: string
 }
 
