@@ -1,17 +1,12 @@
 import * as React from "react"
 import ReactDOM from "react-dom";
 import { ObjectForm, SteedosProvider } from "../";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
 
 const withModalWrap = (component: React.FunctionComponent) => {
   return (props: any) => {
     const ModalComponent = component;
     return (<SteedosProvider>
-      <Router>
-        <ModalComponent {...props}/>
-      </Router>
+      <ModalComponent {...props}/>
     </SteedosProvider>);
   }
 }
