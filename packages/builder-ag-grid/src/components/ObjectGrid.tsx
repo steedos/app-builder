@@ -276,8 +276,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const onRowSelected = (params) => {
     const selectedRows = params.api.getSelectedRows();
     if (onChange) {
-      let selectedKeys=map(selectedRows,'_id')
-      onChange(selectedKeys,selectedRows)
+      onChange(selectedRows)
     }
   }
   const onRowValueChanged = (params)=>{

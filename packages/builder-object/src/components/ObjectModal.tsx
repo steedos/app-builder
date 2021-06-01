@@ -42,6 +42,7 @@ export const ObjectModal = ({
   contentComponent: ContentComponent,
   multiple,
   value,
+  tableMode = "ag-grid",//ag-grid, ant-pro-table
   ...rest
 }: ObjectModalProps) => {
   const defaultValue = (value && value.length && (isArray(value) ? value : [value])) || []
@@ -76,19 +77,30 @@ export const ObjectModal = ({
 
   let contentComponentProps: any = {};
   if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent) > -1){
-    // 底层使用的是ObjectTable时multiple及value属性实现逻辑
-    let rowSelectionType="radio";
-    if (multiple){
-        rowSelectionType="checkbox";
-    }
-    Object.assign(contentComponentProps, {
-      rowSelection: {
-        type: rowSelectionType ,
-        // 在proTable中defaultSelectedRowKeys目前无效。只能用selectedRowKeys实现相关功能。
-        // 如果proTable后续版本defaultSelectedRowKeys能生效的话可以考虑直接换成defaultSelectedRowKeys。
-        selectedRowKeys: isArray(value) ? value : [value]
+    // console.log([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent))
+    // 底层使用的是ObjectTable 或 ag-grid时multiple及value属性实现逻辑
+    if(tableMode === "ag-grid"){
+      let rowSelectionType="single";
+      if (multiple){
+          rowSelectionType="multiple";
       }
-    });
+      Object.assign(contentComponentProps, {
+        rowSelection: rowSelectionType
+      });
+    }else{
+      let rowSelectionType="radio";
+      if (multiple){
+          rowSelectionType="checkbox";
+      }
+      Object.assign(contentComponentProps, {
+        rowSelection: {
+          type: rowSelectionType ,
+          // 在proTable中defaultSelectedRowKeys目前无效。只能用selectedRowKeys实现相关功能。
+          // 如果proTable后续版本defaultSelectedRowKeys能生效的话可以考虑直接换成defaultSelectedRowKeys。
+          selectedRowKeys: isArray(value) ? value : [value]
+        }
+      });
+    }
   }
   else if([ObjectTree, Organizations].indexOf(ContentComponent) > -1){
     // 底层使用的是ObjectTree时multiple及value属性实现逻辑
