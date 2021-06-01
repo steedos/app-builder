@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys} from "lodash"
+import {forEach, compact, filter, keys, map} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -283,7 +283,13 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     //   isEdited: true
     // }
   };
-
+  const onRowSelected = (params) => {
+    const selectedRows = params.api.getSelectedRows();
+    if (onChange) {
+      let selectedKeys=map(selectedRows,'_id')
+      onChange(selectedKeys,selectedRows)
+    }
+  }
   const onRowValueChanged = (params)=>{
     console.log(`onRowValueChanged params`, params)
   }
@@ -333,6 +339,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         undoRedoCellEditing={true}
         onCellValueChanged={onCellValueChanged}
         onRowValueChanged={onRowValueChanged}
+        onRowSelected={onRowSelected}
         context={{editedMap: editedMap}}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,
