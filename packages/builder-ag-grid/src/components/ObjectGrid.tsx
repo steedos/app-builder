@@ -84,6 +84,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     toolbar,
     rowButtons,
     rowSelection = 'multiple',
+    sideBar='filters',
     pageSize = 20,
     gridRef,
     ...rest
@@ -325,7 +326,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
         serverSideStoreType={ServerSideStoreType.Partial}
-        sideBar='filters'
+        sideBar={sideBar}
         undoRedoCellEditing={true}
         onCellValueChanged={onCellValueChanged}
         onRowValueChanged={onRowValueChanged}
