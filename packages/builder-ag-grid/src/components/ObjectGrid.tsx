@@ -218,7 +218,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         rowButtons: rowButtons
       }
     });
-    console.log(`ObjectGrid columns`, columns);
     return columns
   }
 
