@@ -174,7 +174,6 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     inReact,
     ...rest
   } = props
-  console.log(`ObjectListView state`, this)
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
   const schema = object.schema; 

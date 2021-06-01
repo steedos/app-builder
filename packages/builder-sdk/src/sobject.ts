@@ -65,6 +65,13 @@ export default class SObject {
             if(sortIsNull){
                 params.$orderby=sortIsNull;
             }
+
+            if(options.$top){
+                params.$top = options.$top
+            }
+            if(options.$skip){
+                params.$skip = options.$skip
+            }
         }
         return params;
     }

@@ -84,6 +84,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     toolbar,
     rowButtons,
     rowSelection = 'multiple',
+    sideBar='filters',
+    pageSize = 20,
+    gridRef,
     ...rest
   } = props
   const [totalRecords, setTotalRecords] = useState(0)
@@ -98,21 +101,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const getDataSource = () => {
     return {
-        // called by the grid when more rows are required
         getRows: params => {
-
-            // // get data for request from server
-            // const response = server.getData(params.request);
-
-            // if (response.success) {
-            //     // supply rows for requested block to grid
-            //     params.success({
-            //         rowData: response.rows
-            //     });
-            // } else {
-            //     // inform grid request failed
-            //     params.fail();
-            // }
             const fields = ['name']
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
@@ -127,8 +116,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
               objectApiName,
               filters,
               fields,{
-                current: params.request.startRow,
                 sort,
+                $top: pageSize,
+                $skip: params.request.startRow
               }).then((data)=>{
 
                 params.success({
@@ -328,13 +318,14 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         pagination={true}
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
-        paginationPageSize={20}
+        paginationPageSize={pageSize}
+        cacheBlockSize={pageSize}
         rowSelection={rowSelection}
         modules={AllModules}
         stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
         serverSideStoreType={ServerSideStoreType.Partial}
-        sideBar='filters'
+        sideBar={sideBar}
         undoRedoCellEditing={true}
         onCellValueChanged={onCellValueChanged}
         onRowValueChanged={onRowValueChanged}
@@ -346,6 +337,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           AgGridCellFilter: AgGridCellFilter,
           rowActions: RowActions,
         }}
+        ref={gridRef}
       />
       <Drawer
         placement={"bottom"}
