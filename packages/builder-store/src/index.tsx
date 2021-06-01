@@ -42,6 +42,9 @@ declare global {
   interface Window {
     Meteor: any
   }
+  interface Window {
+    SteedosUI: any
+  }
 }
 
 if(!window.Meteor){
