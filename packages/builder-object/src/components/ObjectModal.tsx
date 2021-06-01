@@ -118,6 +118,15 @@ export const ObjectModal = ({
     maxWidth: '100%'
   }
   modalMobileStyle = isMobile ? modalMobileStyle : null; 
+  const contentDom = useMemo(() => {
+    return (
+      <ContentComponent
+      {...contentComponentProps}
+      {...omit(rest, ['visible', 'title', 'onChange'])}
+      onChange={handleOnChange}
+    />
+    )
+  }, [visible]);
 
   return (
     <>
@@ -159,11 +168,7 @@ export const ObjectModal = ({
             }}
             maskClosable={false}
           >
-            <ContentComponent
-              {...contentComponentProps}
-              {...omit(rest, ['visible', 'title', 'onChange'])}
-              onChange={handleOnChange}
-            />
+            {contentDom}
           </Modal>
         </div>,
         renderDom || document.body,
