@@ -24,7 +24,8 @@
       "@steedos/builder-lightning": ["packages/builder-lightning/src/index.tsx"],
       "@steedos/builder-charts": ["packages/builder-charts/src/index.ts"],
       "@steedos/builder-ag-grid": ["packages/builder-ag-grid/src/index.tsx"],
-      "~antd/lib/style/core/index.less": ["packages/builder-ant-design/src/index.less"]
+      "~antd/lib/style/core/index.less": ["packages/builder-ant-design/src/index.less"],
+      "@steedos/builder-community": ["packages/builder-community/src/index.tsx"],
       // "@emotion/core": ["node_modules/@emotion/react"],
       // "emotion-theming": ["node_modules/@emotion/react"],
     }
