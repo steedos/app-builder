@@ -1,9 +1,6 @@
-import { ObjectForm, ObjectField, Iframe } from "@steedos/builder-object";
-import { FieldSection } from "@steedos/builder-form";
+import { ObjectForm, ObjectModal } from "@steedos/builder-object";
 import * as React from "react"
 import ReactDOM from "react-dom";
-import { API } from '@steedos/builder-store';
-import { Link } from "react-router-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
 
 export default {
@@ -73,6 +70,69 @@ export const FormModal = () => {
           ...objectFormProps
         })
       }}>showModal - 弹出ObjectForm示例</Button>
+    </React.Fragment>
+  )
+}
+
+export const TableModal = () => {
+  const tableProps1 = {
+    title: `选择 任务`,
+    objectApiName: "tasks",
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps2 = {
+    title: `选择 任务`,
+    objectApiName: "tasks",
+    listSchema: {
+      columns: ["name", "assignees", "related_to"]
+    },
+    multiple: true,
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  };
+  const tableProps3 = {
+    title: `选择 任务`,
+    objectApiName: "tasks",
+    listSchema: "my_open_tasks",
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  };
+  return (
+    <React.Fragment>
+      <ObjectModal
+        {...tableProps1}
+        trigger={<Button type="primary" >弹出Table 默认使用all视图配置</Button>}
+      />
+      <br />
+      <br />
+      <ObjectModal 
+        {...tableProps2}
+        trigger={<Button type="primary" >弹出Table 指定列</Button>}
+      />
+      <br />
+      <br />
+      <ObjectModal 
+        {...tableProps3}
+        trigger={<Button type="primary" >弹出Table 指定视图</Button>}
+      />
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        window.SteedosUI.showModal(ObjectModal,{
+          name: "showModal-test1", 
+          ...tableProps2,
+          listSchema: {
+            columns: ["state"]
+          },
+        })
+      }}>showModal - 弹出Table 指定列</Button>
     </React.Fragment>
   )
 }
