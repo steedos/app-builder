@@ -136,6 +136,17 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
     const columns:any[] = [{
       resizable: false,
+      pinned: "left",
+      valueGetter: params => {
+        return parseInt(params.node.id) + 1
+      },
+      width: 55,
+      maxWidth: 55,
+      minWidth: 55,
+      cellStyle: {"text-align": "right" }
+    },{
+      resizable: false,
+      pinned: "left",
       width: 35,
       maxWidth: 35,
       minWidth: 35,
