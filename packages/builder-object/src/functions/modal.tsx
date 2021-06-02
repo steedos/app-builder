@@ -20,9 +20,11 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   if(!component){
     component = ObjectForm
   }
-  if(!componentParams || !componentParams.name){
-    console.error("Miss name props for the component params.");
-    return;
+  if(!componentParams){
+    componentParams = {};
+  }
+  if(!componentParams.name){
+    componentParams.name = "modal-default";
   }
   let modalRoot = document.getElementById('steedos-modal-root');
   if (!modalRoot) {

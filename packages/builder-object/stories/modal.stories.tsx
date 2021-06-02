@@ -58,7 +58,6 @@ export const FormModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test1", 
           ...schemaFormProps
         })
       }}>showModal - 弹出SchemaForm示例</Button>
@@ -66,7 +65,6 @@ export const FormModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test2", 
           ...objectFormProps
         })
       }}>showModal - 弹出ObjectForm示例</Button>
@@ -74,7 +72,6 @@ export const FormModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test3",
           recordId: "6k5svcTmfopo3dXWr",
           ...objectFormProps
         })
@@ -83,7 +80,6 @@ export const FormModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test3",
           recordId: "biJLkxf6bdi69dZJd",
           ...objectFormProps
         })
@@ -144,7 +140,6 @@ export const TableModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectModal,{
-          name: "showModal-test1", 
           ...tableProps2,
           listSchema: {
             columns: ["name", "state"]
