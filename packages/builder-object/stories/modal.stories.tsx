@@ -83,7 +83,7 @@ export const FormModal = () => {
       <br />
       <Button type="primary" onClick={()=>{
         window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test4",
+          name: "showModal-test3",
           recordId: "biJLkxf6bdi69dZJd",
           ...objectFormProps
         })
