@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectModal } from "@steedos/builder-object";
+import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal } from "@steedos/builder-object";
 import * as React from "react"
 import ReactDOM from "react-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
@@ -133,6 +133,58 @@ export const TableModal = () => {
           },
         })
       }}>showModal - 弹出Table 指定列</Button>
+    </React.Fragment>
+  )
+}
+
+export const TreeModal = () => {
+  const tableProps1 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps3 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  return (
+    <React.Fragment>
+      <ObjectModal
+        {...tableProps1}
+        trigger={<Button type="primary" >弹出tree</Button>}
+      />
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectModal,{
+          name: "showModal-test1", 
+          ...tableProps1,
+        })
+      }}>showModal  -  弹出Tree</Button>
+      <br />
+      <br />
+      <OrganizationsModal
+        {...tableProps3}
+        trigger={<Button type="primary" >弹出tree 指定视图</Button>}
+      />
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(OrganizationsModal,{
+          name: "showModal-test2", 
+          ...tableProps3,
+        })
+      }}>showModal  -  弹出Tree 指定视图(含筛选条件) </Button>
     </React.Fragment>
   )
 }
