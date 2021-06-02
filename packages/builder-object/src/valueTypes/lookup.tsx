@@ -23,7 +23,7 @@ export const LookupField = observer((props:any) => {
     const selectRef:any = useRef()
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, modal_schema } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, table_schema } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
     let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
@@ -69,6 +69,7 @@ export const LookupField = observer((props:any) => {
                     fields.push('name')
                 }
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
+                if(props.name==='a_multiple'){ console.log('recordList===>',recordList)}
                 if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
@@ -90,6 +91,7 @@ export const LookupField = observer((props:any) => {
                 })
             }
         }
+        if(props.name==='a_multiple'){ console.log('tag===>',value, tags)}
         return (<React.Fragment>{tags.map((tagItem, index)=>{return (
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
@@ -306,12 +308,12 @@ export const LookupField = observer((props:any) => {
                         trigger,
                         onFinish: onModalFinish
                     };
-                    if(modal_schema){
-                        if(isObject(modal_schema) && !isEmpty(modal_schema)){
-                            modalPorps.listSchema = modal_schema;
+                    if(table_schema){
+                        if(isObject(table_schema) && !isEmpty(table_schema)){
+                            modalPorps.listSchema = table_schema;
                         }
-                        if(isString(modal_schema)){
-                            modalPorps.listName = modal_schema;
+                        if(isString(table_schema)){
+                            modalPorps.listName = table_schema;
                         }
                     }                
                     if(referenceTo === "space_users"){
