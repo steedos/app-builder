@@ -60,7 +60,7 @@ export const FormModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(null,{
+        window.SteedosUI.showModal(ObjectForm,{
           name: "showModal-test1", 
           ...schemaFormProps
         })
@@ -68,7 +68,7 @@ export const FormModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(null,{
+        window.SteedosUI.showModal(ObjectForm,{
           name: "showModal-test2", 
           ...objectFormProps
         })
