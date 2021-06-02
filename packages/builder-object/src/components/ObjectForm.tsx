@@ -14,6 +14,7 @@ import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
+import { clone } from 'lodash';
 
 import './ObjectForm.less'
 
@@ -61,6 +62,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
   const [proForm] = ProForm.useForm();
+
+  const defaultValues = clone(initialValues);
  
   const form = Forms.loadById(formId)
   form.setMode(mode);
@@ -104,7 +107,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       const record = recordCache.data.value[0];
       forEach(fieldNames, (fieldName:any)=>{
         if (record[fieldName])
-          initialValues[fieldName] = record[fieldName];
+          defaultValues[fieldName] = record[fieldName];
       })
     } else {
     }
@@ -173,13 +176,13 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
-  proForm.setFieldsValue(initialValues)
+  proForm.setFieldsValue(defaultValues)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
       name={formId}
       className='builder-form object-form'
-      initialValues={initialValues}
+      initialValues={defaultValues}
       mode={mode}
       form={proForm}
       layout={layout}
