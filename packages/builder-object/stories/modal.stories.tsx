@@ -31,7 +31,7 @@ export const FormModal = () => {
   };
   const objectFormProps = {
     objectApiName: "accounts",
-    // recordId: {process.env.STEEDOS_CURRENT_RECORD_ID},
+    // recordId: process.env.STEEDOS_CURRENT_RECORD_ID,
     layout: 'horizontal',
     title: `新建客户`,
     initialValues: {name:"张三"},
@@ -70,6 +70,24 @@ export const FormModal = () => {
           ...objectFormProps
         })
       }}>showModal - 弹出ObjectForm示例</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        window.SteedosUI.showModal(ObjectForm,{
+          name: "showModal-test3",
+          recordId: "6k5svcTmfopo3dXWr",
+          ...objectFormProps
+        })
+      }}>showModal - 弹出ObjectForm带recordId示例1</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        window.SteedosUI.showModal(ObjectForm,{
+          name: "showModal-test4",
+          recordId: "biJLkxf6bdi69dZJd",
+          ...objectFormProps
+        })
+      }}>showModal - 弹出ObjectForm带recordId示例2</Button>
     </React.Fragment>
   )
 }
