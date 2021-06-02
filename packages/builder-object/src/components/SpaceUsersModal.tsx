@@ -64,6 +64,9 @@ export const SpaceUsersModal = ({
       hideInTable: true,
       hideInSearch: true,
       ...expandProps,
+    },{
+      fieldName: "mobile",
+      hideInSearch: true,
     }]
   }
 

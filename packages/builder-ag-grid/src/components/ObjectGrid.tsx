@@ -15,7 +15,8 @@ import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
 export type ObjectGridColumnProps = {
-  fieldName: string
+  fieldName: string,
+  hideInTable: boolean
 } 
 
 export type ObjectGridProps<T extends ObjectGridColumnProps> =
@@ -142,7 +143,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       headerCheckboxSelection: true, //仅rowModelType等于Client-Side时才生效
       suppressMenu: true,
     }];
-    forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
+    forEach(columnFields, ({ fieldName, hideInTable, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName];
       if(!field){
         return ;
@@ -170,6 +171,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       }
       columns.push({
         field: fieldName,
+        hide: hideInTable,
         headerName: field.label?field.label:fieldName,
         width: field.is_wide? 300: 150,
         minWidth: field.is_wide? 300: 150,
