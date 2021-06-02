@@ -2,16 +2,16 @@ import * as React from "react"
 import ReactDOM from "react-dom";
 import { ObjectForm, SteedosProvider } from "../";
 
-const withModalWrap = (component: React.FunctionComponent) => {
+const withModalWrap = (component: React.FunctionComponent, provideProps) => {
   return (props: any) => {
     const ModalComponent = component;
-    return (<SteedosProvider>
+    return (<SteedosProvider {...provideProps}>
       <ModalComponent {...props}/>
     </SteedosProvider>);
   }
 }
 
-export const showModal = (component: React.FunctionComponent, componentParams: any, modalParams: any) => {
+export const showModal = (component: React.FunctionComponent, componentParams: any, modalParams: any, provideProps: any) => {
   if(!component){
     component = ObjectForm
   }
@@ -31,7 +31,7 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
       document.body.appendChild(modalRoot)
     }
     let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
-    const wrapComponent: any = withModalWrap(component);
+    const wrapComponent: any = withModalWrap(component, provideProps);
     const contentEle = React.createElement(wrapComponent,{
       ...componentParams,
       trigger
