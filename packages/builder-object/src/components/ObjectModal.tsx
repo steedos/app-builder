@@ -52,6 +52,7 @@ export const ObjectModal = ({
   const context = useContext(ConfigProvider.ConfigContext);
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
+  const { style, ...restModalProps } = modalProps || {};
 
   // 设置默认值
   ContentComponent = ContentComponent ? ContentComponent : ObjectModalListView;
@@ -117,7 +118,14 @@ export const ObjectModal = ({
     padding: '0px',
     maxWidth: '100%'
   }
-  modalMobileStyle = isMobile ? modalMobileStyle : null; 
+  let modalPcStyle:any = {
+    height: 'calc(100% - 100px)',
+    minHeight: '400px',
+    maxHeight: 'calc(100% - 200px)'
+  }
+  modalMobileStyle = isMobile ? modalMobileStyle : modalPcStyle; 
+  Object.assign(modalMobileStyle, style);
+  
   const contentDom = useMemo(() => {
     return (
       <ContentComponent
@@ -141,12 +149,12 @@ export const ObjectModal = ({
           }}
         >
           <Modal
-            style={
-              modalMobileStyle
-            }
+            style={{
+              ...modalMobileStyle
+            }}
             title={title}
             width={width || 800}
-            {...modalProps}
+            {...restModalProps}
             // getContainer={false}
             destroyOnClose={true}
             visible={visible}
