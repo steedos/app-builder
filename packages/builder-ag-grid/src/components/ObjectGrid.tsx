@@ -87,6 +87,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     sideBar='filters',
     pageSize = 20,
     gridRef,
+    onModelUpdated,
     ...rest
   } = props
   const [totalRecords, setTotalRecords] = useState(0)
@@ -306,6 +307,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     cancel();
   }
 
+  // const modelUpdated = (event)=>{
+  //   console.log(`modelUpdated event getDisplayedRowCount`, event.api.getDisplayedRowCount())
+  // }
+
   return (
 
     <div className="ag-theme-balham" style={{height: "100%", flex: "1 1 auto",overflow:"hidden"}}>
@@ -323,6 +328,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         modules={AllModules}
         stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
+        onModelUpdated={onModelUpdated}
         serverSideStoreType={ServerSideStoreType.Partial}
         sideBar={sideBar}
         undoRedoCellEditing={true}
