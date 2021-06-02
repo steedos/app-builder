@@ -129,7 +129,7 @@ export const TableModal = () => {
           name: "showModal-test1", 
           ...tableProps2,
           listSchema: {
-            columns: ["state"]
+            columns: ["name", "state"]
           },
         })
       }}>showModal - 弹出Table 指定列</Button>
