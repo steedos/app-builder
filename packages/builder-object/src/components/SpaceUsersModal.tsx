@@ -76,6 +76,7 @@ export const SpaceUsersModal = ({
     minWidth: '800px', 
     // TODO: modal高度设置，200px后续要修改成灵活设置的变量值
     height: 'calc(100% - 100px)',
+    minHeight: '400px',
     overflow: 'hidden'
   }
   let modalPropsStyle = isMobile ? null : style;
@@ -110,9 +111,11 @@ export const SpaceUsersModal = ({
   return (
     <ObjectModal
       width={width}
-      modalProps={
-        modalPropsStyle
-      }
+      modalProps={{
+        style: {
+          ...modalPropsStyle
+        }
+      }}
       filters={filters}
       toolBarRender={spaceUserSearchBar}
       toolbar={toolbar}
