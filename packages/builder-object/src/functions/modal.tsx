@@ -26,10 +26,10 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   if(!componentParams.name){
     componentParams.name = "modal-default";
   }
-  let modalRoot = document.getElementById('steedos-modal-root');
+  let modalRoot = document.getElementById(`steedos-modal-root-${componentParams.name}`);
   if (!modalRoot) {
     modalRoot = document.createElement('div');
-    modalRoot.setAttribute('id', 'steedos-modal-root');
+    modalRoot.setAttribute('id', `steedos-modal-root-${componentParams.name}`);
     document.body.appendChild(modalRoot)
   }
   let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
@@ -38,10 +38,9 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
     ...componentParams,
     trigger
   });
-  // ReactDOM.render(React.createElement(SteedosProvider, null, contentEle), modalRoot)
   ReactDOM.render(contentEle, modalRoot);
   setTimeout(()=>{
-    let triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
+    let triggerDom = document.querySelector(`#steedos-modal-root-${componentParams.name} .steedos-modal-trigger-${componentParams.name}`);
     triggerDom && (triggerDom as any).click();
   }, 500);
 }
