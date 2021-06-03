@@ -33,7 +33,7 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
               if(betweenValue == 'inRange'){
                 return {
                   filterType: "date",
-                  type: 'inRange',
+                  type: 'between',
                   dateFrom: dateFrom,
                   dateTo: dateTo
                 }
@@ -52,7 +52,7 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
   });
 
   useEffect(() => {
-    if((dateTo !== null && dateFrom !== null) || betweenValue != 'inRange'){
+    if((dateTo !== null && dateFrom !== null) || (betweenValue != 'inRange' && betweenValue !== null)){
       props.filterChangedCallback()
     }
   }, [betweenValue, dateTo, dateFrom]);

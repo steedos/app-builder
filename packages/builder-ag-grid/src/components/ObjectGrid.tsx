@@ -57,10 +57,12 @@ const filterModelToOdataFilters = (filterModel)=>{
   // console.log(`filterModelToOdataFilters filterModel`, filterModel);
   const filters = [];
   forEach(filterModel, (value, key)=>{
-    if(value.type === 'inRange'){
-      filters.push([key, "between", [value.dateFrom, value.dateTo]]);
-    }else if(value.type === 'between'){
-      filters.push([key, value.type, value.filter]);
+    if(value.type === 'between'){
+      if(value.filter){
+        filters.push([key, value.type, value.filter]);
+      }else{
+        filters.push([key, "between", [value.dateFrom, value.dateTo]]);
+      }
     }else{
       if(!isEmpty(value.filter)){
         const filter = [key, FilterTypesMap[value.type], value.filter];
