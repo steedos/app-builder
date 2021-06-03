@@ -57,21 +57,21 @@ export const FormModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
+        (window as any).SteedosUI.showModal(ObjectForm,{
           ...schemaFormProps
         })
       }}>showModal - 弹出SchemaForm示例</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
+        (window as any).SteedosUI.showModal(ObjectForm,{
           ...objectFormProps
         })
       }}>showModal - 弹出ObjectForm示例</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
+        (window as any).SteedosUI.showModal(ObjectForm,{
           recordId: "6k5svcTmfopo3dXWr",
           ...objectFormProps
         })
@@ -79,7 +79,7 @@ export const FormModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
+        (window as any).SteedosUI.showModal(ObjectForm,{
           recordId: "biJLkxf6bdi69dZJd",
           ...objectFormProps
         })
@@ -139,7 +139,7 @@ export const TableModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectModal,{
+        (window as any).SteedosUI.showModal(ObjectModal,{
           ...tableProps2,
           listSchema: {
             columns: ["name", "state"]
@@ -157,6 +157,17 @@ export const TreeModal = () => {
     contentComponent: ObjectTree,
     nameField:'name',
     parentField:'parent',
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps2 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
     // filters:['name','contains','公司'],
     filters: "contains(name,'公司')",
     onFinish: async (values)=>{
@@ -167,8 +178,21 @@ export const TreeModal = () => {
   const tableProps3 = {
     title: `选择 部门`,
     objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
+    multiple: true,
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps4 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
     // filters:['name','contains','公司'],
     // filters: "contains(name,'公司')",
+    // multiple: true,
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
@@ -180,28 +204,35 @@ export const TreeModal = () => {
         {...tableProps1}
         trigger={<Button type="primary" >弹出tree</Button>}
       />
-      <br />
-      <br />
+      <br /><br />
+      <ObjectModal
+        {...tableProps2}
+        trigger={<Button type="primary" >弹出tree + filters</Button>}
+      />
+      <br /><br />
+      <ObjectModal
+        {...tableProps3}
+        trigger={<Button type="primary" >弹出tree + multiple</Button>}
+      />
+      <br /><br />
+      <OrganizationsModal
+        {...tableProps4}
+        trigger={<Button type="primary" >选组</Button>}
+      />
+      <br /><br />
       <Button type="primary" onClick={()=>{
         (window as any).SteedosUI.showModal(ObjectModal,{
           name: "showModal-test1", 
           ...tableProps1,
         })
       }}>showModal  -  弹出Tree</Button>
-      <br />
-      <br />
-      <OrganizationsModal
-        {...tableProps3}
-        trigger={<Button type="primary" >弹出tree 指定视图</Button>}
-      />
-      <br />
-      <br />
+      <br /><br />
       <Button type="primary" onClick={()=>{
         (window as any).SteedosUI.showModal(OrganizationsModal,{
           name: "showModal-test2", 
-          ...tableProps3,
+          ...tableProps4,
         })
-      }}>showModal  -  弹出Tree 指定视图(含筛选条件) </Button>
+      }}>showModal  -  选组</Button>
     </React.Fragment>
   )
 }
