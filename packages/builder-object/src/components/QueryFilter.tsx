@@ -26,6 +26,10 @@ export const QueryFilter = observer((props:QueryFilterProps) => {
     <ObjectForm 
       name={formId}
       className='steedos-query-filter'
+      mode="edit"
+      onValuesChange={(changeValues: any)=>{
+        console.log("changeValues:", changeValues);
+      }}
       onFinish={onFinish}
       {...rest}
     />
