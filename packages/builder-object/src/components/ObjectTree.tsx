@@ -47,8 +47,10 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
     filters,
     checkable,
     onChange,
+    defaultSelectedKeys,
     ...rest
   } = props
+  const [selectedKeys, setselectedKeys] = useState(defaultSelectedKeys ? defaultSelectedKeys : [] )
   if (checkable == undefined) checkable = true
 
   const object = Objects.getObject(objectApiName);
@@ -99,12 +101,14 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
     <Tree
       style={{ width: "100%" }}
       // checkable={checkable}
+      selectedKeys={selectedKeys}
       expandedKeys={expandedKeys}
       treeData={treeData}
       onExpand={(expandedKeys, { expanded, node }) => {
         setExpandedKeys(expandedKeys)
       }}
       onSelect={(values, { selectedNodes }) => {
+        setselectedKeys(values)
         onChange && onChange(values, selectedNodes)
       }}
       {...rest}
