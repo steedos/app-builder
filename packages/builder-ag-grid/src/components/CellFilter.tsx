@@ -9,7 +9,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
     valueType = 'text',
     fieldSchema,
   } = props;
-  const [filter, setFilter] = useState(initialValue);
+  const [filter, setFilter] = useState(initialValue || null);
 
   // expose AG Grid Filter Lifecycle callbacks
   useImperativeHandle(ref, () => {
@@ -36,9 +36,10 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           }
       }
   });
-
   useEffect(() => {
-    props.filterChangedCallback()
+    if(filter !== null){
+      props.filterChangedCallback()
+    }
   }, [filter]);
 
   return (

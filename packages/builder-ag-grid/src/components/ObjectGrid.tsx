@@ -299,8 +299,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const cancel = ()=>{
     // setDrawerVisible(false);
-    (document.getElementsByClassName('ant-drawer-open')[0] as any).style.display='none'
-    setEditedMap({})
+    const editDrawerElement = (document.getElementsByClassName('ant-drawer-open')[0] as any);
+    if(editDrawerElement.style.display != 'none'){
+      editDrawerElement.style.display='none'
+      setEditedMap({})
+    }
   }
 
   const onSortChanged = async (event)=>{
