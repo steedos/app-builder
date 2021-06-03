@@ -38,27 +38,32 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           }
       }
   });
+
   useEffect(() => {
     if(filter !== null){
       props.filterChangedCallback()
     }
   }, [filter]);
 
+  const fieldProps = {
+    field_schema: Object.assign({}, fieldSchema, {multiple: true})
+  }
+
+  const onChange = (value)=>{
+    if(isEmpty(value)){  //由于select、lookup为多选且没有选择值时返回了空数组，此处需要转换为undefined。
+      setFilter(undefined)
+    }else{
+      setFilter(value)
+    }
+  }
+
   return (
     <div style={{padding:5}}>
       <ProField 
         mode='edit'
         valueType={valueType} 
-        fieldProps={{
-          field_schema: Object.assign({}, fieldSchema, {multiple: true})
-        }}
-        onChange={(value)=>{
-          if(isEmpty(value)){  //由于select、lookup为多选且没有选择值时返回了空数组，此处需要转换为undefined。
-            setFilter(undefined)
-          }else{
-            setFilter(value)
-          }
-        }}
+        fieldProps={fieldProps}
+        onChange={onChange}
         text={initialValue}
         emptyText=''
       />

@@ -11,6 +11,7 @@ import Dropdown from '@salesforce/design-system-react/components/menu-dropdown';
 import { AgGridCellEditor } from "./CellEditor";
 import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
+import { AgGridCellDateFilter } from './CellDateFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
@@ -53,23 +54,31 @@ const FilterTypesMap = {
  */
 
 const filterModelToOdataFilters = (filterModel)=>{
+  // console.log(`filterModelToOdataFilters filterModel`, filterModel);
   const filters = [];
   forEach(filterModel, (value, key)=>{
-    if(!isEmpty(value.filter)){
-      const filter = [key, FilterTypesMap[value.type], value.filter];
-      filters.push(filter);
-    }else if(value.operator){
-      const filter = [];
-      if(value.condition1){
-        filter.push([key, FilterTypesMap[value.condition1.type], value.condition1.filter]);
+    if(value.type === 'inRange'){
+      filters.push([key, "between", [value.dateFrom, value.dateTo]]);
+    }else if(value.type === 'between'){
+      filters.push([key, value.type, value.filter]);
+    }else{
+      if(!isEmpty(value.filter)){
+        const filter = [key, FilterTypesMap[value.type], value.filter];
+        filters.push(filter);
+      }else if(value.operator){
+        const filter = [];
+        if(value.condition1){
+          filter.push([key, FilterTypesMap[value.condition1.type], value.condition1.filter]);
+        }
+        filter.push(value.operator.toLocaleLowerCase());
+        if(value.condition2){
+          filter.push([key, FilterTypesMap[value.condition2.type], value.condition2.filter]);
+        }
+        filters.push(filter);
       }
-      filter.push(value.operator.toLocaleLowerCase());
-      if(value.condition2){
-        filter.push([key, FilterTypesMap[value.condition2.type], value.condition2.filter]);
-      }
-      filters.push(filter);
     }
   })
+  console.log(`filters`, filters)
   return filters;
 }
 
@@ -172,16 +181,21 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       if (["textarea", "text", "code"].includes(field.type)) {
         filter = 'agTextColumnFilter'
       }
-      else 
-      if (["number", "percent", "currency"].includes(field.type)) {
+      else if (["number", "percent", "currency"].includes(field.type)) {
         filter = 'agNumberColumnFilter'
+      }
+      else if (["date", "datetime"].includes(field.type)) {
+        filter = 'AgGridCellDateFilter'
+        filterParams = {
+          fieldSchema: field,
+          valueType: field.type
+        }
       }
       else {
         filter = 'AgGridCellFilter',
         filterParams = {
           fieldSchema: field,
-          valueType: field.type,
-          multiple: true
+          valueType: field.type
         }
       }
       columns.push({
@@ -360,6 +374,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           AgGridCellRenderer: AgGridCellRenderer,
           AgGridCellEditor: AgGridCellEditor,
           AgGridCellFilter: AgGridCellFilter,
+          AgGridCellDateFilter: AgGridCellDateFilter,
           rowActions: RowActions,
         }}
         ref={gridRef}
