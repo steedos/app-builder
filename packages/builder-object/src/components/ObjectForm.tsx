@@ -28,6 +28,7 @@ export type FormProps<T = Record<string, any>>  = {
 */
 export type ObjectFormProps = {
   objectApiName?: string,
+  fields?: [string],
   objectSchema?: any,
   initialValues?: any,
   recordId?: string
@@ -45,6 +46,7 @@ export type ObjectFormProps = {
 export const ObjectForm = observer((props:ObjectFormProps) => {
   const {
     objectApiName, // = Settings.currentObjectApiName,
+    fields = [],//只显示指定字段
     initialValues = {},
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     recordId, // = Settings.currentRecordId,
@@ -90,8 +92,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       field.is_wide = true;
     }
     // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
-    let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1
-    if (!field.hidden && !isObjectField && !isOmitField){
+    let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1;
+    let isValid = !fields || !fields.length || fields.indexOf(fieldName) > -1
+    if (!field.hidden && !isObjectField && !isOmitField && isValid){
       fieldSchemaArray.push(defaults({name: fieldName}, field))
     }
   })
