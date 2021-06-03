@@ -1,7 +1,8 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { omit } from "lodash"
+import { omit, isArray } from "lodash"
 import { User } from '@steedos/builder-store';
+import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Alert, Spin } from 'antd';
 import { ObjectTree, ObjectTreeProps } from ".."
 
@@ -32,6 +33,15 @@ export const Organizations = observer(({
         console.error('您的账户未分配到任何分部，无法查看通讯录信息，请联系系统管理员！')
         errorMessage = <Alert message="您的账户没有权限访问此内容，请联络系统管理员。" type="warning" />
       }
+    }
+  }
+  if(defaultFilters && defaultFilters.length){
+    if (isArray(defaultFilters)) {
+        filters = [defaultFilters, filters]
+    }
+    else {
+        const odataOrgFilters = formatFiltersToODataQuery(filters);
+        filters = `(${defaultFilters}) and (${odataOrgFilters})`;
     }
   }
   let props = {

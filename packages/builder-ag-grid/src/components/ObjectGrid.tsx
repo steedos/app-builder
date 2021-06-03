@@ -134,26 +134,29 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const getColumns = (rowButtons)=>{
 
-    const columns:any[] = [{
-      resizable: false,
-      pinned: "left",
-      valueGetter: params => {
-        return parseInt(params.node.id) + 1
+    const columns:any[] = [
+      {
+        resizable: false,
+        pinned: "left",
+        valueGetter: params => {
+          return parseInt(params.node.id) + 1
+        },
+        width: 80,
+        maxWidth: 80,
+        minWidth: 80,
+        cellStyle: {"text-align": "right" },
+        checkboxSelection: true,
+        headerCheckboxSelection: true, //仅rowModelType等于Client-Side时才生效
+        suppressMenu: true,
       },
-      width: 55,
-      maxWidth: 55,
-      minWidth: 55,
-      cellStyle: {"text-align": "right" }
-    },{
-      resizable: false,
-      pinned: "left",
-      width: 35,
-      maxWidth: 35,
-      minWidth: 35,
-      checkboxSelection: true,
-      headerCheckboxSelection: true, //仅rowModelType等于Client-Side时才生效
-      suppressMenu: true,
-    }];
+      // {
+      //   resizable: false,
+      //   pinned: "left",
+      //   width: 35,
+      //   maxWidth: 35,
+      //   minWidth: 35,
+      // }
+    ];
     forEach(columnFields, ({ fieldName, hideInTable, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName];
       if(!field){
@@ -169,7 +172,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       if (["textarea", "text", "code"].includes(field.type)) {
         filter = 'agTextColumnFilter'
       }
-      else if (["number", "percent", "currency"].includes(field.type)) {
+      else 
+      if (["number", "percent", "currency"].includes(field.type)) {
         filter = 'agNumberColumnFilter'
       }
       else {

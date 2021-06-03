@@ -3,6 +3,8 @@ import React, { useContext, useRef, useEffect, useState, useImperativeHandle, fo
 import _ from "lodash"
 import ProField from "@ant-design/pro-field";
 
+import './CellFilter.less';
+
 export const AgGridCellFilter = forwardRef((props:any, ref) => {
   const { 
     value: initialValue,

@@ -98,7 +98,7 @@ export const ObjectModal = ({
           type: rowSelectionType ,
           // 在proTable中defaultSelectedRowKeys目前无效。只能用selectedRowKeys实现相关功能。
           // 如果proTable后续版本defaultSelectedRowKeys能生效的话可以考虑直接换成defaultSelectedRowKeys。
-          selectedRowKeys: isArray(value) ? value : [value]
+          selectedRowKeys: defaultValue
         }
       });
     }
@@ -107,7 +107,7 @@ export const ObjectModal = ({
     // 底层使用的是ObjectTree时multiple及value属性实现逻辑
     Object.assign(contentComponentProps, {
       multiple,
-      defaultSelectedKeys: isArray(value) ? value : [value]
+      defaultSelectedKeys: defaultValue
     });
   }
   

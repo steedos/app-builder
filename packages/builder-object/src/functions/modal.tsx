@@ -20,32 +20,27 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   if(!component){
     component = ObjectForm
   }
-  if(!componentParams || !componentParams.name){
-    console.error("Miss name props for the component params.");
-    return;
+  if(!componentParams){
+    componentParams = {};
   }
-  let triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
-  if(triggerDom){
-    (triggerDom as any).click()
+  if(!componentParams.name){
+    componentParams.name = "modal-default";
   }
-  else{
-    let modalRoot = document.getElementById('steedos-modal-root');
-    if (!modalRoot) {
-      modalRoot = document.createElement('div');
-      modalRoot.setAttribute('id', 'steedos-modal-root');
-      document.body.appendChild(modalRoot)
-    }
-    let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
-    const wrapComponent: any = withModalWrap(component, provideProps);
-    const contentEle = React.createElement(wrapComponent,{
-      ...componentParams,
-      trigger
-    });
-    // ReactDOM.render(React.createElement(SteedosProvider, null, contentEle), modalRoot)
-    ReactDOM.render(contentEle, modalRoot);
-    setTimeout(()=>{
-      triggerDom = document.querySelector(`#steedos-modal-root .steedos-modal-trigger-${componentParams.name}`);
-      triggerDom && (triggerDom as any).click();
-    }, 500);
+  let modalRoot = document.getElementById(`steedos-modal-root-${componentParams.name}`);
+  if (!modalRoot) {
+    modalRoot = document.createElement('div');
+    modalRoot.setAttribute('id', `steedos-modal-root-${componentParams.name}`);
+    document.body.appendChild(modalRoot)
   }
+  let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
+  const wrapComponent: any = withModalWrap(component, provideProps);
+  const contentEle = React.createElement(wrapComponent,{
+    ...componentParams,
+    trigger
+  });
+  ReactDOM.render(contentEle, modalRoot);
+  setTimeout(()=>{
+    let triggerDom = document.querySelector(`#steedos-modal-root-${componentParams.name} .steedos-modal-trigger-${componentParams.name}`);
+    triggerDom && (triggerDom as any).click();
+  }, 500);
 }

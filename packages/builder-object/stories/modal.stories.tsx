@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectModal } from "@steedos/builder-object";
+import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal } from "@steedos/builder-object";
 import * as React from "react"
 import ReactDOM from "react-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
@@ -31,7 +31,7 @@ export const FormModal = () => {
   };
   const objectFormProps = {
     objectApiName: "accounts",
-    // recordId: {process.env.STEEDOS_CURRENT_RECORD_ID},
+    // recordId: process.env.STEEDOS_CURRENT_RECORD_ID,
     layout: 'horizontal',
     title: `新建客户`,
     initialValues: {name:"张三"},
@@ -57,19 +57,33 @@ export const FormModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test1", 
+        (window as any).SteedosUI.showModal(ObjectForm,{
           ...schemaFormProps
         })
       }}>showModal - 弹出SchemaForm示例</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectForm,{
-          name: "showModal-test2", 
+        (window as any).SteedosUI.showModal(ObjectForm,{
           ...objectFormProps
         })
       }}>showModal - 弹出ObjectForm示例</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectForm,{
+          recordId: "6k5svcTmfopo3dXWr",
+          ...objectFormProps
+        })
+      }}>showModal - 弹出ObjectForm带recordId示例1</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectForm,{
+          recordId: "biJLkxf6bdi69dZJd",
+          ...objectFormProps
+        })
+      }}>showModal - 弹出ObjectForm带recordId示例2</Button>
     </React.Fragment>
   )
 }
@@ -125,14 +139,100 @@ export const TableModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        window.SteedosUI.showModal(ObjectModal,{
-          name: "showModal-test1", 
+        (window as any).SteedosUI.showModal(ObjectModal,{
           ...tableProps2,
           listSchema: {
             columns: ["name", "state"]
           },
         })
       }}>showModal - 弹出Table 指定列</Button>
+    </React.Fragment>
+  )
+}
+
+export const TreeModal = () => {
+  const tableProps1 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps2 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
+    // filters:['name','contains','公司'],
+    filters: "contains(name,'公司')",
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps3 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    contentComponent: ObjectTree,
+    nameField:'name',
+    parentField:'parent',
+    multiple: true,
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  const tableProps4 = {
+    title: `选择 部门`,
+    objectApiName: "organizations",
+    // filters:['name','contains','公司'],
+    // filters: "contains(name,'公司')",
+    // multiple: true,
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  }
+  return (
+    <React.Fragment>
+      <ObjectModal
+        {...tableProps1}
+        trigger={<Button type="primary" >弹出tree</Button>}
+      />
+      <br /><br />
+      <ObjectModal
+        {...tableProps2}
+        trigger={<Button type="primary" >弹出tree + filters</Button>}
+      />
+      <br /><br />
+      <ObjectModal
+        {...tableProps3}
+        trigger={<Button type="primary" >弹出tree + multiple</Button>}
+      />
+      <br /><br />
+      <OrganizationsModal
+        {...tableProps4}
+        trigger={<Button type="primary" >选组</Button>}
+      />
+      <br /><br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectModal,{
+          name: "showModal-test1", 
+          ...tableProps1,
+        })
+      }}>showModal  -  弹出Tree</Button>
+      <br /><br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(OrganizationsModal,{
+          name: "showModal-test2", 
+          ...tableProps4,
+        })
+      }}>showModal  -  选组</Button>
     </React.Fragment>
   )
 }
