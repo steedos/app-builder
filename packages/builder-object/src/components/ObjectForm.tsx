@@ -38,6 +38,7 @@ export type ObjectFormProps = {
   afterUpdate?: Function,
   afterInsert?: Function,
   visible?: boolean,
+  layout?: string,
   // showFooterToolbar?: boolean
 } & FormProps
 
