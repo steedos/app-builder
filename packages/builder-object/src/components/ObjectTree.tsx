@@ -1,9 +1,10 @@
 import { Tree } from "antd"
-import _ from "lodash"
+import { isArray } from "lodash"
 import { observer } from "mobx-react-lite"
 import React, { useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { Objects, API } from "@steedos/builder-store"
+import { formatFiltersToODataQuery } from '@steedos/filters';
 import { getTreeDataFromRecords } from '../utils';
 import "./ObjectTree.less"
 // export type TreeProps<T extends Record<string, any>, U extends ParamsType, ValueType>  = {
@@ -60,6 +61,17 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
 
   const [treeData, setTreeData] = useState([])
   const [expandedKeys, setExpandedKeys] = useState([])
+  // TODO: 暂时先合并当前选中值作为filters， 后期再优化下。
+  const keyFilters: any = ['_id', '=', defaultSelectedKeys];
+  if (defaultSelectedKeys && defaultSelectedKeys.length && filters && filters.length) {
+    if (isArray(filters)) {
+      filters = [keyFilters, "or", filters]
+    }
+    else {
+      const odataKeyFilters = formatFiltersToODataQuery(keyFilters);
+      filters = `(${odataKeyFilters}) or (${filters})`;
+    }
+  }
   let { data: records } = useQuery(
     [
       objectApiName + "_records",
