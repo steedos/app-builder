@@ -157,6 +157,8 @@ export const TreeModal = () => {
     contentComponent: ObjectTree,
     nameField:'name',
     parentField:'parent',
+    // filters:['name','contains','公司'],
+    filters: "contains(name,'公司')",
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
@@ -165,6 +167,8 @@ export const TreeModal = () => {
   const tableProps3 = {
     title: `选择 部门`,
     objectApiName: "organizations",
+    // filters:['name','contains','公司'],
+    // filters: "contains(name,'公司')",
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
