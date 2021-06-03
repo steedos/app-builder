@@ -53,7 +53,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           field_schema: Object.assign({}, fieldSchema, {multiple: true})
         }}
         onChange={(value)=>{
-          if(isEmpty(value)){
+          if(isEmpty(value)){  //由于select、lookup为多选且没有选择值时返回了空数组，此处需要转换为undefined。
             setFilter(undefined)
           }else{
             setFilter(value)
