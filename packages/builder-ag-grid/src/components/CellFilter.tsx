@@ -1,6 +1,6 @@
 
 import React, { useContext, useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import _ from "lodash"
+import { isEmpty } from "lodash"
 import ProField from "@ant-design/pro-field";
 
 import './CellFilter.less';
@@ -50,10 +50,14 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
         mode='edit'
         valueType={valueType} 
         fieldProps={{
-          field_schema: fieldSchema
+          field_schema: Object.assign({}, fieldSchema, {multiple: true})
         }}
         onChange={(value)=>{
-          setFilter(value)
+          if(isEmpty(value)){
+            setFilter(undefined)
+          }else{
+            setFilter(value)
+          }
         }}
         text={initialValue}
         emptyText=''

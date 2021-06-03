@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -55,7 +55,7 @@ const FilterTypesMap = {
 const filterModelToOdataFilters = (filterModel)=>{
   const filters = [];
   forEach(filterModel, (value, key)=>{
-    if(value.filter){
+    if(!isEmpty(value.filter)){
       const filter = [key, FilterTypesMap[value.type], value.filter];
       filters.push(filter);
     }else if(value.operator){
