@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty, isString, isObject} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -96,7 +96,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     toolbar,
     rowButtons,
     rowSelection = 'multiple',
-    sideBar='filters',
+    sideBar: defaultSideBar,
     pageSize = 20,
     gridRef,
     onModelUpdated,
@@ -108,7 +108,21 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // const [modal] = Modal.useModal();
   // const colSize = useAntdMediaQuery();
   // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
-
+  let sideBar = defaultSideBar;
+  if(!sideBar || isObject(sideBar)){
+    sideBar = Object.assign({
+      toolPanels:[
+        {
+          id: 'filters',
+          labelDefault: '过滤',
+          // labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+        }
+      ]
+      // defaultToolPanel: 'filters',
+    }, sideBar)
+  }
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div><Spin/></div>)
 
