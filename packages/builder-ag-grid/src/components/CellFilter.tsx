@@ -1,6 +1,6 @@
 
 import React, { useContext, useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import { isEmpty } from "lodash"
+import { isEmpty, isNil } from "lodash"
 import ProField from "@ant-design/pro-field";
 
 import './CellFilter.less';
@@ -45,8 +45,12 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
     }
   }, [filter]);
 
-  const fieldProps = {
-    field_schema: Object.assign({}, fieldSchema, {multiple: true})
+  let fieldProps: any = {
+    field_schema: Object.assign({}, fieldSchema, {multiple: true}),
+  }
+  if(!isNil(filter)){
+    // filter为null时lookup显示会异常，所以加isNil
+    fieldProps.value = filter;
   }
 
   const onChange = (value)=>{

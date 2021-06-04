@@ -142,9 +142,9 @@ function getRowButtons(objectSchema) {
     if (isString(action._visible)) {
       try {
         const visibleFunction = eval(`(${action._visible})`);
-        visible = visibleFunction(objectApiName)
+        visible = visibleFunction;
       } catch (error) {
-        // console.error(error, action._visible)
+        console.error(error, action._visible)
       }
     }
     if (isBoolean(action._visible)) {
