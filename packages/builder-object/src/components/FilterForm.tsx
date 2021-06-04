@@ -9,10 +9,10 @@ import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { Spin } from 'antd';
 import { clone } from 'lodash';
 
-export type QueryFilterProps = {
+export type FilterFormProps = {
 } & ObjectFormProps
 
-export const QueryFilter = observer((props:QueryFilterProps) => {
+export const FilterForm = observer((props:FilterFormProps) => {
   const {
     name: formId = 'query-filter-default',
     objectApiName,
