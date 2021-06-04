@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal } from "@steedos/builder-object";
+import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal, SpaceUsersModal, Organizations } from "@steedos/builder-object";
 import * as React from "react"
 import ReactDOM from "react-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
@@ -118,6 +118,43 @@ export const TableModal = () => {
       return true;
     }
   };
+  const tableProps4 = {
+    title: `选择 人员`,
+    objectApiName: "space_users",
+    listSchema: "all",
+    columnFields:[{
+      fieldName: "name",
+      hideInSearch: true,
+      sorter: true,
+    },{
+      fieldName: "email",
+      hideInSearch: true,
+    },{
+      fieldName: "mobile",
+      hideInSearch: true,
+    },{
+      fieldName: "organizations_parents",
+      hideInTable: true,
+      hideInSearch: true,
+      expandComponent: Organizations,
+      expandReference: "organizations",
+      expandNameField: "name",
+      expandParentField: "parent",
+    }],
+    // filters:['name','contains','芳'],
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  };
+  const tableProps5 = {
+    title: `选择 人员`,
+    // filters:['name','contains','芳'],
+    onFinish: async (values)=>{
+      console.log("values:", values);
+      return true;
+    }
+  };
   return (
     <React.Fragment>
       <ObjectModal
@@ -138,6 +175,18 @@ export const TableModal = () => {
       />
       <br />
       <br />
+      <ObjectModal 
+        {...tableProps4}
+        trigger={<Button type="primary" >弹出包含左侧树</Button>}
+      />
+      <br />
+      <br />
+      <SpaceUsersModal 
+        {...tableProps5}
+        trigger={<Button type="primary" >弹出选人</Button>}
+      />
+      <br />
+      <br />
       <Button type="primary" onClick={()=>{
         (window as any).SteedosUI.showModal(ObjectModal,{
           ...tableProps2,
@@ -146,6 +195,20 @@ export const TableModal = () => {
           },
         })
       }}>showModal - 弹出Table 指定列</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectModal,{
+          ...tableProps4
+        })
+      }}>showModal - 弹出包含左侧树</Button>
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(SpaceUsersModal,{
+          ...tableProps5
+        })
+      }}>showModal - 弹出选人</Button>
     </React.Fragment>
   )
 }
@@ -217,7 +280,7 @@ export const TreeModal = () => {
       <br /><br />
       <OrganizationsModal
         {...tableProps4}
-        trigger={<Button type="primary" >选组</Button>}
+        trigger={<Button type="primary" >弹出选组</Button>}
       />
       <br /><br />
       <Button type="primary" onClick={()=>{
@@ -232,7 +295,7 @@ export const TreeModal = () => {
           name: "showModal-test2", 
           ...tableProps4,
         })
-      }}>showModal  -  选组</Button>
+      }}>showModal  -  弹出选组</Button>
     </React.Fragment>
   )
 }
