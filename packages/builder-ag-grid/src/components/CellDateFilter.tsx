@@ -23,13 +23,13 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
           // },
 
           isFilterActive() {
-            return !!dateTo && !!dateFrom
+            return !!dateTo || !!dateFrom
           },
 
           // this example isn't using getModel() and setModel(),
           // so safe to just leave these empty. don't do this in your code!!!
           getModel() {
-            if ((!!dateTo && !!dateFrom) || betweenValue != 'inRange')
+            if ((!!dateTo || !!dateFrom) || betweenValue != 'inRange')
               if(betweenValue == 'inRange'){
                 return {
                   filterType: "date",
@@ -52,7 +52,7 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
   });
 
   useEffect(() => {
-    if((dateTo !== null && dateFrom !== null) || (betweenValue != 'inRange' && betweenValue !== null)){
+    if((dateTo !== null || dateFrom !== null) || (betweenValue != 'inRange' && betweenValue !== null)){
       props.filterChangedCallback()
     }
   }, [betweenValue, dateTo, dateFrom]);

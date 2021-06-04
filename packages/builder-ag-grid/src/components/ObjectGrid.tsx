@@ -13,6 +13,7 @@ import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
 import { AgGridCellDateFilter } from './CellDateFilter';
 import { AgGridCellTextFilter } from './CellTextFilter';
+import { AgGridCellNumberFilter } from './CellNumberFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
@@ -59,11 +60,16 @@ const filterModelToOdataFilters = (filterModel)=>{
   const filters = [];
   forEach(filterModel, (value, key)=>{
     if(value.type === 'between'){
-      if(value.filter){
-        filters.push([key, value.type, value.filter]);
+      if(value.filterType === "number"){
+        filters.push([key, "between", [value.numberFrom, value.numberTo]]);
       }else{
-        filters.push([key, "between", [value.dateFrom, value.dateTo]]);
+        if(value.filter){
+          filters.push([key, value.type, value.filter]);
+        }else{
+          filters.push([key, "between", [value.dateFrom, value.dateTo]]);
+        }
       }
+      
     }else{
       if(!isEmpty(value.filter)){
         const filter = [key, FilterTypesMap[value.type], value.filter];
@@ -81,7 +87,7 @@ const filterModelToOdataFilters = (filterModel)=>{
       }
     }
   })
-  console.log(`filters`, filters)
+  // console.log(`filters`, filters)
   return filters;
 }
 
@@ -183,9 +189,17 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       let rowGroup = false //["select", "lookup"].includes(field.type)
       if (["textarea", "text", "code"].includes(field.type)) {
         filter = 'AgGridCellTextFilter'
+        filterParams = {
+          fieldSchema: field,
+          valueType: field.type
+        }
       }
       else if (["number", "percent", "currency"].includes(field.type)) {
-        filter = 'agNumberColumnFilter'
+        filter = 'AgGridCellNumberFilter'
+        filterParams = {
+          fieldSchema: field,
+          valueType: field.type
+        }
       }
       else if (["date", "datetime"].includes(field.type)) {
         filter = 'AgGridCellDateFilter'
@@ -379,6 +393,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           AgGridCellFilter: AgGridCellFilter,
           AgGridCellDateFilter: AgGridCellDateFilter,
           AgGridCellTextFilter: AgGridCellTextFilter,
+          AgGridCellNumberFilter: AgGridCellNumberFilter,
           rowActions: RowActions,
         }}
         ref={gridRef}
