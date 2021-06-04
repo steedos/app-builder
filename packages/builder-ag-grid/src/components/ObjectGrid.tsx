@@ -115,7 +115,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // const colSize = useAntdMediaQuery();
   // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
   let sideBar = defaultSideBar;
-  if(isEmpty(sideBar)){
+  if(isEmpty(sideBar) && sideBar !== false ){
     sideBar = {
       toolPanels:[
         {
