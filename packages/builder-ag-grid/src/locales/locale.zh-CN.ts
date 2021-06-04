@@ -4,12 +4,12 @@ export const AG_GRID_LOCALE_ZH_CN = {
     // Set Filter
     selectAll: '(Select All)',
     selectAllSearchResults: '(Select All Search Results)',
-    searchOoo: 'Search...',
+    searchOoo: '搜索...',
     blanks: '(Blanks)',
     noMatches: 'No matches',
 
     // Number Filter & Text Filter
-    filterOoo: 'Filter...',
+    filterOoo: '过滤...',
     equals: '等于',
     notEqual: '不等于',
     empty: '空',
@@ -50,7 +50,7 @@ export const AG_GRID_LOCALE_ZH_CN = {
 
     // Side Bar
     columns: 'Columns',
-    filters: 'Filters',
+    filters: '过滤',
 
     // columns tool panel
     pivotMode: 'Pivot Mode',
@@ -65,7 +65,7 @@ export const AG_GRID_LOCALE_ZH_CN = {
     group: 'Group',
 
     // Other
-    loadingOoo: 'Loading...',
+    loadingOoo: '加载中...',
     noRowsToShow: 'No Rows To Show',
     enabled: 'Enabled',
 

@@ -109,26 +109,24 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     onModelUpdated,
     ...rest
   } = props
-  const [totalRecords, setTotalRecords] = useState(0)
   const [editedMap, setEditedMap] = useState({})
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
   // const colSize = useAntdMediaQuery();
   // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
   let sideBar = defaultSideBar;
-  if(!sideBar || isObject(sideBar)){
-    sideBar = Object.assign({
+  if(isEmpty(sideBar)){
+    sideBar = {
       toolPanels:[
         {
           id: 'filters',
-          labelDefault: '过滤',
-          // labelKey: 'filters',
+          labelKey: 'filters',
+          labelDefault: 'Filters',
           iconKey: 'filter',
           toolPanel: 'agFiltersToolPanel',
         }
       ]
-      // defaultToolPanel: 'filters',
-    }, sideBar)
+    }
   }
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div><Spin/></div>)
