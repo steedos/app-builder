@@ -12,6 +12,7 @@ import { AgGridCellEditor } from "./CellEditor";
 import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
 import { AgGridCellDateFilter } from './CellDateFilter';
+import { AgGridCellTextFilter } from './CellTextFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
@@ -181,7 +182,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       let filterParams:any = {}
       let rowGroup = false //["select", "lookup"].includes(field.type)
       if (["textarea", "text", "code"].includes(field.type)) {
-        filter = 'agTextColumnFilter'
+        filter = 'AgGridCellTextFilter'
       }
       else if (["number", "percent", "currency"].includes(field.type)) {
         filter = 'agNumberColumnFilter'
@@ -377,6 +378,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           AgGridCellEditor: AgGridCellEditor,
           AgGridCellFilter: AgGridCellFilter,
           AgGridCellDateFilter: AgGridCellDateFilter,
+          AgGridCellTextFilter: AgGridCellTextFilter,
           rowActions: RowActions,
         }}
         ref={gridRef}
