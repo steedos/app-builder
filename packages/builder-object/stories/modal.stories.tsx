@@ -177,7 +177,7 @@ export const TableModal = () => {
       <br />
       <ObjectModal 
         {...tableProps4}
-        trigger={<Button type="primary" >弹出包含左侧树</Button>}
+        trigger={<Button type="primary" >弹出包含左侧树的表格</Button>}
       />
       <br />
       <br />
@@ -201,7 +201,7 @@ export const TableModal = () => {
         (window as any).SteedosUI.showModal(ObjectModal,{
           ...tableProps4
         })
-      }}>showModal - 弹出包含左侧树</Button>
+      }}>showModal - 弹出包含左侧树的表格</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
@@ -218,8 +218,6 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
-    nameField:'name',
-    parentField:'parent',
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
@@ -229,8 +227,6 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
-    nameField:'name',
-    parentField:'parent',
     // filters:['name','contains','公司'],
     filters: "contains(name,'公司')",
     onFinish: async (values)=>{
@@ -242,8 +238,6 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
-    nameField:'name',
-    parentField:'parent',
     multiple: true,
     onFinish: async (values)=>{
       console.log("values:", values);

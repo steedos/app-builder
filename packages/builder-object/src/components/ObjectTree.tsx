@@ -61,6 +61,17 @@ export const ObjectTree = observer((props: ObjectTreeProps) => {
 
   const [treeData, setTreeData] = useState([])
   const [expandedKeys, setExpandedKeys] = useState([])
+
+  const schema = !object.isLoading && object.schema; 
+  if(schema){
+    if(!nameField){
+      nameField = schema.NAME_FIELD_KEY || 'name';
+    }
+    if(!parentField){
+      parentField = schema.parent_field || 'parent';
+    }
+  }
+
   // TODO: 暂时先合并当前选中值作为filters， 后期再优化下。
   const keyFilters: any = ['_id', '=', defaultSelectedKeys];
   if (defaultSelectedKeys && defaultSelectedKeys.length && filters && filters.length) {
