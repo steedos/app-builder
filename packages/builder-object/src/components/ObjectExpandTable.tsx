@@ -1,5 +1,5 @@
 /*
-该组件在ObjectTable的基础上,扩展了左侧内容.提供List和Tree两种形式展示
+该组件在ObjectProTable的基础上,扩展了左侧内容.提供List和Tree两种形式展示
 通过columnFields里添加相关属性来驱动
 
  * @Author: Kent.Wood 
@@ -20,9 +20,9 @@ import { ObjectGrid } from '@steedos/builder-ag-grid';
 
 import {
   ObjectList,
-  ObjectTable,
-  ObjectTableColumnProps,
-  ObjectTableProps,
+  ObjectProTable,
+  ObjectProTableColumnProps,
+  ObjectProTableProps,
   ObjectTree,
 } from ".."
 
@@ -33,7 +33,7 @@ export type ObjectExpandTableColumnProps = {
   expandNameField?: string //树中用于显示的字段名
   expandParentField?: string //树中对象的父级的字段名，默认是parent,只在expand为tree时有效
   expandFilters?: [] | string //树中过滤条件
-} & ObjectTableColumnProps
+} & ObjectProTableColumnProps
 
 export type ObjectExpandTableProps =
   | ({
@@ -42,7 +42,7 @@ export type ObjectExpandTableProps =
       //parentField: string //当前对象的父级对象，用于树形结构呈现时使用
       onChange: ([any]) => void
       columnFields: ObjectExpandTableColumnProps[]
-    } & ObjectTableProps<ObjectExpandTableColumnProps> & {
+    } & ObjectProTableProps<ObjectExpandTableColumnProps> & {
         defaultClassName?: string
       })
   | any
@@ -181,7 +181,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     filters: expandDefine.expandFilters
   };
 
-  // 当ObjectTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
+  // 当ObjectProTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
   let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
 
   const colSize = useAntdMediaQuery();

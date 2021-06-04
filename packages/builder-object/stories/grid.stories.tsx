@@ -1,4 +1,4 @@
-import { ObjectTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
+import { ObjectProTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
@@ -14,7 +14,7 @@ export default {
 
 export const Table = () => {
   return (
-      <ObjectTable objectApiName='accounts' 
+      <ObjectProTable objectApiName='accounts' 
         pagination={{
           pageSize:3
         }}
@@ -44,13 +44,13 @@ export const Table = () => {
         }
       >
         
-      </ObjectTable>
+      </ObjectProTable>
   )
 }
 
 export const TableFilters= () => {
   return (
-      <ObjectTable objectApiName='tasks' 
+      <ObjectProTable objectApiName='tasks' 
         columnFields={
           [
             {
@@ -68,13 +68,13 @@ export const TableFilters= () => {
         filters={[["name", "contains", "n"]]}
       >
         
-      </ObjectTable>
+      </ObjectProTable>
   )
 }
 
 export const TableColumnRender= () => {
   return (
-      <ObjectTable objectApiName='tasks' 
+      <ObjectProTable objectApiName='tasks' 
         columnFields={
           [
             {
@@ -92,7 +92,7 @@ export const TableColumnRender= () => {
           ]
         }
       >
-      </ObjectTable>
+      </ObjectProTable>
   )
 }
 
