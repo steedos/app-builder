@@ -1,4 +1,4 @@
-import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal, SpaceUsersModal, Organizations } from "@steedos/builder-object";
+import { ObjectForm, ObjectModal, ObjectTree, SpaceUsers, OrganizationsModal, SpaceUsersModal, Organizations, ObjectTable } from "@steedos/builder-object";
 import * as React from "react"
 import ReactDOM from "react-dom";
 import { Modal, TreeSelect, Select, Input, Button } from "antd"
@@ -188,7 +188,7 @@ export const TableModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        (window as any).SteedosUI.showModal(ObjectModal,{
+        (window as any).SteedosUI.showModal(ObjectTable,{
           ...tableProps2,
           listSchema: {
             columns: ["name", "state"]
@@ -198,14 +198,14 @@ export const TableModal = () => {
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        (window as any).SteedosUI.showModal(ObjectModal,{
+        (window as any).SteedosUI.showModal(ObjectTable,{
           ...tableProps4
         })
       }}>showModal - 弹出包含左侧树的表格</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
-        (window as any).SteedosUI.showModal(SpaceUsersModal,{
+        (window as any).SteedosUI.showModal(SpaceUsers,{
           ...tableProps5
         })
       }}>showModal - 弹出选人</Button>
@@ -278,14 +278,14 @@ export const TreeModal = () => {
       />
       <br /><br />
       <Button type="primary" onClick={()=>{
-        (window as any).SteedosUI.showModal(ObjectModal,{
+        (window as any).SteedosUI.showModal(ObjectTree,{
           name: "showModal-test1", 
           ...tableProps1,
         })
       }}>showModal  -  弹出Tree</Button>
       <br /><br />
       <Button type="primary" onClick={()=>{
-        (window as any).SteedosUI.showModal(OrganizationsModal,{
+        (window as any).SteedosUI.showModal(Organizations,{
           name: "showModal-test2", 
           ...tableProps4,
         })

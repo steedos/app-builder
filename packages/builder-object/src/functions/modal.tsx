@@ -1,6 +1,6 @@
 import * as React from "react"
 import ReactDOM from "react-dom";
-import { ObjectForm, SteedosProvider } from "../";
+import { ObjectForm, SteedosProvider, ObjectModal, SpaceUsers, SpaceUsersModal, Organizations, OrganizationsModal} from "../";
 import {
   BrowserRouter as Router
 } from "react-router-dom";
@@ -20,6 +20,14 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   if(!component){
     component = ObjectForm
   }
+  componentParams.contentComponent = component;
+  let ModalComponent = ObjectModal;
+  if([SpaceUsers].indexOf(component as any) > -1){
+    ModalComponent = SpaceUsersModal;
+  }
+  else if([Organizations].indexOf(component  as any) > -1){
+    ModalComponent = OrganizationsModal;
+  }
   if(!componentParams){
     componentParams = {};
   }
@@ -33,7 +41,7 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
     document.body.appendChild(modalRoot)
   }
   let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
-  const wrapComponent: any = withModalWrap(component, provideProps);
+  const wrapComponent: any = withModalWrap(ModalComponent, provideProps);
   const contentEle = React.createElement(wrapComponent,{
     ...componentParams,
     trigger
