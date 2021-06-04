@@ -13,6 +13,7 @@ export const FormModel = types.model({
   // fields: types.array(FormFieldModel),
   mode: types.union(types.string, types.undefined), // 'read' | 'edit'
   value: types.frozen(),
+  convertedFilters: types.frozen(),//根据value转换后的filters
 }).actions(self => ({
   // note the `({`, we are returning an object literal
   setMode(newMode: string) {
@@ -20,6 +21,9 @@ export const FormModel = types.model({
   },
   setValue(value) {
     self.value = value;
+  },
+  setConvertedFilters(filters) {
+    self.convertedFilters = filters;
   }
 }))
 
