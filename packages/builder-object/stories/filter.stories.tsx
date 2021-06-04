@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Form,Field } from '@steedos/builder-form';
-import { QueryFilter } from "@steedos/builder-object";
+import { FilterForm } from "@steedos/builder-object";
 
 export default {
   title: "Filter",
@@ -8,7 +8,7 @@ export default {
 
 export const ObjectFilter = () => {
   return (
-      <QueryFilter
+      <FilterForm
        objectApiName={"accounts"}
        fields={["name"]}
       />
@@ -17,7 +17,7 @@ export const ObjectFilter = () => {
 
 export const SchemaFilter = () => {
   return (
-      <QueryFilter
+      <FilterForm
        objectSchema={{
          fields:{
            name: {
