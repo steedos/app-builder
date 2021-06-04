@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from "react"
 import { Modal, ConfigProvider } from "antd"
 import { 
-  ObjectTable, ObjectTableProps, 
+  ObjectProTable, ObjectProTableProps, 
   ObjectExpandTable, ObjectExpandTableProps, 
   ObjectTree, ObjectTreeProps,
-  ObjectListView, ObjectModalListView, ObjectListViewProps, 
+  ObjectListView, ObjectTable, ObjectListViewProps, 
   Organizations, OrganizationsProps,
   SpaceUsers, SpaceUsersProps,
 } from ".."
@@ -27,7 +27,7 @@ export type ObjectModalProps = {
   contentComponent: React.FunctionComponent,
   multiple?: any
   value?: any
-} & ObjectTableProps<any> & ObjectExpandTableProps & ObjectTreeProps & ObjectListViewProps<any>
+} & ObjectProTableProps<any> & ObjectExpandTableProps & ObjectTreeProps & ObjectListViewProps<any>
   & OrganizationsProps & SpaceUsersProps
 
 export const ObjectModal = ({
@@ -55,7 +55,7 @@ export const ObjectModal = ({
   const { style, ...restModalProps } = modalProps || {};
 
   // 设置默认值
-  ContentComponent = ContentComponent ? ContentComponent : ObjectModalListView;
+  ContentComponent = ContentComponent ? ContentComponent : ObjectTable;
 
   const handleOnChange = (keys: any, rows: any) => {
     setSelectedRowKeys(keys);
@@ -77,8 +77,8 @@ export const ObjectModal = ({
   }, [context, modalProps, visible]);
 
   let contentComponentProps: any = {};
-  if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent) > -1){
-    // console.log([ObjectTable, ObjectExpandTable, ObjectListView, ObjectModalListView, SpaceUsers].indexOf(ContentComponent))
+  if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent) > -1){
+    // console.log([ObjectTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent))
     // 底层使用的是ObjectTable 或 ag-grid时multiple及value属性实现逻辑
     if(tableMode === "ag-grid"){
       let rowSelectionType="single";

@@ -1,10 +1,10 @@
 import { Builder } from '@builder.io/react';
 import { Component, Input } from '@builder.io/sdk';
 import { clone } from 'lodash';
-import { ObjectTable } from "./ObjectTable";
+import { ObjectProTable } from "./ObjectProTable";
 
 export const configObjectTable: Component = {
-  name: 'Steedos:ObjectTable',
+  name: 'Steedos:ObjectProTable',
   inputs: [
     { name: 'objectApiName', type: 'text', friendlyName: "对象名" },
   ],
@@ -23,6 +23,6 @@ export const registerObjectTableComponent = (fieldNames: string[] | { label: str
     helperText: '请选择要显示的列字段'
   });
   const config = Object.assign({}, configObjectTable, {inputs: configInputs});
-  Builder.registerComponent(ObjectTable, config);
+  Builder.registerComponent(ObjectProTable, config);
 }
 
