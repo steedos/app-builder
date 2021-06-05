@@ -136,7 +136,7 @@ export const TableModal = () => {
       fieldName: "organizations_parents",
       hideInTable: true,
       hideInSearch: true,
-      expandComponent: Organizations,
+      expandComponent: ObjectTree,
       expandReference: "organizations",
       expandNameField: "name",
       expandParentField: "parent",
