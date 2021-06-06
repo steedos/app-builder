@@ -20,14 +20,18 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   if(!component){
     component = ObjectForm
   }
-  componentParams.contentComponent = component;
-  let ModalComponent = ObjectModal;
-  if([SpaceUsers].indexOf(component as any) > -1){
-    ModalComponent = SpaceUsersModal;
+  let ModalComponent:any = ObjectForm;
+  if(component !== ObjectForm){
+    ModalComponent = ObjectModal;
+    componentParams.contentComponent = component;
+    if([SpaceUsers].indexOf(component as any) > -1){
+      ModalComponent = SpaceUsersModal;
+    }
+    else if([Organizations].indexOf(component  as any) > -1){
+      ModalComponent = OrganizationsModal;
+    }
   }
-  else if([Organizations].indexOf(component  as any) > -1){
-    ModalComponent = OrganizationsModal;
-  }
+  
   if(!componentParams){
     componentParams = {};
   }
