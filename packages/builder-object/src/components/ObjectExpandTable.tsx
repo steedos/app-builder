@@ -179,15 +179,25 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   }
 
   let defaultExpandReference, defaultExpandNameField, defaultExpandParentField;
-  if(ExpandComponent){
-    const objectSchema = object.schema;
-    const objectSchemaFields = objectSchema.fields;
-    const currentFields = objectSchemaFields[expandDefine.fieldName]
+  const objectSchema = object.schema;
+  const objectSchemaFields = objectSchema.fields;
+  const currentFields = expandDefine && objectSchemaFields[expandDefine.fieldName]
+  defaultExpandReference = currentFields && currentFields.reference_to;
+  const referenceObject = Objects.getObject(defaultExpandReference);
 
+  if(ExpandComponent){
     if(currentFields.type === 'lookup' ){
       defaultExpandReference = currentFields.reference_to;
       defaultExpandNameField = 'name';
       defaultExpandParentField = 'parent';
+      if(referenceObject && referenceObject.schema){
+        if(referenceObject.schema.NAME_FIELD_KEY){
+          defaultExpandNameField = referenceObject.schema.NAME_FIELD_KEY;
+        }
+        if(referenceObject.schema.parent_field){
+          defaultExpandParentField = referenceObject.schema.parent_field;
+        }
+      }
     }
   }
 
@@ -198,13 +208,15 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     releatedColumnField: expandDefine.fieldName,
     filters: expandDefine.expandFilters
   };
-
+  console.log('expandProps==>',expandProps)
   // 当ObjectProTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
   let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
+  // let tablePartWidth:any = rest.scroll && ExpandComponent && "57.5%";
 
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
   let width = isMobile ? '100%' : "340px"; 
+  // let width = isMobile ? '100%' : "42.5%"; style={{maxWidth: '340px'}}
   tablePartWidth = isMobile ? '100%' : tablePartWidth;
   return (
     <>
