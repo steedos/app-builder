@@ -139,7 +139,6 @@ export const TableModal = () => {
       expandComponent: ObjectTree,
       expandReference: "organizations",
       expandNameField: "name",
-      expandParentField: "parent",
     }],
     // filters:['name','contains','芳'],
     onFinish: async (values)=>{
@@ -218,6 +217,7 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
@@ -227,6 +227,7 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     // filters:['name','contains','公司'],
     filters: "contains(name,'公司')",
     onFinish: async (values)=>{
@@ -238,6 +239,7 @@ export const TreeModal = () => {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     multiple: true,
     onFinish: async (values)=>{
       console.log("values:", values);
