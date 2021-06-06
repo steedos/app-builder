@@ -36,6 +36,7 @@ export const FilterForm = observer((props:FilterFormProps) => {
     let newValue = Object.assign({}, form.value || {}, changeValues);
     form.setValue(newValue);
     const filters = convertFormToFilters(mergedSchema, newValue);
+    // console.log("==FilterForm===filters===", filters);
     form.setConvertedFilters(filters);
   }
 
