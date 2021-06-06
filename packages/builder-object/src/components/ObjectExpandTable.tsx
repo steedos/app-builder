@@ -17,6 +17,8 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { ObjectGrid } from '@steedos/builder-ag-grid';
+import { Objects } from '@steedos/builder-store';
+import { Spin } from 'antd';
 
 import {
   ObjectList,
@@ -88,6 +90,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   const selfTableRef = useRef<ActionType>();
   // 支持从外面传入 actionRef 值
   const tableRef = rest.actionRef || selfTableRef;
+
+  const object = Objects.getObject(props.objectApiName);
+  if (object.isLoading) return (<div><Spin/></div>);
 
   const handleExpandContentChange = (keys: any, rows: any) => {
     setSelectedExpandNode(keys)
@@ -173,10 +178,23 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     }
   }
 
+  let defaultExpandReference, defaultExpandNameField, defaultExpandParentField;
+  if(ExpandComponent){
+    const objectSchema = object.schema;
+    const objectSchemaFields = objectSchema.fields;
+    const currentFields = objectSchemaFields[expandDefine.fieldName]
+
+    if(currentFields.type === 'lookup' ){
+      defaultExpandReference = currentFields.reference_to;
+      defaultExpandNameField = 'name';
+      defaultExpandParentField = 'parent';
+    }
+  }
+
   const expandProps = ExpandComponent && {
-    objectApiName: expandDefine.expandReference,
-    nameField: expandDefine.expandNameField,
-    parentField: expandDefine.expandParentField,
+    objectApiName: expandDefine.expandReference || defaultExpandReference,
+    nameField: expandDefine.expandNameField || defaultExpandNameField,
+    parentField: expandDefine.expandParentField || defaultExpandParentField,
     releatedColumnField: expandDefine.fieldName,
     filters: expandDefine.expandFilters
   };
