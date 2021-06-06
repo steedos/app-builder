@@ -77,9 +77,9 @@ export const ObjectModal = ({
   }, [context, modalProps, visible]);
 
   let contentComponentProps: any = {};
-  if([ObjectTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent) > -1){
-    // console.log([ObjectTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent))
-    // 底层使用的是ObjectTable 或 ag-grid时multiple及value属性实现逻辑
+  if([ObjectProTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent) > -1){
+    // console.log([ObjectProTable, ObjectExpandTable, ObjectListView, ObjectTable, SpaceUsers].indexOf(ContentComponent))
+    // 底层使用的是ObjectProTable 或 ag-grid时multiple及value属性实现逻辑
     if(tableMode === "ag-grid"){
       let rowSelectionType="single";
       if (multiple){
