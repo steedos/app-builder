@@ -19,7 +19,7 @@ export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
             }
             else{
                 // avatar,grid,image,object不支持过滤功能
-                // currency,datetime,number,parcent,summary需要按范围字段来处理过滤功能
+                // currency,datetime,date,number,parcent,summary需要按范围字段来处理过滤功能
                 // formula要根据关联字段类型做相关处理
                 return [k, "between", [v, v]];
             }
