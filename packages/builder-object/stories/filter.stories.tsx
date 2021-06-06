@@ -28,13 +28,13 @@ export const SchemaFilter = () => {
             type: 'currency',
             label: "金额"
           },
-          date_range:{
-            type: 'date_range',
-            label: "日期范围"
+          due_date:{
+            type: 'date',
+            label: "到时日期"
           },
-          datetime_range:{
-            type: 'datetime_range',
-            label: "日期时间范围"
+          created:{
+            type: 'datetime',
+            label: "创建时间"
           },
          }
        }}

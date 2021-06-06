@@ -1,4 +1,4 @@
-import { map, isNil, compact } from 'lodash';
+import { map, isNil, compact, each } from 'lodash';
 
 /**
  * 根据表单的对象配置及表单值，计算得到对应的过滤条件
@@ -44,5 +44,21 @@ export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
  * @param fields 如果提供该参数则只需要转换这些指定字段
  */
 export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
-    return objectSchema;
+    let schemaFields = {};
+    each(objectSchema.fields, (fieldItem, fieldKey)=>{
+        if(fields && fields.length && fields.indexOf(fieldKey) < 0){
+            return;
+        }
+        let extendProps: any = {};
+        switch(fieldItem.type){
+            case "date":
+                extendProps.type = "date_range";
+                break;
+            case "datetime":
+                extendProps.type = "datetime_range";
+                break;
+        }
+        schemaFields[fieldKey] = Object.assign({}, fieldItem, extendProps);
+    });
+    return Object.assign({}, objectSchema, { fields: schemaFields });
 }
