@@ -1,6 +1,9 @@
 import { boolean } from './boolean';
 import { currency } from './currency';
+import { date } from './date';
+import { date_range } from './date_range';
 import { datetime } from './datetime';
+import { datetime_range } from './datetime_range';
 import { email } from './email';
 import { number } from './number';
 import { percent } from './percent';
@@ -20,7 +23,10 @@ import { autonumber } from './autonumber';
 export const StandardValueTypes = {
     boolean,
     currency,
+    // date,//放开会出现死循环，不放开功能正常
+    date_range,
     datetime,
+    datetime_range,
     email,
     number,
     percent,

@@ -17,11 +17,17 @@ export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
             else if(["boolean", "lookup", "master_detail", "select", "toggle"].indexOf(field.type) > -1){
                 return [k, "=", v];
             }
+            else if(["date", "datetime"].indexOf(field.type) > -1){
+                return [k, "between", [v, v]];
+            }
+            else if(["date_range", "datetime_range"].indexOf(field.type) > -1){
+                return [k, "between", v];
+            }
             else{
                 // avatar,grid,image,object不支持过滤功能
                 // currency,datetime,date,number,parcent,summary需要按范围字段来处理过滤功能
                 // formula要根据关联字段类型做相关处理
-                return [k, "between", [v, v]];
+                return null;
             }
         }
         else{
