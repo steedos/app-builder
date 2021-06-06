@@ -76,7 +76,7 @@ export const SpaceUsersModal = ({
     height: 'calc(100% - 100px)',
     minHeight: '400px',
     maxHeight: 'calc(100% - 150px)',
-    maxWidth: '1200px', 
+    maxWidth: '1000px', 
     minWidth: '800px', 
     overflow: 'hidden'
   }

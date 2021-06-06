@@ -17,6 +17,8 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import "./ObjectExpandTable.less"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { ObjectGrid } from '@steedos/builder-ag-grid';
+import { Objects } from '@steedos/builder-store';
+import { Spin } from 'antd';
 
 import {
   ObjectList,
@@ -88,6 +90,9 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   const selfTableRef = useRef<ActionType>();
   // 支持从外面传入 actionRef 值
   const tableRef = rest.actionRef || selfTableRef;
+
+  const object = Objects.getObject(props.objectApiName);
+  if (object.isLoading) return (<div><Spin/></div>);
 
   const handleExpandContentChange = (keys: any, rows: any) => {
     setSelectedExpandNode(keys)
@@ -173,20 +178,43 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     }
   }
 
+  let defaultExpandReference, defaultExpandNameField, defaultExpandParentField;
+  const objectSchema = object.schema;
+  const objectSchemaFields = objectSchema.fields;
+  const currentFields = expandDefine && objectSchemaFields[expandDefine.fieldName]
+  defaultExpandReference = currentFields && currentFields.reference_to;
+  const referenceObject = Objects.getObject(defaultExpandReference);
+
+  if(ExpandComponent){
+    if(currentFields.type === 'lookup' ){
+      defaultExpandReference = currentFields.reference_to;
+      defaultExpandNameField = 'name';
+      defaultExpandParentField = 'parent';
+      if(referenceObject && referenceObject.schema){
+        if(referenceObject.schema.NAME_FIELD_KEY){
+          defaultExpandNameField = referenceObject.schema.NAME_FIELD_KEY;
+        }
+        if(referenceObject.schema.parent_field){
+          defaultExpandParentField = referenceObject.schema.parent_field;
+        }
+      }
+    }
+  }
+
   const expandProps = ExpandComponent && {
-    objectApiName: expandDefine.expandReference,
-    nameField: expandDefine.expandNameField,
-    parentField: expandDefine.expandParentField,
+    objectApiName: expandDefine.expandReference || defaultExpandReference,
+    nameField: expandDefine.expandNameField || defaultExpandNameField,
+    parentField: expandDefine.expandParentField || defaultExpandParentField,
     releatedColumnField: expandDefine.fieldName,
     filters: expandDefine.expandFilters
   };
-
+  console.log('expandProps==>',expandProps)
   // 当ObjectProTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
   let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
 
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
-  let width = isMobile ? '100%' : "340px"; 
+  let width = isMobile ? '100%' : "30%";
   tablePartWidth = isMobile ? '100%' : tablePartWidth;
   return (
     <>
@@ -195,7 +223,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         className={["object-expand-table", rest.className].join(" ")}
       >
         {ExpandComponent && (
-          <ProCard colSpan={width} className="expand-part">
+          <ProCard colSpan={width} className="expand-part" style={{maxWidth: '340px'}}>
             <ExpandComponent
               {...expandProps}
               onChange={(keys: any, rows: any)=>{

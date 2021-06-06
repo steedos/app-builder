@@ -57,7 +57,13 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
     if(isEmpty(value)){  //由于select、lookup为多选且没有选择值时返回了空数组，此处需要转换为undefined。
       setFilter(undefined)
     }else{
-      setFilter(value)
+      // TODO: reference_to是数组并且多选时会报错，先暂时这样处理（不报错）。
+      if(value.ids){
+        setFilter(value.ids)
+      }
+      else{
+        setFilter(value)
+      }
     }
   }
 

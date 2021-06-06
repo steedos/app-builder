@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
 import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean} from 'lodash';
-import { convertFormToFilters } from '@steedos/builder-sdk';
+import { convertFormToFilters, getFilterFormSchema } from '@steedos/builder-sdk';
 import { ObjectField } from "./ObjectField";
 import { ObjectForm, ObjectFormProps } from "./ObjectForm";
 import { observer } from "mobx-react-lite"
@@ -27,6 +27,7 @@ export const FilterForm = observer((props:FilterFormProps) => {
 
   
   const mergedSchema = object? defaultsDeep({}, object.schema, objectSchema): objectSchema;
+  const filterFormSchema = getFilterFormSchema(mergedSchema, fields);
   const form = stores.Forms.loadById(formId);
   // form.setSchema(mergedSchema);
 
@@ -35,7 +36,8 @@ export const FilterForm = observer((props:FilterFormProps) => {
     console.log("changeValues:", changeValues);
     let newValue = Object.assign({}, form.value || {}, changeValues);
     form.setValue(newValue);
-    const filters = convertFormToFilters(mergedSchema, newValue);
+    const filters = convertFormToFilters(filterFormSchema, newValue);
+    // console.log("==FilterForm===filters===", filters);
     form.setConvertedFilters(filters);
   }
 
@@ -47,7 +49,7 @@ export const FilterForm = observer((props:FilterFormProps) => {
     <ObjectForm 
       objectApiName={objectApiName}
       fields={fields}
-      objectSchema={objectSchema}
+      objectSchema={filterFormSchema}
       name={formId}
       className='steedos-query-filter'
       mode="edit"

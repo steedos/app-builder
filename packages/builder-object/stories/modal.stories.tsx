@@ -121,7 +121,7 @@ export const TableModal = () => {
   const tableProps4 = {
     title: `选择 人员`,
     objectApiName: "space_users",
-    listSchema: "all",
+    // listSchema: "all",
     columnFields:[{
       fieldName: "name",
       hideInSearch: true,
@@ -136,10 +136,8 @@ export const TableModal = () => {
       fieldName: "organizations_parents",
       hideInTable: true,
       hideInSearch: true,
-      expandComponent: Organizations,
-      expandReference: "organizations",
+      expandComponent: ObjectTree,
       expandNameField: "name",
-      expandParentField: "parent",
     }],
     // filters:['name','contains','芳'],
     onFinish: async (values)=>{
@@ -214,19 +212,21 @@ export const TableModal = () => {
 }
 
 export const TreeModal = () => {
-  const tableProps1 = {
+  const treeProps1 = {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
     }
   }
-  const tableProps2 = {
+  const treeProps2 = {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     // filters:['name','contains','公司'],
     filters: "contains(name,'公司')",
     onFinish: async (values)=>{
@@ -234,17 +234,18 @@ export const TreeModal = () => {
       return true;
     }
   }
-  const tableProps3 = {
+  const treeProps3 = {
     title: `选择 部门`,
     objectApiName: "organizations",
     contentComponent: ObjectTree,
+    nameField: "name",
     multiple: true,
     onFinish: async (values)=>{
       console.log("values:", values);
       return true;
     }
   }
-  const tableProps4 = {
+  const treeProps4 = {
     title: `选择 部门`,
     objectApiName: "organizations",
     // filters:['name','contains','公司'],
@@ -258,36 +259,36 @@ export const TreeModal = () => {
   return (
     <React.Fragment>
       <ObjectModal
-        {...tableProps1}
+        {...treeProps1}
         trigger={<Button type="primary" >弹出tree</Button>}
       />
       <br /><br />
       <ObjectModal
-        {...tableProps2}
+        {...treeProps2}
         trigger={<Button type="primary" >弹出tree + filters</Button>}
       />
       <br /><br />
       <ObjectModal
-        {...tableProps3}
+        {...treeProps3}
         trigger={<Button type="primary" >弹出tree + multiple</Button>}
       />
       <br /><br />
       <OrganizationsModal
-        {...tableProps4}
+        {...treeProps4}
         trigger={<Button type="primary" >弹出选组</Button>}
       />
       <br /><br />
       <Button type="primary" onClick={()=>{
         (window as any).SteedosUI.showModal(ObjectTree,{
           name: "showModal-test1", 
-          ...tableProps1,
+          ...treeProps1,
         })
       }}>showModal  -  弹出Tree</Button>
       <br /><br />
       <Button type="primary" onClick={()=>{
         (window as any).SteedosUI.showModal(Organizations,{
           name: "showModal-test2", 
-          ...tableProps4,
+          ...treeProps4,
         })
       }}>showModal  -  弹出选组</Button>
     </React.Fragment>
