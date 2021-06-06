@@ -1,5 +1,11 @@
 import { map, isNil, compact } from 'lodash';
 
+/**
+ * 根据表单的对象配置及表单值，计算得到对应的过滤条件
+ * @param objectSchema 
+ * @param formValues 
+ * @returns 转换后的过滤条件
+ */
 export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
     // console.log("===convertFormToFilters=objectSchema==", objectSchema);
     let result =  map(formValues, (v, k)=>{
@@ -23,4 +29,14 @@ export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
         }
     });
     return compact(result);
+}
+
+/**
+ * 根据表单的对象配置，计算其用于过滤器组件时需要变更的配置
+ * 比如是数值或日期字段应该变更为范围字段类型
+ * @param objectSchema 
+ * @param fields 如果提供该参数则只需要转换这些指定字段
+ */
+export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
+    return objectSchema;
 }
