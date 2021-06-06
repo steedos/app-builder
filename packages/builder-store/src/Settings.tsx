@@ -2,7 +2,7 @@ import { destroy, flow, types } from 'mobx-state-tree';
 import { get } from 'lodash';
 
 const isProd = process.env.NODE_ENV === 'production';
-let rootUrl = isProd ? '/' : process.env.REACT_APP_API_URL? process.env.REACT_APP_API_URL: 'http://localhost:5000';
+let rootUrl = isProd ? '' : process.env.REACT_APP_API_URL? process.env.REACT_APP_API_URL: 'http://localhost:5000';
 
 let tenantId = localStorage.getItem('steedos:spaceId');
 let userId = localStorage.getItem('steedos:userId');
