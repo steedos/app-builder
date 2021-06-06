@@ -20,14 +20,22 @@ export const SchemaFilter = () => {
       <FilterForm
        objectSchema={{
          fields:{
-           name: {
-             type: 'text',
-             label: "名称"
-           },
-           amount: {
-             type: 'currency',
-             label: "金额"
-           }
+          name: {
+            type: 'text',
+            label: "名称"
+          },
+          amount: {
+            type: 'currency',
+            label: "金额"
+          },
+          date_range:{
+            type: 'date_range',
+            label: "日期范围"
+          },
+          datetime_range:{
+            type: 'datetime_range',
+            label: "日期时间范围"
+          },
          }
        }}
       />
