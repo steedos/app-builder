@@ -137,6 +137,7 @@ export const TableModal = () => {
       hideInTable: true,
       hideInSearch: true,
       expandComponent: ObjectTree,
+      expandNameField: "name",
     }],
     // filters:['name','contains','芳'],
     onFinish: async (values)=>{
