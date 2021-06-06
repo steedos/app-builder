@@ -211,12 +211,10 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   console.log('expandProps==>',expandProps)
   // 当ObjectProTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
   let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
-  // let tablePartWidth:any = rest.scroll && ExpandComponent && "57.5%";
 
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs');
-  let width = isMobile ? '100%' : "340px"; 
-  // let width = isMobile ? '100%' : "42.5%"; style={{maxWidth: '340px'}}
+  let width = isMobile ? '100%' : "30%";
   tablePartWidth = isMobile ? '100%' : tablePartWidth;
   return (
     <>
@@ -225,7 +223,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         className={["object-expand-table", rest.className].join(" ")}
       >
         {ExpandComponent && (
-          <ProCard colSpan={width} className="expand-part">
+          <ProCard colSpan={width} className="expand-part" style={{maxWidth: '340px'}}>
             <ExpandComponent
               {...expandProps}
               onChange={(keys: any, rows: any)=>{
