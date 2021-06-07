@@ -19,7 +19,8 @@ import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
 export type ObjectGridColumnProps = {
   fieldName: string,
-  hideInTable: boolean
+  hideInTable: boolean,
+  hideInSearch: boolean,
 } 
 
 export type ObjectGridProps<T extends ObjectGridColumnProps> =
@@ -187,7 +188,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       //   minWidth: 35,
       // }
     ];
-    forEach(columnFields, ({ fieldName, hideInTable, ...columnItem }: ObjectGridColumnProps) => {
+    forEach(columnFields, ({ fieldName, hideInTable, hideInSearch, ...columnItem }: ObjectGridColumnProps) => {
       const field = object.schema.fields[fieldName];
       if(!field){
         return ;
@@ -199,32 +200,37 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       let filter:any = true
       let filterParams:any = {}
       let rowGroup = false //["select", "lookup"].includes(field.type)
-      if (["textarea", "text", "code"].includes(field.type)) {
-        filter = 'AgGridCellTextFilter'
-        filterParams = {
-          fieldSchema: field,
-          valueType: field.type
-        }
+      if( hideInSearch ){
+        filter = false;
       }
-      else if (["number", "percent", "currency"].includes(field.type)) {
-        filter = 'AgGridCellNumberFilter'
-        filterParams = {
-          fieldSchema: field,
-          valueType: field.type
+      else{
+        if (["textarea", "text", "code"].includes(field.type)) {
+          filter = 'AgGridCellTextFilter'
+          filterParams = {
+            fieldSchema: field,
+            valueType: field.type
+          }
         }
-      }
-      else if (["date", "datetime"].includes(field.type)) {
-        filter = 'AgGridCellDateFilter'
-        filterParams = {
-          fieldSchema: field,
-          valueType: field.type
+        else if (["number", "percent", "currency"].includes(field.type)) {
+          filter = 'AgGridCellNumberFilter'
+          filterParams = {
+            fieldSchema: field,
+            valueType: field.type
+          }
         }
-      }
-      else {
-        filter = 'AgGridCellFilter',
-        filterParams = {
-          fieldSchema: field,
-          valueType: field.type
+        else if (["date", "datetime"].includes(field.type)) {
+          filter = 'AgGridCellDateFilter'
+          filterParams = {
+            fieldSchema: field,
+            valueType: field.type
+          }
+        }
+        else {
+          filter = 'AgGridCellFilter',
+          filterParams = {
+            fieldSchema: field,
+            valueType: field.type
+          }
         }
       }
       columns.push({
