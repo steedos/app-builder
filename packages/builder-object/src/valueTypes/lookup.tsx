@@ -36,7 +36,8 @@ export const LookupField = observer((props:any) => {
         }
     }
     let [referenceTo, setReferenceTo] = useState(isArray(referenceTos) ? defaultReferenceTo : referenceTos);
-    let [selectItemLabel, setSelectItemLabel] = useState('');
+    // selectedValue 只有在reference_to 是数组的才用到， 值的格式为(value:xx, label:xx)
+    const [selectedValue, setSelectedValue] = useState();
     // optionsFunction优先options
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
     // if(isArray(referenceTos) && value ){
@@ -212,22 +213,39 @@ export const LookupField = observer((props:any) => {
         let newFieldProps:any=fieldProps;
         if(isArray(referenceTos)){
             labelInValue=true;
+            let defaultReferenceToValue:any = [];
             if(value){
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
                 // 下拉框选中某个选项，获取其对应的lable。因为如果加下面的isloading判断，就会在重新选择其它选项时会有isLoading状态的效果， 所以不需要下面这行isloading判断。
                 // if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
-                    selectItemLabel = recordListData.value.map((recordItem: any)=>{
-                        return recordItem[referenceToLableField];
-                    }).join(",");
+                    forEach(recordListData.value, (recordItem: any) => {
+                        let valueLabel = { value: recordItem[reference_to_field], label: recordItem[referenceToLableField] };
+                        defaultReferenceToValue.push(valueLabel)
+                    })
                 }
             }
+            if(!multiple){
+                defaultReferenceToValue = defaultReferenceToValue[0];
+            }
+            let idsValue = [];
             newFieldProps = Object.assign({}, fieldProps, {
-                value: {value: fieldProps.value,label: selectItemLabel},
+                value: selectedValue ? selectedValue : defaultReferenceToValue,
                 onChange:(values: any, option: any)=>{
-                    setSelectItemLabel(values.label)
-                    onChange({o: referenceTo, ids: (values.value ? [values.value] : [])})
+                    let tempSelectedValue:any = undefined;
+                    if (multiple) {
+                        tempSelectedValue=[];
+                        forEach(values, (item) => {
+                            idsValue.push(item.value);
+                            tempSelectedValue.push({value: item.value, label: item.label})
+                        })
+                    } else {
+                        if(values.value){ idsValue = [values.value]; }
+                        tempSelectedValue = {value: values.value, label:values.label};
+                    }
+                    setSelectedValue(tempSelectedValue)
+                    onChange({o: referenceTo, ids: idsValue })
                 }
             })
         }
