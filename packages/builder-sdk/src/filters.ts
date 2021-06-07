@@ -57,6 +57,9 @@ export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
             case "datetime":
                 extendProps.type = "datetime_range";
                 break;
+            case "number":
+                extendProps.type = "number_range";
+                break;
         }
         schemaFields[fieldKey] = Object.assign({}, fieldItem, extendProps);
     });
