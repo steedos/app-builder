@@ -20,7 +20,7 @@ const { Option } = Select;
 // 参数 props.reference_to:
 export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
-    const selectRef:any = useRef()
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, table_schema } = fieldSchema;
@@ -263,7 +263,7 @@ export const LookupField = observer((props:any) => {
                         trigger={
                             <a className="add_button text-blue-600 hover:text-blue-500 hover:underlin"  onClick={()=>{
                                 // 新建弹出后新建按钮应该隐藏掉
-                                selectRef.current.blur();
+                                setIsDropdownOpen(false);
                             }} >
                                 <PlusOutlined /> 新建 {referenceToObjectSchema.label}
                             </a>
@@ -276,6 +276,26 @@ export const LookupField = observer((props:any) => {
         let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || ["space_users", "organizations"].indexOf(referenceTo) > -1;
         const isLookupTree = !showModal && referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         let modalDom: any;
+        let proFieldPropsForDropdown = {
+            open: isDropdownOpen,
+            onClick: (e)=>{
+                if(e.target.closest(".ant-select")){
+                    setIsDropdownOpen(true);
+                }
+                rest.onClick && rest.onClick(e);
+            },
+            onBlur: (e)=>{
+                // 加setTimeout的原因是立即隐藏下拉选项会造成下拉选项底部的新建按钮事件不生效
+                setTimeout(()=>{
+                    setIsDropdownOpen(false);
+                }, 100);
+                rest.onBlur && rest.onBlur(e);
+            },
+            onSelect: (value: any, option: any)=>{
+                setIsDropdownOpen(false);
+                rest.onSelect && rest.onSelect(value, option);
+            }
+        };
         if(isLookupTree){
             //主要用到了newFieldProps中的onChange和value属性
             proFieldProps = Object.assign({}, {...newFieldProps}, {
@@ -284,7 +304,8 @@ export const LookupField = observer((props:any) => {
                 filters: fieldFilters,
                 filtersFunction,
                 nameField: referenceToLableField,
-                parentField: referenceParentField
+                parentField: referenceParentField,
+                ...proFieldPropsForDropdown
             })
         }
         else{
@@ -293,7 +314,10 @@ export const LookupField = observer((props:any) => {
                 proFieldPropsForModal = {
                     showSearch: false,
                     onDropdownVisibleChange: false,
-                    open: false
+                    open: false,
+                    onClick: null,
+                    onBlur: null, 
+                    onSelect: null
                 }
                 modalDom = (trigger: any)=>{
                     let ModalComponent = ObjectModal;
@@ -342,7 +366,8 @@ export const LookupField = observer((props:any) => {
                 onDropdownVisibleChange,
                 optionItemRender,
                 dropdownRender,
-                ...rest, 
+                ...rest,
+                ...proFieldPropsForDropdown,
                 ...proFieldPropsForModal
             }
         }
@@ -379,7 +404,7 @@ export const LookupField = observer((props:any) => {
         }
         if(isLoadingReferenceTosObject) return (<div><Spin/></div>)
 
-        const lookupInput = isLookupTree ? (<ObjectFieldTreeSelect {...proFieldProps}  />) : (<FieldSelect ref={selectRef} {...proFieldProps} />);
+        const lookupInput = isLookupTree ? (<ObjectFieldTreeSelect {...proFieldProps}  />) : (<FieldSelect {...proFieldProps} />);
         const onModalFinish = (selectedRowKeys: any, selectedRows: any)=>{
             // ag-grid只传一个参数（rows）过来，这里获取其内部的value。
             if(!selectedRows){
