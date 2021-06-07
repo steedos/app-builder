@@ -69,7 +69,6 @@ export const LookupField = observer((props:any) => {
                     fields.push('name')
                 }
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
-                if(props.name==='a_multiple'){ console.log('recordList===>',recordList)}
                 if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
                 if (recordListData && recordListData.value && recordListData.value.length > 0) {
@@ -91,7 +90,6 @@ export const LookupField = observer((props:any) => {
                 })
             }
         }
-        if(props.name==='a_multiple'){ console.log('tag===>',value, tags)}
         return (<React.Fragment>{tags.map((tagItem, index)=>{return (
             <React.Fragment key={tagItem.value}>
                 {index > 0 && ', '}
