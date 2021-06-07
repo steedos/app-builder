@@ -62,15 +62,15 @@ export default class SteedosClient {
     action = new Action();
     
     getUrl() {
-        if(!this.url){
-            var href = new URL(window.location.href);
-            var foo = href.pathname.split('/accounts');
-            var ROOT_URL_PATH_PREFIX = '';
-            if(foo.length > 1){
-                ROOT_URL_PATH_PREFIX = foo[0];
-            }
-            return ROOT_URL_PATH_PREFIX;
-        }
+        // if(!this.url){
+        //     var href = new URL(window.location.href);
+        //     var foo = href.pathname.split('/accounts');
+        //     var ROOT_URL_PATH_PREFIX = '';
+        //     if(foo.length > 1){
+        //         ROOT_URL_PATH_PREFIX = foo[0];
+        //     }
+        //     return ROOT_URL_PATH_PREFIX;
+        // }
         return this.url;
     }
 
