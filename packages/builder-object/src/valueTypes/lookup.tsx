@@ -64,7 +64,7 @@ export const LookupField = observer((props:any) => {
     }
     if(mode==='read'){
         if(value){
-            if (referenceTo) {
+            if (referenceTo && !options) {
                 // tree-select 编辑时会调用只读的缓存，编辑时需要显示字段name，而不是fullname.
                 if(referenceTo==='organizations'){
                     fields.push('name')
