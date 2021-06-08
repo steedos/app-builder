@@ -394,6 +394,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         paginationPageSize={pageSize}
         cacheBlockSize={pageSize}
         rowSelection={rowSelection}
+        enableRangeSelection={true}
         modules={AllModules}
         stopEditingWhenGridLosesFocus={false}
         serverSideDatasource={getDataSource()}
