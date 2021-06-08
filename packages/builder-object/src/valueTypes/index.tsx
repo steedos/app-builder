@@ -1,5 +1,6 @@
 import { boolean } from './boolean';
 import { currency } from './currency';
+import { currency_range } from './currency_range';
 import { date } from './date';
 import { date_range } from './date_range';
 import { datetime } from './datetime';
@@ -24,6 +25,7 @@ import { autonumber } from './autonumber';
 export const StandardValueTypes = {
     boolean,
     currency,
+    currency_range,
     // date,//放开会出现死循环，不放开功能正常
     date_range,
     datetime,

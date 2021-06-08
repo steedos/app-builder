@@ -4,7 +4,7 @@ import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 
 export const FieldNumberRange = observer((props:any) => {
-  const { fieldProps, mode, ...rest } = props;
+  const { fieldProps, mode, valueType, ...rest } = props;
   let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
   if(!value){
     value = [];
@@ -12,18 +12,16 @@ export const FieldNumberRange = observer((props:any) => {
   const { onChange } = fieldProps;
   const beginInputProps = {
     mode,
-    valueType: "digit",
+    valueType: valueType || "digit",
     onChange: (v)=>{
       onChange([v, value[1]]);
-      console.log("==onChange=beginInputProps==", v);
     }
   };
   const endInputProps = {
     mode,
-    valueType: "digit",
+    valueType: valueType || "digit",
     onChange: (v)=>{
       onChange([value[0], v]);
-      console.log("==onChange=endInputProps==", v);
     }
   };
   return (
@@ -65,11 +63,9 @@ export const FieldNumberRange = observer((props:any) => {
 
 export const number_range = {
   render: (text: any, props: any) => {
-    console.log("===date_range==render==props===", props);
-    return (<FieldNumberRange {...props} mode="read" />)
+    return (<FieldNumberRange {...props} mode="read" valueType="number" />)
   },
   renderFormItem: (_: any, props: any) => {
-    console.log("===date_range==renderFormItem==props===", props);
-    return (<FieldNumberRange {...props} mode="edit" />);
+    return (<FieldNumberRange {...props} mode="edit" valueType="number" />);
   }
 }

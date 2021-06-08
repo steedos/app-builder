@@ -66,6 +66,9 @@ export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
             case "number":
                 extendProps.type = "number_range";
                 break;
+            case "currency":
+                extendProps.type = "currency_range";
+                break;
         }
         schemaFields[fieldKey] = Object.assign({}, fieldItem, extendProps);
     });
