@@ -35,6 +35,7 @@ export const FieldNumberRange = observer((props:any) => {
           borderRightWidth: 0
         }}
         placeholder="起始值"
+        {...rest}
         {...beginInputProps}
       />
       <Input
@@ -55,6 +56,7 @@ export const FieldNumberRange = observer((props:any) => {
           borderLeftWidth: 0
         }}
         placeholder="结束值"
+        {...rest}
         {...endInputProps}
       />
     </Input.Group>
