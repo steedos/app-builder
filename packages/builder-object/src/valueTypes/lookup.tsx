@@ -304,7 +304,7 @@ export const LookupField = observer((props:any) => {
                 // 加setTimeout的原因是立即隐藏下拉选项会造成下拉选项底部的新建按钮事件不生效
                 setTimeout(()=>{
                     setIsDropdownOpen(false);
-                }, 100);
+                }, 500);
                 rest.onBlur && rest.onBlur(e);
             },
             onSelect: (value: any, option: any)=>{
