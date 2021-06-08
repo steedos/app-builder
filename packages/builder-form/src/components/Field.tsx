@@ -24,7 +24,7 @@ export const Field = observer((props: any) => {
     // label, 
     // tooltip, 
     // allowClear,
-    // placeholder,
+    placeholder = '',
     // required,
     readonly,
     // referenceTo,
@@ -93,6 +93,7 @@ export const Field = observer((props: any) => {
       emptyText: '',
       fieldProps: Object.assign({}, fieldProps, {
         field_schema: fieldSchema,
+        placeholder,
         depend_field_values: dependFieldValues,
       }),
       ...rest

@@ -48,15 +48,20 @@ export const AgGridCellNumberFilter = forwardRef((props:any, ref) => {
     }
   }, [numberTo, numberFrom]);
 
-  const fieldProps = {
-    field_schema: fieldSchema
+  const startFieldProps = {
+    field_schema: fieldSchema,
+    placeholder: '开始'
+  }
+  const endFieldProps = {
+    field_schema: fieldSchema,
+    placeholder: '结束'
   }
   return (
     <div style={{padding:5}}>
       <ProField
           mode='edit'
           valueType={valueType}
-          fieldProps={fieldProps}
+          fieldProps={startFieldProps}
           onChange={(value) => {
             if(value === null){
               setNumberFrom(undefined);
@@ -70,7 +75,7 @@ export const AgGridCellNumberFilter = forwardRef((props:any, ref) => {
         <ProField
           mode='edit'
           valueType={valueType}
-          fieldProps={fieldProps}
+          fieldProps={endFieldProps}
           onChange={(value) => {
             if(value === null){
               setNumberTo(undefined);

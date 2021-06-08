@@ -57,8 +57,13 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
     }
   }, [betweenValue, dateTo, dateFrom]);
 
-  const fieldProps = {
-    field_schema: fieldSchema
+  const startFieldProps = {
+    field_schema: fieldSchema,
+    placeholder: '开始'
+  }
+  const endFieldProps = {
+    field_schema: fieldSchema,
+    placeholder: '结束'
   }
 
   const options = [
@@ -187,7 +192,7 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
         <ProField
           mode='edit'
           valueType={valueType}
-          fieldProps={fieldProps}
+          fieldProps={startFieldProps}
           onChange={(event, value) => {
             setDateFrom(value)
           }}
@@ -197,7 +202,7 @@ export const AgGridCellDateFilter = forwardRef((props:any, ref) => {
         <ProField
           mode='edit'
           valueType={valueType}
-          fieldProps={fieldProps}
+          fieldProps={endFieldProps}
           onChange={(event, value) => {
             setDateTo(value)
           }}
