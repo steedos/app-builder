@@ -133,16 +133,15 @@ export const getListViewColumnFields = (listViewColumns: any, props: any, nameFi
 function getRowButtons(objectSchema) {
   let { name: objectApiName } = objectSchema
   const buttons: any[] = [];
-  console.log(`objectSchema.actions`, objectSchema.actions)
   each(objectSchema.actions, function (action: any, actionApiName: string) {
     if (!includes(['record', 'record_more', 'list_item'], action.on)) {
       return;
     }
-    let visible = false;
+    let visible: any = false;
     if (isString(action._visible)) {
       try {
-        const visibleFunction = eval(`(${action._visible})`);
-        visible = visibleFunction;
+        const visibleFunction = eval(`(${action._visible.replaceAll("_.", "window._.")})`);
+        visible = function(){ return visibleFunction.apply( this, arguments );};
       } catch (error) {
         console.error(error, action._visible)
       }
@@ -153,14 +152,13 @@ function getRowButtons(objectSchema) {
     let todo = action._todo || action.todo;
     if (isString(todo) && todo.startsWith("function")) {
       try {
-        todo = eval(`(${todo})`);
+        todo = eval(`(${todo.replaceAll("_.", "window._.")})`);
       } catch (error) {
         console.error(error, todo)
       }
     }
     buttons.push({label: action.label, todo: todo, visible: visible});
   });
-  console.log(`buttons`, buttons)
   return buttons
 }
 
