@@ -28,6 +28,10 @@ export const SchemaFilter = () => {
             type: 'currency',
             label: "金额"
           },
+          count: {
+            type: 'number',
+            label: "数量"
+          },
           due_date:{
             type: 'date',
             label: "到时日期"

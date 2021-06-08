@@ -6,6 +6,7 @@ import { datetime } from './datetime';
 import { datetime_range } from './datetime_range';
 import { email } from './email';
 import { number } from './number';
+import { number_range } from './number_range';
 import { percent } from './percent';
 import { select } from './select';
 import { toggle } from './toggle';
@@ -29,6 +30,7 @@ export const StandardValueTypes = {
     datetime_range,
     email,
     number,
+    number_range,
     percent,
     select,
     toggle,
