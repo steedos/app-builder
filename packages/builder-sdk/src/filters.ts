@@ -17,8 +17,14 @@ export const convertFormToFilters = (objectSchema: any, formValues: any)=>{
             else if(["boolean", "lookup", "master_detail", "select", "toggle"].indexOf(field.type) > -1){
                 return [k, "=", v];
             }
+            else if(["number", "currency"].indexOf(field.type) > -1){
+                return [k, "=", v];
+            }
+            else if(["number_range", "currency_range"].indexOf(field.type) > -1){
+                return [k, "between", v];
+            }
             else if(["date", "datetime"].indexOf(field.type) > -1){
-                return [k, "between", [v, v]];
+                return [k, "=", v];
             }
             else if(["date_range", "datetime_range"].indexOf(field.type) > -1){
                 return [k, "between", v];
