@@ -339,12 +339,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     //   isEdited: true
     // }
   };
-  const onRowSelected = (params) => {
-    const selectedRows = params.api.getSelectedRows();
-    if (onChange) {
-      onChange(selectedRows)
-    }
-  }
+
   const onRowValueChanged = (params)=>{
     console.log(`onRowValueChanged params`, params)
   }
@@ -405,7 +400,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         undoRedoCellEditing={true}
         onCellValueChanged={onCellValueChanged}
         onRowValueChanged={onRowValueChanged}
-        onRowSelected={onRowSelected}
         context={{editedMap: editedMap}}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,

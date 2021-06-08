@@ -9,7 +9,7 @@ import {
   SpaceUsers, SpaceUsersProps,
 } from ".."
 import { createPortal } from 'react-dom';
-import { omit, isArray } from "lodash"
+import { omit, isArray, forEach } from "lodash"
 import type { ModalProps } from 'antd';
 import "./ObjectModal.less"
 import useAntdMediaQuery from 'use-media-antd-query';
@@ -48,6 +48,7 @@ export const ObjectModal = ({
   const defaultValue = (value && value.length && (isArray(value) ? value : [value])) || []
   const [selectedRowKeys, setSelectedRowKeys] = useState(defaultValue)
   const [selectedRows, setSelectedRows] = useState([])
+  const gridRef = useRef(null);
   const [visible, setVisible] = useState<boolean>(!!rest.visible);
   const context = useContext(ConfigProvider.ConfigContext);
   const colSize = useAntdMediaQuery();
@@ -132,6 +133,7 @@ export const ObjectModal = ({
       {...contentComponentProps}
       {...omit(rest, ['visible', 'title', 'onChange'])}
       onChange={handleOnChange}
+      gridRef={gridRef}
     />
     )
   }, [visible]);
@@ -168,7 +170,19 @@ export const ObjectModal = ({
                 modalProps?.onOk?.(e);
                 return;
               }
-              const success = await onFinish(selectedRowKeys, selectedRows);
+              let success;
+              const gridRefApi = gridRef && gridRef.current && gridRef.current.api;
+              if(gridRefApi){
+                const gridSelectedRows = gridRefApi.getSelectedRows()
+                let gridSelectedKeys=[];
+                forEach(gridSelectedRows,(item)=>{
+                  gridSelectedKeys.push(item[rest.rowKey])
+                })
+                success = await onFinish(gridSelectedKeys,gridSelectedRows);
+              }
+              else{
+                success = await onFinish(selectedRowKeys, selectedRows);
+              }
               if (success !== false) {
                 setVisible(false);
                 modalProps?.onOk?.(e);
