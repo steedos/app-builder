@@ -1,5 +1,13 @@
 export default class Action {
     executeAction(object_name, action, record_id, item_element, list_view_id, record){
+        if(window.Meteor){
+            const object = window.Creator.getObject(object_name)
+            const collectionName = object.label
+            window.Session.set("action_fields", undefined)
+            window.Session.set("action_collection", `Creator.Collections.${object_name}`)
+            window.Session.set("action_collection_name", collectionName)
+        }
+
         const Creator = (window as any).Creator;
         if(Creator && Creator.executeAction){
             return Creator.executeAction(object_name, action, record_id, item_element, list_view_id, record)
@@ -27,8 +35,8 @@ export default class Action {
                 const Creator = (window as any).Creator;
                 const userId = userSession.userId;
                 const spaceId = userSession.spaceId;
-                const record_permissions = Creator ? Creator.getRecordPermissions(object_name, record, userId, spaceId) : {}
-                return action.visible(object_name, record._id, record_permissions, record)
+                const record_permissions = Creator ? Creator.getRecordPermissions(object_name, record, userId, spaceId) : {};
+                return action.visible(object_name, record._id, record_permissions, record);
             }else{
                 return action.visible
             }

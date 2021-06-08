@@ -7,3 +7,16 @@ export {
 }
 
 export * from "./filters";
+
+declare global {
+  interface Window {
+      Creator: any
+  }
+  interface Window {
+    Meteor: any,
+    Session: any
+  }
+  interface Window {
+    SteedosUI: any
+  }
+}
