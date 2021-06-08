@@ -289,7 +289,10 @@ export const LookupField = observer((props:any) => {
             )
             }
         }
-        let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || ["space_users", "organizations"].indexOf(referenceTo) > -1;
+        let showModal = ["dialog", "drawer"].indexOf(modal_mode) > -1 || (referenceToObjectSchema &&  referenceToObjectSchema.enable_enhanced_lookup)
+        if(options){
+            showModal = false;
+        }
         const isLookupTree = !showModal && referenceToObjectSchema && referenceToObjectSchema.enable_tree;
         let modalDom: any;
         let proFieldPropsForDropdown = {
