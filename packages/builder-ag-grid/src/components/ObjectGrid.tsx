@@ -17,6 +17,8 @@ import { AgGridCellNumberFilter } from './CellNumberFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 
+import './ObjectGrid.less'
+
 export type ObjectGridColumnProps = {
   fieldName: string,
   hideInTable: boolean,
