@@ -270,7 +270,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         // dataIndex: fieldName,
         // title: field.label?field.label:fieldName,
         // valueType: field.type,
-        editable: !field.readonly,
+        editable: (params)=>{
+          console.log(`editable params`, params);
+          return API.client.field.isEditable(objectApiName, params.colDef.filterParams.fieldSchema, params.data)
+        }
       })
     });
     // 操作按钮
