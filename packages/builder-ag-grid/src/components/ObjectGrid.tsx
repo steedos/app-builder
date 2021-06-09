@@ -99,6 +99,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const {
     objectApiName,
     columnFields = [],
+    extraColumnFields = [],
     filters: defaultFilters,
     sort,
     defaultClassName,
@@ -137,10 +138,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const getDataSource = () => {
     return {
         getRows: params => {
-            const fields = ['name']
+            let fields = ['name'];
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
+            fields = fields.concat(extraColumnFields);
             const sort = []
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
@@ -270,7 +272,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         // dataIndex: fieldName,
         // title: field.label?field.label:fieldName,
         // valueType: field.type,
-        editable: !field.readonly,
+        editable: (params)=>{
+          console.log(`editable params`, params);
+          return API.client.field.isEditable(objectApiName, params.colDef.filterParams.fieldSchema, params.data)
+        }
       })
     });
     // 操作按钮

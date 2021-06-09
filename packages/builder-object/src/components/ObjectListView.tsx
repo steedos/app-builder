@@ -104,6 +104,19 @@ export const getListviewColumns = (objectSchema: any, listName: any) => {
   return listViewColumns;
 }
 
+export const getListviewExtraColumns = (objectSchema: any, listName: any) => {
+  let listView = objectSchema.list_views[listName];
+  let listViewColumns = listView && listView.extra_columns;
+  if(!listViewColumns){
+    listView = objectSchema.list_views.default;
+    listViewColumns = listView && listView.extra_columns;
+    if(!listViewColumns){
+      listViewColumns = [objectSchema.NAME_FIELD_KEY]
+    }
+  }
+  return listViewColumns;
+}
+
 export const getListViewColumnFields = (listViewColumns: any, props: any, nameFieldKey: string) => {
   let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
@@ -177,6 +190,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   const schema = object.schema; 
   let listView = listSchema ? listSchema : schema.list_views[listName];
   const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
+  const listViewExtraColumns = listSchema && listSchema.extra_columns ? listSchema.extra_columns : getListviewExtraColumns(schema, listName);
   if(!columnFields || columnFields.length==0){
     columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   }
@@ -189,6 +203,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     <ObjectExpandTable
       objectApiName={objectApiName}
       columnFields={columnFields}
+      extraColumnFields={listViewExtraColumns}
       filters={filters}
       rowButtons={rowButtons}
       // className={["object-listview", rest.className].join(" ")}

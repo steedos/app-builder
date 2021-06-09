@@ -11,6 +11,7 @@ import { Space } from './types/spaces';
 import SObject from './sobject';
 import Graphql from './graphql';
 import Action from './action';
+import Field from './field';
 
 const HEADER_AUTH = 'Authorization';
 const HEADER_BEARER = 'Bearer';
@@ -60,7 +61,7 @@ export default class SteedosClient {
     sobjects = {};
     graphql = new Graphql(this);
     action = new Action();
-    
+    field = new Field();
     getUrl() {
         // if(!this.url){
         //     var href = new URL(window.location.href);
