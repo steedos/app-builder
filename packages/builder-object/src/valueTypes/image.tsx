@@ -27,6 +27,8 @@ import { observer } from "mobx-react-lite";
 
 export const ImageField = observer((props: any) => {
     const { fieldProps = {} ,mode ,text, fileType} = props;
+    const { field_schema = {} } = fieldProps;
+    const { multiple } = field_schema;
     let { onChange } = fieldProps;
 
     if (mode === 'read') {
@@ -80,7 +82,7 @@ export const ImageField = observer((props: any) => {
         }
         return (
             <Upload {...proProps} {...propsOther}>
-                {fileList.length < 1 && '+ Upload'}
+                { multiple  ? '+ Upload' : fileList.length < 1 && '+ Upload'}
             </Upload>
         );
     }
