@@ -1,7 +1,7 @@
 import { each, isArray, forEach, isObject, isString, keys, isFunction} from 'lodash';
 export function saveEval(js: string){
 	try{
-		return eval(js)
+		return eval(js.replaceAll("_.", "window._."))
 	}catch (e){
 		console.error(e, js);
 	}
