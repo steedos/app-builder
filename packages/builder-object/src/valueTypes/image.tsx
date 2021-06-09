@@ -7,6 +7,8 @@ import FieldImage from '@ant-design/pro-field/es/components/Image';
 import { observer } from "mobx-react-lite";
 import { forEach, isArray } from 'lodash';
 
+import "./image.less"
+
 /*
  * 对象字段类型组件
  * 定义对象的key,value键值对结构，可在界面编辑该对象结构的数据并保存到数据库中
@@ -47,9 +49,16 @@ export const ImageField = observer((props: any) => {
     const value= fieldProps.value || props.text;
 
     if (mode === 'read') {
-        let url = Settings.rootUrl + '/api/files/'+fileType+'/' + text;
-        return (<Image alt="图片" width={32} src={url} />)
-        // return (<FieldImage {...proFieldProps} />)
+        const tags = [];
+        const items = multiple ? value : [value];
+        if(items && items.length){
+            forEach(items,(itemsValue)=>{
+                tags.push(Settings.rootUrl + '/api/files/'+fileType+'/' + itemsValue)
+            })
+        }
+        return (<Image.PreviewGroup>{tags.map((tagItem, index)=>{return (
+            <Image alt="图片" height={25} src={tagItem} className="mr-2 image-item" />
+        )})}</Image.PreviewGroup>)
     }
     let defaultFileList = [];
     if(value && value.length){
