@@ -99,6 +99,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const {
     objectApiName,
     columnFields = [],
+    extraColumnFields = [],
     filters: defaultFilters,
     sort,
     defaultClassName,
@@ -137,10 +138,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const getDataSource = () => {
     return {
         getRows: params => {
-            const fields = ['name']
+            let fields = ['name'];
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
+            fields = fields.concat(extraColumnFields);
             const sort = []
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
