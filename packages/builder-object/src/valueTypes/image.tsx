@@ -5,6 +5,9 @@ import { Image } from "antd";
 import { Settings , API} from '@steedos/builder-store';
 import FieldImage from '@ant-design/pro-field/es/components/Image';
 import { observer } from "mobx-react-lite";
+import { forEach, isArray } from 'lodash';
+
+import "./image.less"
 
 /*
  * 对象字段类型组件
@@ -25,21 +28,54 @@ import { observer } from "mobx-react-lite";
  *    "imgs__c": "iHXH3SrYP5ZcarQbX"
 */
 
+const getFileListItem = (_id:any, _fileType)=>{
+    return (
+        {
+            uid: _id,
+            response:{
+                _id: _id,
+            },
+            status:'done',
+            url: Settings.rootUrl + '/api/files/'+_fileType+'/' + _id,
+        }
+    )
+}
+
 export const ImageField = observer((props: any) => {
     const { fieldProps = {} ,mode ,text, fileType} = props;
     const { field_schema = {} } = fieldProps;
     const { multiple } = field_schema;
     let { onChange } = fieldProps;
+    const value= fieldProps.value || props.text;
 
     if (mode === 'read') {
-        let url = Settings.rootUrl + '/api/files/'+fileType+'/' + text;
-        return (<Image alt="图片" width={32} src={url} />)
-        // return (<FieldImage {...proFieldProps} />)
+        const tags = [];
+        const items = multiple ? value : [value];
+        if(items && items.length){
+            forEach(items,(itemsValue)=>{
+                tags.push(Settings.rootUrl + '/api/files/'+fileType+'/' + itemsValue)
+            })
+        }
+        return (<Image.PreviewGroup>{tags.map((tagItem, index)=>{return (
+            <Image alt="图片" height={25} src={tagItem} className="mr-2 image-item" />
+        )})}</Image.PreviewGroup>)
+    }
+    let defaultFileList = [];
+    if(value && value.length){
+        if(multiple){
+            forEach(value,(idValue)=>{
+                defaultFileList.push(
+                    getFileListItem(idValue, fileType)
+                )
+            })
+        }else{
+            defaultFileList = [getFileListItem(value, fileType)]
+        }
     }
     if (mode === 'edit') {
         // props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
         const proProps = Object.assign({}, props, {name:"file"});
-        const [fileList, setFileList] = useState([]);
+        const [fileList, setFileList] = useState(defaultFileList);
         const onPreview = async file => {
             let src = file.url;
             if (!src) {
@@ -75,9 +111,16 @@ export const ImageField = observer((props: any) => {
             onChange: (options: any) => {
                 const { file, fileList: newFileList } = options;
                 setFileList(newFileList);
-                if (file.status === "done") {
-                    onChange(file.response._id)
-                }
+                let fileIds:any = [];
+                forEach(newFileList,(item)=>{
+                    if (item.status === "done") {
+                        fileIds.push(item.response._id)
+                    }
+                })
+                if(!multiple){
+                    fileIds= fileIds.length ? fileIds[0] : '';
+                }   
+                onChange(fileIds)
             }
         }
         return (
