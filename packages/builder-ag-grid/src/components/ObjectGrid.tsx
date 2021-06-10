@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty, isString, isObject} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -111,6 +111,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     pageSize = 20,
     gridRef,
     onModelUpdated,
+    onUpdated,
+    checkboxSelection = true,
+    name,
     ...rest
   } = props
   const [editedMap, setEditedMap] = useState({})
@@ -168,7 +171,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   }
 
   const getColumns = (rowButtons)=>{
-
+    const width = checkboxSelection ? 80 : 50;
     const columns:any[] = [
       {
         resizable: false,
@@ -176,12 +179,12 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         valueGetter: params => {
           return parseInt(params.node.id) + 1
         },
-        width: 80,
-        maxWidth: 80,
-        minWidth: 80,
+        width: width,
+        maxWidth: width,
+        minWidth: width,
         cellStyle: {"text-align": "right" },
-        checkboxSelection: true,
-        headerCheckboxSelection: true, //仅rowModelType等于Client-Side时才生效
+        checkboxSelection: checkboxSelection,
+        headerCheckboxSelection: checkboxSelection, //仅rowModelType等于Client-Side时才生效
         suppressMenu: true,
       },
       // {
@@ -337,7 +340,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     editedMap[params.data._id][params.colDef.field] = params.value;
     setTimeout(function(){
       // setDrawerVisible(true);
-      (document.getElementsByClassName('ant-drawer-open')[0] as any).style.display=''
+      (document.getElementsByClassName(`grid-action-drawer-${name}`)[0] as any).style.display=''
     }, 300)
     // if(!params.colDef.editedMap){
     //   params.colDef.editedMap = {};
@@ -354,7 +357,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const cancel = ()=>{
     // setDrawerVisible(false);
-    const editDrawerElement = (document.getElementsByClassName('ant-drawer-open')[0] as any);
+    const editDrawerElement = (document.getElementsByClassName(`grid-action-drawer-${name}`)[0] as any);
     if(editDrawerElement.style.display != 'none'){
       editDrawerElement.style.display='none'
       setEditedMap({})
@@ -375,7 +378,14 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     for await (const id of ids) {
       await API.updateRecord(objectApiName, id, editedMap[id]);
     }
-    cancel();
+    if(onUpdated && isFunction(onUpdated)){
+      onUpdated(objectApiName, ids);
+    }
+    try {
+      cancel();
+    } catch (error) {
+      
+    }
   }
 
   // const modelUpdated = (event)=>{
@@ -427,6 +437,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         maskClosable={false}
         style={{height: "60px", display: "none"}}
         bodyStyle={{padding: "12px", textAlign: "center"}}
+        className={`grid-action-drawer-${name}`}
       >
         <Space>
           <Button onClick={cancel}>取消</Button>
