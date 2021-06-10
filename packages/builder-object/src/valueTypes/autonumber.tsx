@@ -12,7 +12,7 @@ export const autonumber = {
   },
   renderFormItem: (_: any, props: any) => {
     return (
-      <ProField mode='read' valueType='text' {...props} />
+      <ProField valueType='text' {...props} mode='read' />
     )
   }
 }
