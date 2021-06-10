@@ -12,7 +12,7 @@ export const formula = {
   },
   renderFormItem: (text: any, props: any) => {
     return (
-      <ProField mode='read' valueType='text' {...props} />
+      <ProField valueType='text' {...props} mode='read' />
     )
   }
 }
