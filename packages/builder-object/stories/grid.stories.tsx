@@ -105,10 +105,7 @@ export const Tree = () => {
 
 export const ListView = () => {
   return (
-      <ObjectListView objectApiName='accounts' 
-        pagination={{
-          pageSize:3
-        }}
+      <ObjectListView objectApiName='objects' 
         listName="all"
         // columnFields={
         //   [

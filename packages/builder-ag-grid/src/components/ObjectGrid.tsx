@@ -114,6 +114,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     onUpdated,
     checkboxSelection = true,
     name,
+    pagination = true,
     ...rest
   } = props
   const [editedMap, setEditedMap] = useState({})
@@ -152,14 +153,20 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             })
             const filters = compact([].concat(defaultFilters).concat(filterModelToOdataFilters(params.request.filterModel)));
             // TODO 此处需要叠加处理 params.request.fieldModel
+            let options: any = {
+              sort,
+              $top: pageSize,
+              $skip: params.request.startRow
+            };
+            if(!pagination){
+              options = {
+                sort
+              };
+            }
             API.requestRecords(
               objectApiName,
               filters,
-              fields,{
-                sort,
-                $top: pageSize,
-                $skip: params.request.startRow
-              }).then((data)=>{
+              fields,options).then((data)=>{
 
                 params.success({
                   rowData: data.value,
@@ -400,7 +407,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         paginationAutoPageSize={false}
         localeText={AG_GRID_LOCALE_ZH_CN}
         rowModelType='serverSide'
-        pagination={true}
+        pagination={pagination}
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
         paginationPageSize={pageSize}

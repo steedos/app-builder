@@ -199,6 +199,11 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   }
   const rowButtons = getRowButtons(schema);
 
+  let pagination = true;
+  if(schema.paging?.enabled === false ){
+    pagination = false;
+  }
+
   return (
     <ObjectExpandTable
       objectApiName={objectApiName}
@@ -206,6 +211,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
       extraColumnFields={listViewExtraColumns}
       filters={filters}
       rowButtons={rowButtons}
+      pagination={pagination}
       // className={["object-listview", rest.className].join(" ")}
       {...rest}
     />

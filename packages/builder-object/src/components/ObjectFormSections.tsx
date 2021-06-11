@@ -1,9 +1,5 @@
-
 import React, { useContext, useEffect, useState, useImperativeHandle } from "react";
 import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, cloneDeep} from 'lodash';
-// import { FooterToolbar } from '@ant-design/pro-layout';
-import { BaseFormProps } from "@ant-design/pro-form/es/BaseForm";
-import { ModalFormProps } from "@ant-design/pro-form";
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';

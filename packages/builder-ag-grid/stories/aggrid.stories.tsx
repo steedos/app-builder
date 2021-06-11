@@ -7,9 +7,7 @@ export default {
 export const Grid = () => {
   return (
       <ObjectGrid objectApiName='accounts' 
-        pagination={{
-          pageSize:3
-        }}
+        pagination={true}
         sort="created desc,name desc"
         // rowSelection="single"
         columnFields={
