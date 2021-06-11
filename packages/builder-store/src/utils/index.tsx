@@ -1,4 +1,4 @@
-import { each, isArray, forEach, isObject, isString, keys, isFunction} from 'lodash';
+import { each, isArray, forEach, isObject, isString, keys, isFunction, isNil} from 'lodash';
 export function saveEval(js: string){
 	try{
 		return eval(js.replaceAll("_.", "window._."))
@@ -14,6 +14,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   let sub_fields: any;
   // fieldName变量中可能带$和.符号，需要转换成RegExp匹配的带转义符的字符
   const fieldNameForReg = fieldName.replace(/\$/g,"\\$").replace(/\./g,"\\.");
+  const precision = field.precision || 18;
   switch(fieldType){
     case "object":
       // 根据对象的子表字段信息，返回子表配置属性
@@ -83,6 +84,18 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     //     fieldSchema = field;
     //   }
     //   break;
+    case "currency":
+      // 金额类型默认显示2位小数
+      if(isNil(field.scale)){
+        fieldSchema = Object.assign({}, field, {scale: 2, precision});
+      }
+      else{
+        fieldSchema = Object.assign({}, field, {precision});
+      }
+      break;
+    case "number":
+      fieldSchema = Object.assign({}, field, {precision});
+      break;
     default:
       fieldSchema = field;
       break;
