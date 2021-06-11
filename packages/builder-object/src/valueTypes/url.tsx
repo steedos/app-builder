@@ -8,10 +8,10 @@ export const url = {
     const { show_as_qr } = field_schema;
     let value= fieldProps.value || text;//ProTable那边fieldProps.value没有值，只能用text
     if(show_as_qr && value && value.length){
-      return (<QRCode value={value} style={{ width:'60px', height: 'auto', border: '1px solid #888', padding: '2px'}} />)
+      return (<a href={value} target="_blank"><QRCode value={value} style={{ width:'60px', height: 'auto', border: '1px solid #888', padding: '2px'}} /></a>)
     }
     else{
-      return (<a href={value}>{value}</a>);
+      return (<a href={value} target="_blank">{value}</a>);
     }
   },
   renderFormItem: (_: any, props: any) => (
