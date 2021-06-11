@@ -176,7 +176,7 @@ export const ObjectModal = ({
                 const gridSelectedRows = gridRefApi.getSelectedRows()
                 let gridSelectedKeys=[];
                 forEach(gridSelectedRows,(item)=>{
-                  gridSelectedKeys.push(item[rest.rowKey])
+                  gridSelectedKeys.push(item[rest.rowKey || '_id'])
                 })
                 success = await onFinish(gridSelectedKeys,gridSelectedRows);
               }
