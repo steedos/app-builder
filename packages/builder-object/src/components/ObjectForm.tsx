@@ -8,13 +8,11 @@ import { Form } from '@steedos/builder-form';
 import { Form as ProForm } from 'antd';
 import { BaseFormProps } from "@ant-design/pro-form/es/BaseForm";
 import { ModalFormProps } from "@ant-design/pro-form";
-import type { ProFieldFCMode } from '@ant-design/pro-utils';
-import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
-import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
 import { clone } from 'lodash';
+import { ObjectFormSections } from './ObjectFormSections';
 
 import './ObjectForm.less'
 
@@ -24,7 +22,7 @@ export type FormProps<T = Record<string, any>>  = {
 } & BaseFormProps & ModalFormProps
 
 /*
-  fields: 字段定义数组，格式同YML
+  fields: 字段定义数组，格式同YML
 */
 export type ObjectFormProps = {
   objectApiName?: string,
@@ -67,7 +65,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const [proForm] = ProForm.useForm();
 
   const defaultValues = clone(initialValues);
- 
+  const sectionsRef = React.createRef();
   const form = Forms.loadById(formId)
   form.setMode(mode);
 
@@ -75,7 +73,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   // const [fieldNames, setFieldNames] = useState([]);
   const fieldNames = [];
   const fieldSchemaArray = [];
-  const sections = [];
 
   const object = objectApiName? Objects.getObject(objectApiName): null;
   if (object && object.isLoading) return (<div><Spin/></div>)
@@ -116,8 +113,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } else {
     }
   }
-  
-
 
   const onFinish = async(values:any) =>{
     if (!object) 
@@ -142,41 +137,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  const getSection = (sectionName, options) => {
-    const sectionFields = filter(fieldSchemaArray, { 'group': sectionName });
-    const columns = isModalForm ? 2 : undefined
-    return (
-      <FieldSection title={sectionName} key={sectionName} columns={columns} {...options}>
-        {map(sectionFields, (field:any)=>{
-          const fieldProps = {
-            key: field.name,
-            name: field.name,
-            objectApiName,
-            fieldName: field.name,
-            label: field.label,
-            fieldSchema: field,
-            mode,
-          };
-          return (<ObjectField {...fieldProps} />)
-        })}
-      </FieldSection>
-    )
+  const onValuesChange = (event, value)=>{
+    (sectionsRef.current as any)?.reCalcSchema(event, value)
   }
-
-  const getSections = () => {
-     const sections = groupBy(fieldSchemaArray, 'group');
-     const dom = [];
-     const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
-     forEach(sections, (value, key) => {
-      dom.push(getSection(key, options))
-    })
-    return dom;
-  }
-
-  // if(isObject(submitter) && showFooterToolbar){
-  //   (submitter as any).render = (_, dom) => <FooterToolbar style={{height: "64px", lineHeight:"64px"}}>{dom}</FooterToolbar>
-  // }
-
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
@@ -195,11 +158,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isDrawerForm={isDrawerForm}
       trigger={trigger}
       onFinish={onFinish}
+      onValuesChange={onValuesChange}
       visible={visible}
       {...rest}
     >
       {children}
-      {getSections()}
+      <ObjectFormSections onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema = {objectSchema} recordId={recordId} mode = {mode} isModalForm={isModalForm}></ObjectFormSections>
     </Form>
   )
 });

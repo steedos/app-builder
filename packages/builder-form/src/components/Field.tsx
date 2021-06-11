@@ -15,6 +15,8 @@ import Button from '@salesforce/design-system-react/components/button';
 
 import './Field.less'
 
+const FieldsMap = {};
+
 export const Field = observer((props: any) => {
   const context = React.useContext(FormContext);
   const formId = context.name ? context.name : 'default';
@@ -145,18 +147,21 @@ export const Field = observer((props: any) => {
     )
   })
 
-  const ProFormField = createField<ProFormItemProps<InputProps>>(
-
-    (props: ProFormItemProps<InputProps>) => {
-      return (
-        <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} />
-      )
-    },
-    {
-      valueType,
-    },
-  );
-  return (<ProFormField {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  if(!FieldsMap[`${valueType}_${mode}`]){
+    const ProFormField = createField<ProFormItemProps<InputProps>>(
+      (props: ProFormItemProps<InputProps>) => {
+        return (
+          <ProFieldWrap valueType={valueType} {...props} mode={mode} readonly={readonly} />
+        )
+      },
+      {
+        valueType,
+      },
+    );
+    FieldsMap[`${valueType}_${mode}`] = ProFormField;
+  }
+  const SField = FieldsMap[`${valueType}_${mode}`];
+  return (<SField formId={formId} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {
