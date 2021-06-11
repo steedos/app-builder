@@ -91,7 +91,6 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
     fields = [],//只显示指定字段
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     formData={},
-    recordId,
     mode = 'edit',
     isModalForm,
     onRef
@@ -122,7 +121,7 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
 
   useEffect(() => {
     setSections(getSections(objectApiName, mergedSchema, fields, isModalForm, mode, formData))
-  }, [JSON.stringify(mergedSchema)]);
+  }, [JSON.stringify(mergedSchema), JSON.stringify(formData)]);
 
   return (
     <>
