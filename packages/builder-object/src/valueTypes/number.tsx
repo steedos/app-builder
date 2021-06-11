@@ -35,26 +35,32 @@ const numberToString = (number: number | string, scale: number, notThousands: bo
 
 const format = (val: string, precision: number = 18, scale: number = 0)=>{
   var _val = new Number(val);
-  if (val.indexOf(".") > -1) {
+  let dotIndex = val.indexOf(".");
+  if (dotIndex > -1) {
     if (val.length - 1 > precision) {
-      return Number(val.substring(0, precision - scale - 1)).toFixed(scale);
-    } else {
+      _val = Number(val.substring(0, precision - scale - 1))
+    }
+    // 因为ant的formatter功能不是在onBlur失去焦点事件触发，而是一修改值就触发了
+    // 如果保留自动补零格式功能会影响体验，所以只能放弃自动补零格式功能
+    if(val.length - dotIndex > scale){
       return _val.toFixed(scale);
+    }
+    else{
+      return _val;
     }
   } else {
     if (val.length > precision) {
-      return Number(val.substring(0, precision - scale)).toFixed(scale);
+      return Number(val.substring(0, precision - scale));
     } else {
-      return _val.toFixed(scale);
+      return _val;
     }
   }
 }
 
 export const FieldNumber = (props:any) => {
   const { mode, fieldProps } = props;
-  const { field_schema: fieldSchema = {}, onChange } = fieldProps;
+  const { field_schema: fieldSchema = {} } = fieldProps;
   let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
-  console.log("===FieldNumber===field_schema===", fieldSchema);
   let scale = fieldSchema.scale;
   let precision = fieldSchema.precision;
   if(mode === "read"){
@@ -62,7 +68,9 @@ export const FieldNumber = (props:any) => {
   }
   else{
     let newFieldProps = Object.assign({}, fieldProps, {
-      formatter: (value: any) => {console.log("=formatter===", typeof value);return format(value, precision, scale);},
+      formatter: (value: any) => {
+        return format(value, precision, scale);
+      },
       parser: (value: any) => value
     });
     return (
