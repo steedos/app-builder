@@ -13,10 +13,21 @@ export const select = {
     tags = filter(options,(optionItem: any)=>{
         return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
     })
-    return (<React.Fragment>{tags.map((tagItem, index)=>{return (
+    return (<React.Fragment>{tags.map((tagItem, index)=>{
+      let colorStyle:any = {
+        borderRadius: '10px',
+        padding: '1px 6px',
+        border: '1px',
+      }
+      if(tagItem.color && tagItem.color.length){
+        colorStyle.background='#'+tagItem.color;
+      }
+      return (
         <React.Fragment key={tagItem.value}>
-            {index > 0 && ', '}
-            { (tagItem.label) }
+            {index > 0 && ' '}
+            <span style={{...colorStyle}} >
+              {tagItem.label}
+            </span>
         </React.Fragment>
     )})}</React.Fragment>)
   },
