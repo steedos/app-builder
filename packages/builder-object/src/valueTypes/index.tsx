@@ -17,10 +17,12 @@ import { master_detail } from './master_detail';
 import { object } from './object';
 import { grid } from './grid';
 import { image } from './image';
+import { file } from './file';
 import { avatar } from './avatar';
 import { formula } from './formula';
 import { summary } from './summary';
 import { autonumber } from './autonumber';
+
 
 export const StandardValueTypes = {
     boolean,
@@ -40,6 +42,7 @@ export const StandardValueTypes = {
     lookup,
     master_detail,
     image,
+    file,
     avatar,
     object,
     grid,
