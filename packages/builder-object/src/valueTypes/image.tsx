@@ -47,19 +47,6 @@ export const ImageField = observer((props: any) => {
     const { multiple } = field_schema;
     let { onChange } = fieldProps;
     const value= fieldProps.value || props.text;
-
-    if (mode === 'read') {
-        const tags = [];
-        const items = multiple ? value : [value];
-        if(items && items.length){
-            forEach(items,(itemsValue)=>{
-                tags.push(Settings.rootUrl + '/api/files/'+fileType+'/' + itemsValue)
-            })
-        }
-        return (<Image.PreviewGroup>{tags.map((tagItem, index)=>{return (
-            <Image alt="图片" height={25} src={tagItem} className="mr-2 image-item" />
-        )})}</Image.PreviewGroup>)
-    }
     let defaultFileList = [];
     if(value && value.length){
         if(multiple){
@@ -72,10 +59,22 @@ export const ImageField = observer((props: any) => {
             defaultFileList = [getFileListItem(value, fileType)]
         }
     }
-    if (mode === 'edit') {
+    const [fileList, setFileList] = useState(defaultFileList);
+
+    if (mode === 'read') {
+        const tags = [];
+        const items = multiple ? value : [value];
+        if(items && items.length){
+            forEach(items,(itemsValue)=>{
+                tags.push(Settings.rootUrl + '/api/files/'+fileType+'/' + itemsValue)
+            })
+        }
+        return (<Image.PreviewGroup>{tags.map((tagItem, index)=>{return (
+            <Image alt="图片" height={25} src={tagItem} className="mr-2 image-item" />
+        )})}</Image.PreviewGroup>)
+    }else{
         // props.name = "file" //TODO Upload组件中会自动将参数 name 的 value 作为一个参数传递给后端
         const proProps = Object.assign({}, props, {name:"file"});
-        const [fileList, setFileList] = useState(defaultFileList);
         const onPreview = async file => {
             let src = file.url;
             if (!src) {
