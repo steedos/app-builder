@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -146,7 +146,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
-            fields = fields.concat(extraColumnFields);
+            fields = uniq(compact(fields.concat(extraColumnFields)));
             const sort = []
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
