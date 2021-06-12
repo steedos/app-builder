@@ -116,10 +116,12 @@ export const ImageField = observer((props: any) => {
                         fileIds.push(item.response._id)
                     }
                 })
-                if(!multiple){
-                    fileIds= fileIds.length ? fileIds[0] : '';
-                }   
-                onChange(fileIds)
+                if (newFileList.length == fileIds.length) {
+                    if(!multiple){
+                        fileIds= fileIds.length ? fileIds[0] : '';
+                    }
+                    onChange(fileIds)
+                }
             }
         }
         return (
