@@ -49,7 +49,7 @@ export default observer((props: any) => {
 
   const resizeSubject = useRef()
   const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>(current.firstChild));
-  const contentRectHeight = contentRect.height;
+  const contentRectHeight = contentRect.height || window.document.body.clientHeight;
   const scroll = useMemo(() => {
     let scrollHeight = contentRectHeight - 276;
     if(selectedUserInTab1 && selectedUserInTab1.length){
@@ -98,6 +98,7 @@ export default observer((props: any) => {
         orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
         // 不是管理员时，要限定右侧用户范围为当前用户所属分部关联组织内
         defaultSaceUsersFilters = [defaultSaceUsersFilters, ["organizations_parents", "=", orgIds]];
+        console.log("defaultSaceUsersFilters-----: ",defaultSaceUsersFilters);
       }
       else{
         console.error('您的账户未分配到任何分部，无法查看通讯录信息，请联系系统管理员！')
