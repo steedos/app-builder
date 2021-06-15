@@ -257,13 +257,15 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       let fieldSort = find(sort, (item)=>{
         return item.field_name === fieldName
       });
+
+      let fieldWidth = field.width ? field.width : field.is_wide? 300: 150;
       
       columns.push({
         field: fieldName,
         hide: hideInTable,
-        headerName: field.label?field.label:fieldName,
-        width: field.is_wide? 300: 150,
-        minWidth: field.is_wide? 300: 150,
+        headerName: field.label ? field.label:fieldName,
+        width: fieldWidth,
+        minWidth: fieldWidth,
         resizable: true,
         filter,
         sort: fieldSort ? fieldSort.order : undefined,
