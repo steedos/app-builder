@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
-import { isFunction, forEach, isObject, filter, isString, each, includes, isBoolean, } from "lodash"
+import { isFunction, forEach, isObject, filter, isString, each, includes, isBoolean, isArray } from 'lodash';
 // import { ObjectExpandTable } from "./"
 import { ObjectGrid as ObjectExpandTable } from '@steedos/builder-ag-grid';
 import {
@@ -183,6 +183,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     filters,
     listSchema,
     inReact,
+    sort,
     ...rest
   } = props
   const object = Objects.getObject(objectApiName);
@@ -198,18 +199,37 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     filters = getListViewFilters(listView, props);
   }
   const rowButtons = getRowButtons(schema);
+  if(!sort || sort.length == 0){
+    sort = listView.sort
+  }
 
   let pagination = true;
   if(schema.paging?.enabled === false ){
     pagination = false;
   }
 
+  const _sort = [];
+
+  if(sort){
+    each(sort, (item)=>{
+      if(isArray(item)){
+        if(item.length === 1){
+          _sort.push({field_name: item[0], order: 'asc'});
+        }else if(item.length === 2){
+          _sort.push({field_name: item[0], order: item[1]});
+        }
+      }else if(isObject(item)){
+        _sort.push(item);
+      }
+    })
+  }
   return (
     <ObjectExpandTable
       objectApiName={objectApiName}
       columnFields={columnFields}
       extraColumnFields={listViewExtraColumns}
       filters={filters}
+      sort={_sort}
       rowButtons={rowButtons}
       pagination={pagination}
       // className={["object-listview", rest.className].join(" ")}

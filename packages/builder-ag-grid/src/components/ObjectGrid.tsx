@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq, find} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -254,6 +254,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           }
         }
       }
+      let fieldSort = find(sort, (item)=>{
+        return item.field_name === fieldName
+      });
+      
       columns.push({
         field: fieldName,
         hide: hideInTable,
@@ -262,6 +266,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         minWidth: field.is_wide? 300: 150,
         resizable: true,
         filter,
+        sort: fieldSort ? fieldSort.order : undefined,
         filterParams,
         rowGroup,
         flex: 1,
@@ -290,7 +295,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         // title: field.label?field.label:fieldName,
         // valueType: field.type,
         editable: (params)=>{
-          console.log(`editable params`, params);
           return API.client.field.isEditable(objectApiName, params.colDef.filterParams.fieldSchema, params.data)
         }
       })

@@ -105,7 +105,7 @@ export const Tree = () => {
 
 export const ListView = () => {
   return (
-      <ObjectListView objectApiName='objects' 
+      <ObjectListView objectApiName='accounts' 
         listName="all"
         // columnFields={
         //   [
