@@ -16,6 +16,7 @@ import { AgGridCellTextFilter } from './CellTextFilter';
 import { AgGridCellNumberFilter } from './CellNumberFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
+import { Tables } from '@steedos/builder-store';
 
 import './ObjectGrid.less'
 
@@ -97,6 +98,7 @@ const filterModelToOdataFilters = (filterModel)=>{
 export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const {
+    name: tableId = 'default',
     objectApiName,
     columnFields = [],
     extraColumnFields = [],
@@ -116,7 +118,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     name,
     pagination = true,
     ...rest
-  } = props
+  } = props;
+  const table = Tables.loadById(tableId);
   const [editedMap, setEditedMap] = useState({})
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
@@ -361,6 +364,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     // }
   };
 
+  const onRowSelected = (params) => {
+    const selectedRows = params.api.getSelectedRows();
+    table.setSelectedRows(selectedRows);
+  }
+
   const onRowValueChanged = (params)=>{
     console.log(`onRowValueChanged params`, params)
   }
@@ -428,6 +436,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         undoRedoCellEditing={true}
         onCellValueChanged={onCellValueChanged}
         onRowValueChanged={onRowValueChanged}
+        onRowSelected={onRowSelected}
         context={{editedMap: editedMap}}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,

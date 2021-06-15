@@ -49,7 +49,7 @@ export default observer((props: any) => {
 
   const resizeSubject = useRef()
   const contentRect: any = useResizeObserver(resizeSubject, (current: any)=>(current.firstChild));
-  const contentRectHeight = contentRect.height;
+  const contentRectHeight = contentRect.height || window.document.body.clientHeight;
   const scroll = useMemo(() => {
     let scrollHeight = contentRectHeight - 276;
     if(selectedUserInTab1 && selectedUserInTab1.length){
@@ -105,7 +105,6 @@ export default observer((props: any) => {
       }
     }
   }
-
   useEffect(() => {
     if(User.isLoading){
       return;
@@ -116,7 +115,7 @@ export default observer((props: any) => {
     else{
       setSpaceUsersFilters(defaultSaceUsersFilters)
     }
-  }, [selectedOrgForMobile])
+  }, [selectedOrgForMobile, User.isLoading])
 
   useEffect(() => {
     if(User.isLoading){
@@ -205,7 +204,6 @@ export default observer((props: any) => {
     spaceUserSearchBar = ()=> [(
       <Form
         onValuesChange={(changeValues: any)=>{
-          console.log("=spaceUserSearchBar=changeValues===", changeValues)
           setSelectedOrgForMobile(changeValues.organizations_parents);
         }}
       >
@@ -225,7 +223,6 @@ export default observer((props: any) => {
     contactSearchBar = ()=> [(
       <Form
         onValuesChange={(changeValues: any)=>{
-          console.log("=contactSearchBar=changeValues===", changeValues)
           setSelectedContactForMobile(changeValues.group);
         }}
       >

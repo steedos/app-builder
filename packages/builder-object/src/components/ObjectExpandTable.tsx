@@ -208,7 +208,6 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
     releatedColumnField: expandDefine.fieldName,
     filters: expandDefine.expandFilters
   };
-  console.log('expandProps==>',expandProps)
   // 当ObjectProTable设置了scroll时，左右结构的宽度计算有问题，需要加样式额外处理宽度
   let tablePartWidth:any = rest.scroll && ExpandComponent && "calc(100% - 366px)";
 

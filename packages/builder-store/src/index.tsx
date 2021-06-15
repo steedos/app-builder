@@ -1,5 +1,6 @@
 import { API } from './API';
 import { Forms } from './Form';
+import { Tables } from './Table';
 import { Objects } from './Object';
 import { Settings } from './Settings';
 import { Apps } from './Apps'
@@ -9,6 +10,7 @@ import { ComponentRegistry } from './ComponentRegistry';
 
 const stores = {
   Forms,
+  Tables,
   Objects,
   Settings,
   API,
@@ -24,6 +26,7 @@ const stores = {
 
 export {
   Forms,
+  Tables,
   Objects,
   Settings,
   API,
