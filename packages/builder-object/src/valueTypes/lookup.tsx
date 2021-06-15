@@ -23,7 +23,7 @@ export const LookupField = observer((props:any) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { valueType, mode, fieldProps, request, ...rest } = props;
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
-    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create, modal_mode, table_schema } = fieldSchema;
+    const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create = true, modal_mode, table_schema } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let tags:any[] = [];
     let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
@@ -263,6 +263,7 @@ export const LookupField = observer((props:any) => {
         let proFieldProps: any;
         let dropdownRender;
         if(create && referenceTo){
+            const createObjectName = referenceToObjectSchema.label;
             dropdownRender = (menu)=>{
             return (
                 <React.Fragment>
@@ -270,7 +271,7 @@ export const LookupField = observer((props:any) => {
                     <ObjectForm
                         // initialValues={initialValues} 
                         key="standard_new" 
-                        title={`新建 ${referenceToObjectSchema.label}`} 
+                        title={`新建 ${createObjectName}`} 
                         mode="edit" 
                         isModalForm={true} 
                         objectApiName={referenceTo} 
@@ -281,7 +282,7 @@ export const LookupField = observer((props:any) => {
                                 // 新建弹出后新建按钮应该隐藏掉
                                 setIsDropdownOpen(false);
                             }} >
-                                <PlusOutlined /> 新建 {referenceToObjectSchema.label}
+                                <PlusOutlined /> 新建 {createObjectName}
                             </a>
                         } 
                     />
