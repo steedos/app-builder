@@ -123,6 +123,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   // const colSize = useAntdMediaQuery();
   // const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
   let sideBar = defaultSideBar;
+  let _pageSize = pageSize;
+  if(!pagination){
+    _pageSize = 0;
+  }
   if(isEmpty(sideBar) && sideBar !== false ){
     sideBar = {
       toolPanels:[
@@ -410,8 +414,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         pagination={pagination}
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
-        paginationPageSize={pageSize}
-        cacheBlockSize={pageSize}
+        paginationPageSize={_pageSize}
+        cacheBlockSize={_pageSize}
         rowSelection={rowSelection}
         enableRangeSelection={true}
         suppressCopyRowsToClipboard={true}
