@@ -5,8 +5,10 @@ import ProField from "@ant-design/pro-field";
 export const AgGridCellEditor = forwardRef((props: any, ref) => {
   const { 
     valueType = 'text',
-    fieldSchema
+    fieldSchema,
+    context
   } = props;
+  const editedMap: any= context.editedMap
   const [value, setValue] = useState(props.value);
 
   /* Component Editor Lifecycle methods */
@@ -16,7 +18,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
             return value;
         },
         isPopup() {
-          return true;
+          return false;
         }
     };
   });
@@ -29,10 +31,17 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
           valueType={valueType} 
           value={value}
           onChange={(newValue)=>{
+
             if (newValue?.currentTarget)
               setValue(newValue?.currentTarget?.value)
             else
               setValue(newValue)
+
+            if(!editedMap[props.data._id]){
+              editedMap[props.data._id] = {};
+            }
+            editedMap[props.data._id][props.colDef.field] = newValue;
+            
           }}
           fieldProps={{
             field_schema: fieldSchema

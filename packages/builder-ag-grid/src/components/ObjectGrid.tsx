@@ -354,10 +354,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   }
 
   const onCellValueChanged = (params) => {
-    if(!editedMap[params.data._id]){
-      editedMap[params.data._id] = {};
-    }
-    editedMap[params.data._id][params.colDef.field] = params.value;
+    // 这里赋值有延迟，转移到 CellEditor
+    // if(!editedMap[params.data._id]){
+    //   editedMap[params.data._id] = {};
+    // }
+    // editedMap[params.data._id][params.colDef.field] = params.value;
     setTimeout(function(){
       // setDrawerVisible(true);
       (document.getElementsByClassName(`grid-action-drawer-${name}`)[0] as any).style.display=''
@@ -376,7 +377,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   }
 
   const onRowValueChanged = (params)=>{
-    console.log(`onRowValueChanged params`, params)
+    // console.log(`onRowValueChanged params`, params)
   }
 
 
@@ -434,7 +435,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         enableRangeSelection={true}
         suppressCopyRowsToClipboard={true}
         modules={AllModules}
-        stopEditingWhenGridLosesFocus={false}
+        stopEditingWhenGridLosesFocus={true}
+        stopEditingWhenCellsLoseFocus={true}
         serverSideDatasource={getDataSource()}
         onModelUpdated={onModelUpdated}
         serverSideStoreType={ServerSideStoreType.Partial}
