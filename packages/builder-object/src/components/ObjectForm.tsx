@@ -63,6 +63,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
   const [proForm] = ProForm.useForm();
+  const [undefinedValues, setUndefinedValues] = useState({});
 
   const defaultValues = clone(initialValues);
   const sectionsRef = React.createRef();
@@ -127,7 +128,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
         return result ? true : false
       }
     }else{
-      result = await API.updateRecord(objectApiName, recordId, values);
+      result = await API.updateRecord(objectApiName, recordId, Object.assign({},undefinedValues,values));
       object.getRecord(recordId, fieldNames).loadRecord();
       if(afterUpdate){
         return afterUpdate(result);  
@@ -137,8 +138,14 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  const onValuesChange = (event, value)=>{
-    (sectionsRef.current as any)?.reCalcSchema(event, value)
+  const onValuesChange = (changedValues, allValues)=>{
+    forEach(changedValues,(value,key)=>{
+      if(value === undefined){
+        undefinedValues[key] = null;
+        setUndefinedValues(undefinedValues)
+      }
+    });
+    (sectionsRef.current as any)?.reCalcSchema(changedValues, allValues)
   }
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
