@@ -32,7 +32,12 @@ export const FieldSummary = (props:any) => {
   }
   else{
     return (
-      <ProField {...props} mode='read' valueType={valueType} fieldProps={newFieldProps} />
+      <React.Fragment>
+        <ProField {...props} mode='read' valueType={valueType} fieldProps={newFieldProps} />
+        <div className="ant-form-item-explain">
+          <div role="alert"><i>在保存时，计算此字段</i></div>
+        </div>
+      </React.Fragment>
     )
   }
 };
