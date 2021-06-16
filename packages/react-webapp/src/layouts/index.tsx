@@ -29,12 +29,10 @@ export const Layout = observer((props: any) => {
 
   User.getMe();
   if (User.isLoading)
-    // return (<span>Loading user...</span>)
-    return (<span><Spin/></span>)
+    return (<div style={{display:'flex',width:'100%',height:'100%',justifyContent:'center',alignItems:'center'}}><Spin/></div>)
   User.getSession();
   if (User.isLoading)
-    // return (<span>Loading session...</span>)
-    return (<span><Spin/></span>)
+    return (<div style={{display:'flex',width:'100%',height:'100%',justifyContent:'center',alignItems:'center'}}><Spin/></div>)
   if (!User.me) {
     history.push('/login');
     return (<>Please login</>);
