@@ -2,6 +2,9 @@ import { values } from "mobx"
 import { types, getParent, flow } from "mobx-state-tree"
 import { API } from './API';
 import { getObjectOdataExpandFields ,convertRecordsForLookup} from './utils/index'
+import { without } from 'lodash';
+
+const RECORD_CACHE_TTL = 60 * 1000;
 
 export const RecordCache = types.model({
   id: types.identifier, //记录ID
@@ -10,6 +13,7 @@ export const RecordCache = types.model({
   data: types.frozen(),
   permissions: types.frozen(),
   isLoading: true,
+  expires: types.number
 })
 .actions((self) => {
 
@@ -106,14 +110,16 @@ export const ObjectModel = types.model({
     if (!recordId)
       return null;
     const record = self.recordCaches.get(recordId)
-    if (record)
+    const recordFields = record?.fields || []
+    if (record && record.expires > (new Date()).getTime() && without(fields, ...recordFields).length == 0)
       return record
     const newRecord = RecordCache.create({
       id: recordId,
       objectApiName: self.id,
       fields,
       data: {},
-      isLoading: true
+      isLoading: true,
+      expires: new Date().getTime() + RECORD_CACHE_TTL
     })
     self.recordCaches.put(newRecord);
     newRecord.loadRecord();
