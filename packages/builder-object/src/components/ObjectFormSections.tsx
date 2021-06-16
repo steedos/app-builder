@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useImperativeHandle } from "react";
-import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, cloneDeep} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, cloneDeep, sortBy, has} from 'lodash';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
@@ -25,9 +25,19 @@ export type ObjectFormSectionsProps = {
 const getFieldSchemaArray = (mergedSchema, fields, isModalForm)=>{
   let fieldSchemaArray = [];
   fieldSchemaArray.length = 0
-  forEach(mergedSchema.fields, (field, fieldName) => {
+
+  const fieldsArr = [];
+  forEach(mergedSchema.fields, (field, fieldName)=>{
+    if(!has(field, "name")){
+      field.name = fieldName
+    }
+		fieldsArr.push(field)
+  })
+
+  forEach(sortBy(mergedSchema.fields, "sort_no"), (field) => {
     if (!field.group || field.group == 'null' || field.group == '-')
       field.group = '通用'
+    const fieldName = field.name;
     let isObjectField = /\w+\.\w+/.test(fieldName)
     if (field.type == 'grid' || field.type == 'object') {
       // field.group = field.label
