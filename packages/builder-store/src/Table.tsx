@@ -1,12 +1,15 @@
-import { types } from "mobx-state-tree";
+import { types, flow } from "mobx-state-tree";
 import { pullAllBy, differenceBy, remove } from "lodash";
+import { API } from './API';
 
 export const TableModel = types.model({
   id: types.identifier,
+  objectApiName: types.string,
   // selectedRows: types.union(types.array(TableRowModel), types.undefined),
   // selectedRows: types.union(types.array(types.frozen()), types.undefined)
   rowKey: types.union(types.string, types.undefined),
-  selectedRows: types.frozen()
+  selectedRows: types.frozen(),
+  isLoading: false
 }).actions(self => {
   const getRowKey = () => {
     return self.rowKey || "_id";
@@ -18,29 +21,52 @@ export const TableModel = types.model({
     return self.selectedRows || [];
   };
   const addSelectedRows = (rows: any) => {
-    const rowKey = getRowKey();
-    const rowsForAdd = differenceBy(rows, self.selectedRows, rowKey);
-    self.selectedRows = self.selectedRows.concat(rowsForAdd);
+    if(rows && rows.length){
+      const rowKey = getRowKey();
+      const selectedRows = getSelectedRows();
+      const rowsForAdd = differenceBy(rows, selectedRows, rowKey);
+      self.selectedRows = selectedRows.concat(rowsForAdd);
+    }
   };
   const addSelectedRow = (row: any) => {
-    addSelectedRows([row]);
+    if(row){
+      addSelectedRows([row]);
+    }
   };
-  const addSelectedRowsByKeys = (keys: any, columns: any = ["name"]) => {
-    
+  const loadSelectedRows = flow(function* loadSelectedRows(keys: any, columns: any = ["name"]) {
+    try {
+      self.isLoading = true;
+      const filters = [getRowKey(), "=", keys]
+      const result = yield API.requestRecords(self.objectApiName, filters, columns);
+      const rows = result && result.value;
+      addSelectedRows(rows);
+      self.isLoading = false;
+    } catch (err) {
+      console.error(`Failed to load record ${self.id} `, err)
+    }
+  });
+  const addSelectedRowsByKeys = (keys: any, columns: any) => {
+    if(keys && keys.length){
+      loadSelectedRows(keys, columns);
+    }
   };
   const addSelectedRowByKey = (key: any, columns: any) => {
-    addSelectedRowsByKeys([key], columns);
+    if(key){
+      addSelectedRowsByKeys([key], columns);
+    }
   };
   const removeSelectedRows = (rows: any) => {
     const rowKey = getRowKey();
-    pullAllBy(self.selectedRows, rows, rowKey)
+    const selectedRows = getSelectedRows();
+    pullAllBy(selectedRows, rows, rowKey)
   };
   const removeSelectedRow = (row: any) => {
     removeSelectedRows([row]);
   };
   const removeSelectedRowsByKeys = (keys: any) => {
     const rowKey = getRowKey();
-    self.selectedRows = remove(self.selectedRows, function(n) {
+    const selectedRows = getSelectedRows();
+    self.selectedRows = remove(selectedRows, (n) => {
       return keys.indexOf(n[rowKey]) > -1;
     });
   };
@@ -66,15 +92,17 @@ export const Tables = types.model({
   items: types.optional(types.map(TableModel), {})
 })
 .actions((self) => {
-  const loadById = (id: string)=>{
-    if (!id)
+  const loadById = (id: string, objectApiName: string, rowKey: string = "_id")=>{
+    if (!id || !objectApiName)
       return null;
     const table = self.items.get(id) 
     if (table) {
       return table
     }
     const newTable = TableModel.create({
-      id
+      id, 
+      objectApiName, 
+      rowKey
     })
     self.items.put(newTable);
     return newTable
