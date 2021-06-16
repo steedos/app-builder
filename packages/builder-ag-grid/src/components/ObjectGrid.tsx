@@ -355,10 +355,10 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const onCellValueChanged = (params) => {
     // 这里赋值有延迟，转移到 CellEditor
-    // if(!editedMap[params.data._id]){
-    //   editedMap[params.data._id] = {};
-    // }
-    // editedMap[params.data._id][params.colDef.field] = params.value;
+    if(!editedMap[params.data._id]){
+      editedMap[params.data._id] = {};
+    }
+    editedMap[params.data._id][params.colDef.field] = params.value;
     setTimeout(function(){
       // setDrawerVisible(true);
       (document.getElementsByClassName(`grid-action-drawer-${name}`)[0] as any).style.display=''

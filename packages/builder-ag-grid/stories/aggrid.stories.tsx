@@ -6,6 +6,7 @@ export default {
 
 export const Grid = () => {
   return (
+    <div style={{height:'500px'}}>
       <ObjectGrid objectApiName='accounts' 
         pagination={true}
         sort="created desc,name desc"
@@ -14,6 +15,9 @@ export const Grid = () => {
           [
             {
               fieldName: 'name'
+            },
+            {
+              fieldName: 'description'
             },
             {
               fieldName: 'parent_id'
@@ -33,7 +37,7 @@ export const Grid = () => {
           ]
         }
       >
-        
       </ObjectGrid>
+    </div>
   )
 }
