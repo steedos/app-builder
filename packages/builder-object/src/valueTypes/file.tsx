@@ -84,7 +84,7 @@ export const FileField = observer((props: any) => {
         const proProps = Object.assign({}, props, {name:"file"});
         const propsOther = {
             action: Settings.rootUrl + '/s3/'+fileType,
-            // multiple: false,
+            multiple,
             fileList,
             type: 'file',
             method: 'post',
