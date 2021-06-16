@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isArray, isNil } from 'lodash';
 import { Apps } from '@steedos/builder-store';
 export function getObjectRecordUrl(objectApiName: string, redordId: any) {
   const hrefPrefix = `/app/${Apps.currentAppId || "-"}/${objectApiName}/view/`;
@@ -78,4 +78,17 @@ export const getTreeDataFromRecords = (records: [] = [], nameField: string = "na
     }
   });
   return result;
+}
+
+export const saveRunFunction = (fun: any, args: any, defaultValue?: any) => {
+  try {
+    let params = [];
+    if(args && !isNil(args)){
+      isArray(args) ? args : [args] ;
+    }
+    return fun(...params);
+  } catch (error) {
+    console.log(error);
+    return defaultValue;
+  }
 }
