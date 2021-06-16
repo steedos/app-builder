@@ -115,7 +115,7 @@ export const FileField = observer((props: any) => {
                 }
             }
         }
-        const uploadDom = <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        const uploadDom = <Button icon={<UploadOutlined />}>上传</Button>
         return (
             <Upload {...proProps} {...propsOther}>
                 { multiple  ? uploadDom : fileList.length < 1 && uploadDom}
