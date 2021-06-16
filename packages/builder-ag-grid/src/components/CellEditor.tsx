@@ -8,7 +8,6 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
     fieldSchema,
     context
   } = props;
-  console.log(props)
   const editedMap: any= context.editedMap
   const [value, setValue] = useState(props.value);
 
