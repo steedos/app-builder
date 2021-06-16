@@ -76,7 +76,7 @@ export const FileField = observer((props: any) => {
         }
         return (<React.Fragment>{tags.map((tagItem, index)=>{
             return (
-                <a title="附件" href={tagItem.value} className="mr-2 " >{ tagItem.label }</a>
+                <a title="附件" href={tagItem.value} className="mr-2" target="_blank">{ tagItem.label }</a>
             )
             })}</React.Fragment>
         )
