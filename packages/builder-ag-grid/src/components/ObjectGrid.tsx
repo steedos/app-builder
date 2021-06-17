@@ -116,10 +116,16 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     onUpdated,
     checkboxSelection = true,
     pagination = true,
+    selectedRowKeys,
+    rowKey = '_id',
     ...rest
   } = props;
-  const table = Tables.loadById(tableId, objectApiName);
+  const table = Tables.loadById(tableId, objectApiName,rowKey);
   const [editedMap, setEditedMap] = useState({})
+  // 将初始值存放到 stroe 中。
+  if(selectedRowKeys && selectedRowKeys.length){
+    table.addSelectedRowsByKeys(selectedRowKeys,columnFields)
+  }
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
   // const colSize = useAntdMediaQuery();
@@ -178,6 +184,18 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
                   rowData: data.value,
                   rowCount: data['@odata.count']
                 });
+                // 当前显示页中初始值自动勾选。
+                const selectedRowKeys = table.getSelectedRowKeys();
+                if(selectedRowKeys && selectedRowKeys.length){
+                  const gridApi = params.api;
+                  gridApi.forEachNode(node => {
+                    if(node.data && node.data[rowKey]){
+                      if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
+                        node.setSelected(true);
+                      }
+                    }
+                  });
+                }
             })
         }
     };
@@ -372,7 +390,18 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const onRowSelected = (params) => {
     const selectedRows = params.api.getSelectedRows();
-    table.setSelectedRows(selectedRows);
+    // 多选时， 新增一个选项就增加到store中，删除一个就从store中删除。 单选就替换store中的值。
+    if(rowSelection === 'multiple'){
+      if(params.node){
+        if(params.node.selected){
+          table.addSelectedRows([params.node.data]);
+        }else{
+          table.removeSelectedRows([params.node.data]);
+        }
+      }
+    }else{
+      table.setSelectedRows(selectedRows);
+    }
   }
 
   const onRowValueChanged = (params)=>{

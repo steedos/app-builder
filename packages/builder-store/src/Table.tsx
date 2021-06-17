@@ -1,5 +1,5 @@
 import { types, flow } from "mobx-state-tree";
-import { pullAllBy, differenceBy, remove } from "lodash";
+import { pullAllBy, differenceBy, remove, isObject, clone, map } from "lodash";
 import { API } from './API';
 
 export const TableModel = types.model({
@@ -20,6 +20,13 @@ export const TableModel = types.model({
   const getSelectedRows = () => {
     return self.selectedRows || [];
   };
+  const getSelectedRowKeys = () => {
+    const rowKeys = map(self.selectedRows,getRowKey());
+    if(rowKeys && rowKeys.length){
+      return rowKeys;
+    }
+    return [];
+  }
   const addSelectedRows = (rows: any) => {
     if(rows && rows.length){
       const rowKey = getRowKey();
@@ -40,7 +47,13 @@ export const TableModel = types.model({
       }
       self.isLoading = true;
       const filters = [getRowKey(), "=", keys]
-      const result = yield API.requestRecords(self.objectApiName, filters, columns);
+      let columnsFields = columns;
+      if(isObject(columns[0])){
+        columnsFields = columns.map((item) => {
+          return item.fieldName;
+        });
+      }
+      const result = yield API.requestRecords(self.objectApiName, filters, columnsFields);
       const rows = result && result.value;
       addSelectedRows(rows);
       self.isLoading = false;
@@ -61,7 +74,7 @@ export const TableModel = types.model({
   const removeSelectedRows = (rows: any) => {
     const rowKey = getRowKey();
     const selectedRows = getSelectedRows();
-    pullAllBy(selectedRows, rows, rowKey)
+    self.selectedRows = pullAllBy(clone(selectedRows), rows, rowKey)
   };
   const removeSelectedRow = (row: any) => {
     removeSelectedRows([row]);
@@ -83,6 +96,7 @@ export const TableModel = types.model({
     getRowKey,
     setSelectedRows,
     getSelectedRows,
+    getSelectedRowKeys,
     addSelectedRows,
     addSelectedRow,
     addSelectedRowsByKeys,
@@ -99,6 +113,14 @@ export const Tables = types.model({
   items: types.optional(types.map(TableModel), {})
 })
 .actions((self) => {
+  const getById = (id: string)=>{
+    if (!id)
+      return null;
+    const table = self.items.get(id) 
+    if (table) {
+      return table
+    }
+  }
   const loadById = (id: string, objectApiName?: string, rowKey: string = "_id")=>{
     if (!id)
       return null;
@@ -114,7 +136,12 @@ export const Tables = types.model({
     self.items.put(newTable);
     return newTable
   }
+  const deleteById = (id: string) => {
+    self.items.delete(id);
+  }
   return {
     loadById,
+    getById,
+    deleteById,
   }
 }).create()

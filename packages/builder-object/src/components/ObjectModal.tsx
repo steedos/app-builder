@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from "react"
 import { Modal, ConfigProvider } from "antd"
+import { Tables } from '@steedos/builder-store';
 import { 
   ObjectProTable, ObjectProTableProps, 
   ObjectExpandTable, ObjectExpandTableProps, 
@@ -87,7 +88,9 @@ export const ObjectModal = ({
           rowSelectionType="multiple";
       }
       Object.assign(contentComponentProps, {
-        rowSelection: rowSelectionType
+        rowSelection: rowSelectionType,
+        selectedRowKeys: defaultValue,
+        rowKey: rest.rowKey,
       });
     }else{
       let rowSelectionType="radio";
@@ -138,6 +141,14 @@ export const ObjectModal = ({
     )
   }, [visible]);
 
+  // 关闭弹出框 清空store中的值。
+  const gridRefApi = gridRef && gridRef.current && gridRef.current.api;
+  if(!visible){
+    if(gridRefApi){
+      // TODO: rest.name || 'default' 后期需要优化。
+      Tables.deleteById(rest.name || 'default')
+    }
+  }
   return (
     <>
       {createPortal(
@@ -173,7 +184,10 @@ export const ObjectModal = ({
               let success;
               const gridRefApi = gridRef && gridRef.current && gridRef.current.api;
               if(gridRefApi){
-                const gridSelectedRows = gridRefApi.getSelectedRows()
+                // TODO: rest.name || 'default' 后期需要优化。
+                const table = Tables.getById(rest.name || 'default');
+                // 因为通过gridRefApi获取的选中值可能会缺失，例如：当默认值不在已打开过的显示页中，gridRefApi获取的值中会缺失 默认值， 所以通过store获取所有的选中值。
+                const gridSelectedRows=table.getSelectedRows();
                 let gridSelectedKeys=[];
                 forEach(gridSelectedRows,(item)=>{
                   gridSelectedKeys.push(item[rest.rowKey || '_id'])
