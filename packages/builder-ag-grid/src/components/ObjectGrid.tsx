@@ -184,7 +184,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
                   rowData: data.value,
                   rowCount: data['@odata.count']
                 });
-                // 当前显示页中初始值自动勾选。
+                // 当前显示页中store中的初始值自动勾选。
                 const selectedRowKeys = table.getSelectedRowKeys();
                 if(selectedRowKeys && selectedRowKeys.length){
                   const gridApi = params.api;
@@ -192,6 +192,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
                     if(node.data && node.data[rowKey]){
                       if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
                         node.setSelected(true);
+                      }else{
+                        node.setSelected(false);
                       }
                     }
                   });
