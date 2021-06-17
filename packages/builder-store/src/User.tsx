@@ -2,11 +2,14 @@ import { flow, types } from "mobx-state-tree";
 import { API } from './API';
 import { Settings } from "./Settings";
 
+const MAX_VALIDATE_TIMES = 3;
+
 export const User = types.model({
   me: types.maybeNull(types.frozen()),
   session: types.maybeNull(types.frozen()),
   isLoading: false,
   isLoginFailed: false,
+  validateTimes: 0
 })
 .actions(self => {
   const setSession = (session: any) => {
@@ -14,6 +17,11 @@ export const User = types.model({
   };
   const loadSession = flow(function* loadSession() {
     try {
+      self.validateTimes++;
+      if(self.validateTimes > MAX_VALIDATE_TIMES){
+        self.isLoginFailed = true
+        return null;
+      }
       self.isLoading = true;
       // 获取user session信息
       const session = yield API.client.validate();
@@ -25,7 +33,6 @@ export const User = types.model({
       }
       setSession(session);
       self.isLoading = false;
-      // self.isLoginFailed = false
       return session;
     } catch (error) {
       self.isLoading = false;

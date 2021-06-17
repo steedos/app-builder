@@ -92,7 +92,25 @@ export default observer((props: any) => {
     console.log("Loading session...")
   }
   else{
-    if(!userSession.is_space_admin){
+    if(User.isLoginFailed){
+      console.error('您尚未登录，请先点击此处登录秦港OA系统。');
+      const loginUrl = process.env.REACT_APP_LOGIN_URL || "https://qhd.steedos.com";
+      errorMessage = (
+        <Alert 
+          style={{
+            margin: "10px",
+            fontSize: "16px"
+          }} 
+          message={
+            <a href={`${loginUrl}`} target="_blank">
+              您尚未登录，请先点击此处登录秦港OA系统。
+            </a>
+          } 
+          type="warning" 
+        />
+      )
+    }
+    else if(userSession && !userSession.is_space_admin){
       const orgIds = User.getCompanyOrganizationIds();
       if(orgIds && orgIds.length){
         orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
@@ -243,88 +261,93 @@ export default observer((props: any) => {
   if(isMobile){
     pagination={ showSizeChanger:false, showTotal: null }
   }
-  return (
-    <SteedosProvider {...providerProps}>
-      <div className="App" ref={resizeSubject}>
-        <ProCard
-          className="main-container"
-          title=""
-          split="horizontal"
-          bordered
-          headerBordered
+
+  const tabsDom = (
+    <ProCard
+      className="main-container"
+      title=""
+      split="horizontal"
+      bordered
+      headerBordered
+    >
+      <ProCard
+        style={{ height: "calc(100% - 60px)" }}
+        tabs={{
+          type: "card",
+        }}
+        // ref={resizeSubject}
+      >
+        <ProCard.TabPane
+          key="tab1"
+          tab={`用户${
+            selectedUserInTab1.length > 0
+              ? "(" + selectedUserInTab1.length + ")"
+              : ""
+          }`}
         >
-          <ProCard
-            style={{ height: "calc(100% - 60px)" }}
-            tabs={{
-              type: "card",
-            }}
-            // ref={resizeSubject}
-          >
-            <ProCard.TabPane
-              key="tab1"
-              tab={`用户${
-                selectedUserInTab1.length > 0
-                  ? "(" + selectedUserInTab1.length + ")"
-                  : ""
-              }`}
-            >
-              {
-                User.isLoading ? (<Spin />) : ( errorMessage ? errorMessage :
-                  <ObjectExpandTable
-                    onChange={handleOnTab1Change}
-                    objectApiName="space_users"
-                    search={searchConfig}
-                    columnFields={organizationColumns}
-                    scroll={scroll}
-                    debounceTime={500}
-                    filters={spaceUsersFilters}
-                    toolBarRender={spaceUserSearchBar}
-                    toolbar={toolbar}
-                    pagination={pagination}
-                  />
-                )
-              }
-            </ProCard.TabPane>
-            <ProCard.TabPane
-              key="tab2"
-              tab={`联系人${
-                selectedUserInTab2.length > 0
-                  ? "(" + selectedUserInTab2.length + ")"
-                  : ""
-              }`}
-            >
+          {
+            User.isLoading ? (<Spin />) : ( errorMessage ? errorMessage :
               <ObjectExpandTable
-                onChange={handleOnTab2Change}
-                rowKey="_id"
-                objectApiName="contacts__c"
+                onChange={handleOnTab1Change}
+                objectApiName="space_users"
                 search={searchConfig}
-                columnFields={groupColumns}
+                columnFields={organizationColumns}
                 scroll={scroll}
                 debounceTime={500}
-                filters={contactsFilters}
-                toolBarRender={contactSearchBar}
+                filters={spaceUsersFilters}
+                toolBarRender={spaceUserSearchBar}
                 toolbar={toolbar}
                 pagination={pagination}
               />
-            </ProCard.TabPane>
-          </ProCard>
-          <ProCard
-            style={{ height: "60px" }}
-            bodyStyle={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              disabled={selectedUser.length <= 0}
-              onClick={confirmChose}
-              type="primary"
-            >
-              确定
-            </Button>
-          </ProCard>
-        </ProCard>
+            )
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane
+          key="tab2"
+          tab={`联系人${
+            selectedUserInTab2.length > 0
+              ? "(" + selectedUserInTab2.length + ")"
+              : ""
+          }`}
+        >
+          <ObjectExpandTable
+            onChange={handleOnTab2Change}
+            rowKey="_id"
+            objectApiName="contacts__c"
+            search={searchConfig}
+            columnFields={groupColumns}
+            scroll={scroll}
+            debounceTime={500}
+            filters={contactsFilters}
+            toolBarRender={contactSearchBar}
+            toolbar={toolbar}
+            pagination={pagination}
+          />
+        </ProCard.TabPane>
+      </ProCard>
+      <ProCard
+        style={{ height: "60px" }}
+        bodyStyle={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          disabled={selectedUser.length <= 0}
+          onClick={confirmChose}
+          type="primary"
+        >
+          确定
+        </Button>
+      </ProCard>
+    </ProCard>
+  );
+
+  return (
+    <SteedosProvider {...providerProps}>
+      <div className="App" ref={resizeSubject}>
+        {User.isLoginFailed ? errorMessage : tabsDom}
       </div>
     </SteedosProvider>
   )
