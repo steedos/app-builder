@@ -35,6 +35,9 @@ export const TableModel = types.model({
   };
   const loadSelectedRows = flow(function* loadSelectedRows(keys: any, columns: any = ["name"]) {
     try {
+      if(!self.objectApiName){
+        console.error(`loadSelectedRows failed, miss objectApiName for this table ${self.id}, you can set it by the function 'setObjectApiName' or give it's value while load the table by the function 'loadById'.`);
+      }
       self.isLoading = true;
       const filters = [getRowKey(), "=", keys]
       const result = yield API.requestRecords(self.objectApiName, filters, columns);
@@ -73,6 +76,9 @@ export const TableModel = types.model({
   const removeSelectedRowByKey = (key: any) => {
     removeSelectedRowsByKeys([key]);
   };
+  const setObjectApiName = (id: string) => {
+    self.objectApiName = id;
+  };
   return {
     getRowKey,
     setSelectedRows,
@@ -84,7 +90,8 @@ export const TableModel = types.model({
     removeSelectedRows,
     removeSelectedRow,
     removeSelectedRowsByKeys,
-    removeSelectedRowByKey
+    removeSelectedRowByKey,
+    setObjectApiName
   }
 })
 
