@@ -92,7 +92,7 @@ export default observer((props: any) => {
     console.log("Loading session...")
   }
   else{
-    if(!userSession.is_space_admin){
+    if(userSession && !userSession.is_space_admin){
       const orgIds = User.getCompanyOrganizationIds();
       if(orgIds && orgIds.length){
         orgExpandFilters = [orgExpandFilters, [["_id", "=", orgIds], "or", ["parents", "=", orgIds]]];
