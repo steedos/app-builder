@@ -92,8 +92,8 @@ export const Tables = types.model({
   items: types.optional(types.map(TableModel), {})
 })
 .actions((self) => {
-  const loadById = (id: string, objectApiName: string, rowKey: string = "_id")=>{
-    if (!id || !objectApiName)
+  const loadById = (id: string, objectApiName?: string, rowKey: string = "_id")=>{
+    if (!id)
       return null;
     const table = self.items.get(id) 
     if (table) {
