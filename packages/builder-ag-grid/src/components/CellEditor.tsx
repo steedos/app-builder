@@ -18,7 +18,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
             return value;
         },
         isPopup() {
-          return false;
+          return true;
         }
     };
   });
@@ -30,22 +30,35 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
           mode='edit'
           valueType={valueType} 
           value={value}
-          onChange={(element)=>{
+          onChange={(element, value)=>{
             const newValue = (element?.currentTarget)? element.currentTarget.value: element
             if (newValue === props.value)
               return;
 
             setValue(newValue)
 
-            if(!editedMap[props.data._id]){
+            if(!editedMap[props.data._id]){ 
               editedMap[props.data._id] = {};
             }
             editedMap[props.data._id][props.colDef.field] = newValue;
 
-            if (['lookup','select','master_detail'].indexOf(valueType)>=0){
+            // if (['lookup','select','master_detail'].indexOf(valueType)>=0){
+            //   setTimeout(() => props.api.stopEditing(false), 100);
+            // }
+            if(!element?.target || document.activeElement != element.target){
               setTimeout(() => props.api.stopEditing(false), 100);
             }
-  
+
+            if(element?.target && document.activeElement === element.target){
+              
+              const IntervalID = setInterval(()=>{
+                if(document.activeElement != element.target){
+                  props.api.stopEditing(false);
+                  clearInterval(IntervalID);
+                }
+              }, 300)
+            }
+            
           }}
           fieldProps={{
             field_schema: fieldSchema

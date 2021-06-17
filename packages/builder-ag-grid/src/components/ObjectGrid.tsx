@@ -435,8 +435,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         enableRangeSelection={true}
         suppressCopyRowsToClipboard={true}
         modules={AllModules}
-        stopEditingWhenGridLosesFocus={true}
-        stopEditingWhenCellsLoseFocus={true}
+        stopEditingWhenGridLosesFocus={false}
+        stopEditingWhenCellsLoseFocus={false}
         serverSideDatasource={getDataSource()}
         onModelUpdated={onModelUpdated}
         serverSideStoreType={ServerSideStoreType.Partial}
