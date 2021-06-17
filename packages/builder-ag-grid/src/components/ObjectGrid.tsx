@@ -119,7 +119,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     pagination = true,
     ...rest
   } = props;
-  const table = Tables.loadById(tableId);
+  const table = Tables.loadById(tableId, objectApiName);
   const [editedMap, setEditedMap] = useState({})
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
@@ -354,7 +354,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   }
 
   const onCellValueChanged = (params) => {
-    console.log(params)
     // 这里赋值有延迟，转移到 CellEditor
     if(!editedMap[params.data._id]){
       editedMap[params.data._id] = {};

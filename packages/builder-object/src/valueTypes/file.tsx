@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Settings , Objects } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import { forEach, isArray } from 'lodash';
+import './file.less'
 
 const getFileListItem = (item:any, _fileType)=>{
     return (
@@ -115,7 +116,7 @@ export const FileField = observer((props: any) => {
                 }
             }
         }
-        const uploadDom = <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        const uploadDom = <Button icon={<UploadOutlined />}>上传</Button>
         return (
             <Upload {...proProps} {...propsOther}>
                 { multiple  ? uploadDom : fileList.length < 1 && uploadDom}
