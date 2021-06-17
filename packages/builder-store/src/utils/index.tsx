@@ -1,5 +1,5 @@
 import { each, isArray, forEach, isObject, isString, keys, isFunction, isNil} from 'lodash';
-export function saveEval(js: string){
+export function safeEval(js: string){
 	try{
 		return eval(js.replaceAll("_.", "window._."))
 	}catch (e){
@@ -59,7 +59,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       }
       else if(field._reference_to){
         // 如果只有_reference_to， 那就给field增加一个reference_to属性。
-        let reference_to = saveEval(`(${field._reference_to})`);
+        let reference_to = safeEval(`(${field._reference_to})`);
         fieldSchema = Object.assign({}, field, {reference_to});
       }
       else{
@@ -67,18 +67,18 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       }
       // TODO: 暂时将以下两个属性代码注释，后期优化放开
       // if(field._filtersFunction){
-      //   let filtersFunction = saveEval(`(${field._filtersFunction})`);
+      //   let filtersFunction = safeEval(`(${field._filtersFunction})`);
       //   fieldSchema = Object.assign({}, field, {filtersFunction});
       // }
       // if(field._optionsFunction){
-      //   let optionsFunction = saveEval(`(${field._optionsFunction})`);
+      //   let optionsFunction = safeEval(`(${field._optionsFunction})`);
       //   fieldSchema = Object.assign({}, field, {optionsFunction});
       // }
       break;
     // TODO: 暂时将select转换隐藏
     // case "select":
     //   if(field._optionsFunction){
-    //     let optionsFunction = saveEval(`(${field._optionsFunction})`);
+    //     let optionsFunction = safeEval(`(${field._optionsFunction})`);
     //     fieldSchema = Object.assign({}, field, {optionsFunction});
     //   }else{
     //     fieldSchema = field;
@@ -148,14 +148,14 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
  */
 const getListViewSchema = (listView: any)=>{
   if(listView._filters){
-    let filters = saveEval(`(${listView._filters})`);
+    let filters = safeEval(`(${listView._filters})`);
     return Object.assign({}, listView, {filters});
   }
   else if(isArray(listView.filters)){
     forEach(listView.filters, function(filter: any, _index) {
       if (isArray(filter)) {
         if (filter.length === 4 && isString(filter[2]) && filter[3] === "FUNCTION") {
-          filter[2] = saveEval("(" + filter[2] + ")");
+          filter[2] = safeEval("(" + filter[2] + ")");
           filter.pop();
         }
         if (filter.length === 4 && isString(filter[2]) && filter[3] === "DATE") {
@@ -164,7 +164,7 @@ const getListViewSchema = (listView: any)=>{
         }
       } else if (isObject(filter) as any) {
         if (isString(filter && filter._value)) {
-          return filter.value = saveEval("(" + filter._value + ")");
+          return filter.value = safeEval("(" + filter._value + ")");
         } else if (filter._is_date === true) {
           return filter.value = new Date(filter.value);
         }
