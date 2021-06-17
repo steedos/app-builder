@@ -1,6 +1,6 @@
 import * as React from "react"
 import ReactDOM from "react-dom";
-import { ObjectForm, SteedosProvider, ObjectModal, SpaceUsers, SpaceUsersModal, Organizations, OrganizationsModal} from "../";
+import { ObjectForm, SteedosProvider, ObjectModal, SpaceUsers, SpaceUsersModal, Organizations, OrganizationsModal, ObjectTable} from "../";
 import {
   BrowserRouter as Router
 } from "react-router-dom";
@@ -21,6 +21,12 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
     component = ObjectForm
   }
   let ModalComponent:any = ObjectForm;
+  if(!componentParams){
+    componentParams = {};
+  }
+  if(!componentParams.name){
+    componentParams.name = "modal-default";
+  }
   if(component !== ObjectForm){
     ModalComponent = ObjectModal;
     componentParams.contentComponent = component;
@@ -32,12 +38,6 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
     }
   }
   
-  if(!componentParams){
-    componentParams = {};
-  }
-  if(!componentParams.name){
-    componentParams.name = "modal-default";
-  }
   let modalRoot = document.getElementById(`steedos-modal-root-${componentParams.name}`);
   if (!modalRoot) {
     modalRoot = document.createElement('div');
