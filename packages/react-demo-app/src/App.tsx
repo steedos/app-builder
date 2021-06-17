@@ -93,14 +93,16 @@ export default observer((props: any) => {
   }
   else{
     if(User.isLoginFailed){
-      console.error('您尚未登录，请先点击此处登录秦港OA系统。')
+      console.error('您尚未登录，请先点击此处登录秦港OA系统。');
+      const loginUrl = process.env.REACT_APP_LOGIN_URL || "https://qhd.steedos.com";
       errorMessage = (
         <Alert 
           style={{
-            margin:"10px"
+            margin: "10px",
+            fontSize: "16px"
           }} 
           message={
-            <a href="http://www.baidu.com" target="_blank">
+            <a href={`${loginUrl}`} target="_blank">
               您尚未登录，请先点击此处登录秦港OA系统。
             </a>
           } 
