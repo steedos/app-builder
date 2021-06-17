@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Settings , Objects } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import { forEach, isArray } from 'lodash';
+import './file.less'
 
 const getFileListItem = (item:any, _fileType)=>{
     return (
