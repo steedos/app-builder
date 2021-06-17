@@ -115,7 +115,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     onModelUpdated,
     onUpdated,
     checkboxSelection = true,
-    name,
     pagination = true,
     ...rest
   } = props;

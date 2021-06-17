@@ -77,7 +77,7 @@ function getTableFilter(expandProps: any, selectedExpandNode: string[], defaultF
 export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
 
   const {
-    name: ObjectExpandTableId = "default",
+    name: objectExpandTableId = "default",
     tableComponent: TableComponent = ObjectGrid,
     filters,
     // includeSub,
@@ -257,6 +257,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
         <ProCard className="table-part" colSpan={tablePartWidth} ghost>
           <TableComponent
             {...rest}
+            name={objectExpandTableId}
             filters={
               getTableFilter(expandProps, selectedExpandNode, filters)
             }
