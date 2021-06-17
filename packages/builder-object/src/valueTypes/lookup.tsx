@@ -13,7 +13,7 @@ import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
 import { ObjectForm, ObjectTable, ObjectExpandTable,ObjectListView, 
     ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
-import { saveRunFunction } from '../utils';
+import { safeRunFunction } from '../utils';
 
 const { Option } = Select;
 // 相关表类型字段
@@ -86,7 +86,7 @@ export const LookupField = observer((props:any) => {
                 tags = selectItem;
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
-                options = isFunction(options) ? saveRunFunction(options,[dependFieldValues],[]) : options;
+                options = isFunction(options) ? safeRunFunction(options,[dependFieldValues],[]) : options;
                 tags = filter(options,(optionItem: any)=>{
                     return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
                 })
@@ -114,7 +114,7 @@ export const LookupField = observer((props:any) => {
             if(isFunction(options)) {
                 dependOnValues.__keyWords = params.keyWords;
                 dependOnValues.__referenceTo = referenceTo;
-                const results = await saveRunFunction(options,[dependOnValues],[]);
+                const results = await safeRunFunction(options,[dependOnValues],[]);
                 return results;
             }
             else{
@@ -198,7 +198,7 @@ export const LookupField = observer((props:any) => {
             if (isFunction(options)) {
                 request = async (params: any, props: any) => {
                     dependFieldValues.__keyWords = params.keyWords;
-                    const results = await saveRunFunction(options,[dependFieldValues],[]);
+                    const results = await safeRunFunction(options,[dependFieldValues],[]);
                     return results;
                 };
             } else {
