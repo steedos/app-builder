@@ -147,7 +147,7 @@ export const Field = observer((props: any) => {
     )
   })
 
-  if(!FieldsMap[`${valueType}_${readonly}`]){
+  if(!FieldsMap[`${valueType}_${mode}_${readonly}`]){
     const ProFormField = createField<ProFormItemProps<InputProps>>(
       (props: ProFormItemProps<InputProps>) => {
         return (
@@ -158,10 +158,10 @@ export const Field = observer((props: any) => {
         valueType,
       },
     );
-    FieldsMap[`${valueType}_${readonly}`] = ProFormField;
+    FieldsMap[`${valueType}_${mode}_${readonly}`] = ProFormField;
   }
-  const SField = FieldsMap[`${valueType}_${readonly}`];
-  return (<SField formId={formId} {...rest} readonly={readonly} mode={mode} formItemProps={formItemPropsMerged} />)
+  const SField = FieldsMap[`${valueType}_${mode}_${readonly}`];
+  return (<SField formId={formId} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {
