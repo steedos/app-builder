@@ -167,6 +167,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       onFinish={onFinish}
       onValuesChange={onValuesChange}
       visible={visible}
+      dateFormatter={false}
       {...rest}
     >
       {children}
