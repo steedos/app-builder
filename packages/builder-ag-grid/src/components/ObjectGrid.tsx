@@ -98,7 +98,7 @@ const filterModelToOdataFilters = (filterModel)=>{
 export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const {
-    name: tableId = 'default',
+    name = 'default',
     objectApiName,
     columnFields = [],
     extraColumnFields = [],
@@ -120,7 +120,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     rowKey = '_id',
     ...rest
   } = props;
-  const table = Tables.loadById(tableId, objectApiName,rowKey);
+  const table = Tables.loadById(name, objectApiName,rowKey);
   const [editedMap, setEditedMap] = useState({})
   // 将初始值存放到 stroe 中。
   if(selectedRowKeys && selectedRowKeys.length){
