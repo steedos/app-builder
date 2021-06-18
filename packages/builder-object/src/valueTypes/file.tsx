@@ -72,7 +72,7 @@ export const FileField = observer((props: any) => {
         const tags = [];
         if(selectItems && selectItems.length){
             forEach(selectItems,(item)=>{
-                tags.push({ value: Settings.rootUrl + '/api/files/'+fileType+'/' + item.value, label: item.label})
+                tags.push({ value: Settings.rootUrl + '/api/files/'+fileType+'/' + item.value + "?download=true", label: item.label})
             })
         }
         return (<React.Fragment>{tags.map((tagItem, index)=>{
