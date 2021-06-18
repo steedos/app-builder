@@ -279,7 +279,7 @@ export default observer((props: any) => {
       >
         <ProCard.TabPane
           key="tab1"
-          tab={`用户${
+          tab={`集团通讯录${
             selectedUserInTab1.length > 0
               ? "(" + selectedUserInTab1.length + ")"
               : ""
