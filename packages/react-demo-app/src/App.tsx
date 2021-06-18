@@ -279,7 +279,7 @@ export default observer((props: any) => {
       >
         <ProCard.TabPane
           key="tab1"
-          tab={`用户${
+          tab={`集团通讯录${
             selectedUserInTab1.length > 0
               ? "(" + selectedUserInTab1.length + ")"
               : ""
@@ -302,7 +302,7 @@ export default observer((props: any) => {
             )
           }
         </ProCard.TabPane>
-        <ProCard.TabPane
+        {/* <ProCard.TabPane
           key="tab2"
           tab={`联系人${
             selectedUserInTab2.length > 0
@@ -323,7 +323,7 @@ export default observer((props: any) => {
             toolbar={toolbar}
             pagination={pagination}
           />
-        </ProCard.TabPane>
+        </ProCard.TabPane> */}
       </ProCard>
       <ProCard
         style={{ height: "60px" }}
