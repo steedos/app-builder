@@ -120,6 +120,16 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       return
     
     let result; 
+    const fields = mergedSchema.fields;
+    forEach(values,(value,key)=>{
+      if(fields[key].type === 'date'){
+        values[key].utcOffset(0);
+        values[key].hour(0);
+        values[key].minute(0);
+        values[key].second(0);
+        values[key].millisecond(0);
+      }
+    })
     if(!recordId){     
       result = await API.insertRecord(objectApiName, values);
       if(afterInsert){
