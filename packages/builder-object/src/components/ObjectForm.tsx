@@ -120,11 +120,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     forEach(values,(value,key)=>{
       if(fields[key].type === 'date'){
         extendValues[key] = clone(values[key]);
-        extendValues[key].utcOffset(0);
-        extendValues[key].hour(0);
-        extendValues[key].minute(0);
-        extendValues[key].second(0);
-        extendValues[key].millisecond(0);
+        // extendValues[key].utcOffset(0);
+        // extendValues[key].hour(0);
+        // extendValues[key].minute(0);
+        // extendValues[key].second(0);
+        // extendValues[key].millisecond(0);
       }
     })
     return Object.assign({}, values, extendValues);
@@ -180,6 +180,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isDrawerForm={isDrawerForm}
       trigger={trigger}
       onFinish={onFinish}
+      // omitNil={false}
       onValuesChange={onValuesChange}
       visible={visible}
       dateFormatter={false}
