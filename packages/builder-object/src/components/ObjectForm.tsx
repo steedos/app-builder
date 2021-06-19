@@ -11,6 +11,7 @@ import { ModalFormProps } from "@ant-design/pro-form";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { Spin } from 'antd';
+import moment from 'moment';
 import { ObjectFormSections } from './ObjectFormSections';
 
 import './ObjectForm.less'
@@ -107,8 +108,10 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
       const record = recordCache.data.value[0];
       forEach(fieldNames, (fieldName:any)=>{
-        if (record[fieldName])
-          defaultValues[fieldName] = record[fieldName];
+        let filedValue = record[fieldName];
+        if (filedValue){
+          defaultValues[fieldName] = filedValue;
+        }
       })
     } else {
     }
@@ -119,14 +122,15 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     let extendValues = {};
     forEach(values,(value,key)=>{
       if(fields[key].type === 'date'){
-        extendValues[key] = clone(values[key]);
-        // extendValues[key].utcOffset(0);
-        // extendValues[key].hour(0);
-        // extendValues[key].minute(0);
-        // extendValues[key].second(0);
-        // extendValues[key].millisecond(0);
+        // 日期字段设置为utc0点
+        extendValues[key] = moment(value);
+        extendValues[key].utcOffset(0);
+        extendValues[key].hour(0);
+        extendValues[key].minute(0);
+        extendValues[key].second(0);
+        extendValues[key].millisecond(0);
       }
-    })
+    });
     return Object.assign({}, values, extendValues);
   }
   const onFinish = async(values:any) =>{
