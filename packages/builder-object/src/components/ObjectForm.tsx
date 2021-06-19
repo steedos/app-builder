@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, clone} from 'lodash';
 import { useQuery } from 'react-query'
 // import { FooterToolbar } from '@ant-design/pro-layout';
 import { Form } from '@steedos/builder-form';
@@ -11,7 +11,6 @@ import { ModalFormProps } from "@ant-design/pro-form";
 import { observer } from "mobx-react-lite"
 import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { Spin } from 'antd';
-import { clone } from 'lodash';
 import { ObjectFormSections } from './ObjectFormSections';
 
 import './ObjectForm.less'
@@ -115,30 +114,36 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     }
   }
 
+  const conversionSubmitValue = (values:any) => {
+    const fields = mergedSchema.fields;
+    let extendValues = {};
+    forEach(values,(value,key)=>{
+      if(fields[key].type === 'date'){
+        extendValues[key] = clone(values[key]);
+        extendValues[key].utcOffset(0);
+        extendValues[key].hour(0);
+        extendValues[key].minute(0);
+        extendValues[key].second(0);
+        extendValues[key].millisecond(0);
+      }
+    })
+    return Object.assign({}, values, extendValues);
+  }
   const onFinish = async(values:any) =>{
     if (!object) 
       return
     
     let result; 
-    // const fields = mergedSchema.fields;
-    // forEach(values,(value,key)=>{
-    //   if(fields[key].type === 'date'){
-    //     values[key].utcOffset(0);
-    //     values[key].hour(0);
-    //     values[key].minute(0);
-    //     values[key].second(0);
-    //     values[key].millisecond(0);
-    //   }
-    // })
+    let convertedValues = conversionSubmitValue(values);
     if(!recordId){     
-      result = await API.insertRecord(objectApiName, values);
+      result = await API.insertRecord(objectApiName, convertedValues);
       if(afterInsert){
         return afterInsert(result);
       }else{
         return result ? true : false
       }
     }else{
-      result = await API.updateRecord(objectApiName, recordId, Object.assign({},undefinedValues,values));
+      result = await API.updateRecord(objectApiName, recordId, Object.assign({},undefinedValues,convertedValues));
       object.getRecord(recordId, fieldNames).loadRecord();
       if(afterUpdate){
         return afterUpdate(result);  
