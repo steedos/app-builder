@@ -6,12 +6,14 @@ import { isArray } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import { getTreeDataFromRecords } from '../utils';
+import { safeRunFunction, BAD_FILTERS } from '../utils';
 
 export const ObjectFieldTreeSelect = observer((props:any)=> {
   const [params, setParams] = useState({open: false,openTag: null});
   const [opened, setOpened] = useState(false);
   const { objectApiName, nameField = "name", parentField = "parent", filters: fieldFilters = [],filtersFunction, value, onChange, ...rest } = props;
-  let filters: any[] | string =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+//   let filters: any[] | string =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+  let filters: any[] | string =  filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters],BAD_FILTERS) : fieldFilters;
   const keyFilters: any = ['_id', '=', value];
   if(params.open){
       if(value && value.length && filters && filters.length){

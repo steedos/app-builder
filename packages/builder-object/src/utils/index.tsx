@@ -83,8 +83,8 @@ export const getTreeDataFromRecords = (records: [] = [], nameField: string = "na
 export const safeRunFunction = (fun: any, args: any, defaultValue?: any) => {
   try {
     let params = [];
-    if(args && !isNil(args)){
-      isArray(args) ? args : [args] ;
+    if(!isNil(args)){
+      params = isArray(args) ? args : [args] ;
     }
     return fun(...params);
   } catch (error) {
@@ -92,3 +92,5 @@ export const safeRunFunction = (fun: any, args: any, defaultValue?: any) => {
     return defaultValue;
   }
 }
+
+export const BAD_FILTERS = ["_id", "=", "__BAD_FILTERS"];

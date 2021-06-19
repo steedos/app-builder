@@ -13,7 +13,7 @@ import "./lookup.less"
 import { PlusOutlined } from "@ant-design/icons";
 import { ObjectForm, ObjectTable, ObjectExpandTable,ObjectListView, 
     ObjectModal, ObjectTableModal, SpaceUsersModal, OrganizationsModal, ObjectFieldTreeSelect } from "../components";
-import { safeRunFunction } from '../utils';
+import { safeRunFunction, BAD_FILTERS } from '../utils';
 
 const { Option } = Select;
 // 相关表类型字段
@@ -138,7 +138,9 @@ export const LookupField = observer((props:any) => {
                     if (params.keyWords){
                         keyFilters = [referenceToLableField, 'contains', params.keyWords];
                     }
-                    let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+                    // let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
+                    let filtersOfField:[] =  filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters],BAD_FILTERS) : fieldFilters;
+                    console.log('aaa=>',filtersOfField)
                     if (filtersOfField.length) {
                         if (keyFilters.length) {
                             if (isArray(filtersOfField)) {
@@ -349,7 +351,8 @@ export const LookupField = observer((props:any) => {
                         value,
                         // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
                         rowKey: reference_to_field,
-                        filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
+                        // filters: filtersFunction ? filtersFunction(fieldFilters) : fieldFilters,
+                        filters: filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters],[]) : fieldFilters,
                         trigger,
                         onFinish: onModalFinish
                     };
