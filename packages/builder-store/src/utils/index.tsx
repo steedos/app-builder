@@ -76,14 +76,14 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       }
       break;
     // TODO: 暂时将select转换隐藏
-    // case "select":
-    //   if(field._optionsFunction){
-    //     let optionsFunction = safeEval(`(${field._optionsFunction})`);
-    //     fieldSchema = Object.assign({}, field, {optionsFunction});
-    //   }else{
-    //     fieldSchema = field;
-    //   }
-    //   break;
+    case "select":
+      if(field._optionsFunction){
+        let optionsFunction = safeEval(`(${field._optionsFunction})`);
+        fieldSchema = Object.assign({}, field, {optionsFunction});
+      }else{
+        fieldSchema = field;
+      }
+      break;
     case "currency":
       // 金额类型默认显示2位小数
       if(isNil(field.scale)){
