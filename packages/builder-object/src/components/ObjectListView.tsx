@@ -162,6 +162,9 @@ function getRowButtons(objectSchema) {
     if (isBoolean(action._visible)) {
       visible = action._visible
     }
+    if (isBoolean(action.visible)) {
+      visible = action.visible
+    }
     let todo = action._todo || action.todo;
     if (isString(todo) && todo.startsWith("function")) {
       try {
@@ -170,7 +173,7 @@ function getRowButtons(objectSchema) {
         console.error(error, todo)
       }
     }
-    buttons.push({label: action.label, todo: todo, visible: visible});
+    buttons.push(Object.assign({}, action, {label: action.label, todo: todo, visible: visible}));
   });
   return buttons
 }
