@@ -284,7 +284,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         hide: hideInTable,
         headerName: field.label ? field.label:fieldName,
         width: fieldWidth,
-        minWidth: 60,
+        minWidth: fieldWidth ? fieldWidth : 60,
         resizable: true,
         filter,
         sort: fieldSort ? fieldSort.order : undefined,
