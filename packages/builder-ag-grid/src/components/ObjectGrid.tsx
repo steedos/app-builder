@@ -326,6 +326,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       maxWidth: 50,
       minWidth: 50,
       resizable: false,
+      pinned: "right",
       cellRenderer: 'rowActions',
       cellEditor: 'rowActions',
       suppressMenu: true,
