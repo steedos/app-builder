@@ -217,20 +217,20 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
   const getColumns = (rowButtons)=>{
     const width = checkboxSelection ? 80 : 50;
     const columns:any[] = [
-      {
-        resizable: false,
-        pinned: "left",
-        valueGetter: params => {
-          return parseInt(params.node.id) + 1
-        },
-        width: width,
-        maxWidth: width,
-        minWidth: width,
-        cellStyle: {"text-align": "right" },
-        checkboxSelection: checkboxSelection,
-        headerCheckboxSelection: checkboxSelection, //仅rowModelType等于Client-Side时才生效
-        suppressMenu: true,
-      },
+      // {
+      //   resizable: false,
+      //   pinned: "left",
+      //   valueGetter: params => {
+      //     return parseInt(params.node.id) + 1
+      //   },
+      //   width: width,
+      //   maxWidth: width,
+      //   minWidth: width,
+      //   cellStyle: {"text-align": "right" },
+      //   checkboxSelection: checkboxSelection,
+      //   headerCheckboxSelection: checkboxSelection, //仅rowModelType等于Client-Side时才生效
+      //   suppressMenu: true,
+      // },
       // {
       //   resizable: false,
       //   pinned: "left",
