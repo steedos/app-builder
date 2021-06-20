@@ -160,7 +160,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
   const getDataSource = () => {
     return {
       getRows: params => {
-        console.log("===params===", params);
+        // console.log("===params===", params);
         let fields = ['name'];
         forEach(columnFields, ({ fieldName, ...columnItem }: ObjectTreeGridColumnProps) => {
           fields.push(fieldName)
@@ -186,7 +186,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
             filters = [parentField, "=", null];
           }
         }
-        console.log("===filters===", filters);
+        // console.log("===filters===", filters);
         let options: any = {
           sort,
           $top: pageSize,

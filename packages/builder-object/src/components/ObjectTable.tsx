@@ -4,6 +4,7 @@ import { ObjectListViewProps, getListviewColumns, getListViewColumnFields, getLi
 import { ObjectExpandTable } from "."
 import { observer } from "mobx-react-lite"
 import { Objects, API, Settings } from "@steedos/builder-store"
+import { ObjectGrid, ObjectTreeGrid } from '@steedos/builder-ag-grid';
 
 export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
   let {
@@ -25,12 +26,17 @@ export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
   if(!filters || filters.length==0){
     filters = getListViewFilters(listView, props);
   }
+  let TableComponent = ObjectGrid;
+  if(schema.enable_tree){
+    TableComponent = ObjectTreeGrid;
+  }
 
   return (
     <ObjectExpandTable
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
+      tableComponent={TableComponent}
       // className={["object-listview", rest.className].join(" ")}
       {...rest}
     />
