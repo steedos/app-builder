@@ -118,6 +118,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
     pagination = true,
     selectedRowKeys,
     rowKey = '_id',
+    treeRootKeys,
     ...rest
   } = props;
   const table = Tables.loadById(name, objectApiName,rowKey);
@@ -178,7 +179,12 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
         }
         else{
           // 根目录不可以加过滤条件，只能强制先加载根目录
-          filters = [parentField, "=", null];
+          if(treeRootKeys && treeRootKeys.length){
+            filters = ["_id", "=", treeRootKeys];
+          }
+          else{
+            filters = [parentField, "=", null];
+          }
         }
         console.log("===filters===", filters);
         let options: any = {
