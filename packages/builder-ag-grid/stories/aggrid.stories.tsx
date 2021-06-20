@@ -45,27 +45,12 @@ export const Grid = () => {
 export const TreeGrid = () => {
   return (
     <div style={{height:'500px'}}>
-      <ObjectTreeGrid objectApiName='accounts' 
+      <ObjectTreeGrid objectApiName='organizations' 
         pagination={true}
         sort="created desc,name desc"
         // rowSelection="single"
         columnFields={
           [
-            {
-              fieldName: 'name'
-            },
-            {
-              fieldName: 'description'
-            },
-            {
-              fieldName: 'parent_id'
-            },
-            {
-              fieldName: 'rating'
-            },
-            {
-              fieldName: 'type'
-            },
             {
               fieldName: 'created'
             },

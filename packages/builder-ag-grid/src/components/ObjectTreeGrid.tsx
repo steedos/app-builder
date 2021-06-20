@@ -153,53 +153,63 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
 
   const getDataSource = () => {
     return {
-        getRows: params => {
-            let fields = ['name'];
-            forEach(columnFields, ({ fieldName, ...columnItem }: ObjectTreeGridColumnProps) => {
-              fields.push(fieldName)
-            });
-            fields = uniq(compact(fields.concat(extraColumnFields)));
-            const sort = []
-            forEach(params.request.sortModel, (sortField)=>{
-              sort.push([sortField.colId, sortField.sort])
-            })
-            const filters = compact([].concat(defaultFilters).concat(filterModelToOdataFilters(params.request.filterModel)));
-            // TODO 此处需要叠加处理 params.request.fieldModel
-            let options: any = {
-              sort,
-              $top: pageSize,
-              $skip: params.request.startRow
-            };
-            if(!pagination){
-              options = {
-                sort
-              };
-            }
-            API.requestRecords(
-              objectApiName,
-              filters,
-              fields,options).then((data)=>{
-
-                params.success({
-                  rowData: data.value,
-                  rowCount: data['@odata.count']
-                });
-                // 当前显示页中store中的初始值自动勾选。
-                const selectedRowKeys = table.getSelectedRowKeys();
-                if(selectedRowKeys && selectedRowKeys.length){
-                  const gridApi = params.api;
-                  gridApi.forEachNode(node => {
-                    if(node.data && node.data[rowKey]){
-                      if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
-                        node.setSelected(true);
-                      }else{
-                        node.setSelected(false);
-                      }
-                    }
-                  });
-                }
-            })
+      getRows: params => {
+        console.log("===params===", params);
+        let fields = ['name'];
+        forEach(columnFields, ({ fieldName, ...columnItem }: ObjectTreeGridColumnProps) => {
+          fields.push(fieldName)
+        });
+        fields = uniq(compact(fields.concat(extraColumnFields)));
+        const sort = []
+        forEach(params.request.sortModel, (sortField)=>{
+          sort.push([sortField.colId, sortField.sort])
+        })
+        let filters = compact([].concat(defaultFilters).concat(filterModelToOdataFilters(params.request.filterModel)));
+        // TODO 此处需要叠加处理 params.request.fieldModel
+        
+        var groupKeys = params.request.groupKeys;
+        if(groupKeys && groupKeys.length){
+          filters.push(["parent", "=", groupKeys[groupKeys.length - 1]]);
         }
+        else{
+          filters.push(["parent", "=", null]);
+        }
+        console.log("===filters===", filters);
+        let options: any = {
+          sort,
+          $top: pageSize,
+          $skip: params.request.startRow
+        };
+        if(!pagination){
+          options = {
+            sort
+          };
+        }
+        API.requestRecords(
+          objectApiName,
+          filters,
+          fields,options).then((data)=>{
+
+            params.success({
+              rowData: data.value,
+              rowCount: data['@odata.count']
+            });
+            // 当前显示页中store中的初始值自动勾选。
+            const selectedRowKeys = table.getSelectedRowKeys();
+            if(selectedRowKeys && selectedRowKeys.length){
+              const gridApi = params.api;
+              gridApi.forEachNode(node => {
+                if(node.data && node.data[rowKey]){
+                  if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
+                    node.setSelected(true);
+                  }else{
+                    node.setSelected(false);
+                  }
+                }
+              });
+            }
+        })
+      }
     };
   }
 
@@ -486,6 +496,27 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
           rowActions: RowActions,
         }}
         ref={gridRef}
+        treeData={true}
+        animateRows={true}
+        isServerSideGroupOpenByDefault={function (params) {
+          return params.rowNode.level < 1;
+        }}
+        isServerSideGroup={function (dataItem) {
+          return !!!dataItem.parent;
+        }}
+        getServerSideGroupKey={function (dataItem) {
+          return dataItem._id;
+        }}
+        autoGroupColumnDef={{
+          field: 'name',
+          headerName: '名称',
+          cellRendererParams: {
+            innerRenderer: function (params) {
+              return params.data.name;
+            },
+          },
+        }}
+        // onGridReady={onGridReady}
       />
       <Drawer
         placement={"bottom"}
