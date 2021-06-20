@@ -52,6 +52,10 @@ export const TreeGrid = () => {
         columnFields={
           [
             {
+              fieldName: 'name',
+              hideInTable: true
+            },
+            {
               fieldName: 'created'
             },
             {

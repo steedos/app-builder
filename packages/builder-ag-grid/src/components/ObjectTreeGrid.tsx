@@ -172,7 +172,8 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
           filters.push(["parent", "=", groupKeys[groupKeys.length - 1]]);
         }
         else{
-          filters.push(["parent", "=", null]);
+          // 根目录不可以加过滤条件，只能强制先加载根目录
+          filters = ["parent", "=", null];
         }
         console.log("===filters===", filters);
         let options: any = {
