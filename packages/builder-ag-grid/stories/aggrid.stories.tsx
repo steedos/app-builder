@@ -46,7 +46,7 @@ export const TreeGrid = () => {
   return (
     <div style={{height:'500px'}}>
       <ObjectTreeGrid objectApiName='organizations' 
-        pagination={false}
+        // pagination={false}
         sort="created desc,name desc"
         // rowSelection="single"
         columnFields={

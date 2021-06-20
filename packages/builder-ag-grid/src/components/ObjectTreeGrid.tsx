@@ -110,7 +110,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
     rowButtons,
     rowSelection = 'multiple',
     sideBar: defaultSideBar,
-    pageSize = 20,
+    pageSize = 100,
     gridRef,
     onModelUpdated,
     onUpdated,
