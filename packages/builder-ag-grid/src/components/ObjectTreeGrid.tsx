@@ -17,6 +17,7 @@ import { AgGridCellNumberFilter } from './CellNumberFilter';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 import { Tables } from '@steedos/builder-store';
+// import { getObjectRecordUrl, Link } from "@steedos/builder-form"
 
 import './ObjectGrid.less'
 
@@ -470,6 +471,56 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
   //   console.log(`modelUpdated event getDisplayedRowCount`, event.api.getDisplayedRowCount())
   // }
 
+  const getAutoGroupColumn = ()=>{
+    // const { fieldName, ...columnItem } = columnFields[0];
+    let fieldName = object.schema.NAME_FIELD_KEY || "name";
+    const field = object.schema.fields[fieldName];
+    if(!field){
+      return ;
+    }
+    // let fieldRender = null;
+    // if((columnItem as any).render){
+    //   fieldRender = (columnItem as any).render
+    // }
+    // let fieldWidth = field.width ? field.width : field.is_wide? 300: 150;
+    // let fieldSort = find(sort, (item)=>{
+    //   return item.field_name === fieldName
+    // });
+    return {
+      field: fieldName,
+      headerName: field.label ? field.label:fieldName,
+      // width: fieldWidth,
+      // minWidth: fieldWidth ? fieldWidth : 60,
+      resizable: true,
+      // filter,
+      // sort: fieldSort ? fieldSort.order : undefined,
+      // filterParams,
+      // rowGroup,
+      // flex: 1,
+      // sortable: true,
+      // cellRenderer: 'AgGridCellRenderer',
+      cellRendererParams: {
+        // fieldSchema: field,
+        // valueType: field.type,
+        // render: (a, b)=>{
+        //   return (<span>aa</span>);
+        // },
+        innerRenderer: (params)=> {
+          return params.data.name;
+          // return (<Link to={getObjectRecordUrl(objectApiName, params.data._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{params.data.name}</Link>);
+          // return fieldRender ? fieldRender(params.data.name, params.data) : params.data.name;
+        }
+      },
+      // cellEditor: 'AgGridCellEditor',
+      // cellEditorParams: {
+      //   fieldSchema: field,
+      //   valueType: field.type,
+      // },
+      // editable: (params)=>{
+      //   return API.client.field.isEditable(objectApiName, params.colDef.filterParams.fieldSchema, params.data)
+      // }
+    }
+  }
   return (
 
     <div className="ag-theme-balham" style={{height: "100%", flex: "1 1 auto",overflow:"hidden"}}>
@@ -522,15 +573,16 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
         getServerSideGroupKey={function (dataItem) {
           return dataItem._id;
         }}
-        autoGroupColumnDef={{
-          field: 'name',
-          headerName: '名称',
-          cellRendererParams: {
-            innerRenderer: function (params) {
-              return params.data.name;
-            },
-          },
-        }}
+        autoGroupColumnDef={getAutoGroupColumn()}
+        // autoGroupColumnDef={{
+        //   field: 'name',
+        //   headerName: '名称',
+        //   cellRendererParams: {
+        //     innerRenderer: function (params) {
+        //       return params.data.name;
+        //     },
+        //   },
+        // }}
         // onGridReady={onGridReady}
       />
       <Drawer
