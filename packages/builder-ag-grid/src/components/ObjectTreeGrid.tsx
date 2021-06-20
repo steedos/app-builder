@@ -149,7 +149,12 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
     }
   }
   const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div><Spin/></div>)
+  if (object.isLoading) return (<div><Spin/></div>);
+
+  let parentField = rest.parentField;
+  if(!parentField){
+    parentField = object.schema.parent_field || "parent";
+  }
 
   const getDataSource = () => {
     return {
@@ -169,11 +174,11 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
         
         var groupKeys = params.request.groupKeys;
         if(groupKeys && groupKeys.length){
-          filters.push(["parent", "=", groupKeys[groupKeys.length - 1]]);
+          filters.push([parentField, "=", groupKeys[groupKeys.length - 1]]);
         }
         else{
           // 根目录不可以加过滤条件，只能强制先加载根目录
-          filters = ["parent", "=", null];
+          filters = [parentField, "=", null];
         }
         console.log("===filters===", filters);
         let options: any = {
@@ -503,7 +508,10 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
           return params.rowNode.level < 1;
         }}
         isServerSideGroup={function (dataItem) {
-          return !!!dataItem.parent;
+          // console.log("===dataItem==", dataItem);
+          // console.log("===dataItem.parent_id==", dataItem[parentField]);
+          // console.log("===gridRef==", gridRef);
+          return !!!dataItem.parentField;
         }}
         getServerSideGroupKey={function (dataItem) {
           return dataItem._id;
