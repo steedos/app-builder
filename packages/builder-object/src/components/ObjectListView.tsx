@@ -214,6 +214,10 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   if(schema.paging?.enabled === false ){
     pagination = false;
   }
+  else if(schema.enable_tree && schema.paging?.enabled !== true){
+    // 默认tree grid不显示分页
+    pagination = false;
+  }
 
   const _sort = [];
 

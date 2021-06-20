@@ -115,7 +115,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
     onModelUpdated,
     onUpdated,
     checkboxSelection = true,
-    pagination = true,
+    pagination = false,
     selectedRowKeys,
     rowKey = '_id',
     treeRootKeys,
