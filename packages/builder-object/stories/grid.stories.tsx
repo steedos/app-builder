@@ -158,3 +158,34 @@ export const ListViewToolbar = () => {
       </ObjectListView>
   )
 }
+
+export const ListViewTree = () => {
+  return (
+    <div style={{height:'500px'}}>
+      <ObjectListView objectApiName='organizations' 
+        sort="created desc,name desc"
+        // rowSelection="single"
+        pagination={false}
+        columnFields={
+          [
+            {
+              fieldName: 'name',
+              hideInTable: true
+            },
+            // {
+            //   fieldName: 'parent',
+            //   hideInTable: true
+            // },
+            {
+              fieldName: 'created'
+            },
+            {
+              fieldName: 'created_by'
+            },
+          ]
+        }
+      />
+    </div>
+  )
+}
+

@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect, useState } from "react"
 import { isFunction, forEach, isObject, filter, isString, each, includes, isBoolean, isArray } from 'lodash';
 // import { ObjectExpandTable } from "./"
-import { ObjectGrid as ObjectExpandTable } from '@steedos/builder-ag-grid';
+import { ObjectGrid, ObjectTreeGrid } from '@steedos/builder-ag-grid';
 import {
   ProColumnType
 } from "@ant-design/pro-table"
@@ -191,7 +191,11 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   } = props
   const object = Objects.getObject(objectApiName);
   if (object.isLoading) return (<div>Loading object ...</div>)
-  const schema = object.schema; 
+  const schema = object.schema;
+  let TableComponent = ObjectGrid;
+  if(schema.enable_tree){
+    TableComponent = ObjectTreeGrid;
+  }
   let listView = listSchema ? listSchema : schema.list_views[listName];
   const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
   const listViewExtraColumns = listSchema && listSchema.extra_columns ? listSchema.extra_columns : getListviewExtraColumns(schema, listName);
@@ -227,7 +231,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
     })
   }
   return (
-    <ObjectExpandTable
+    <TableComponent
       objectApiName={objectApiName}
       columnFields={columnFields}
       extraColumnFields={listViewExtraColumns}
