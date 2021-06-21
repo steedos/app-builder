@@ -36,7 +36,7 @@ export const LookupField = observer((props:any) => {
             }
         }
     };
-    const objectApiName = props.objectApiName;
+    const objectApiName = props.object_api_name;
     let optionsFunctionValues = Object.assign({}, dependFieldValues, {
         space: Settings.tenantId,
         _object_name: objectApiName

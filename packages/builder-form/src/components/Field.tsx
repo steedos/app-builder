@@ -162,7 +162,7 @@ export const Field = observer((props: any) => {
     FieldsMap[`${valueType}_${mode}_${readonly}`] = ProFormField;
   }
   const SField = FieldsMap[`${valueType}_${mode}_${readonly}`];
-  return (<SField formId={formId} objectApiName={objectApiName} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  return (<SField formId={formId} object_api_name={objectApiName} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {
