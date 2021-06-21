@@ -72,6 +72,10 @@ export const ObjectFieldGrid = (props) => {
       hideInSearch: !field.filterable,
       hideInTable: field.hidden,
       hideInForm: field.hidden | field.omit,
+      fieldProps : { field_schema : {
+        // depend_field_values: field.depend_on,
+        optionsFunction: field.optionsFunction
+      }}, 
       // render: (_, row) => {
       //   // console.log(_)
       //   // console.log(row)
