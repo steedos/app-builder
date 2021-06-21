@@ -153,7 +153,7 @@ export const LookupField = observer((props:any) => {
                         keyFilters = [referenceToLableField, 'contains', params.keyWords];
                     }
                     // let filtersOfField:[] =  filtersFunction ? filtersFunction(fieldFilters) : fieldFilters;
-                    let filtersOfField:[] =  filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters],BAD_FILTERS) : fieldFilters;
+                    let filtersOfField:[] =  filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS) : fieldFilters;
                     console.log('aaa=>',filtersOfField)
                     if (filtersOfField.length) {
                         if (keyFilters.length) {
