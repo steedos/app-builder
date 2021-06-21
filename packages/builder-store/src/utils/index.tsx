@@ -15,8 +15,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   // fieldName变量中可能带$和.符号，需要转换成RegExp匹配的带转义符的字符
   const fieldNameForReg = fieldName.replace(/\$/g,"\\$").replace(/\./g,"\\.");
   const precision = field.precision || 18;
-  switch(fieldType){
-    case "object":
+    if(fieldType === 'object'){
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
       each(objectConfig.fields, (fieldItem, key) => {
@@ -32,8 +31,8 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
         }
       });
       fieldSchema = Object.assign({}, field, {sub_fields});
-      break;
-    case "grid":
+    }
+    else if(fieldType === 'grid'){
       // 根据对象的子表字段信息，返回子表配置属性
       sub_fields = {};
       each(objectConfig.fields, (fieldItem, key) => {
@@ -49,8 +48,8 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
         }
       });
       fieldSchema = Object.assign({}, field, {sub_fields});
-      break;
-    case "lookup":
+    }
+    else if(['lookup','master_detail'].indexOf(fieldType)>-1){
       if(field.reference_to === "users"){
         fieldSchema = Object.assign({}, field, {
           reference_to: "space_users",
@@ -74,17 +73,17 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
         let optionsFunction = safeEval(`(${field._optionsFunction})`);
         fieldSchema = Object.assign({}, field, {optionsFunction});
       }
-      break;
+    }
     // TODO: 暂时将select转换隐藏
-    case "select":
+    else if(fieldType === 'select'){
       if(field._optionsFunction){
         let optionsFunction = safeEval(`(${field._optionsFunction})`);
         fieldSchema = Object.assign({}, field, {optionsFunction});
       }else{
         fieldSchema = field;
       }
-      break;
-    case "currency":
+    }
+    else if(fieldType === 'currency'){
       // 金额类型默认显示2位小数
       if(isNil(field.scale)){
         fieldSchema = Object.assign({}, field, {scale: 2, precision});
@@ -92,14 +91,13 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       else{
         fieldSchema = Object.assign({}, field, {precision});
       }
-      break;
-    case "number":
+    }
+    else if(fieldType === 'number'){
       fieldSchema = Object.assign({}, field, {precision});
-      break;
-    default:
+    }
+    else{
       fieldSchema = field;
-      break;
-  }
+    }
   return fieldSchema;
 }
 
