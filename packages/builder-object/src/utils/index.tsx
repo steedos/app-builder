@@ -80,13 +80,13 @@ export const getTreeDataFromRecords = (records: [] = [], nameField: string = "na
   return result;
 }
 
-export const safeRunFunction = (fun: any, args: any, defaultValue?: any) => {
+export const safeRunFunction = (fun: any, args: any, defaultValue?: any, _this?: any) => {
   try {
     let params = [];
     if(!isNil(args)){
       params = isArray(args) ? args : [args] ;
     }
-    return fun(...params);
+    return fun.bind(_this || {})(...params);
   } catch (error) {
     console.log(error);
     return defaultValue;

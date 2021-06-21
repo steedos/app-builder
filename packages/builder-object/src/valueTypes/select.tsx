@@ -9,8 +9,22 @@ export const select = {
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
     let tags:any;
     let options = fieldSchema.optionsFunction ? fieldSchema.optionsFunction : fieldSchema.options ;
-    options = isFunction(options) ? safeRunFunction(options,[dependFieldValues],[]) : options;
     const value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    // 按原来lookup控件的设计，this.template.data._value为原来数据库中返回的选项值，this.template.data.value为当前用户选中的选项
+    const optionsFunctionThis = {
+      template:{
+        data: {
+          value: value,
+          _value: value
+        }
+      } 
+    };
+    const objectApiName = props.objectApiName;
+    let optionsFunctionValues = Object.assign({}, dependFieldValues, {
+        // space: Settings.tenantId,
+        _object_name: objectApiName
+    });
+    options = isFunction(options) ? safeRunFunction(options,[optionsFunctionValues],[], optionsFunctionThis) : options;
     tags = filter(options,(optionItem: any)=>{
         return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
     })
@@ -38,6 +52,21 @@ export const select = {
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={} } = fieldProps;
     const { multiple ,optionsFunction} = fieldSchema;
     let options = optionsFunction ? optionsFunction : fieldSchema.options;
+    const value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    // 按原来lookup控件的设计，this.template.data._value为原来数据库中返回的选项值，this.template.data.value为当前用户选中的选项
+    const optionsFunctionThis = {
+      template:{
+        data: {
+          value: value,
+          _value: value
+        }
+      } 
+    };
+    const objectApiName = props.objectApiName;
+    let optionsFunctionValues = Object.assign({}, dependFieldValues, {
+        // space: Settings.tenantId,
+        _object_name: objectApiName
+    });
     if (multiple){
       fieldProps.mode = 'multiple';
     }
@@ -47,8 +76,8 @@ export const select = {
 
     if(isFunction(options)){
       request = async (params: any, props: any) => {
-        dependFieldValues.__keyWords = params.keyWords;
-        const results = await safeRunFunction(options,[dependFieldValues],[]);
+        optionsFunctionValues._keyWords = params.keyWords;
+        const results = await safeRunFunction(options,[optionsFunctionValues],[], optionsFunctionThis);
         return results;
       };
       onDropdownVisibleChange = (open: boolean) => {

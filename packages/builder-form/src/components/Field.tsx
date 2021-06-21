@@ -36,6 +36,7 @@ export const Field = observer((props: any) => {
     isWide = false,
     showInlineIcon = true, //valueType != 'object' && valueType != 'grid',
     formItemProps = {},
+    objectApiName,
     // type,
     // count,
     // defaultValue,
@@ -161,7 +162,7 @@ export const Field = observer((props: any) => {
     FieldsMap[`${valueType}_${mode}_${readonly}`] = ProFormField;
   }
   const SField = FieldsMap[`${valueType}_${mode}_${readonly}`];
-  return (<SField formId={formId} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
+  return (<SField formId={formId} objectApiName={objectApiName} {...rest} mode={mode} formItemProps={formItemPropsMerged} />)
 })
 
 Field['propTypes'] = {

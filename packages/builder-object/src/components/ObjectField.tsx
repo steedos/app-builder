@@ -77,6 +77,7 @@ export const ObjectField = observer((props: any) => {
           <Field
             formItemProps={formItemProps}
             dependFieldValues={dependFieldValues}
+            objectApiName={objectApiName}
             {...formFieldProps}
           />)
       }}

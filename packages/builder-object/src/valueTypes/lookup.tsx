@@ -3,7 +3,7 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Select, Spin } from 'antd';
 import "antd/es/tree-select/style/index.css";
 import { isFunction, isArray, isObject, uniq, filter, map, forEach, isString, isEmpty} from 'lodash';
-import { Objects, API } from '@steedos/builder-store';
+import { Objects, API, Settings } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
 import { Link } from "../components/Link";
@@ -26,6 +26,21 @@ export const LookupField = observer((props:any) => {
     const { field_schema: fieldSchema = {},depend_field_values: dependFieldValues={},onChange } = fieldProps;
     const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create = true, modal_mode, table_schema } = fieldSchema;
     let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    // 按原来lookup控件的设计，this.template.data._value为原来数据库中返回的选项值，this.template.data.value为当前用户选中的选项
+    const optionsFunctionThis = {
+        filters: fieldFilters,
+        template: {
+            data: {
+                value: value,
+                _value: value
+            }
+        }
+    };
+    const objectApiName = props.objectApiName;
+    let optionsFunctionValues = Object.assign({}, dependFieldValues, {
+        space: Settings.tenantId,
+        _object_name: objectApiName
+    });
     let tags:any[] = [];
     let referenceTos = isFunction(reference_to) ? reference_to() : reference_to;
     let defaultReferenceTo:any;
@@ -86,7 +101,7 @@ export const LookupField = observer((props:any) => {
                 tags = selectItem;
             }else{
                 // TODO:options({}) 里的对象后期需要存放value进入
-                options = isFunction(options) ? safeRunFunction(options,[dependFieldValues],[]) : options;
+                options = isFunction(options) ? safeRunFunction(options,[optionsFunctionValues],[], optionsFunctionThis) : options;
                 tags = filter(options,(optionItem: any)=>{
                     return multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
                 })
@@ -103,7 +118,6 @@ export const LookupField = observer((props:any) => {
             fieldProps.mode = 'multiple';
         }
 
-        let dependOnValues: any = dependFieldValues;
         let request: any;
         let labelInValue=false;
         let requestFun= async (params: any, props: any) => {
@@ -112,9 +126,9 @@ export const LookupField = observer((props:any) => {
             // console.log("===request===reference_to==", reference_to);
 
             if(isFunction(options)) {
-                dependOnValues.__keyWords = params.keyWords;
-                dependOnValues.__referenceTo = referenceTo;
-                const results = await safeRunFunction(options,[dependOnValues],[]);
+                optionsFunctionValues._keyWords = params.keyWords;
+                optionsFunctionValues._referenceTo = referenceTo;
+                const results = await safeRunFunction(options,[optionsFunctionValues],[], optionsFunctionThis);
                 return results;
             }
             else{
@@ -199,8 +213,8 @@ export const LookupField = observer((props:any) => {
         }else{ // 最后一种情况 没有referenceTo 只有options 或 optionsFunction 
             if (isFunction(options)) {
                 request = async (params: any, props: any) => {
-                    dependFieldValues.__keyWords = params.keyWords;
-                    const results = await safeRunFunction(options,[dependFieldValues],[]);
+                    optionsFunctionValues._keyWords = params.keyWords;
+                    const results = await safeRunFunction(options, [optionsFunctionValues], [], optionsFunctionThis);
                     return results;
                 };
             } else {
