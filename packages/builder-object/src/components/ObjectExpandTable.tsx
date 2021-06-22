@@ -92,7 +92,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   const tableRef = rest.actionRef || selfTableRef;
 
   const object = Objects.getObject(props.objectApiName);
-  if (object.isLoading) return (<div><Spin/></div>);
+  if (object?.isLoading) return (<div><Spin/></div>);
 
   const handleExpandContentChange = (keys: any, rows: any) => {
     setSelectedExpandNode(keys)
@@ -179,7 +179,7 @@ export const ObjectExpandTable = observer((props: ObjectExpandTableProps) => {
   }
 
   let defaultExpandReference, defaultExpandNameField, defaultExpandParentField;
-  const objectSchema = object.schema;
+  const objectSchema = rest.objectSchema || object?.schema;
   const objectSchemaFields = objectSchema.fields;
   const currentFields = expandDefine && objectSchemaFields[expandDefine.fieldName]
   defaultExpandReference = currentFields && currentFields.reference_to;

@@ -7,6 +7,7 @@ import { Objects, API, Settings } from "@steedos/builder-store"
 import { ObjectGrid, ObjectTreeGrid } from '@steedos/builder-ag-grid';
 
 export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
+  console.log("===ObjectTable===props==", props);
   let {
     objectApiName,
     listName = "all",
@@ -15,16 +16,16 @@ export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
     listSchema,
     ...rest
   } = props
-  const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div>Loading object ...</div>)
-  const schema = object.schema; 
-  let listView = listSchema ? listSchema : schema.list_views[listName];
-  const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
+  const object = objectApiName && Objects.getObject(objectApiName);
+  if (object?.isLoading) return (<div>Loading object ...</div>)
+  const schema = rest.objectSchema || object?.schema;
+  let listView = listSchema ? listSchema : schema?.list_views[listName];
   if(!columnFields || columnFields.length==0){
+    const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
     columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
   }
   if(!filters || filters.length==0){
-    filters = getListViewFilters(listView, props);
+    filters = listView && getListViewFilters(listView, props);
   }
   let TableComponent = ObjectGrid;
   if(schema.enable_tree){

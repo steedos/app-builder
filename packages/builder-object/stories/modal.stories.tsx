@@ -88,6 +88,73 @@ export const FormModal = () => {
   )
 }
 
+const getSchemaTalbeProps = ()=>{
+  const rows = [{
+    _id:"1", 
+    name:"A", 
+    tags:["1"], 
+    contract:"C25heacKZD9uy2EAj"
+  },{
+    _id:"2", 
+    name:"B", 
+    tags:["2"], 
+    contract:"C25heacKZD9uy2EAj"
+  },{
+    _id:"3", 
+    name:"C", 
+    tags:["1", "2"], 
+  }];
+  const objectSchema={
+    fields:{
+      name: {
+        type: 'text',
+        label: '名称',
+      },
+      tags: {
+        type: 'select',
+        label: '标签',
+        options:[
+          { label: '老人',   value:'1' },
+          { label: '中年人', value: '2' },
+          { label: '年轻人', value: '3' },
+          { label: '孩童', value: '4' }
+        ],
+        multiple: true
+      },
+      contract: {
+        reference_to: 'contracts',
+        type: 'lookup',
+        label: '合同'
+      },
+    }
+  };
+  const listSchema={
+    columns:[
+      {
+        field: 'name',
+        width: '300px'
+      },
+      {
+        field: 'tags'
+      },
+      {
+        field: 'contract'
+      }
+    ]
+  };
+  return {
+    title: `选择 数据`,
+    objectSchema,
+    listSchema,
+    rows,
+    selectedRowKeys:["2"],
+    onFinish: async (values, rows)=>{
+      console.log("values:", values, rows);
+      return true;
+    }
+  }
+}
+
 export const TableModal = () => {
   const tableProps1 = {
     title: `选择 任务`,
@@ -156,6 +223,12 @@ export const TableModal = () => {
   return (
     <React.Fragment>
       <ObjectModal
+        {...getSchemaTalbeProps()}
+        trigger={<Button type="primary" >弹出Schema Table</Button>}
+      />
+      <br />
+      <br />
+      <ObjectModal
         {...tableProps1}
         trigger={<Button type="primary" >弹出Table 默认使用all视图配置</Button>}
       />
@@ -183,6 +256,11 @@ export const TableModal = () => {
         {...tableProps5}
         trigger={<Button type="primary" >弹出选人</Button>}
       />
+      <br />
+      <br />
+      <Button type="primary" onClick={()=>{
+        (window as any).SteedosUI.showModal(ObjectTable,getSchemaTalbeProps())
+      }}>showModal - 弹出Schema Table</Button>
       <br />
       <br />
       <Button type="primary" onClick={()=>{
