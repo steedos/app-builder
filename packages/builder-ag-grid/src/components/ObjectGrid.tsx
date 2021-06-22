@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq, find} from "lodash"
+import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq, find, sortBy, reverse, clone} from "lodash"
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -118,13 +118,15 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     pagination = true,
     selectedRowKeys,
     rowKey = '_id',
+    objectSchema: defaultObjectSchema,
+    rows,
     ...rest
   } = props;
   const table = Tables.loadById(name, objectApiName,rowKey);
   const [editedMap, setEditedMap] = useState({})
   // 将初始值存放到 stroe 中。
   if(selectedRowKeys && selectedRowKeys.length){
-    table.addSelectedRowsByKeys(selectedRowKeys,columnFields)
+    table.addSelectedRowsByKeys(selectedRowKeys, columnFields, rows)
   }
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
@@ -148,12 +150,50 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       ]
     }
   }
-  const object = Objects.getObject(objectApiName);
-  if (object.isLoading) return (<div><Spin/></div>)
+  const object = objectApiName && Objects.getObject(objectApiName);
+  if (object && object.isLoading) return (<div><Spin/></div>)
+
+  const objectSchema = defaultObjectSchema ? defaultObjectSchema : object.schema;
+
+  const setSelectedRows = (params)=>{
+      // 当前显示页中store中的初始值自动勾选。
+      const selectedRowKeys = table.getSelectedRowKeys();
+      if(selectedRowKeys && selectedRowKeys.length){
+        const gridApi = params.api;
+        gridApi.forEachNode(node => {
+          if(node.data && node.data[rowKey]){
+            if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
+              node.setSelected(true);
+            }else{
+              node.setSelected(false);
+            }
+          }
+        });
+      }
+  }
 
   const getDataSource = () => {
     return {
         getRows: params => {
+          if(rows){
+            const sort = []
+            forEach(params.request.sortModel, (sortField)=>{
+              sort.push([sortField.colId, sortField.sort])
+            })
+            let sortedRows = clone(rows);
+            if(sort.length){
+              sortedRows = sortBy(rows, [sort[0][0]]);
+              if(sort[0][1] === "desc"){
+                sortedRows = reverse(sortedRows)
+              }
+            }
+            params.success({
+              rowData: sortedRows,
+              rowCount: rows.length
+            });
+            setSelectedRows(params);
+          }
+          else{
             let fields = ['name'];
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
@@ -179,26 +219,13 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
               objectApiName,
               filters,
               fields,options).then((data)=>{
-
                 params.success({
                   rowData: data.value,
                   rowCount: data['@odata.count']
                 });
-                // 当前显示页中store中的初始值自动勾选。
-                const selectedRowKeys = table.getSelectedRowKeys();
-                if(selectedRowKeys && selectedRowKeys.length){
-                  const gridApi = params.api;
-                  gridApi.forEachNode(node => {
-                    if(node.data && node.data[rowKey]){
-                      if (selectedRowKeys.indexOf(node.data[rowKey])>-1) {
-                        node.setSelected(true);
-                      }else{
-                        node.setSelected(false);
-                      }
-                    }
-                  });
-                }
+                setSelectedRows(params);
             })
+          }
         }
     };
   }
@@ -229,7 +256,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       // }
     ];
     forEach(columnFields, ({ fieldName, hideInTable, hideInSearch, ...columnItem }: ObjectGridColumnProps) => {
-      const field = object.schema.fields[fieldName];
+      const field = objectSchema.fields[fieldName];
       if(!field){
         return ;
       }
