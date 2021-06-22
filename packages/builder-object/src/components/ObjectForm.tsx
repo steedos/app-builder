@@ -172,7 +172,11 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       form: rest.form || proForm
     }
     try{
-      await defaultOnValuesChange.call({}, args);
+      let valuesChangeFun = defaultOnValuesChange;
+      if(!valuesChangeFun){
+        valuesChangeFun = mergedSchema?.form?.onValuesChange
+      }
+      await valuesChangeFun?.call({}, args);
     }
     catch(ex){
       console.error(ex);

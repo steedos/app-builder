@@ -192,6 +192,24 @@ const getListViewSchema = (listView: any)=>{
 }
 
 /**
+ * 转换传入的objectConfig中form，相关函数为字段串格式转换为函数
+ * @param objectConfig 对象配置文件中form所属对象的配置
+ * @returns 转换后的form
+ */
+ export function getFormSchema(objectConfig: any) {
+  if(!objectConfig.form){
+    return;
+  }
+  let form: any = safeEval(`(${objectConfig.form})`);
+  forEach(form, (value, key)=>{
+    if(value.startsWith("function ")){
+      form[key] = safeEval(`(${value})`);
+    }
+  });
+  return form;
+}
+
+/**
  * 转换传入的objectConfig中的fields及list_views
  * @param objectConfig 对象配置文件中该字段所属对象的配置
  * @returns 转换后的对象
@@ -200,7 +218,8 @@ const getListViewSchema = (listView: any)=>{
   objectConfig.fields = getFieldsSchema(objectConfig);
   // console.log("convertObjectSchema====objectConfig.fields===", objectConfig.name, objectConfig.fields);
   objectConfig.list_views = getListViewsSchema(objectConfig);
-  // console.log("convertObjectSchema====objectConfig.list_views===", objectConfig.name, objectConfig.list_views);
+  objectConfig.form = getFormSchema(objectConfig);
+  // console.log("convertObjectSchema====objectConfig.form===", objectConfig.name, objectConfig.form);
 }
 
 export function getObjectOdataExpandFields(object: any,columns: string[]) {
