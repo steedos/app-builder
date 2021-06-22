@@ -81,16 +81,16 @@ export const ObjectFieldGrid = (props) => {
       //   // console.log(row)
       //   return (<ProField mode='read'/>)
       // },
-      renderFormItem: (_, row) => {
-        const { defaultRender, record, recordKey } = row
-        const cellProps = {
-          ..._,
-          defaultRender,
-          record,
-          recordKey,
-        }
-        return <TableCell {...cellProps}/>
-      }
+      // renderFormItem: (_, row) => {
+      //   const { defaultRender, record, recordKey } = row
+      //   const cellProps = {
+      //     ..._,
+      //     defaultRender,
+      //     record,
+      //     recordKey,
+      //   }
+      //   return <TableCell {...cellProps}/>
+      // }
     })
   });
   if (mode == 'edit'){
