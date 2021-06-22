@@ -38,6 +38,7 @@ export type ObjectFormProps = {
   afterInsert?: Function,
   visible?: boolean,
   layout?: string,
+  form?: any
   // showFooterToolbar?: boolean
 } & FormProps
 
@@ -60,6 +61,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     afterInsert,
     trigger,
     visible,
+    onValuesChange: defaultOnValuesChange,
     ...rest
   } = props;
   const [proForm] = ProForm.useForm();
@@ -157,19 +159,30 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
-  const onValuesChange = (changedValues, allValues)=>{
+  const onValuesChange = async (changedValues, values)=>{
     forEach(changedValues,(value,key)=>{
       if(value === undefined){
         undefinedValues[key] = null;
         setUndefinedValues(undefinedValues)
       }
     });
-    (sectionsRef.current as any)?.reCalcSchema(changedValues, allValues)
+    const args = {
+      changedValues,
+      values,
+      form: rest.form || proForm
+    }
+    try{
+      await defaultOnValuesChange.call({}, args);
+    }
+    catch(ex){
+      console.error(ex);
+    }
+    (sectionsRef.current as any)?.reCalcSchema(changedValues, values)
   }
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
-  proForm.setFieldsValue(defaultValues)
+  ((rest.form || proForm) as any).setFieldsValue(defaultValues)
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -177,7 +190,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       className='builder-form object-form'
       initialValues={defaultValues}
       mode={mode}
-      form={proForm}
+      form={rest.form || proForm}
       layout={layout}
       submitter={submitter}
       isModalForm={isModalForm}

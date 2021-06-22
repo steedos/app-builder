@@ -9,6 +9,7 @@ import ProCard from "@ant-design/pro-card"
 import queryString from "querystring"
 import { useEffect, useState } from "react";
 import TestObject from './test.object';
+import { Form as ProForm } from 'antd';
 
 export default {
   title: "Object Form",
@@ -85,6 +86,26 @@ export const FormVertical = () => {
           <ObjectField objectApiName={objectApiName} fieldName='name' fieldSchema={nameFieldSchema}/>
           {/* <span>111</span> */}
         </FieldSection> 
+      </ObjectForm>
+  )
+}
+
+export const FormOnValuesChange = () => {
+  const objectApiName = 'accounts';
+  const initialValues = {
+  };
+  const objectFormProps = {
+    objectApiName,
+    initialValues,
+    onValuesChange: async (props)=>{
+      console.log("===props===", props);
+      if(props.changedValues.name){
+        props.form.setFieldsValue(Object.assign({}, props.values, {email:`${props.changedValues.name}@steedos.com`}));
+      }
+    }
+  }
+  return (
+      <ObjectForm mode='read' layout='horizontal' {...objectFormProps}>
       </ObjectForm>
   )
 }
