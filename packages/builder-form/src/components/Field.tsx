@@ -1,5 +1,6 @@
 import ProField from "@ant-design/pro-field";
 import type { InputProps } from 'antd';
+import { API } from "@steedos/builder-store"
 
 import React, { useContext, useState } from "react";
 import * as PropTypes from 'prop-types';
@@ -103,6 +104,14 @@ export const Field = observer((props: any) => {
     }
 
     if (!readonly && mode === 'edit') {
+      if (fieldProps.value === undefined && fieldSchema && fieldSchema.defaultValue && fieldSchema.defaultValue.length) {
+        let formValue = fieldSchema.defaultValue;
+        if(formValue === '{userId}'){
+          formValue = [API.client.getUserId()];
+        }
+        proFieldProps.fieldProps.onChange(formValue);
+        proFieldProps.fieldProps.defaultValue = formValue;
+      }
       return <ProField mode='edit' {...proFieldProps} />
 
     }
