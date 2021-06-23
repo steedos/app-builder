@@ -111,7 +111,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       const record = recordCache.data.value[0];
       forEach(fieldNames, (fieldName:any)=>{
         let filedValue = record[fieldName];
-        if (filedValue){
+        // 字段值为null等也传过去, null表示往数据库存空值。
+        if (filedValue !== undefined ){
           defaultValues[fieldName] = filedValue;
         }
       })
