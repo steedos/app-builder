@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, clone} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, clone, isNil} from 'lodash';
 import { useQuery } from 'react-query'
 // import { FooterToolbar } from '@ant-design/pro-layout';
 import { Form } from '@steedos/builder-form';
@@ -142,7 +142,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     
     let result; 
     let convertedValues = conversionSubmitValue(values);
-    if(!recordId){     
+    if(!recordId){
       result = await API.insertRecord(objectApiName, convertedValues);
       if(afterInsert){
         return afterInsert(result);
@@ -162,7 +162,8 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   const onValuesChange = async (changedValues, values)=>{
     forEach(changedValues,(value,key)=>{
-      if(value === undefined){
+      // value = undefined || null 都要保存null 到数据库中。
+      if(isNil(value)){
         undefinedValues[key] = null;
         setUndefinedValues(undefinedValues)
       }
