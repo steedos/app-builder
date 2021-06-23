@@ -198,7 +198,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             forEach(columnFields, ({ fieldName, ...columnItem }: ObjectGridColumnProps) => {
               fields.push(fieldName)
             });
-            fields = uniq(compact(fields.concat(extraColumnFields)));
+            fields = uniq(compact(fields.concat(extraColumnFields).concat(["owner", "company_id", "company_ids", "locked"])));
             const sort = []
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
