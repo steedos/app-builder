@@ -75,6 +75,10 @@ export const ObjectFieldGrid = (props) => {
       fieldProps : { 
         depend_field_values: dependFieldValues,
         field_schema : {
+          label: field.label,
+          type: field.type,
+          multiple: field.multiple,
+          options: field.options,
           optionsFunction: field.optionsFunction
         }
       }, 
