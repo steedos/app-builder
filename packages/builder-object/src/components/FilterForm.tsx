@@ -14,7 +14,7 @@ export type FilterFormProps = {
 
 export const FilterForm = observer((props:FilterFormProps) => {
   const {
-    name: formId = 'query-filter-default',
+    name: formId = 'filter-form-default',
     objectApiName,
     fields,
     objectSchema = {},
@@ -32,9 +32,9 @@ export const FilterForm = observer((props:FilterFormProps) => {
   // form.setSchema(mergedSchema);
 
 
-  const onValuesChange = async (changeValues: any) =>{
-    console.log("changeValues:", changeValues);
-    let newValue = Object.assign({}, form.value || {}, changeValues);
+  const onValuesChange = async ({changedValues, values}) =>{
+    console.log("changedValues:", changedValues);
+    let newValue = Object.assign({}, form.value || {}, changedValues);
     form.setValue(newValue);
     const filters = convertFormToFilters(filterFormSchema, newValue);
     // console.log("==FilterForm===filters===", filters);
