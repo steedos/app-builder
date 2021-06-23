@@ -10,7 +10,11 @@ export default class Action {
 
         const Creator = (window as any).Creator;
         if(Creator && Creator.executeAction){
-            return Creator.executeAction(object_name, action, record_id, item_element, list_view_id, record)
+            if(action.todo == "standard_delete"){
+                return Creator.executeAction(object_name, action, record_id, item_element, list_view_id, record)
+            }else{
+                return Creator.executeAction(object_name, action, record_id, item_element)
+            }
         }else{
             item_element = item_element ? item_element : "" ;
             const moreArgs = Array.prototype.slice.call(arguments, 3)
