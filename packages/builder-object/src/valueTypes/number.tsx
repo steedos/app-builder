@@ -1,5 +1,6 @@
 import React from 'react';
 import ProField from "@ant-design/pro-field";
+import { isNil} from 'lodash';
 
 const numberToString = (number: number | string, scale: number, notThousands: boolean = false)=>{
   if (typeof number === "number") {
@@ -33,54 +34,57 @@ const numberToString = (number: number | string, scale: number, notThousands: bo
   }
 }
 
-const format = (val: string, precision: number = 18, scale: number = 0)=>{
-  var _val = new Number(val);
-  let dotIndex = val.indexOf(".");
-  if (dotIndex > -1) {
-    if (val.length - 1 > precision) {
-      _val = Number(val.substring(0, precision - scale - 1))
-    }
-    // 因为ant的formatter功能不是在onBlur失去焦点事件触发，而是一修改值就触发了
-    // 如果保留自动补零格式功能会影响体验，所以只能放弃自动补零格式功能
-    if(val.length - dotIndex > scale){
-      return _val.toFixed(scale);
-    }
-    else{
-      return _val;
-    }
-  } else {
-    if (val.length > precision) {
-      return Number(val.substring(0, precision - scale));
-    } else {
-      return _val;
-    }
-  }
-}
+// const format = (val: string, precision: number = 18, scale: number = 0)=>{
+//   if(isNil(val) || val === ""){
+//     return null;
+//   }
+//   var _val = new Number(val);
+//   let dotIndex = val.indexOf(".");
+//   if (dotIndex > -1) {
+//     if (val.length - 1 > precision) {
+//       _val = Number(val.substring(0, precision - scale - 1))
+//     }
+//     // 因为ant的formatter功能不是在onBlur失去焦点事件触发，而是一修改值就触发了
+//     // 如果保留自动补零格式功能会影响体验，所以只能放弃自动补零格式功能
+//     if(val.length - dotIndex > scale){
+//       return _val.toFixed(scale);
+//     }
+//     else{
+//       return _val;
+//     }
+//   } else {
+//     if (val.length > precision) {
+//       return Number(val.substring(0, precision - scale));
+//     } else {
+//       return _val;
+//     }
+//   }
+// }
 
 export const FieldNumber = (props:any) => {
   const { mode, fieldProps } = props;
   const { field_schema: fieldSchema = {} } = fieldProps;
   let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
   let scale = fieldSchema.scale;
-  let precision = fieldSchema.precision;
+  // let precision = fieldSchema.precision;
   if(mode === "read"){
     return <span>{numberToString(value, scale)}</span>
   }
   else{
-    let newFieldProps = Object.assign({}, fieldProps, {
-      formatter: (value: any) => {
-        return format(value, precision, scale);
-      },
-      parser: (value: any) => value
-    });
+    // 加这段formatter是为了编辑状态下也保留指定位数小数，有bug：要删除两次才能把数据清空
+    // let newFieldProps = Object.assign({}, fieldProps, {
+    //   formatter: (value: any) => {
+    //     return format(value, precision, scale);
+    //   },
+    //   parser: (value: any) => value
+    // });
     return (
-      <ProField valueType='digit' {...props} fieldProps={newFieldProps} />
+      <ProField valueType='digit' {...props} />
     )
   }
 };
 
 FieldNumber.convertNumberToString = numberToString;
-FieldNumber.format = format;
 
 // 数值类型字段
 // value 值为数字
@@ -92,6 +96,7 @@ export const number = {
     )
   },
   renderFormItem: (_: any, props: any) => {
+    console.log("===props===", props);
     return (
       <FieldNumber mode='edit' {...props} />
     )
