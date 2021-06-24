@@ -302,7 +302,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
       });
 
       let fieldWidth = (columnItem as any).width ? (columnItem as any).width : (field.is_wide ? 300 : 150);
-      
+
       columns.push({
         field: fieldName,
         hide: hideInTable,
@@ -474,11 +474,18 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
 
   const getAutoGroupColumn = ()=>{
     // const { fieldName, ...columnItem } = columnFields[0];
-    let nameFieldKey = object.schema.NAME_FIELD_KEY || "name";
+    let nameFieldKey = object.schema.NAME_FIELD_KEY;
+    if(object.schema.name === 'organizations'){
+      nameFieldKey = "name";
+    }
     const field = object.schema.fields[nameFieldKey];
     if(!field){
       return ;
     }
+    let fieldWidth = find(columnFields,(item)=>{
+      return item.fieldName === nameFieldKey ;
+    }).width;
+    fieldWidth = fieldWidth ? fieldWidth : (field.is_wide ? 300 : 150);
     // let fieldRender = null;
     // if((columnItem as any).render){
     //   fieldRender = (columnItem as any).render
@@ -490,7 +497,7 @@ export const ObjectTreeGrid = observer((props: ObjectTreeGridProps<any>) => {
     return {
       field: nameFieldKey,
       headerName: field.label ? field.label:nameFieldKey,
-      // width: fieldWidth,
+      width: fieldWidth,
       // minWidth: fieldWidth ? fieldWidth : 60,
       resizable: true,
       // filter,

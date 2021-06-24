@@ -55,7 +55,8 @@ export const TreeGrid = () => {
           [
             {
               fieldName: 'name',
-              hideInTable: true
+              hideInTable: true,
+              width: 240
             },
             // {
             //   fieldName: 'parent',
