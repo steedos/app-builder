@@ -150,6 +150,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       ]
     }
   }
+  if(rows){
+    sideBar = false;
+  }
   const object = objectApiName && Objects.getObject(objectApiName);
   if (object && object.isLoading) return (<div><Spin/></div>)
 
@@ -305,7 +308,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       });
 
       let fieldWidth = (columnItem as any).width ? (columnItem as any).width : (field.is_wide ? 300 : 150);
-      
+
       columns.push({
         field: fieldName,
         hide: hideInTable,
