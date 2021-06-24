@@ -24,13 +24,10 @@ export const select = {
         // space: Settings.tenantId,
         _object_name: objectApiName
     });
-    // console.log('option1111==>',options)
     options = isFunction(options) ? safeRunFunction(options,[optionsFunctionValues],[], optionsFunctionThis) : options;
-    // console.log('option2222==>',options)
     tags = filter(options,(optionItem: any)=>{
         return fieldSchema.multiple ? value.indexOf(optionItem.value) > -1 : optionItem.value === value;
     })
-    // console.log('tags==>',tags)
     return (<React.Fragment>{tags.map((tagItem, index)=>{
       let colorStyle:any = {
         borderRadius: '10px',
