@@ -1,6 +1,7 @@
 import ProField from "@ant-design/pro-field";
 import type { InputProps } from 'antd';
 import { API } from "@steedos/builder-store"
+import { isFunction, isNil } from 'lodash';
 
 import React, { useContext, useState } from "react";
 import * as PropTypes from 'prop-types';
@@ -13,6 +14,7 @@ import { Forms } from '@steedos/builder-store';
 
 import { observer } from "mobx-react-lite"
 import Button from '@salesforce/design-system-react/components/button'; 
+import { safeRunFunction } from '@steedos/builder-sdk';
 
 import './Field.less'
 
@@ -104,8 +106,12 @@ export const Field = observer((props: any) => {
     }
 
     if (!readonly && mode === 'edit') {
-      if (fieldProps.value === undefined && fieldSchema && fieldSchema.defaultValue && fieldSchema.defaultValue.length) {
-        let formValue = fieldSchema.defaultValue;
+      let defaultValue = fieldSchema?.defaultValue;
+      if(isFunction(defaultValue)){
+        defaultValue = safeRunFunction(defaultValue,[]);
+      }
+      if (fieldProps.value === undefined && !isNil(defaultValue)) {
+        let formValue = defaultValue;
         if(formValue === '{userId}'){
           formValue = [API.client.getUserId()];
         }

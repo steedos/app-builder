@@ -98,6 +98,11 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     else{
       fieldSchema = field;
     }
+    // 所有字段如果含有_defaultValue属性就为其添加一个defaultValue属性。
+    if(field._defaultValue){
+      let defaultValue = safeEval(`(${field._defaultValue})`);
+      fieldSchema = Object.assign({}, fieldSchema, {defaultValue});
+    }
   return fieldSchema;
 }
 

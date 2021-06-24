@@ -7,6 +7,7 @@ export {
 }
 
 export * from "./filters";
+export * from "./utils";
 
 declare global {
   interface Window {
