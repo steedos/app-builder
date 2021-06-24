@@ -5,8 +5,9 @@ import "antd/es/tree-select/style/index.css";
 import { isArray } from 'lodash';
 import { Objects, API } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
+import { safeRunFunction } from '@steedos/builder-sdk';
 import { getTreeDataFromRecords } from '../utils';
-import { safeRunFunction, BAD_FILTERS } from '../utils';
+import { BAD_FILTERS } from '../utils';
 
 export const ObjectFieldTreeSelect = observer((props:any)=> {
   const [params, setParams] = useState({open: false,openTag: null});
