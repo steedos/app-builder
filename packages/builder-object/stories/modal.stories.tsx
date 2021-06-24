@@ -132,7 +132,7 @@ const getSchemaTalbeProps = ()=>{
     columns:[
       {
         field: 'name',
-        width: '300px'
+        width: '300'
       },
       {
         field: 'tags'
