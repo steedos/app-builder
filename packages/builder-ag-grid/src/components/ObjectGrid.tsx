@@ -304,7 +304,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         return item.field_name === fieldName
       });
 
-      let fieldWidth = field.width ? field.width : field.is_wide? 300: 150;
+      let fieldWidth = (columnItem as any).width ? (columnItem as any).width : (field.is_wide ? 300 : 150);
       
       columns.push({
         field: fieldName,
