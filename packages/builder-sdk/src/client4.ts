@@ -12,6 +12,7 @@ import SObject from './sobject';
 import Graphql from './graphql';
 import Action from './action';
 import Field from './field';
+import ListView from './listview';
 
 const HEADER_AUTH = 'Authorization';
 const HEADER_BEARER = 'Bearer';
@@ -62,6 +63,7 @@ export default class SteedosClient {
     graphql = new Graphql(this);
     action = new Action();
     field = new Field();
+    listview = new ListView();
     getUrl() {
         // if(!this.url){
         //     var href = new URL(window.location.href);

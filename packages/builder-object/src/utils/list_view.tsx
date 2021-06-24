@@ -1,5 +1,5 @@
 import { find, intersection, union, each, isObject, compact, keys} from 'lodash';
-
+import { API } from "@steedos/builder-store"
 export function isRecentListView(listViewName: string) {
   return listViewName === "recent"
 }
@@ -69,7 +69,7 @@ export function unionSelectColumnsWithExtraAndDepandOn(objectSchema: any, column
 
 export function getListviewColumns(objectSchema: any, listName: string, relatedObjectApiName: string, isMobile: boolean) {
 	// 原来Creator.getListviewColumns函数逻辑
-  const listView = objectSchema.list_views[listName];
+  const listView = API.client.listview.find(objectSchema.list_views, listName);
   let columns = listView && listView.columns
 
   if (isMobile) {

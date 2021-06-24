@@ -92,7 +92,7 @@ export const getListViewFilters = (listView, props) => {
 }
 
 export const getListviewColumns = (objectSchema: any, listName: any) => {
-  let listView = objectSchema.list_views[listName];
+  let listView = API.client.listview.find(objectSchema.list_views, listName);
   let listViewColumns = listView && listView.columns;
   if(!listViewColumns){
     listView = objectSchema.list_views.default;
@@ -105,7 +105,7 @@ export const getListviewColumns = (objectSchema: any, listName: any) => {
 }
 
 export const getListviewExtraColumns = (objectSchema: any, listName: any) => {
-  let listView = objectSchema.list_views[listName];
+  let listView = API.client.listview.find(objectSchema.list_views, listName);
   let listViewColumns = listView && listView.extra_columns;
   if(!listViewColumns){
     listView = objectSchema.list_views.default;
@@ -196,7 +196,7 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   if(schema.enable_tree){
     TableComponent = ObjectTreeGrid;
   }
-  let listView = listSchema ? listSchema : schema.list_views[listName];
+  let listView = listSchema ? listSchema : API.client.listview.find(schema.list_views, listName);
   const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
   const listViewExtraColumns = listSchema && listSchema.extra_columns ? listSchema.extra_columns : getListviewExtraColumns(schema, listName);
   if(!columnFields || columnFields.length==0){

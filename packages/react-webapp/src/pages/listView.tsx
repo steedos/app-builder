@@ -5,7 +5,7 @@ import {
   ActionType,
 } from "@ant-design/pro-table"
 import { observer } from "mobx-react-lite"
-import { Objects } from "@steedos/builder-store"
+import { Objects, API } from "@steedos/builder-store"
 import { Button, Dropdown, Menu, message } from 'antd';
 import { DownOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -108,7 +108,7 @@ export const ListView = observer((props: any) => {
 
   const schema = object.schema; 
   const title = schema.label;
-  let listView = schema.list_views[listName];
+  let listView = API.client.listview.find(schema.list_views, listName);
   // const listViewColumns = getListviewColumns(schema, listName);
   const {extraButtons, dropdownMenus} = getButtons(schema, {
     objectApiName, listName, ...props
