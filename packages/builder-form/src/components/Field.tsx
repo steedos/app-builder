@@ -108,7 +108,7 @@ export const Field = observer((props: any) => {
     if (!readonly && mode === 'edit') {
       let defaultValue = fieldSchema?.defaultValue;
       if(isFunction(defaultValue)){
-        defaultValue = safeRunFunction(defaultValue,[]);
+        defaultValue = safeRunFunction(defaultValue,[], null, {name:fieldSchema.name});
       }
       if (fieldProps.value === undefined && !isNil(defaultValue)) {
         let formValue = defaultValue;
