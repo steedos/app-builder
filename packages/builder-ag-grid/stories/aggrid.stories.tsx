@@ -15,7 +15,8 @@ export const Grid = () => {
         columnFields={
           [
             {
-              fieldName: 'name'
+              fieldName: 'name',
+              width: '200'
             },
             {
               fieldName: 'description'
@@ -61,7 +62,8 @@ export const TreeGrid = () => {
             //   hideInTable: true
             // },
             {
-              fieldName: 'created'
+              fieldName: 'created',
+              width: 300
             },
             {
               fieldName: 'created_by'
@@ -99,7 +101,8 @@ export const SchemaGrid = () => {
         columnFields={
           [
             {
-              fieldName: 'name'
+              fieldName: 'name',
+              width: '200'
             },
             {
               fieldName: 'tags'
