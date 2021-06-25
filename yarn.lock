@@ -5026,15 +5026,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@steedos/filters@^1.23.22":
-  version "1.23.22"
-  resolved "https://registry.npm.taobao.org/@steedos/filters/download/@steedos/filters-1.23.22.tgz?cache=0&sync_timestamp=1615877906135&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40steedos%2Ffilters%2Fdownload%2F%40steedos%2Ffilters-1.23.22.tgz#c5f3985a86f12d569d8d28033f27bfef4bab8f2b"
-  integrity sha1-xfOYWobxLVadjSgDPye/70urjys=
-  dependencies:
-    "@babel/runtime" "^7.5.4"
-    moment "^2.24.0"
-    underscore "^1.9.1"
-
 "@steedos/filters@^2.0.25":
   version "2.0.25"
   resolved "https://registry.yarnpkg.com/@steedos/filters/-/filters-2.0.25.tgz#cae2b4bb64c91f35aec10a4070288bb6d9f3b1ee"
