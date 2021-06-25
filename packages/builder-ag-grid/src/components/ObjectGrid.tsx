@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import {forEach, compact, filter, keys, map, isEmpty, isFunction, isObject, uniq, find, sortBy, reverse, clone} from "lodash"
+import { forEach, compact, filter, includes, keys, map, isEmpty, isFunction, isObject, uniq, find, sortBy, reverse, clone, isArray } from 'lodash';
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -350,21 +350,38 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         }
       })
     });
-    // 操作按钮
-    columns.push({
-      width: 50,
-      maxWidth: 50,
-      minWidth: 50,
-      resizable: false,
-      pinned: "right",
-      cellRenderer: 'rowActions',
-      cellEditor: 'rowActions',
-      suppressMenu: true,
-      cellRendererParams: {
-        objectApiName,
-        rowButtons: rowButtons
+
+    //处理filters depend_on  
+    map(columns, (column)=>{
+      if(column.filter === 'AgGridCellFilter' && isArray(column.filterParams.fieldSchema.depend_on)){
+        map(filter(columns, (_column)=>{
+          return includes(column.filterParams.fieldSchema.depend_on, _column.field)
+        }), (__column)=>{
+          if(__column.filterParams.fieldSchema && !isArray(__column.filterParams.depended)){
+            __column.filterParams.depended = [];
+          }
+          __column.filterParams.depended.push(column.field)
+        })
       }
-    });
+    })
+
+    if(rowButtons && isArray(rowButtons) && rowButtons.length > 0){
+      // 操作按钮
+      columns.push({
+        width: 50,
+        maxWidth: 50,
+        minWidth: 50,
+        resizable: false,
+        pinned: "right",
+        cellRenderer: 'rowActions',
+        cellEditor: 'rowActions',
+        suppressMenu: true,
+        cellRendererParams: {
+          objectApiName,
+          rowButtons: rowButtons
+        }
+      });
+    }
     return columns
   }
 

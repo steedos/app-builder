@@ -1,6 +1,6 @@
 
 import React, { useContext, useRef, useEffect, useState, useImperativeHandle, forwardRef } from "react"
-import { isEmpty, isNil } from "lodash"
+import { isEmpty, isNil, isArray, forEach } from "lodash"
 import ProField from "@ant-design/pro-field";
 
 import './CellFilter.less';
@@ -9,10 +9,12 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
   const { 
     value: initialValue,
     valueType = 'text',
+    depend_field_values = {},
+    depended,
     fieldSchema,
   } = props;
   const [filter, setFilter] = useState(initialValue || null);
-
+  const [dependFieldValues, setDependFieldValues] = useState(depend_field_values);
   // expose AG Grid Filter Lifecycle callbacks
   useImperativeHandle(ref, () => {
       return {
@@ -35,9 +37,16 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
           },
 
           setModel() {
+          },
+          changeDependFieldValues(key, value){
+            setDependFieldValues(Object.assign({}, dependFieldValues, {[key]: value}))
           }
       }
   });
+
+  useEffect(() => {
+    setDependFieldValues(dependFieldValues)
+  }, [JSON.stringify(depend_field_values)]);
 
   useEffect(() => {
     if(filter !== null){
@@ -54,16 +63,33 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
   }
 
   const onChange = (value)=>{
+    let filterValue = value
     if(isEmpty(value)){  //由于select、lookup为多选且没有选择值时返回了空数组，此处需要转换为undefined。
-      setFilter(undefined)
+      filterValue = undefined
     }else{
       // TODO: reference_to是数组并且多选时会报错，先暂时这样处理（不报错）。
       if(value.ids){
-        setFilter(value.ids)
+        filterValue = value.ids
       }
       else{
-        setFilter(value)
+        filterValue = value
       }
+    }
+    setFilter(filterValue)
+    if(depended && isArray(depended)){
+      forEach(depended, (item)=>{
+        try {
+          props.api.getFilterInstance(item).componentInstance.changeDependFieldValues(fieldSchema.name, filterValue)
+        } catch (error) {
+          try {
+            setTimeout(function(){
+              props.api.getFilterInstance(item).componentInstance.changeDependFieldValues(fieldSchema.name, filterValue)
+            }, 100)
+          } catch (error) {
+            
+          }
+        }
+      })
     }
   }
 
@@ -72,7 +98,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
       <ProField 
         mode='edit'
         valueType={valueType} 
-        fieldProps={fieldProps}
+        fieldProps={Object.assign({}, fieldProps, {depend_field_values: dependFieldValues})}
         onChange={onChange}
         text={initialValue}
         emptyText=''
