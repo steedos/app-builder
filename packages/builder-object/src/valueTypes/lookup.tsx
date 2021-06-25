@@ -81,7 +81,9 @@ export const LookupField = observer((props:any) => {
     }
     if(mode==='read'){
         if(value){
-            if (referenceTo && !options) {
+            // if (referenceTo && !options) {
+            if (referenceTo) {
+                // 只读情况下指定referenceTo时，直接根据id查数据就行，如果执行optionsFunction会造成列表性能差
                 // tree-select 编辑时会调用只读的缓存，编辑时需要显示字段name，而不是fullname.
                 if(referenceTo==='organizations'){
                     fields.push('name')
@@ -155,7 +157,6 @@ export const LookupField = observer((props:any) => {
                     }
                     // filtersFunction执行后可能返回空，如果返回空表示加载所有数据
                     let filtersOfField:[] =  filtersFunction ? (safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS) || []) : fieldFilters;
-                    console.log('aaa=>',filtersOfField)
                     if (filtersOfField.length) {
                         if (keyFilters.length) {
                             if (isArray(filtersOfField)) {
