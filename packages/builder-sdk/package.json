@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@steedos/filters": "^1.23.22",
+    "@steedos/filters": "^2.0.25",
     "node-fetch": "^2.6.1"
   },
   "repository": "https://github.com/steedos/app-builder/tree/master/packages/builder-sdk"

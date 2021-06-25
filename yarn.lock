@@ -5035,6 +5035,15 @@
     moment "^2.24.0"
     underscore "^1.9.1"
 
+"@steedos/filters@^2.0.25":
+  version "2.0.25"
+  resolved "https://registry.yarnpkg.com/@steedos/filters/-/filters-2.0.25.tgz#cae2b4bb64c91f35aec10a4070288bb6d9f3b1ee"
+  integrity sha512-DiuYYalECGmdxxUqSsC5n3+pxFzkyha29x/tSAQ2KrQhbsM55HA73j3e2Nd/c3QKDmL8OF2aVNDHaAyx6DCHSw==
+  dependencies:
+    "@babel/runtime" "^7.5.4"
+    moment "^2.24.0"
+    underscore "^1.9.1"
+
 "@storybook/addon-a11y@6.1.11":
   version "6.1.11"
   resolved "https://registry.npm.taobao.org/@storybook/addon-a11y/download/@storybook/addon-a11y-6.1.11.tgz#13f1cbe02a6c6ab08cebe1851183e1813d86eb16"
