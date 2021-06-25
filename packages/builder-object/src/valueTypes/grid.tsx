@@ -87,16 +87,25 @@ export const ObjectFieldGrid = (props) => {
       //   // console.log(row)
       //   return (<ProField mode='read'/>)
       // },
-      // renderFormItem: (_, row) => {
-      //   const { defaultRender, record, recordKey } = row
-      //   const cellProps = {
-      //     ..._,
-      //     defaultRender,
-      //     record,
-      //     recordKey,
-      //   }
-      //   return <TableCell {...cellProps}/>
-      // }
+      renderFormItem: (itemProps:any, row) => {
+        // const { defaultRender, record, recordKey } = row
+        // const cellProps = {
+        //   ...itemProps,
+        //   defaultRender,
+        //   record,
+        //   recordKey,
+        // }
+        // return <TableCell {...cellProps}/>
+        return <ProField 
+          mode='edit' 
+          {...itemProps}
+          renderFormItem={null}
+          fieldProps={{
+            ...(itemProps.fieldProps),
+            depend_field_values: Object.assign({},dependFieldValues,{_grid_row_id: row.recordKey}),
+          }}
+        />
+      }
     })
   });
   if (mode == 'edit'){
