@@ -102,7 +102,7 @@ export const ObjectFieldGrid = (props) => {
           renderFormItem={null}
           fieldProps={{
             ...(itemProps.fieldProps),
-            depend_field_values: Object.assign({},dependFieldValues,{_grid_row_id: row.recordKey}),
+            _grid_row_id: row.recordKey,
           }}
         />
       }

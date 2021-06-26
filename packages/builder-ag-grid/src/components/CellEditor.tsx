@@ -6,11 +6,11 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
   const { 
     valueType = 'text',
     fieldSchema,
+    form,
     context
   } = props;
   const editedMap: any= context?.editedMap
   const [value, setValue] = useState(props.value);
-
   /* Component Editor Lifecycle methods */
   useImperativeHandle(ref, () => {
     return {
@@ -62,8 +62,10 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
             
           }}
           fieldProps={{
+            _grid_row_id: props.data._id,
             field_schema: fieldSchema
           }}
+          form={form}
           allowClear={false}
           />
       </div>

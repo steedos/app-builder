@@ -8,6 +8,7 @@ export const AgGridCellRenderer = (props: any) => {
     valueType = 'text',
     render,
     fieldSchema,
+    form,
     data,
     context,
   } = props;
@@ -35,6 +36,7 @@ export const AgGridCellRenderer = (props: any) => {
       fieldProps={{
         field_schema: fieldSchema
       }}
+      form={form}
       text={value}
       emptyText=''
       />

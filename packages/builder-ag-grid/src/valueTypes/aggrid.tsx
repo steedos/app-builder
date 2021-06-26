@@ -23,10 +23,8 @@ import { AgGridCellEditor } from '../components/CellEditor';
 // 显示时调用只读 protable
 // props.fields [] 列数组
 export const ObjectFieldGrid = (props) => {
-  
-  const {mode='read', text =[], fieldProps={}} = props;
+  const {mode='read', text =[], fieldProps={}, form} = props;
   const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
-
   forEach(initialValue, (row)=>{
     if (!row._id)
       row._id=uuidv4()
@@ -98,7 +96,6 @@ export const ObjectFieldGrid = (props) => {
   const getRowNodeId = function (data) {
     return data._id;
   };
-
   const getColumns = ()=>{
 
     const {sub_fields=[]} = fieldSchema;
@@ -123,12 +120,14 @@ export const ObjectFieldGrid = (props) => {
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
+          form: form,
           mode
         },
         cellEditor: 'AgGridCellEditor',
         cellEditorParams: {
           fieldSchema: field,
           valueType: field.type,
+          form: form,
           mode,
         },
         // key: fieldName,
@@ -160,15 +159,17 @@ export const ObjectFieldGrid = (props) => {
         animateRows={true}
         rowData={value}
         columnDefs={getColumns()}
-        stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
+        onCellValueChanged={onRowDragEnd.bind(this)}
         context={{}}
         onGridReady={(params) => {
           setGridApi(params.api);
           params.api.sizeColumnsToFit();
         }}
         suppressNoRowsOverlay={true}
+        stopEditingWhenGridLosesFocus={false}
+        stopEditingWhenCellsLoseFocus={false}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,
           AgGridCellEditor: AgGridCellEditor,

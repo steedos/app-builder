@@ -18,7 +18,7 @@ export type ObjectFieldProps = {
 export const ObjectField = observer((props: any) => {
   const context = useContext(FormContext);
   const formId = context.name?context.name:'default';
-  const { objectApiName, fieldName, fieldSchema } = props
+  const { objectApiName, fieldName, fieldSchema, form } = props
   
   const colSize = useAntdMediaQuery();
   const isMobile = (colSize === 'sm' || colSize === 'xs') && !props.disableMobile;
@@ -72,12 +72,13 @@ export const ObjectField = observer((props: any) => {
 
   return (
     <ProFormDependency name={dependOn}>
-      {(dependFieldValues) => {
+      {(dependFieldValues, allValues) => {
         return (
           <Field
             formItemProps={formItemProps}
             dependFieldValues={dependFieldValues}
             objectApiName={objectApiName}
+            form={form}
             {...formFieldProps}
           />)
       }}
