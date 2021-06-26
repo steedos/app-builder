@@ -22,7 +22,8 @@ import { avatar } from './avatar';
 import { formula } from './formula';
 import { summary } from './summary';
 import { autonumber } from './autonumber';
-
+import { ComponentRegistry } from "@steedos/builder-store";
+import { defaultsDeep } from 'lodash';
 
 export const StandardValueTypes = {
     boolean,
@@ -50,3 +51,4 @@ export const StandardValueTypes = {
     summary,
     autonumber,
 };
+ComponentRegistry.valueTypes = defaultsDeep({}, ComponentRegistry.valueTypes, StandardValueTypes);

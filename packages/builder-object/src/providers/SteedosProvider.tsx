@@ -7,7 +7,6 @@ import { FormProvider } from "@steedos/builder-form";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Settings, API, ComponentRegistry } from "@steedos/builder-store";
 import { SteedosIconSettings } from "@steedos/builder-lightning";
-import { StandardValueTypes } from '../valueTypes'
 import { SteedosContext } from './SteedosContext';
 import { observer } from "mobx-react-lite";
 
@@ -19,7 +18,6 @@ const defaultQueryClientConfig: any = {
   }
 }
 
-ComponentRegistry.valueTypes = StandardValueTypes;
 
 /*
 参数：
@@ -43,7 +41,6 @@ export const SteedosProvider = (props: any) => {
   Settings.setUserId(userId);
   Settings.setAuthToken(authToken);
   Settings.setLocale(locale);
-
 
   return (
     <SteedosContext.Provider value={{}}>
