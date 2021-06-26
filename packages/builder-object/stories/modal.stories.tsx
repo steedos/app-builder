@@ -167,6 +167,8 @@ export const TableModal = () => {
   const tableProps2 = {
     title: `选择 任务`,
     objectApiName: "tasks",
+    // sort:[['state','desc']],
+    sort:[{field_name: "state",order: "desc"}],
     listSchema: {
       columns: ["name", "assignees", "related_to"]
     },
