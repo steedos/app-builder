@@ -159,7 +159,27 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     } 
   }
 
+  const getFieldsByDependOn = (fieldName: string) =>{
+    const result = {};
+    forEach(mergedSchema.fields,(fieldItem,fieldKey)=>{
+      if(fieldItem.depend_on && fieldItem.depend_on.indexOf(fieldName) > -1){
+        result[fieldKey] = fieldItem;
+      }
+    })
+    return result;
+  }
+
   const onValuesChange = async (changedValues, values)=>{
+
+    forEach(changedValues,(value,key)=>{
+      const dependOnFields = getFieldsByDependOn(key);
+      let fieldsForClear = {};
+      forEach(dependOnFields,(fieldItem:any,fieldKey)=>{
+        fieldsForClear[fieldKey] = fieldItem.multiple ? [] : null;
+      });
+      ((rest.form || proForm) as any).setFieldsValue(fieldsForClear);
+    })
+
     forEach(changedValues,(value,key)=>{
       // value = undefined || null 都要保存null 到数据库中。
       if(isNil(value)){
