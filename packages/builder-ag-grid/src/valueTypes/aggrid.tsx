@@ -1,10 +1,10 @@
-import { forEach, isArray } from 'lodash';
+import { forEach, isArray, remove } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import ProField from "@ant-design/pro-field";
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import Button from '@salesforce/design-system-react/components/button'; 
 import Popover from '@salesforce/design-system-react/components/popover'; 
-
+import { ComponentRegistry } from "@steedos/builder-store";
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import {AllCommunityModules} from '@ag-grid-community/all-modules';
 
@@ -48,6 +48,9 @@ export const ObjectFieldGrid = (props) => {
     const newValue = value.filter(function (dataItem) {
       return dataItem._id != selectedId
     });
+    remove(value, function (dataItem: any) {
+      return dataItem._id === selectedId
+    })
     props.api.setRowData(newValue);
     onChange(newValue)
   }
@@ -160,6 +163,7 @@ export const ObjectFieldGrid = (props) => {
         stopEditingWhenGridLosesFocus={true}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
+        context={{}}
         onGridReady={(params) => {
           setGridApi(params.api);
           params.api.sizeColumnsToFit();
@@ -197,3 +201,4 @@ export const grid = {
     )
   }
 }
+ComponentRegistry.valueTypes['grid'] = grid;

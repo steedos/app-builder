@@ -11,7 +11,7 @@ export const AgGridCellRenderer = (props: any) => {
     data,
     context,
   } = props;
-  const editedMap: any= context.editedMap
+  const editedMap: any= context?.editedMap
   if(editedMap){
     const recordEdited = editedMap[data._id];
     if(recordEdited && has(recordEdited, props.colDef.field) && props.eGridCell.className.indexOf("slds-is-edited") < 0){

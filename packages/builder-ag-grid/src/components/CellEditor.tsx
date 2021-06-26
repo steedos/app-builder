@@ -8,7 +8,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
     fieldSchema,
     context
   } = props;
-  const editedMap: any= context.editedMap
+  const editedMap: any= context?.editedMap
   const [value, setValue] = useState(props.value);
 
   /* Component Editor Lifecycle methods */
@@ -36,11 +36,12 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
               return;
 
             setValue(newValue)
-
-            if(!editedMap[props.data._id]){ 
-              editedMap[props.data._id] = {};
+            if(editedMap){
+              if(!editedMap[props.data._id]){ 
+                editedMap[props.data._id] = {};
+              }
+              editedMap[props.data._id][props.colDef.field] = newValue;
             }
-            editedMap[props.data._id][props.colDef.field] = newValue;
 
             // if (['lookup','select','master_detail'].indexOf(valueType)>=0){
             //   setTimeout(() => props.api.stopEditing(false), 100);
