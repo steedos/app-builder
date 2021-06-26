@@ -114,7 +114,7 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
           clearTimeout(setTimeoutId);
         }
         setTimeoutId = setTimeout(()=>{
-          const newSections = getSections(objectApiName, mergedSchema, fields, isModalForm, mode, value);
+          const newSections = getSections(objectApiName, objectSchema, fields, isModalForm, mode, value);
           if(!isDeepEqual(sections, newSections)){
             setSections(newSections)
           }
@@ -126,12 +126,10 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
 
   const object = objectApiName? Objects.getObject(objectApiName): null;
   if (object && object.isLoading) return (<div><Spin/></div>)
-  
-  const mergedSchema = object? defaultsDeep({}, object.schema, objectSchema): objectSchema;
 
   useEffect(() => {
-    setSections(getSections(objectApiName, mergedSchema, fields, isModalForm, mode, formData))
-  }, [JSON.stringify(mergedSchema), JSON.stringify(formData)]);
+    setSections(getSections(objectApiName, objectSchema, fields, isModalForm, mode, formData))
+  }, [JSON.stringify(objectSchema), JSON.stringify(formData)]);
 
   return (
     <>

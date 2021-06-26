@@ -80,7 +80,6 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   const object = objectApiName? Objects.getObject(objectApiName): null;
   if (object && object.isLoading) return (<div><Spin/></div>)
 
-  
   const mergedSchema = object? defaultsDeep({}, object.schema, objectSchema): objectSchema;
   fieldSchemaArray.length = 0
   forEach(mergedSchema.fields, (field, fieldName) => {
@@ -188,7 +187,15 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
-  ((rest.form || proForm) as any).setFieldsValue(defaultValues)
+  ((rest.form || proForm) as any).setFieldsValue(defaultValues);
+
+  // 识别字段级权限
+  forEach(mergedSchema.fields, (field, fieldName) => {
+    if(!field.readonly){
+      // 字段未配置readonly时，按权限取值
+      field.readonly = !API.client.field.isEditable(objectApiName, field, defaultValues)
+    }
+  });
   return (
     <Form 
       // formFieldComponent = {ObjectField}
@@ -210,7 +217,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       {...rest}
     >
       {children}
-      <ObjectFormSections onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema = {objectSchema} recordId={recordId} mode = {mode} isModalForm={isModalForm}></ObjectFormSections>
+      <ObjectFormSections onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema={mergedSchema} recordId={recordId} mode = {mode} isModalForm={isModalForm}></ObjectFormSections>
     </Form>
   )
 });
