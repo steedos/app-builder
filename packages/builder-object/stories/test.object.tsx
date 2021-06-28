@@ -315,6 +315,7 @@ export default {
       label: '订单集',
       group: "lookup picker_schema",
       multiple: true,
+      omit: true,
       picker_schema: "all"
     },
     
