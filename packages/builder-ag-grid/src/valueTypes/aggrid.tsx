@@ -104,6 +104,7 @@ export const ObjectFieldGrid = (props) => {
       rowDrag: mode == 'edit',
       hide: !(mode == 'edit'),
       resizable: false,
+      pinned: "left",
       width: 35,
       maxWidth: 35,
       minWidth: 35,
@@ -141,6 +142,7 @@ export const ObjectFieldGrid = (props) => {
     columns.push({
       hide: !(mode == 'edit'),
       width: 50,
+      pinned: "right",
       maxWidth: 50,
       minWidth: 50,
       resizable: false,
