@@ -158,8 +158,8 @@ export const LookupField = observer((props:any) => {
                         keyFilters = [referenceToLableField, 'contains', params.keyWords];
                     }
                     // filtersFunction执行后可能返回空，如果返回空表示加载所有数据
-                    let filtersOfField:[] =  filtersFunction ? (safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS) || []) : fieldFilters;
-                    if (filtersOfField.length) {
+                    let filtersOfField:[] =  filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters;
+                    if (filtersOfField?.length) {
                         if (keyFilters.length) {
                             if (isArray(filtersOfField)) {
                                 keyFilters = [filtersOfField, keyFilters]
@@ -370,7 +370,7 @@ export const LookupField = observer((props:any) => {
                         // 弹出框会返回rowKey对应的字段值，默认为_id，比如space_users要求返回user字段值
                         rowKey: reference_to_field,
                         // filtersFunction执行后可能返回空，如果返回空表示加载所有数据
-                        filters: filtersFunction ? (safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS) || []) : fieldFilters,
+                        filters: filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters,
                         trigger,
                         onFinish: onModalFinish
                     };

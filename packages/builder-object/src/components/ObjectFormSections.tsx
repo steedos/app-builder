@@ -16,14 +16,14 @@ export type ObjectFormSectionsProps = {
   objectSchema?: any,
   recordId?: string
   isModalForm?: boolean,
-  mode?: 'read' | 'edit',
+  formId?: string,
   editable?: boolean,
   onRef?: any,
   formData?: any
   form?: any
 }
 
-const getFieldSchemaArray = (mergedSchema, fields, isModalForm)=>{
+const getFieldSchemaArray = (mergedSchema, fields, isModalForm, mode)=>{
   let fieldSchemaArray = [];
   fieldSchemaArray.length = 0
 
@@ -46,6 +46,9 @@ const getFieldSchemaArray = (mergedSchema, fields, isModalForm)=>{
     }
     // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
     let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1;
+    if(!isOmitField && mode !== "read"){
+      isOmitField = field.omit;
+    }
     let isValid = !fields || !fields.length || fields.indexOf(fieldName) > -1
     if (!field.hidden && !isObjectField && !isOmitField && isValid){
       fieldSchemaArray.push(defaults({name: fieldName}, field))
@@ -87,7 +90,7 @@ const getSections = (objectApiName, mergedSchema, fields, isModalForm, mode, for
     }
   })
 
-  const fieldSchemaArray = getFieldSchemaArray(_schema, fields, isModalForm)
+  const fieldSchemaArray = getFieldSchemaArray(_schema, fields, isModalForm, mode)
   const sections = groupBy(fieldSchemaArray, 'group');
   const dom = [];
   const options = (Object.keys(sections).length == 1)?{titleHidden: true}: {}
@@ -103,12 +106,14 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
     fields = [],//只显示指定字段
     objectSchema = {}, // 和对象定义中的fields格式相同，merge之后 render。
     formData={},
-    mode = 'edit',
+    formId = 'default',
     form,
     isModalForm,
     onRef
   } = props;
   let setTimeoutId = null;
+
+  const mode = Forms.loadById(formId)?.mode;
 
   useImperativeHandle(props.onRef, () => {
     return {
@@ -132,7 +137,7 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
 
   useEffect(() => {
     setSections(getSections(objectApiName, objectSchema, fields, isModalForm, mode, formData, form))
-  }, [JSON.stringify(objectSchema), JSON.stringify(formData)]);
+  }, [JSON.stringify(objectSchema), JSON.stringify(formData), mode]);
 
   return (
     <>

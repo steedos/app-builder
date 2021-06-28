@@ -237,7 +237,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       {...rest}
     >
       {children}
-      <ObjectFormSections form={rest.form || proForm} onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema={mergedSchema} recordId={recordId} mode = {mode} isModalForm={isModalForm}></ObjectFormSections>
+      <ObjectFormSections form={rest.form || proForm} onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema={mergedSchema} recordId={recordId} formId={formId} isModalForm={isModalForm}></ObjectFormSections>
     </Form>
   )
 });

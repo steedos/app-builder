@@ -40,7 +40,7 @@ export const TableCell = (props:any) => {
 // props.fields [] 列数组
 export const ObjectFieldGrid = (props) => {
   
-  const {mode='read', text =[], fieldProps={}} = props;
+  const {mode='read', text =[], fieldProps={}, form} = props;
   const { field_schema: fieldSchema = {}, depend_field_values: dependFieldValues={}, value:initialValue, onChange } = fieldProps;
   
   forEach(initialValue, (row)=>{
@@ -82,11 +82,25 @@ export const ObjectFieldGrid = (props) => {
           optionsFunction: field.optionsFunction
         }
       }, 
+      form: form,
       // render: (_, row) => {
       //   // console.log(_)
       //   // console.log(row)
       //   return (<ProField mode='read'/>)
       // },
+      render: (dom, row, index, action ,props) => {
+        return (<ProField 
+          mode='read'
+          {...props}
+          render={null}
+          fieldProps={{
+            ...(props.fieldProps),
+            _grid_row_id: row.recordKey,
+            value: row[fieldName]
+          }}
+          text={row[fieldName]}
+        />)
+      },
       renderFormItem: (itemProps:any, row) => {
         // const { defaultRender, record, recordKey } = row
         // const cellProps = {
