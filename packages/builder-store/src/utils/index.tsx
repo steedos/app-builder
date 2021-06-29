@@ -64,17 +64,15 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
       else{
         fieldSchema = field;
       }
-      // TODO: 暂时将以下两个属性代码注释，后期优化放开
       if(field._filtersFunction){
         let filtersFunction = safeEval(`(${field._filtersFunction})`);
-        fieldSchema = Object.assign({}, field, {filtersFunction});
+        fieldSchema = Object.assign({}, fieldSchema, {filtersFunction});
       }
       if(field._optionsFunction){
         let optionsFunction = safeEval(`(${field._optionsFunction})`);
-        fieldSchema = Object.assign({}, field, {optionsFunction});
+        fieldSchema = Object.assign({}, fieldSchema, {optionsFunction});
       }
     }
-    // TODO: 暂时将select转换隐藏
     else if(fieldType === 'select'){
       if(field._optionsFunction){
         let optionsFunction = safeEval(`(${field._optionsFunction})`);
