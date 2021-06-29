@@ -16,7 +16,12 @@ const withModalWrap = (component: React.FunctionComponent, provideProps) => {
   }
 }
 
-export const showModal = (component: React.FunctionComponent, componentParams: any, modalParams: any, provideProps: any) => {
+export const showModal = (component: React.FunctionComponent, componentParams: any, modalParams: any, provideProps: any = {} ) => {
+
+  if(window.Creator && !provideProps.iconPath){
+    provideProps.iconPath = '/assets/icons'
+  }
+
   if(!component){
     component = ObjectForm
   }
