@@ -1,4 +1,4 @@
-import React, { useState , useRef} from "react";
+import React, { useState , useRef, useEffect} from "react";
 import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Select, Spin } from 'antd';
 import "antd/es/tree-select/style/index.css";
@@ -24,9 +24,10 @@ export const LookupField = observer((props:any) => {
     const [params, setParams] = useState({open: false,openTag: null});
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { valueType, mode, fieldProps, request, form, ...rest } = props;
-    const { field_schema: fieldSchema = {},onChange, _grid_row_id } = fieldProps;
+    const { field_schema: fieldSchema = {},onChange, _grid_row_id, depend_field_values: dependFieldValues={} } = fieldProps;
     const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create = true, modal_mode, table_schema } = fieldSchema;
-    let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    let value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    let [ fieldsValue ,setFieldsValue ] = useState({});
     // 按原来lookup控件的设计，this.template.data._value为原来数据库中返回的选项值，this.template.data.value为当前用户选中的选项
     const optionsFunctionThis = {
         filters: fieldFilters,
@@ -39,7 +40,11 @@ export const LookupField = observer((props:any) => {
         }
     };
     const objectApiName = props.object_api_name;
-    let optionsFunctionValues = Object.assign({}, form?.getFieldsValue() || {}, {
+    useEffect(() => {
+        setFieldsValue(form?.getFieldsValue());
+        setParams({ open: params.open, openTag: new Date() });
+    }, [])
+    let optionsFunctionValues:any = Object.assign({}, fieldsValue || {}, {
         _grid_row_id: _grid_row_id,
         space: Settings.tenantId,
         _object_name: objectApiName
