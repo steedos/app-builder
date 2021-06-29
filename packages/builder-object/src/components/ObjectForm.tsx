@@ -65,6 +65,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     ...rest
   } = props;
   const [proForm] = ProForm.useForm();
+  const currentForm = rest.form || proForm;
   const [undefinedValues, setUndefinedValues] = useState({});
 
   const defaultValues = clone(initialValues);
@@ -177,7 +178,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       forEach(dependOnFields,(fieldItem:any,fieldKey)=>{
         fieldsForClear[fieldKey] = fieldItem.multiple ? [] : null;
       });
-      ((rest.form || proForm) as any).setFieldsValue(fieldsForClear);
+      currentForm.setFieldsValue(fieldsForClear);
     })
 
     forEach(changedValues,(value,key)=>{
@@ -190,7 +191,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     const args = {
       changedValues,
       values,
-      form: rest.form || proForm
+      form: currentForm
     }
     try{
       let valuesChangeFun = defaultOnValuesChange;
@@ -207,7 +208,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
 
   // 从详细页面第一次进入另一个相关详细页面是正常，第二次initialValues={initialValues} 这个属性不生效。
   // 所以在此调用下 form.setFieldsValue() 使其重新生效。
-  ((rest.form || proForm) as any).setFieldsValue(defaultValues);
+  currentForm.setFieldsValue(defaultValues);
 
   // 识别字段级权限
   forEach(mergedSchema.fields, (field, fieldName) => {
@@ -223,7 +224,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       className='builder-form object-form'
       initialValues={defaultValues}
       mode={mode}
-      form={rest.form || proForm}
+      form={currentForm}
       layout={layout}
       submitter={submitter}
       isModalForm={isModalForm}
@@ -237,7 +238,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       {...rest}
     >
       {children}
-      <ObjectFormSections form={rest.form || proForm} onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema={mergedSchema} recordId={recordId} formId={formId} isModalForm={isModalForm}></ObjectFormSections>
+      <ObjectFormSections form={currentForm} onRef={sectionsRef} formData={defaultValues}  objectApiName={objectApiName} fields={fields as any} objectSchema={mergedSchema} recordId={recordId} formId={formId} isModalForm={isModalForm}></ObjectFormSections>
     </Form>
   )
 });
