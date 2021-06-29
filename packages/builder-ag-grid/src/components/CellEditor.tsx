@@ -23,7 +23,7 @@ function useOnClickOutside(ref, handler) {
         }
         const parentsClassName = getParentsClassName(event.target)
         console.log(`event.target`, parentsClassName)
-        if(parentsClassName.toString().indexOf('ant-modal-root') > -1 || parentsClassName.toString().indexOf('ant-select-dropdown') > -1){
+        if((parentsClassName.toString().indexOf('ant-modal-root') > -1 && parentsClassName.toString().indexOf('ant-btn') < 0) || parentsClassName.toString().indexOf('ant-select-dropdown') > -1){
           return;
         }
         handler(event);
