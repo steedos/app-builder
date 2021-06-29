@@ -162,7 +162,7 @@ export const ObjectFieldGrid = (props) => {
         rowData={value}
         columnDefs={getColumns()}
         onRowDragEnd={onRowDragEnd.bind(this)}
-        onCellClicked={onCellClicked}
+        // onCellClicked={onCellClicked}
         onCellValueChanged={onRowDragEnd.bind(this)}
         context={{}}
         onGridReady={(params) => {
