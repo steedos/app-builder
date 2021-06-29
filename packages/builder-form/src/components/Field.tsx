@@ -113,7 +113,8 @@ export const Field = observer((props: any) => {
       if (fieldProps.value === undefined && !isNil(defaultValue)) {
         let formValue = defaultValue;
         if(formValue === '{userId}'){
-          formValue = [API.client.getUserId()];
+          const userId = API.client.getUserId();
+          formValue = fieldSchema.multiple ? [userId] : userId;
         }
         proFieldProps.fieldProps.onChange(formValue);
         proFieldProps.fieldProps.defaultValue = formValue;
