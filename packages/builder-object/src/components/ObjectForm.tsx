@@ -13,6 +13,7 @@ import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
 import { Spin } from 'antd';
 import moment from 'moment';
 import { ObjectFormSections } from './ObjectFormSections';
+import { message } from 'antd';
 
 import './ObjectForm.less'
 
@@ -143,19 +144,28 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
     let result; 
     let convertedValues = conversionSubmitValue(values);
     if(!recordId){
-      result = await API.insertRecord(objectApiName, convertedValues);
-      if(afterInsert){
-        return afterInsert(result);
-      }else{
-        return result ? true : false
+      try {
+        result = await API.insertRecord(objectApiName, convertedValues);
+        if(afterInsert){
+          return afterInsert(result);
+        }else{
+          return result ? true : false
+        }
+      } catch (error) {
+        message.error(error.message);
       }
+      
     }else{
-      result = await API.updateRecord(objectApiName, recordId, Object.assign({},undefinedValues,convertedValues));
-      object.getRecord(recordId, fieldNames).loadRecord();
-      if(afterUpdate){
-        return afterUpdate(result);  
-      }else{
-        return result ? true : false
+      try {
+        result = await API.updateRecord(objectApiName, recordId, Object.assign({},undefinedValues,convertedValues));
+        object.getRecord(recordId, fieldNames).loadRecord();
+        if(afterUpdate){
+          return afterUpdate(result);  
+        }else{
+          return result ? true : false
+        }
+      } catch (error) {
+        message.error(error.message);
       }
     } 
   }
