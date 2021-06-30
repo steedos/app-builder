@@ -25,7 +25,7 @@ export const SelectField = observer((props: any) => {
   useEffect(() => {
     setFieldsValue(form?.getFieldsValue());
     setParams({ open: params.open, openTag: new Date() });
-  }, [])
+  }, [dependFieldValues])
   let optionsFunctionValues: any = Object.assign({}, fieldsValue || {}, {
     // space: Settings.tenantId,
     _object_name: objectApiName

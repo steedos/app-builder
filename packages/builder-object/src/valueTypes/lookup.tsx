@@ -43,7 +43,7 @@ export const LookupField = observer((props:any) => {
     useEffect(() => {
         setFieldsValue(form?.getFieldsValue());
         setParams({ open: params.open, openTag: new Date() });
-    }, [])
+    }, [dependFieldValues])
     let optionsFunctionValues:any = Object.assign({}, fieldsValue || {}, {
         _grid_row_id: _grid_row_id,
         space: Settings.tenantId,
