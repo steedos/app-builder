@@ -28,11 +28,12 @@ const getChildNodes = (reotIds: any, data: any)=>{
 
 export default observer((props: any) => {
     const [data, setData] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('数据加载中');
     let addNodeChildFunc = null;
     const queryObject = queryString.parse(window.location.search.slice(1))
     const rootId = queryObject.rootId;
     const objectName:any = queryObject.objectName ? queryObject.objectName : 'mdm_org__c';
-
+    const parentFieldName:any = queryObject.parentFieldName ? queryObject.parentFieldName : 'parent__c';
     function onNodeClick(nodeId) {
         // console.log('nodeId==>',nodeId)
     }
@@ -47,42 +48,60 @@ export default observer((props: any) => {
 
         const rootNode = getRootNode(rootNodeId, data.value);
         results = getChildNodes([rootNodeId], data.value);
-        results = [rootNode].concat(results);
-        results = results.map((item: any) => {
-            return {
-                "nodeId": item._id,
-                "parentNodeId": item.parent || item.parent__c,
-                "width": 342,
-                "height": 146,
-                "borderWidth": 1,
-                "borderRadius": 5,
-                "borderColor": {
-                    "red": 15,
-                    "green": 140,
-                    "blue": 121,
-                    "alpha": 1
-                },
-                "backgroundColor": {
-                    "red": 51,
-                    "green": 182,
-                    "blue": 208,
-                    "alpha": 1
-                },
-                "template": "<div style='display: flex;justify-content: center;align-items: center;height: 100%; font-size: 2em;'>" + item.name + "</div>",
-                "connectorLineColor": {
-                    "red": 220,
-                    "green": 189,
-                    "blue": 207,
-                    "alpha": 1
-                },
-                "connectorLineWidth": 5,
-                "dashArray": "",
-                "expanded": (!item.parent__c || item.parent__c === rootNodeId) ? true : false,
-                "directSubordinates": 4,
-                "totalSubordinates": 1515
+        if(rootNode){
+            results = [rootNode].concat(results);
+            setErrorMessage('')
+        }else{
+            setErrorMessage('未找到rootId对应的记录！')
+        }
+        if (results.length) {
+            let flag = false;
+            results = results.map((item: any) => {
+                if(item[parentFieldName]){
+                    flag = true;
+                }
+                return {
+                    "nodeId": item._id,
+                    // "parentNodeId": item.parent || item.parent__c,
+                    "parentNodeId": item[parentFieldName],
+                    "width": 342,
+                    "height": 146,
+                    "borderWidth": 1,
+                    "borderRadius": 5,
+                    "borderColor": {
+                        "red": 15,
+                        "green": 140,
+                        "blue": 121,
+                        "alpha": 1
+                    },
+                    "backgroundColor": {
+                        "red": 51,
+                        "green": 182,
+                        "blue": 208,
+                        "alpha": 1
+                    },
+                    "template": "<div style='display: flex;justify-content: center;align-items: center;height: 100%; font-size: 2em;'>" + item.name + "</div>",
+                    "connectorLineColor": {
+                        "red": 220,
+                        "green": 189,
+                        "blue": 207,
+                        "alpha": 1
+                    },
+                    "connectorLineWidth": 5,
+                    "dashArray": "",
+                    "expanded": (!item.parent__c || item.parent__c === rootNodeId) ? true : false,
+                    "directSubordinates": 4,
+                    "totalSubordinates": 1515
+                }
+            });
+            if(!flag){
+                results = [];
+                setErrorMessage('未找到parentFieldName对应的记录！')
             }
-        })
- 
+            else{
+                setErrorMessage('')
+            }
+        }
         setData(results);
     }
 
@@ -90,10 +109,10 @@ export default observer((props: any) => {
         // loadData("60cc421853d43707e44ce106");
         loadData(rootId);
     }, [true]);
-    
+
     return (
         <div style={{height: '100%'}}>
-            {rootId ?
+            { !errorMessage ?
                 (<OrgChartComponent
                     setClick={click => (addNodeChildFunc = click)}
                     onNodeClick={onNodeClick}
@@ -102,7 +121,7 @@ export default observer((props: any) => {
                 // data={Tree}
                 // data={convertedResults}
                 />)
-                : (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>无对象</div>)
+                : (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>{ errorMessage }</div>)
             }
         </div>
     );
