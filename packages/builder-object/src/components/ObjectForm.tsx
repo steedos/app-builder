@@ -14,7 +14,7 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { ObjectFormSections } from './ObjectFormSections';
 import { message } from 'antd';
-import { translate } from '@steedos/builder-sdk/dist/esm/translation'
+import { translate } from '@steedos/builder-sdk';
 
 import './ObjectForm.less'
 
