@@ -22,11 +22,13 @@ export const SelectField = observer((props: any) => {
     }
   };
   const objectApiName = props.object_api_name;
-  useEffect(() => {
-    setFieldsValue(form?.getFieldsValue());
-    setParams({ open: params.open, openTag: new Date() });
-  }, [dependFieldValues])
-  let optionsFunctionValues: any = Object.assign({}, fieldsValue || {}, {
+  // useEffect(() => {
+  //   console.log('select========')
+  //   setFieldsValue(form?.getFieldsValue());
+  //   setParams({ open: params.open, openTag: new Date() });
+  // }, [dependFieldValues])
+  const fieldsValues = Object.assign({}, form?.getFieldsValue() , dependFieldValues);
+  let optionsFunctionValues:any = Object.assign({}, fieldsValues || {}, {
     // space: Settings.tenantId,
     _object_name: objectApiName
   });
