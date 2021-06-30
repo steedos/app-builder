@@ -14,6 +14,7 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { ObjectFormSections } from './ObjectFormSections';
 import { message } from 'antd';
+import { translate } from '@steedos/builder-sdk/dist/esm/translation'
 
 import './ObjectForm.less'
 
@@ -152,7 +153,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
           return result ? true : false
         }
       } catch (error) {
-        message.error(error.message);
+        message.error(translate(error.message));
       }
       
     }else{
@@ -165,7 +166,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
           return result ? true : false
         }
       } catch (error) {
-        message.error(error.message);
+        message.error(translate(error.message));
       }
     } 
   }

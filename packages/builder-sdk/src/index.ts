@@ -11,7 +11,8 @@ export * from "./utils";
 
 declare global {
   interface Window {
-      Creator: any
+      Creator: any,
+      TAPi18n: any
   }
   interface Window {
     Meteor: any,
