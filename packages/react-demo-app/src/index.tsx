@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import AppTree from './AppTree';
 import reportWebVitals from './reportWebVitals';
 
 
 ReactDOM.render(
   // <React.StrictMode>
-    <App />
+    // <App />
+    <AppTree />
   // </React.StrictMode>,
   ,
   document.getElementById('root')
