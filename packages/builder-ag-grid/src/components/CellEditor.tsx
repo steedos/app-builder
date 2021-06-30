@@ -17,12 +17,10 @@ function useOnClickOutside(ref, handler) {
     () => {
       const listener = (event) => {
         // Do nothing if clicking ref's element or descendent elements
-        console.log(`ref.current`, ref.current);
         if (!ref.current || ref.current.contains(event.target)) {
           return;
         }
         const parentsClassName = getParentsClassName(event.target)
-        console.log(`event.target`, parentsClassName)
         if((parentsClassName.toString().indexOf('ant-modal-root') > -1 && parentsClassName.toString().indexOf('ant-btn') < 0) || parentsClassName.toString().indexOf('ant-select-dropdown') > -1){
           return;
         }
