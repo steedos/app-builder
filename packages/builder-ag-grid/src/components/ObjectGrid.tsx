@@ -7,13 +7,13 @@ import { Spin } from 'antd';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { AllModules } from '@ag-grid-enterprise/all-modules';
 import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
-import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
 import { AgGridCellEditor } from "./CellEditor";
 import { AgGridCellRenderer } from "./CellRender";
 import { AgGridCellFilter } from "./CellFilter";
 import { AgGridCellDateFilter } from './CellDateFilter';
 import { AgGridCellTextFilter } from './CellTextFilter';
 import { AgGridCellNumberFilter } from './CellNumberFilter';
+import { AgGridRowActions } from './RowActions';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 import { Tables } from '@steedos/builder-store';
@@ -403,41 +403,6 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     return columns
   }
 
-  const RowActions = (props: any) => {
-    const {rowButtons, objectApiName, data} = props;
-    
-    const dropdownOptions = filter(rowButtons, (button)=>{
-      return API.client.action.calculationVisible(objectApiName, button, data, {
-        userId: API.client.getUserId(),
-        spaceId: API.client.getSpaceId(),
-      })
-    })
-
-    if(dropdownOptions.length < 1){
-      return (<></>)
-    }
-
-    return (
-      <Dropdown
-        assistiveText={{ icon: 'Options' }}
-        iconCategory="utility"
-        iconName="down"
-        iconVariant="border-filled"
-        iconSize='x-small'
-        width='x-small'
-        menuPosition="overflowBoundaryElement"
-        onSelect={(option) => {
-          try {
-            API.client.action.executeAction(objectApiName, option, data._id, null, null, data)
-          } catch (error) {
-            console.error(`executeAction error`, error)
-          }
-        }}
-        options={dropdownOptions}
-      />
-    )
-  }
-
   const onCellValueChanged = (params) => {
     // 这里赋值有延迟，转移到 CellEditor
     if(!editedMap[params.data._id]){
@@ -549,7 +514,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           AgGridCellDateFilter: AgGridCellDateFilter,
           AgGridCellTextFilter: AgGridCellTextFilter,
           AgGridCellNumberFilter: AgGridCellNumberFilter,
-          rowActions: RowActions,
+          rowActions: AgGridRowActions,
         }}
         ref={gridRef}
       />
