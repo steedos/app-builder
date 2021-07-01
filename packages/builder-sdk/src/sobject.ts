@@ -26,9 +26,9 @@ export default class SObject {
 
     private getSelect(fields){
         if(_.isArray(fields)){
-            return fields.toString()
+            return fields.toString().replace(/\./g, "/")
         }
-        return fields;
+        return fields.replace(/\./g, "/");
     }
 
     private getQueryParams(filters: Filters, fields: Fields, options: Options){
@@ -54,13 +54,13 @@ export default class SObject {
             }
             let sortIsNull:any;
             if(typeof options.sort === 'string'){
-                sortIsNull=options.sort;
+                sortIsNull=options.sort.replace(/\./g, "/");
             }else if(_.isArray(options.sort)){
                 let order = _.map(options.sort,(value)=>{
                     let order2 = value[1]==='desc' ? value[0] + ' desc' : value[0];
                     return order2;
                 }).join(",")
-                sortIsNull=order;
+                sortIsNull=order.replace(/\./g, "/");
             }
             if(sortIsNull){
                 params.$orderby=sortIsNull;
@@ -78,7 +78,7 @@ export default class SObject {
 
     async getConfig(){
         // const url = `${this.client.getBootstrapRoute()}/${this.objectName}`;
-        const url = `${this.client.getUrl()}/service/api/@${this.objectName}/uiSchema`;
+        const url = `${this.client.getUrl()}/service/api/@${this.objectName.replace(/\./g, "_")}/uiSchema`;
         return await this.client.doFetch(url, {method: 'get'});
     }
 
@@ -101,7 +101,7 @@ export default class SObject {
      */
     async find(filters: Filters, fields: Fields, options: Options){
         let params = this.getQueryParams(filters, fields, options);
-        let url = this.client.getBaseRoute() + "/api/v4/".concat(this.objectName) + buildQueryString(params);
+        let url = this.client.getBaseRoute() + "/api/v4/".concat(this.objectName.replace(/\./g, "_")) + buildQueryString(params);
         let result = await this.client.doFetch(url, {method: 'get'});
         return result
     }
@@ -140,7 +140,7 @@ export default class SObject {
      * @param data 
      */
     async insert(data: Record){
-        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}`;
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName.replace(/\./g, "_")}`;
         let result = await this.client.doFetch(url, {method: 'POST', body: JSON.stringify(data)});
         return result.value;
     }
@@ -151,7 +151,7 @@ export default class SObject {
      * @param data 
      */
     async update(id: string, data: Record){
-        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}/${id}`;
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName.replace(/\./g, "_")}/${id}`;
         let result = await this.client.doFetch(url, {method: 'put', body: JSON.stringify(data)});
         return result.value;
     }
@@ -161,7 +161,7 @@ export default class SObject {
      * @param id 
      */
     async delete(id: string){
-        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName}/${id}`;
+        let url = `${this.client.getBaseRoute()}/api/v4/${this.objectName.replace(/\./g, "_")}/${id}`;
         let result = await this.client.doFetch(url, {method: 'delete'});
         return result
     }
