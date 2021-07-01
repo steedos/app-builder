@@ -4,6 +4,7 @@ import queryString from "querystring"
 import { OrgChartComponent } from './OrgChart';
 import * as d3 from 'd3';
 import { observer } from "mobx-react-lite";
+import { isNil } from "lodash"
 
 const getRootNode = (rootId: any, data: any)=>{
     let result = data.find((item:any)=>{
@@ -42,8 +43,12 @@ export default observer((props: any) => {
         if(!rootNodeId){
             return null;
         }
-        let data = await API.requestRecords(objectName, [], [], []);
-
+        // let data = await API.requestRecords(referenceTo, filters, fields, option);
+        let filters = [];
+        if(objectName === 'mdm_org_legal__c'){
+            filters = [['effective__c','=',true]]
+        }
+        let data = await API.requestRecords(objectName, filters, []);
         let results:any = [];
 
         const rootNode = getRootNode(rootNodeId, data.value);
@@ -60,6 +65,11 @@ export default observer((props: any) => {
                 if(item[parentFieldName]){
                     flag = true;
                 }
+                const shareholdingRatio = "<p style='margin:0'>"+item.shareholding_ratio__c+"%</p>";
+                const templateContent = "<div style='display: flex;justify-content: center;align-items: center;height: 100%;flex-direction: column; font-size: 2em;'>"+
+                            "<p style='margin:0'>"+item.name+"</p>"+
+                            ( !isNil(item.shareholding_ratio__c) ? shareholdingRatio : '')
+                            +"</div>";
                 return {
                     "nodeId": item._id,
                     // "parentNodeId": item.parent || item.parent__c,
@@ -80,7 +90,8 @@ export default observer((props: any) => {
                         "blue": 208,
                         "alpha": 1
                     },
-                    "template": "<div style='display: flex;justify-content: center;align-items: center;height: 100%; font-size: 2em;'>" + item.name + "</div>",
+                    // "template": "<div style='display: flex;justify-content: center;align-items: center;height: 100%; font-size: 2em;'>" + item.name + "</div>",
+                    "template": templateContent,
                     "connectorLineColor": {
                         "red": 220,
                         "green": 189,
@@ -94,7 +105,7 @@ export default observer((props: any) => {
                     "totalSubordinates": 1515
                 }
             });
-            if(!flag){
+            if(!flag && results.length != 1){
                 results = [];
                 setErrorMessage('未找到parentFieldName对应的记录！')
             }
