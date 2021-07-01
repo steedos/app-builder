@@ -95,8 +95,14 @@ const filterModelToOdataFilters = (filterModel)=>{
   return filters;
 }
 
-const getField = (objectSchema, fieldName)=>{
-  return fieldName.split('.').reduce(function(o, x){
+const getField = (objectSchema, fieldName: any)=>{
+
+  let _fieldName = fieldName;
+  if(isObject(fieldName)){
+    _fieldName = (fieldName as any).field
+  }
+
+  return _fieldName.split('.').reduce(function(o, x){
     if(!o){
       return
     }
