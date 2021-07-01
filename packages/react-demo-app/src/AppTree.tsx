@@ -62,7 +62,8 @@ export default observer((props: any) => {
         if (results.length) {
             let flag = false;
             results = results.map((item: any) => {
-                if(item[parentFieldName]){
+                if(item[parentFieldName] || (item._id === rootNodeId && results.length === 1)){
+                    // 根节点 不需要 parentNodeId； 所以当其错了，flag = true, 不报错（未找到parentFieldName对应的记录！）
                     flag = true;
                 }
                 const shareholdingRatio = "<p style='margin:0'>"+item.shareholding_ratio__c+"%</p>";
@@ -71,10 +72,13 @@ export default observer((props: any) => {
                             // ( !isNil(item.shareholding_ratio__c) ? shareholdingRatio : '')
                             ( item.shareholding_ratio__c ? shareholdingRatio : '')
                             +"</div>";
+                // 规则定义：根节点的 parentNodeId 不能有值，否则会报错: 查询不到parentNodeId值对应的节点。
+                const parentNodeId = item._id === rootNodeId ? null : item[parentFieldName];
                 return {
                     "nodeId": item._id,
                     // "parentNodeId": item.parent || item.parent__c,
-                    "parentNodeId": item[parentFieldName],
+                    // "parentNodeId": item[parentFieldName],
+                    "parentNodeId": parentNodeId,
                     "width": 342,
                     "height": 146,
                     "borderWidth": 1,
@@ -106,7 +110,7 @@ export default observer((props: any) => {
                     "totalSubordinates": 1515
                 }
             });
-            if(!flag && results.length != 1){
+            if(!flag){
                 results = [];
                 setErrorMessage('未找到parentFieldName对应的记录！')
             }
