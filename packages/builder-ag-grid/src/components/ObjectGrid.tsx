@@ -387,16 +387,20 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const RowActions = (props: any) => {
     const {rowButtons, objectApiName, data} = props;
-    
-    const dropdownOptions = filter(rowButtons, (button)=>{
-      return API.client.action.calculationVisible(objectApiName, button, data, {
-        userId: API.client.getUserId(),
-        spaceId: API.client.getSpaceId(),
-      })
-    })
-
-    if(dropdownOptions.length < 1){
-      return (<></>)
+    const [options, setOptions] = useState([]);
+    const getDropdownOptions = ()=>{
+      const result = filter(rowButtons, (button)=>{
+        return API.client.action.calculationVisible(objectApiName, button, data, {
+          userId: API.client.getUserId(),
+          spaceId: API.client.getSpaceId(),
+        })
+      });
+      if(result.length){
+        return result;
+      }
+      else{
+        return [{ label: "没有可做的操作", todo: null, }];
+      }
     }
 
     return (
@@ -410,12 +414,21 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         menuPosition="overflowBoundaryElement"
         onSelect={(option) => {
           try {
+            if(!option || !option.todo){
+              return;
+            }
             API.client.action.executeAction(objectApiName, option, data._id, null, null, data)
           } catch (error) {
             console.error(`executeAction error`, error)
           }
         }}
-        options={dropdownOptions}
+        options={options}
+        onOpen={() => {
+          if(!options.length){
+            const dropdownOptions = getDropdownOptions();
+            setOptions(dropdownOptions);
+          }
+        }}
       />
     )
   }

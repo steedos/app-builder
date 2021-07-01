@@ -39,7 +39,7 @@ export default class Action {
                 const Creator = (window as any).Creator;
                 const userId = userSession.userId;
                 const spaceId = userSession.spaceId;
-                const record_permissions = Creator ? Creator.getRecordPermissions(object_name, record, userId, spaceId) : {};
+                const record_permissions = Creator?.getRecordPermissions ? Creator.getRecordPermissions(object_name, record, userId, spaceId) : {};
                 return action.visible(object_name, record._id, record_permissions, record);
             }else{
                 return action.visible
