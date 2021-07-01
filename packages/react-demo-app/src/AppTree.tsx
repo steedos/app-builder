@@ -68,7 +68,8 @@ export default observer((props: any) => {
                 const shareholdingRatio = "<p style='margin:0'>"+item.shareholding_ratio__c+"%</p>";
                 const templateContent = "<div style='display: flex;justify-content: center;align-items: center;height: 100%;flex-direction: column; font-size: 2em;'>"+
                             "<p style='margin:0'>"+item.name+"</p>"+
-                            ( !isNil(item.shareholding_ratio__c) ? shareholdingRatio : '')
+                            // ( !isNil(item.shareholding_ratio__c) ? shareholdingRatio : '')
+                            ( item.shareholding_ratio__c ? shareholdingRatio : '')
                             +"</div>";
                 return {
                     "nodeId": item._id,
