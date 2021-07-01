@@ -45,12 +45,27 @@ const getFieldSchemaArray = (mergedSchema, fields, isModalForm, mode)=>{
       field.is_wide = true;
     }
     // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
-    let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1;
-    if(!isOmitField && mode !== "read"){
+    let isOmitField = false;
+    if(mode !== "read"){
+      // #138 编辑状态下omit的字段不显示, 不render
       isOmitField = field.omit;
     }
+    /**
+      #138 表单字段omit,hidden整体规则
+      hidden:
+      只读界面中=>不显示，render
+      编辑界面中=>不显示，render
+      omit:
+      只读界面中=>显示
+      编辑界面中=>不显示, 不render
+      关于特殊字段类型:
+      "autonumber", "formula", "summary"这三个字段类型按readonly处理，与上述hidden或omit属性无关。
+     */
     let isValid = !fields || !fields.length || fields.indexOf(fieldName) > -1
-    if (!field.hidden && !isObjectField && !isOmitField && isValid){
+    // hidden的字段如果push到变量fieldSchemaArray中表示这个字段会render但是不显示，如果不push到里面表示不显示也不render
+    // 所以hidden的字段需要push到表单中以让其render
+    // if (!field.hidden && !isObjectField && !isOmitField && isValid){
+    if (!isObjectField && !isOmitField && isValid){
       fieldSchemaArray.push(defaults({name: fieldName}, field))
     }
   })

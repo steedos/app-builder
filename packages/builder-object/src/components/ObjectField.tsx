@@ -47,10 +47,12 @@ export const ObjectField = observer((props: any) => {
   if (mode == "edit") {
 
     if (fieldSchema.omit) {
+      // omit的字段编辑时不显示不render，不render是sections中没有把这个字段加上，而不是依靠这里的hidden #138
       formFieldProps.hidden = true
     }
   } else if (mode == "read") {
     if (fieldSchema.omit) {
+      // omit的字段只读时显示为只读 #138
       formFieldProps.readonly = true
     }
   }

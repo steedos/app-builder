@@ -101,6 +101,10 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
     let defaultValue = safeEval(`(${field._defaultValue})`);
     fieldSchema = Object.assign({}, fieldSchema, {defaultValue});
   }
+
+  if(["autonumber", "formula", "summary"].indexOf(fieldType) > -1){
+    fieldSchema.readonly = true;
+  }
   return fieldSchema;
 }
 
