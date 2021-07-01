@@ -95,6 +95,18 @@ const filterModelToOdataFilters = (filterModel)=>{
   return filters;
 }
 
+const getField = (objectSchema, fieldName)=>{
+  return fieldName.split('.').reduce(function(o, x){
+    if(!o){
+      return
+    }
+    if(o.sub_fields){
+      return o.sub_fields[x] 
+    }
+    return o[x]
+  }, objectSchema.fields)
+}
+
 export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
 
   const {
@@ -259,7 +271,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       // }
     ];
     forEach(columnFields, ({ fieldName, hideInTable, hideInSearch, ...columnItem }: ObjectGridColumnProps) => {
-      const field = objectSchema.fields[fieldName];
+      const field = getField(objectSchema, fieldName);
       if(!field){
         return ;
       }
