@@ -15,92 +15,92 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   // fieldName变量中可能带$和.符号，需要转换成RegExp匹配的带转义符的字符
   const fieldNameForReg = fieldName.replace(/\$/g,"\\$").replace(/\./g,"\\.");
   const precision = field.precision || 18;
-    if(fieldType === 'object'){
-      // 根据对象的子表字段信息，返回子表配置属性
-      sub_fields = {};
-      each(objectConfig.fields, (fieldItem, key) => {
-        const reg = new RegExp(`^${fieldNameForReg}\\.\\\w+$`); //以fieldName开头，且用.号连接下一个字段名
-        // if(key.startsWith(`${fieldName}.`)){
-        if(reg.test(key)){
-          // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
-          let matches = key.match(/.(\w+)$/g);
-          let lastFieldKey = matches && matches[0].replace(".", "");
-          if(lastFieldKey){
-            sub_fields[lastFieldKey] = getFieldSchema(key, objectConfig);   ;                           
-          }
+  if(fieldType === 'object'){
+    // 根据对象的子表字段信息，返回子表配置属性
+    sub_fields = {};
+    each(objectConfig.fields, (fieldItem, key) => {
+      const reg = new RegExp(`^${fieldNameForReg}\\.\\\w+$`); //以fieldName开头，且用.号连接下一个字段名
+      // if(key.startsWith(`${fieldName}.`)){
+      if(reg.test(key)){
+        // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
+        let matches = key.match(/.(\w+)$/g);
+        let lastFieldKey = matches && matches[0].replace(".", "");
+        if(lastFieldKey){
+          sub_fields[lastFieldKey] = getFieldSchema(key, objectConfig);   ;                           
         }
-      });
-      fieldSchema = Object.assign({}, field, {sub_fields});
-    }
-    else if(fieldType === 'grid'){
-      // 根据对象的子表字段信息，返回子表配置属性
-      sub_fields = {};
-      each(objectConfig.fields, (fieldItem, key) => {
-        const reg = new RegExp(`^${fieldNameForReg}\\.\\$\\.\\\w+$`); //以fieldName开头，且后面接着用.$.号连接下一个字段名
-        // if(key.startsWith(`${fieldName}.$.`)){
-        if(reg.test(key)){
-          // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
-          let matches = key.match(/.(\w+)$/g);
-          let lastFieldKey = matches && matches[0].replace(".", "");
-          if(lastFieldKey){
-            sub_fields[lastFieldKey] = getFieldSchema(key, objectConfig);                           
-          }
+      }
+    });
+    fieldSchema = Object.assign({}, field, {sub_fields});
+  }
+  else if(fieldType === 'grid'){
+    // 根据对象的子表字段信息，返回子表配置属性
+    sub_fields = {};
+    each(objectConfig.fields, (fieldItem, key) => {
+      const reg = new RegExp(`^${fieldNameForReg}\\.\\$\\.\\\w+$`); //以fieldName开头，且后面接着用.$.号连接下一个字段名
+      // if(key.startsWith(`${fieldName}.$.`)){
+      if(reg.test(key)){
+        // members.users、instances.$._id、sharing.$之类的复合字段中取出最后一个.字段名，但是不匹配$结尾的字段名
+        let matches = key.match(/.(\w+)$/g);
+        let lastFieldKey = matches && matches[0].replace(".", "");
+        if(lastFieldKey){
+          sub_fields[lastFieldKey] = getFieldSchema(key, objectConfig);                           
         }
+      }
+    });
+    fieldSchema = Object.assign({}, field, {sub_fields});
+  }
+  else if(['lookup','master_detail'].indexOf(fieldType)>-1){
+    if(field.reference_to === "users"){
+      fieldSchema = Object.assign({}, field, {
+        reference_to: "space_users",
+        reference_to_field: "user"
       });
-      fieldSchema = Object.assign({}, field, {sub_fields});
     }
-    else if(['lookup','master_detail'].indexOf(fieldType)>-1){
-      if(field.reference_to === "users"){
-        fieldSchema = Object.assign({}, field, {
-          reference_to: "space_users",
-          reference_to_field: "user"
-        });
-      }
-      else if(field._reference_to){
-        // 如果只有_reference_to， 那就给field增加一个reference_to属性。
-        let reference_to = safeEval(`(${field._reference_to})`);
-        fieldSchema = Object.assign({}, field, {reference_to});
-      }
-      else{
-        fieldSchema = field;
-      }
-      if(field._filtersFunction){
-        let filtersFunction = safeEval(`(${field._filtersFunction})`);
-        fieldSchema = Object.assign({}, fieldSchema, {filtersFunction});
-      }
-      if(field._optionsFunction){
-        let optionsFunction = safeEval(`(${field._optionsFunction})`);
-        fieldSchema = Object.assign({}, fieldSchema, {optionsFunction});
-      }
-    }
-    else if(fieldType === 'select'){
-      if(field._optionsFunction){
-        let optionsFunction = safeEval(`(${field._optionsFunction})`);
-        fieldSchema = Object.assign({}, field, {optionsFunction});
-      }else{
-        fieldSchema = field;
-      }
-    }
-    else if(fieldType === 'currency'){
-      // 金额类型默认显示2位小数
-      if(isNil(field.scale)){
-        fieldSchema = Object.assign({}, field, {scale: 2, precision});
-      }
-      else{
-        fieldSchema = Object.assign({}, field, {precision});
-      }
-    }
-    else if(fieldType === 'number'){
-      fieldSchema = Object.assign({}, field, {precision});
+    else if(field._reference_to){
+      // 如果只有_reference_to， 那就给field增加一个reference_to属性。
+      let reference_to = safeEval(`(${field._reference_to})`);
+      fieldSchema = Object.assign({}, field, {reference_to});
     }
     else{
       fieldSchema = field;
     }
-    // 所有字段如果含有_defaultValue属性就为其添加一个defaultValue属性。
-    if(field._defaultValue){
-      let defaultValue = safeEval(`(${field._defaultValue})`);
-      fieldSchema = Object.assign({}, fieldSchema, {defaultValue});
+    if(field._filtersFunction){
+      let filtersFunction = safeEval(`(${field._filtersFunction})`);
+      fieldSchema = Object.assign({}, fieldSchema, {filtersFunction});
     }
+    if(field._optionsFunction){
+      let optionsFunction = safeEval(`(${field._optionsFunction})`);
+      fieldSchema = Object.assign({}, fieldSchema, {optionsFunction});
+    }
+  }
+  else if(fieldType === 'select'){
+    if(field._optionsFunction){
+      let optionsFunction = safeEval(`(${field._optionsFunction})`);
+      fieldSchema = Object.assign({}, field, {optionsFunction});
+    }else{
+      fieldSchema = field;
+    }
+  }
+  else if(fieldType === 'currency'){
+    // 金额类型默认显示2位小数
+    if(isNil(field.scale)){
+      fieldSchema = Object.assign({}, field, {scale: 2, precision});
+    }
+    else{
+      fieldSchema = Object.assign({}, field, {precision});
+    }
+  }
+  else if(fieldType === 'number'){
+    fieldSchema = Object.assign({}, field, {precision});
+  }
+  else{
+    fieldSchema = field;
+  }
+  // 所有字段如果含有_defaultValue属性就为其添加一个defaultValue属性。
+  if(field._defaultValue){
+    let defaultValue = safeEval(`(${field._defaultValue})`);
+    fieldSchema = Object.assign({}, fieldSchema, {defaultValue});
+  }
   return fieldSchema;
 }
 
