@@ -117,7 +117,7 @@ export const ObjectFieldGrid = (props) => {
         minWidth: field.is_wide? 300: 150,
         resizable: true,
         filter: true,
-        cellRenderer: 'AgGridCellRender',
+        cellRenderer: 'AgGridCellRenderer',
         cellRendererParams: {
           fieldSchema: field,
           valueType: field.type,
