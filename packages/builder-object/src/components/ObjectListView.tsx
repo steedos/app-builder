@@ -117,6 +117,12 @@ export const getListviewExtraColumns = (objectSchema: any, listName: any) => {
   return listViewColumns;
 }
 
+export const getNameFieldColumnRender = (objectApiName: string)=>{
+  return (dom: any, record: any)=>{
+    return (<Link to={getObjectRecordUrl(objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
+  }
+}
+
 export const getListViewColumnFields = (listViewColumns: any, props: any, nameFieldKey: string) => {
   let { columnFields = [], master } = props;
   if (columnFields.length === 0) {
@@ -131,9 +137,7 @@ export const getListViewColumnFields = (listViewColumns: any, props: any, nameFi
       }
       let columnOption: any = { fieldName, width: fieldWidth };
       if(fieldName === nameFieldKey){
-        columnOption.render = (dom: any, record: any)=>{
-          return (<Link to={getObjectRecordUrl(props.objectApiName, record._id)} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
-        }
+        columnOption.render = getNameFieldColumnRender(props.objectApiName);
       }
       columnFields.push(columnOption)
     })
@@ -206,8 +210,22 @@ export const ObjectListView = observer((props: ObjectListViewProps<any>) => {
   let listView = listSchema ? listSchema : API.client.listview.find(schema.list_views, listName);
   const listViewColumns = listSchema && listSchema.columns ? listSchema.columns : getListviewColumns(schema, listName);
   const listViewExtraColumns = listSchema && listSchema.extra_columns ? listSchema.extra_columns : getListviewExtraColumns(schema, listName);
+  const nameFieldKey = schema.NAME_FIELD_KEY;
   if(!columnFields || columnFields.length==0){
-    columnFields = getListViewColumnFields(listViewColumns, props, schema.NAME_FIELD_KEY);
+    columnFields = getListViewColumnFields(listViewColumns, props, nameFieldKey);
+  }
+  else{
+    columnFields = columnFields.map((item: any)=>{
+      if(item.fieldName === nameFieldKey && !item.render){
+        // name字段默认应该显示为链接
+        return Object.assign({}, item, {
+          render: getNameFieldColumnRender(props.objectApiName)
+        });
+      }
+      else{
+        return item;
+      }
+    });
   }
   if(!filters || filters.length==0){
     filters = getListViewFilters(listView, props);

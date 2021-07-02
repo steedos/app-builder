@@ -135,6 +135,30 @@ export const ListView = () => {
   )
 }
 
+export const ListViewColumnRender= () => {
+  return (
+      <ObjectListView objectApiName='tasks' 
+        columnFields={
+          [
+            {
+              fieldName: 'name',
+              // render: (dom: any, record: any)=>{
+              //   return dom;
+              //   // return (<Link to={`/app/-/tasks/view/${record._id}`} className="text-blue-600 hover:text-blue-500 hover:underline">{dom}</Link>);
+              // }
+            },
+            {
+              fieldName: 'priority'
+            },
+            {
+              fieldName: 'related_to'
+            }
+          ]
+        }
+      >
+      </ObjectListView>
+  )
+}
 
 export const ListViewNoSearch = () => {
   return (
