@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { forEach, compact, filter, includes, keys, map, isEmpty, isFunction, isObject, uniq, find, sortBy, reverse, clone, isArray } from 'lodash';
+import { forEach, compact, filter, includes, keys, map, isEmpty, isFunction, isObject, uniq, find, sortBy, reverse, clone, isArray, isString } from 'lodash';
 import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
@@ -479,6 +479,26 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   //   console.log(`modelUpdated event getDisplayedRowCount`, event.api.getDisplayedRowCount())
   // }
 
+  const processCellForClipboard = (event)=>{
+    if(isArray(event.value)){
+      const fieldSchema = event.column?.colDef?.cellEditorParams?.fieldSchema
+      console.log(`fieldSchema`, fieldSchema)
+      if(fieldSchema && fieldSchema.multiple){
+        event.value = event.value.join(',')
+      }
+    }
+    return event.value;
+  }
+  const processCellFromClipboard = (event)=>{
+    if(isString(event.value) && event.value){
+      const fieldSchema = event.column?.colDef?.cellEditorParams?.fieldSchema
+      if(fieldSchema && fieldSchema.multiple){
+        event.value = event.value.split(',')
+      }
+    }
+    return event.value;
+  }
+
   return (
 
     <div className="ag-theme-balham" style={{height: "100%", flex: "1 1 auto",overflow:"hidden"}}>
@@ -507,6 +527,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         onRowValueChanged={onRowValueChanged}
         onRowSelected={onRowSelected}
         context={{editedMap: editedMap}}
+        processCellForClipboard={processCellForClipboard}
+        processCellFromClipboard={processCellFromClipboard}
         frameworkComponents = {{
           AgGridCellRenderer: AgGridCellRenderer,
           AgGridCellEditor: AgGridCellEditor,
