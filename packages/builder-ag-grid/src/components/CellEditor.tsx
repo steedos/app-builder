@@ -20,8 +20,8 @@ function useOnClickOutside(ref, handler) {
         if (!ref.current || ref.current.contains(event.target)) {
           return;
         }
-        const parentsClassName = getParentsClassName(event.target)
-        if((parentsClassName.toString().indexOf('ant-modal-root') > -1 && parentsClassName.toString().indexOf('ant-btn') < 0) || parentsClassName.toString().indexOf('ant-select-dropdown') > -1){
+        const parentsClassName = getParentsClassName(event.target) 
+        if((parentsClassName.toString().indexOf('ant-modal-root') > -1 && parentsClassName.toString().indexOf('ant-btn') < 0) || parentsClassName.toString().indexOf('ant-select-dropdown') > -1 || (parentsClassName.toString().indexOf('ant-picker-dropdown') > -1 && (parentsClassName.toString().indexOf('ant-btn') < 0 && parentsClassName.toString().indexOf('ant-picker-now-btn') < 0))){
           return;
         }
         handler(event);
@@ -67,7 +67,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
   });
 
   useOnClickOutside(refEditor, (e) => {
-    setTimeout(() => props.api.stopEditing(false), 100);
+    setTimeout(() => props.api.stopEditing(false), 300);
   });
 
   // const IntervalID = setInterval(()=>{
@@ -100,11 +100,10 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
             // if (['lookup','select','master_detail'].indexOf(valueType)>=0){
             //   setTimeout(() => props.api.stopEditing(false), 100);
             // }
-
             if(fieldSchema.multiple != true){
-              if(!element?.target || document.activeElement != element.target){
-                setTimeout(() => props.api.stopEditing(false), 100);
-              }
+              // if(!element?.target || document.activeElement != element.target){
+              //   setTimeout(() => props.api.stopEditing(false), 100);
+              // }
   
               if(element?.target && document.activeElement === element.target){
                 
