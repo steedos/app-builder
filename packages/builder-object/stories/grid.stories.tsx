@@ -1,4 +1,4 @@
-import { ObjectProTable, ObjectTree, ObjectListView, ObjectExpandTable } from "@steedos/builder-object";
+import { ObjectProTable, ObjectTree, ObjectListView, ObjectExpandTable, ObjectTable } from "@steedos/builder-object";
 import { FieldSection } from "@steedos/builder-form";
 import * as React from "react"
 import { API } from '@steedos/builder-store';
@@ -12,7 +12,7 @@ export default {
   title: "Object Table",
 }
 
-export const Table = () => {
+export const ProTable = () => {
   return (
       <ObjectProTable objectApiName='accounts' 
         pagination={{
@@ -48,7 +48,7 @@ export const Table = () => {
   )
 }
 
-export const TableFilters= () => {
+export const ProTableFilters= () => {
   return (
       <ObjectProTable objectApiName='tasks' 
         columnFields={
@@ -72,7 +72,7 @@ export const TableFilters= () => {
   )
 }
 
-export const TableColumnRender= () => {
+export const ProTableColumnRender= () => {
   return (
       <ObjectProTable objectApiName='tasks' 
         columnFields={
@@ -93,6 +93,29 @@ export const TableColumnRender= () => {
         }
       >
       </ObjectProTable>
+  )
+}
+
+export const TableFilters= () => {
+  return (
+      <ObjectTable objectApiName='tasks' 
+        columnFields={
+          [
+            {
+              fieldName: 'name'
+            },
+            {
+              fieldName: 'priority'
+            },
+            {
+              fieldName: 'related_to'
+            }
+          ]
+        }
+        // filters="(contains(tolower(name),'n'))"
+        filters={[["name", "contains", "1"]]}
+      >
+      </ObjectTable>
   )
 }
 
