@@ -1,5 +1,5 @@
-import { map, isNil, compact, each } from 'lodash';
-
+import { map, isNil, compact, each, isArray, isString } from 'lodash';
+import { formatFiltersToODataQuery } from '@steedos/filters';
 /**
  * 根据表单的对象配置及表单值，计算得到对应的过滤条件
  * @param objectSchema 
@@ -73,4 +73,32 @@ export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
         schemaFields[fieldKey] = Object.assign({}, fieldItem, extendProps);
     });
     return Object.assign({}, objectSchema, { fields: schemaFields });
+}
+
+export const concatFilters = (filtersA: [] | string, filtersB: [] | string) => {
+    if (filtersB && filtersB.length) {
+        if (filtersA && filtersA.length) {
+            if (isArray(filtersA) && isArray(filtersB)) {
+                return [filtersA, filtersB]
+            }
+            else if (isString(filtersA) && isString(filtersB)){
+                return `(${filtersA}) and (${filtersB})`;
+            }
+            else{
+                if (isArray(filtersA)){
+                    filtersA = formatFiltersToODataQuery(filtersA);
+                }
+                else if (isArray(filtersB)){
+                    filtersB = formatFiltersToODataQuery(filtersB);
+                }
+                return `(${filtersA}) and (${filtersB})`;
+            }
+        }
+        else {
+            return filtersB;
+        }
+    }
+    else {
+        return filtersA;
+    }
 }

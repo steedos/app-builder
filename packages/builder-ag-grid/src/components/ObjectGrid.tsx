@@ -4,6 +4,7 @@ import useAntdMediaQuery from 'use-media-antd-query';
 import { observer } from "mobx-react-lite"
 import { Objects, API } from "@steedos/builder-store"
 import { Spin } from 'antd';
+import { concatFilters } from '@steedos/builder-sdk';
 import {AgGridColumn, AgGridReact} from '@ag-grid-community/react';
 import { AllModules } from '@ag-grid-enterprise/all-modules';
 import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
@@ -224,7 +225,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
             })
-            const filters = compact([].concat([defaultFilters]).concat(filterModelToOdataFilters(params.request.filterModel)));
+            // const filters = compact([].concat([defaultFilters]).concat(filterModelToOdataFilters(params.request.filterModel)));
+            const filters = concatFilters(defaultFilters,filterModelToOdataFilters(params.request.filterModel))
             // TODO 此处需要叠加处理 params.request.fieldModel
             let options: any = {
               sort,
