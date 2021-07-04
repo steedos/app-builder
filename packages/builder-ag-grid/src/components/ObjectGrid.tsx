@@ -224,7 +224,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
             forEach(params.request.sortModel, (sortField)=>{
               sort.push([sortField.colId, sortField.sort])
             })
-            const filters = compact([].concat(defaultFilters).concat(filterModelToOdataFilters(params.request.filterModel)));
+            const filters = compact([].concat([defaultFilters]).concat(filterModelToOdataFilters(params.request.filterModel)));
             // TODO 此处需要叠加处理 params.request.fieldModel
             let options: any = {
               sort,
