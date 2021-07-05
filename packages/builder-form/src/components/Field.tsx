@@ -52,7 +52,7 @@ export const Field = observer((props: any) => {
   const formItemPropsMerged = {
     ...attributes,
     ...formItemProps,
-    className: `field type-${valueType} mode-${mode}`,
+    className: `field type-${valueType} mode-${mode} field-${readonly ? 'readonly' : 'editable'}`,
   }
 
   // if (valueType == 'object') {
