@@ -222,12 +222,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   currentForm.setFieldsValue(defaultValues);
 
   // 识别字段级权限
-  // forEach(mergedSchema.fields, (field, fieldName) => {
-  //   if(!field.readonly){
-  //     // 字段未配置readonly时，按权限取值
-  //     field.readonly = !API.client.field.isEditable(objectApiName, field, defaultValues)
-  //   }
-  // });
+  forEach(mergedSchema.fields, (field, fieldName) => {
+    if(!field.readonly){
+      // 字段未配置readonly时，按权限取值
+      field.readonly = !API.client.field.isEditable(objectApiName, field, recordId && defaultValues)
+    }
+  });
   return (
     <Form 
       // formFieldComponent = {ObjectField}
