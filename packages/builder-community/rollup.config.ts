@@ -118,25 +118,25 @@ export default [
     ]),
   },
   // ES
-  {
-    ...options,
-    input: `src/index.tsx`,
-    external: [ 'react' ],
-    output: [
-      { 
-        file: 'dist/builder-community.esm.js', 
-        format: 'es', 
-        sourcemap: true,
-        globals: { react: 'React' }
-      }
-    ],
-    plugins: options.plugins.concat([
-      visualizer({
-        filename: 'dist/stats.html'
-      }),
-      sourceMaps()
-    ]),
-  },
+  // {
+  //   ...options,
+  //   input: `src/index.tsx`,
+  //   external: [ 'react' ],
+  //   output: [
+  //     { 
+  //       file: 'dist/builder-community.esm.js', 
+  //       format: 'es', 
+  //       sourcemap: true,
+  //       globals: { react: 'React' }
+  //     }
+  //   ],
+  //   plugins: options.plugins.concat([
+  //     visualizer({
+  //       filename: 'dist/stats.html'
+  //     }),
+  //     sourceMaps()
+  //   ]),
+  // },
   // UMD DEV
   // {
   //   ...options,
