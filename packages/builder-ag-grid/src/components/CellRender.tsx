@@ -34,6 +34,7 @@ export const AgGridCellRenderer = (props: any) => {
       render = {_render}
       valueType={valueType} 
       fieldProps={{
+        _grid_row_id: props.data._id,
         field_schema: fieldSchema
       }}
       form={form}
