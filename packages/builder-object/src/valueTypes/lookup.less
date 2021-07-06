@@ -63,30 +63,32 @@
         }
     }
 }
-// reference_to is array 两个联动的下拉框样式调整
-.type-lookup.field-editable{
-    .ant-form-item-control{
-        .ant-form-item-control-input-content{
-            display:flex;
-            .left_label_menu{
-                width:55px;
-                margin-right: -1px;
-                .ant-select-selector{
-                    border-radius: 2px 0 0 2px;
+.type-lookup.mode-edit{
+    &.field-editable{
+        // reference_to is array 两个联动的下拉框样式调整
+        .ant-form-item-control{
+            .ant-form-item-control-input-content{
+                display:flex;
+                .left_label_menu{
+                    width:55px;
+                    margin-right: -1px;
+                    .ant-select-selector{
+                        border-radius: 2px 0 0 2px;
+                    }
                 }
-            }
-            .left_label_menu:hover,.left_label_menu:active,.left_label_menu.ant-select-focused{
-                .ant-select-selector{
-                    z-index: 1;
+                .left_label_menu:hover,.left_label_menu:active,.left_label_menu.ant-select-focused{
+                    .ant-select-selector{
+                        z-index: 1;
+                    }
+                    .ant-select-arrow{
+                        z-index: 2;
+                    }
                 }
-                .ant-select-arrow{
-                    z-index: 2;
-                }
-            }
-            .left_label_menu + .ant-pro-filed-search-select{
-                flex:auto;
-                .ant-select-selector{
-                    border-radius: 0 2px 2px 0;
+                .left_label_menu + .ant-pro-filed-search-select{
+                    flex:auto;
+                    .ant-select-selector{
+                        border-radius: 0 2px 2px 0;
+                    }
                 }
             }
         }
