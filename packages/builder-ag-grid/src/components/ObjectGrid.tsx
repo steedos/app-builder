@@ -143,6 +143,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   } = props;
   const table = Tables.loadById(name, objectApiName,rowKey);
   const [editedMap, setEditedMap] = useState({})
+  const [dataCount, setDataCount] = useState(0)
   // 将初始值存放到 stroe 中。
   if(selectedRowKeys && selectedRowKeys.length){
     table.addSelectedRowsByKeys(selectedRowKeys, columnFields, rows)
@@ -169,7 +170,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       ]
     }
   }
-  if(rows){
+  if(rows || !dataCount){
     sideBar = false;
   }
   const object = objectApiName && Objects.getObject(objectApiName);
@@ -246,6 +247,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
                   rowData: data.value,
                   rowCount: data['@odata.count']
                 });
+                setDataCount(data['@odata.count'])
                 setSelectedRows(params);
             })
           }
