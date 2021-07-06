@@ -97,6 +97,14 @@ export const LookupField = observer((props:any) => {
                 if(referenceTo==='organizations'){
                     fields.push('name')
                 }
+
+                if(reference_to_field !== "_id" ){
+                    const filters = filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters
+                    if(filters && isArray(filters)){
+                        referenceTofilters.push(filters)
+                    }
+                }
+
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
                 if (recordList.isLoading) return (<div><Spin/></div>);
                 recordListData = recordList.data;
