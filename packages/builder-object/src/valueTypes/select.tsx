@@ -88,6 +88,7 @@ export const SelectField = observer((props: any) => {
       props.fieldProps.options = options;
     }
     proFieldProps.showSearch = true;
+    proFieldProps.showArrow = true;
     proFieldProps.optionFilterProp = 'label';
     // TODO: multiple：如果是true, 后期 需要 支持对已选中项进行拖动排序
     return (
