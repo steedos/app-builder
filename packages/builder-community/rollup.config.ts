@@ -104,7 +104,7 @@ export default [
   {
     ...options,
     input: `src/index.tsx`,
-    external: [ 'react' ],
+    external: [ 'react','react-dom' ],
     output: [
       { 
         file: 'dist/builder-community.react.js', 
@@ -121,7 +121,7 @@ export default [
   // {
   //   ...options,
   //   input: `src/index.tsx`,
-  //   external: [ 'react' ],
+  //   external: [ 'react', 'react-dom' ],
   //   output: [
   //     { 
   //       file: 'dist/builder-community.esm.js', 
