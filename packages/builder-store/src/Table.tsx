@@ -1,5 +1,6 @@
 import { types, flow } from "mobx-state-tree";
 import { pullAllBy, differenceBy, remove, isObject, clone, map, isArray } from "lodash";
+import { concatFilters } from '@steedos/builder-sdk';
 import { API } from './API';
 
 export const TableModel = types.model({
@@ -40,14 +41,17 @@ export const TableModel = types.model({
       addSelectedRows([row]);
     }
   };
-  const loadSelectedRows = flow(function* loadSelectedRows(keys: any, columns: any = ["name"]) {
+  const loadSelectedRows = flow(function* loadSelectedRows(keys: any, columns: any = ["name"], defaultFilters:any) {
     try {
       // 根据objectApiName从服务端抓取选中项数据
       if(!self.objectApiName){
         console.error(`loadSelectedRows failed, miss objectApiName for this table ${self.id}, you can set it by the function 'setObjectApiName' or give it's value while load the table by the function 'loadById'.`);
       }
       self.isLoading = true;
-      const filters = [getRowKey(), "=", keys]
+      let filters:any = [getRowKey(), "=", keys]
+      if(defaultFilters && defaultFilters.length){
+        filters = concatFilters(filters, defaultFilters);
+      }
       let columnsFields = columns;
       if(isObject(columns[0])){
         columnsFields = columns.map((item) => {
@@ -64,7 +68,7 @@ export const TableModel = types.model({
       console.error(`Failed to load record ${self.id} `, err)
     }
   });
-  const addSelectedRowsByKeys = (keys: any, columns: any, rows?: any) => {
+  const addSelectedRowsByKeys = (keys: any, columns: any, rows?: any, defaultFilters?:any) => {
     if(keys && keys.length){
       const rowKey = getRowKey()
       if(isArray(rows)){
@@ -77,7 +81,7 @@ export const TableModel = types.model({
         }
       }
       else{
-        loadSelectedRows(keys, columns);
+        loadSelectedRows(keys, columns, defaultFilters);
       }
     }
   };

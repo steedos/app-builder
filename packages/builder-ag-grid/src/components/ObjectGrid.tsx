@@ -148,7 +148,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const [dataCount, setDataCount] = useState(0)
   // 将初始值存放到 stroe 中。
   if(selectedRowKeys && selectedRowKeys.length){
-    table.addSelectedRowsByKeys(selectedRowKeys, columnFields, rows)
+    table.addSelectedRowsByKeys(selectedRowKeys, columnFields, rows, defaultFilters)
   }
   // const [drawerVisible, setDrawerVisible] = useState(false);
   // const [modal] = Modal.useModal();
@@ -534,7 +534,9 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         suppressExcelExport={true}
         cacheBlockSize={_pageSize}
         rowSelection={rowSelection}
-        rowMultiSelectWithClick={true}
+        suppressRowClickSelection={true}
+        // suppressCellSelection={true}
+        // rowMultiSelectWithClick={true}
         enableRangeSelection={true}
         suppressCopyRowsToClipboard={true}
         modules={AllModules}

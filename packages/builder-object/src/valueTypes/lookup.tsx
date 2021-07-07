@@ -97,7 +97,7 @@ export const LookupField = observer((props:any) => {
                 if(referenceTo==='organizations'){
                     fields.push('name')
                 }
-
+                // 如果不是按ID查询要显示的数据，就把filters过滤条件加上然后再查询要显示的数据。
                 if(reference_to_field !== "_id" ){
                     const filters = filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters
                     if(filters && isArray(filters)){
