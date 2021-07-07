@@ -523,7 +523,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         suppressExcelExport={true}
         cacheBlockSize={_pageSize}
         rowSelection={rowSelection}
-        // suppressRowClickSelection={true}
+        suppressRowClickSelection={true}
         // suppressCellSelection={true}
         // rowMultiSelectWithClick={true}
         enableRangeSelection={true}
