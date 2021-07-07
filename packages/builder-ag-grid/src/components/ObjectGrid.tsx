@@ -345,6 +345,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         filter,
         sort: fieldSort ? fieldSort.order : undefined,
         filterParams,
+        menuTabs: ['filterMenuTab','generalMenuTab','columnsMenuTab'],
         rowGroup,
         flex: 1,
         sortable: true,
