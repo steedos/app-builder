@@ -32,7 +32,7 @@
     "@steedos/builder-form": "1.0.0",
     "@steedos/builder-locale": "1.0.0",
     "@steedos/builder-store": "1.0.0",
-    "@steedos/filters": "^2.0.25",
+    "@steedos/filters": "^2.0.33",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-loadable": "^5.5.0",
