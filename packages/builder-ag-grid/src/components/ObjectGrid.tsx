@@ -324,7 +324,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
           filter = 'AgGridCellFilter',
           filterParams = {
             fieldSchema: field,
-            valueType: field.type
+            valueType: field.type,
+            objectApiName: objectApiName
           }
         }
       }

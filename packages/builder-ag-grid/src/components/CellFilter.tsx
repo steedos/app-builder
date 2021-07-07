@@ -10,6 +10,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
     value: initialValue,
     valueType = 'text',
     depend_field_values = {},
+    objectApiName,
     depended,
     fieldSchema,
   } = props;
@@ -92,7 +93,6 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
       })
     }
   }
-
   return (
     <div style={{padding:5}}>
       <ProField 
@@ -101,6 +101,7 @@ export const AgGridCellFilter = forwardRef((props:any, ref) => {
         fieldProps={Object.assign({}, fieldProps, {depend_field_values: dependFieldValues})}
         onChange={onChange}
         text={initialValue}
+        object_api_name={objectApiName}
         emptyText=''
       />
     </div>
