@@ -519,6 +519,8 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
         onSortChanged={onSortChanged}
         onFilterChanged={onFilterChanged}
         paginationPageSize={_pageSize}
+        suppressCsvExport={true}
+        suppressExcelExport={true}
         cacheBlockSize={_pageSize}
         rowSelection={rowSelection}
         rowMultiSelectWithClick={true}
