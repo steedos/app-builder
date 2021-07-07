@@ -204,6 +204,10 @@ export const LookupField = observer((props:any) => {
                         filters = keyFilters;
                     }
                 }else{
+                    const _filters = filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters
+                    if(_filters && isArray(_filters)){
+                        referenceTofilters.push(_filters)
+                    }
                     filters = referenceTofilters;
                 }
                 let data = await API.requestRecords(referenceTo, filters, fields, option);
