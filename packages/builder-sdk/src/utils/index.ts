@@ -12,3 +12,5 @@ export const safeRunFunction = (fun: any, args: any, defaultValue?: any, _this?:
     return defaultValue;
   }
 }
+
+export const BASE_FIELDNAMES_FOR_PERMISSIONS = ["owner", "company_id", "company_ids", "locked"];
