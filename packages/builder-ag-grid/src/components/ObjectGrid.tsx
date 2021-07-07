@@ -18,6 +18,8 @@ import { AgGridRowActions } from './RowActions';
 import { Modal, Drawer, Button, Space } from 'antd';
 import { AG_GRID_LOCALE_ZH_CN } from '../locales/locale.zh-CN'
 import { Tables } from '@steedos/builder-store';
+import { message } from 'antd';
+import { translate } from '@steedos/builder-sdk';
 
 import './ObjectGrid.less'
 
@@ -471,11 +473,19 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
   const updateMany = async ()=>{
     // result = await API.updateRecord(objectApiName, recordId, values);
     const ids = keys(editedMap);
-    for await (const id of ids) {
-      await API.updateRecord(objectApiName, id, editedMap[id]);
-    }
-    if(onUpdated && isFunction(onUpdated)){
-      onUpdated(objectApiName, ids);
+    try {
+      for await (const id of ids) {
+        try {
+          await API.updateRecord(objectApiName, id, editedMap[id]);
+        } catch (_error) {
+          message.error(translate(_error.message));
+        }
+      }
+      if(onUpdated && isFunction(onUpdated)){
+        onUpdated(objectApiName, ids);
+      }
+    } catch (error) {
+      message.error(translate(error.message));
     }
     try {
       cancel();
