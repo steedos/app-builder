@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import * as PropTypes from 'prop-types';
-import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, clone, isNil} from 'lodash';
+import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, clone, isNil, compact, uniq} from 'lodash';
 import { useQuery } from 'react-query'
 // import { FooterToolbar } from '@ant-design/pro-layout';
 import { Form } from '@steedos/builder-form';
@@ -14,7 +14,7 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { ObjectFormSections } from './ObjectFormSections';
 import { message } from 'antd';
-import { translate } from '@steedos/builder-sdk';
+import { translate, BASE_FIELDNAMES_FOR_PERMISSIONS } from '@steedos/builder-sdk';
 
 import './ObjectForm.less'
 
@@ -93,24 +93,27 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       // field.group = field.label
       field.is_wide = true;
     }
-    // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
-    let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1;
+    // // 新建记录时，把autonumber、formula、summary类型字段视为omit字段不显示
+    // let isOmitField = isModalForm && ["autonumber", "formula", "summary"].indexOf(field.type) > -1;
     let isValid = !fields || !fields.length || fields.indexOf(fieldName) > -1
-    if (!field.hidden && !isObjectField && !isOmitField && isValid){
+    // if (!field.hidden && !isObjectField && !isOmitField && isValid){
+    // 这里不可以直接把hidden的字段排除，因为hidden的字段需要加载但不显示，见：表单字段omit,hidden规则变更 #138
+    if (!isObjectField && isValid){
       fieldSchemaArray.push(defaults({name: fieldName}, field))
     }
   })
   forEach(fieldSchemaArray, (field:any)=>{
     fieldNames.push(field.name)
   })
-
+  let record: any;
   if (object && recordId) {
-    const recordCache = object.getRecord(recordId, fieldNames)
+    const fieldsForFetch = uniq(compact(fieldNames.concat(BASE_FIELDNAMES_FOR_PERMISSIONS)));
+    const recordCache = object.getRecord(recordId, fieldsForFetch)
     if (recordCache.isLoading)
       return (<div><Spin/></div>)
 
     if(recordCache.data && recordCache.data.value && recordCache.data.value.length > 0){
-      const record = recordCache.data.value[0];
+      record = recordCache.data.value[0];
       forEach(fieldNames, (fieldName:any)=>{
         let filedValue = record[fieldName];
         // 字段值为null等也传过去, null表示往数据库存空值。
@@ -225,7 +228,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
   forEach(mergedSchema.fields, (field, fieldName) => {
     if(!field.readonly){
       // 字段未配置readonly时，按权限取值
-      field.readonly = !API.client.field.isEditable(objectApiName, field, recordId && defaultValues)
+      field.readonly = !API.client.field.isEditable(objectApiName, field, record)
     }
   });
   return (
