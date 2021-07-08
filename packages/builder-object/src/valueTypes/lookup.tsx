@@ -26,7 +26,8 @@ export const LookupField = observer((props:any) => {
     const { valueType, mode, fieldProps, request, form, ...rest } = props;
     const { field_schema: fieldSchema = {},onChange, _grid_row_id, depend_field_values: dependFieldValues={} } = fieldProps;
     const { reference_to, reference_sort,reference_limit, showIcon, multiple, reference_to_field = "_id", filters: fieldFilters = [],filtersFunction, create = true, modal_mode, table_schema } = fieldSchema;
-    let value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    // TODO: 添加 fieldProps.defaultValue 修复lookup字段默认值显示value 而不显示label的bug。 select字段一直是正常了，lookup字段一开始是正常的，后面就出问题了。
+    let value = fieldProps.defaultValue || fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     let [ fieldsValue ,setFieldsValue ] = useState({});
     // 按原来lookup控件的设计，this.template.data._value为原来数据库中返回的选项值，this.template.data.value为当前用户选中的选项
     const optionsFunctionThis = {
