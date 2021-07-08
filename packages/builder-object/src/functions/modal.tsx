@@ -4,6 +4,8 @@ import { ObjectForm, SteedosProvider, ObjectModal, SpaceUsers, SpaceUsersModal, 
 import {
   BrowserRouter as Router
 } from "react-router-dom";
+import "./modal.less"
+import { defaultsDeep, has } from 'lodash'
 
 const withModalWrap = (component: React.FunctionComponent, provideProps) => {
   return (props: any) => {
@@ -51,6 +53,22 @@ export const showModal = (component: React.FunctionComponent, componentParams: a
   }
   let trigger = React.createElement("button", {className: `hidden steedos-modal-trigger-${componentParams.name}`});
   const wrapComponent: any = withModalWrap(ModalComponent, provideProps);
+
+  const defModalProps = {
+    width: "70%",
+    style: {
+      width: "70%",
+      maxWidth: "950px",
+      minWidth: "480px",
+    }
+  }
+
+  if(component == ObjectForm && ! has(componentParams, 'width')){
+    componentParams.width = '70%';
+  }
+
+  componentParams.modalProps = defaultsDeep({}, defModalProps, componentParams.modalProps || {})
+
   const contentEle = React.createElement(wrapComponent,{
     ...componentParams,
     trigger
