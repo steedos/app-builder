@@ -7,13 +7,14 @@ import { Objects, API, Settings } from "@steedos/builder-store"
 import { ObjectGrid, ObjectTreeGrid } from '@steedos/builder-ag-grid';
 
 export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
-  console.log("===ObjectTable===props==", props);
+  // console.log("===ObjectTable===props==", props);
   let {
     objectApiName,
     listName = "all",
     columnFields,
     filters,
     listSchema,
+    sort,
     ...rest
   } = props
   const object = objectApiName && Objects.getObject(objectApiName);
@@ -27,6 +28,9 @@ export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
   if(!filters || filters.length==0){
     filters = listView && getListViewFilters(listView, props);
   }
+  if(!sort || sort.length==0){
+    sort = listView && listView.sort;
+  }
   let TableComponent = ObjectGrid;
   if(schema.enable_tree){
     TableComponent = ObjectTreeGrid;
@@ -37,6 +41,7 @@ export const ObjectTable = observer((props: ObjectListViewProps<any>) => {
       objectApiName={objectApiName}
       columnFields={columnFields}
       filters={filters}
+      sort={sort}
       tableComponent={TableComponent}
       // className={["object-listview", rest.className].join(" ")}
       {...rest}

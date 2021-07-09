@@ -124,7 +124,7 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     columnFields = [],
     extraColumnFields = [],
     filters: defaultFilters,
-    sort,
+    sort: defaultSort,
     defaultClassName,
     onChange,
     toolbar,
@@ -144,7 +144,15 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
     ...rest
   } = props;
   const table = Tables.loadById(name, objectApiName,rowKey);
-  const [editedMap, setEditedMap] = useState({})
+  const [editedMap, setEditedMap] = useState({});
+  let sort = defaultSort;
+  if(sort && sort.length){
+    if(isArray(sort[0])){
+      sort = sort.map((item)=>{
+        return {field_name: item[0], order: item[1]} ;
+      });
+    }
+  }
   // 将初始值存放到 stroe 中。
   if(selectedRowKeys && selectedRowKeys.length){
     table.addSelectedRowsByKeys(selectedRowKeys, columnFields, rows, defaultFilters)
@@ -335,6 +343,11 @@ export const ObjectGrid = observer((props: ObjectGridProps<any>) => {
       let fieldSort = find(sort, (item)=>{
         return item.field_name === fieldName
       });
+
+      if(fieldSort && !fieldSort.order){
+        // 允许不配置order，不配置就按升序排序。
+        fieldSort.order = "asc";
+      }
 
       let fieldWidth = (columnItem as any).width ? (columnItem as any).width : (field.is_wide ? 300 : 150);
 
