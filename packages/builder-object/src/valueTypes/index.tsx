@@ -5,6 +5,7 @@ import { date } from './date';
 import { date_range } from './date_range';
 import { datetime } from './datetime';
 import { datetime_range } from './datetime_range';
+import { textarea } from './textarea';
 import { email } from './email';
 import { number } from './number';
 import { number_range } from './number_range';
@@ -33,6 +34,7 @@ export const StandardValueTypes = {
     date_range,
     datetime,
     datetime_range,
+    textarea,
     email,
     number,
     number_range,
