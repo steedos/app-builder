@@ -1,12 +1,24 @@
 import React from 'react'
-import ProField from "@ant-design/pro-field";
+import FieldTextArea from "@ant-design/pro-field/es/components/TextArea";
 
 export const textarea = {
   render: (text: any, props: any) => {
-    <ProField mode='read' valueType='textarea' {...props} />
+    const { fieldProps } = props;
+    let value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+    return (
+      <pre
+        style={{
+          whiteSpace: "pre-wrap"
+        }}
+      >
+        {value}
+      </pre>
+    )
   },
-  renderFormItem: (_: any, props: any) => (
-    <ProField mode='edit' valueType='textarea' {...props} />
-  ),
+  renderFormItem: (text: any, props: any) => {
+    return (
+      <FieldTextArea text={text as string} {...props} />
+    )
+  }
 }
 
