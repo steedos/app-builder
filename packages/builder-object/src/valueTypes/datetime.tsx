@@ -1,5 +1,6 @@
 import React from 'react';
 import ProField from "@ant-design/pro-field";
+import "moment/locale/zh-cn";
 
 // 日期时间类型字段
 // value 值为GMT标准时间
