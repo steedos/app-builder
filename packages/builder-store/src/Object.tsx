@@ -126,6 +126,13 @@ export const ObjectModel = types.model({
     return newRecord
   }
 
+  const reloadRecord = (recordId: string) => {
+    if (!recordId)
+      return null;
+    const record = self.recordCaches.get(recordId);
+    record?.loadRecord();
+  }
+
   const deleteRecord = (recordId: string)=>{
     if (!recordId){
       return null;
@@ -163,6 +170,7 @@ export const ObjectModel = types.model({
   return {
     loadObject,
     getRecord,
+    reloadRecord,
     deleteRecord,
     getRecordList
   }

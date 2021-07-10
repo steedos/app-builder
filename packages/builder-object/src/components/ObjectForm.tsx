@@ -249,6 +249,9 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       onValuesChange={onValuesChange}
       visible={visible}
       dateFormatter={false}
+      onKeyPress={(e) => {
+        if (e.key === "Enter") e.stopPropagation();
+      }}
       {...rest}
     >
       {children}
