@@ -3,6 +3,7 @@ import { formatFiltersToODataQuery } from '@steedos/filters';
 import { Select, Spin } from 'antd';
 import "antd/es/tree-select/style/index.css";
 import { isFunction, isArray, isObject, uniq, filter, map, forEach, isString, isEmpty} from 'lodash';
+import { concatFilters } from '@steedos/builder-sdk';
 import { Objects, API, Settings } from '@steedos/builder-store';
 import { observer } from "mobx-react-lite";
 import FieldSelect from '@ant-design/pro-field/es/components/Select';
@@ -84,7 +85,7 @@ export const LookupField = observer((props:any) => {
             referenceToObjectIcon = referenceToObjectSchema.icon;
         }
     }
-    let selectItem = [], recordListData: any, referenceTofilters: any, fields: any;
+    let selectItem = [], recordListData: any, referenceTofilters: any[] | string, fields: any;
     if(referenceToObject && value){
         referenceTofilters = [[reference_to_field, '=', value]];
         fields = uniq([reference_to_field, referenceToLableField, "_id"]);
@@ -101,9 +102,7 @@ export const LookupField = observer((props:any) => {
                 // 如果不是按ID查询要显示的数据，就把filters过滤条件加上然后再查询要显示的数据。
                 if(reference_to_field !== "_id" ){
                     const filters = filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters
-                    if(filters && isArray(filters) && filters.length){
-                        referenceTofilters.push(filters)
-                    }
+                    referenceTofilters = concatFilters(referenceTofilters,filters);
                 }
 
                 const recordList = referenceToObject.getRecordList(referenceTofilters, fields);
@@ -206,10 +205,7 @@ export const LookupField = observer((props:any) => {
                     }
                 }else{
                     const _filters = filtersFunction ? safeRunFunction(filtersFunction,[fieldFilters, optionsFunctionValues],BAD_FILTERS,optionsFunctionThis) : fieldFilters
-                    if(_filters && isArray(_filters) && _filters.length){
-                        referenceTofilters.push(_filters)
-                    }
-                    filters = referenceTofilters;
+                    filters = concatFilters(referenceTofilters,_filters);
                 }
                 let data = await API.requestRecords(referenceTo, filters, fields, option);
 

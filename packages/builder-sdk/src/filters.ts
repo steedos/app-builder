@@ -75,7 +75,7 @@ export const getFilterFormSchema = (objectSchema: any, fields?: [string])=>{
     return Object.assign({}, objectSchema, { fields: schemaFields });
 }
 
-export const concatFilters = (filtersA: [] | string, filtersB: [] | string) => {
+export const concatFilters = (filtersA: any[] | string, filtersB: any[] | string) => {
     if (filtersB && filtersB.length) {
         if (filtersA && filtersA.length) {
             if (isArray(filtersA) && isArray(filtersB)) {
