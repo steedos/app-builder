@@ -31,7 +31,7 @@ export const StandardValueTypes = {
     boolean,
     currency,
     currency_range,
-    // date,//放开会出现死循环，不放开功能正常
+    date,
     date_range,
     datetime,
     datetime_range,
