@@ -23,6 +23,8 @@ import { avatar } from './avatar';
 import { formula } from './formula';
 import { summary } from './summary';
 import { autonumber } from './autonumber';
+import { code } from './code';
+import { password } from './password';
 import { ComponentRegistry } from "@steedos/builder-store";
 import { defaultsDeep } from 'lodash';
 
@@ -30,7 +32,7 @@ export const StandardValueTypes = {
     boolean,
     currency,
     currency_range,
-    // date,//放开会出现死循环，不放开功能正常
+    date,
     date_range,
     datetime,
     datetime_range,
@@ -52,5 +54,7 @@ export const StandardValueTypes = {
     formula,
     summary,
     autonumber,
+    code,
+    password,
 };
 ComponentRegistry.valueTypes = defaultsDeep({}, ComponentRegistry.valueTypes, StandardValueTypes);
