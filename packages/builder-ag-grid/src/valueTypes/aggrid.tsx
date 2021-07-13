@@ -1,4 +1,4 @@
-import { forEach, isArray, remove } from 'lodash';
+import { forEach, isArray, remove, sortBy } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import ProField from "@ant-design/pro-field";
 import Dropdown from '@salesforce/design-system-react/components/menu-dropdown'; 
@@ -98,7 +98,7 @@ export const ObjectFieldGrid = (props) => {
   };
   const getColumns = ()=>{
 
-    const {sub_fields=[]} = fieldSchema;
+    let {sub_fields={}} = fieldSchema;
 
     const columns:any[] = [{
       rowDrag: mode == 'edit',
@@ -109,10 +109,15 @@ export const ObjectFieldGrid = (props) => {
       maxWidth: 35,
       minWidth: 35,
     }];
-    forEach(sub_fields, (field, fieldName)=>{
+    // 把 fieldName（字段名） 存到该对象（字段）值中去。
+    forEach(sub_fields,(field, fieldName) => {
+      sub_fields[fieldName]._key = fieldName;
+    });
+    // sortBy(sub_fields, "sort_no") 根据sort_no对列字段进行排序。（字段属性sort_no值越小当前列越靠近左边）
+    forEach(sortBy(sub_fields, "sort_no"), (field)=>{
       columns.push({
-        field: fieldName,
-        headerName: field.label?field.label:fieldName,
+        field: field._key,
+        headerName: field.label ? field.label : field._key,
         width: field.is_wide? 300: 150,
         minWidth: field.is_wide? 300: 150,
         resizable: true,
