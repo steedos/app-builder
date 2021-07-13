@@ -246,10 +246,18 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isDrawerForm={isDrawerForm}
       trigger={trigger}
       onFinish={async (values)=>{
-        setTimeout(async ()=>{
-          // console.log(`values`, JSON.stringify(values), JSON.stringify(currentForm.getFieldsValue(false)))
-          await onFinish(currentForm.getFieldsValue(false))
-        }, 150)
+        return new Promise(function(resolve, reject) {
+          setTimeout(async ()=>{
+            try {
+              const result = await onFinish(currentForm.getFieldsValue(false));
+              resolve(result);
+            } catch (error) {
+              reject(error);
+            }
+          }, 150)
+        });
+        
+       
       }}
       // omitNil={false}
       onValuesChange={onValuesChange}
