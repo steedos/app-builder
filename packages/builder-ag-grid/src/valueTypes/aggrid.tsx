@@ -166,6 +166,7 @@ export const ObjectFieldGrid = (props) => {
         animateRows={true}
         rowData={value}
         columnDefs={getColumns()}
+        suppressMovableColumns={mode === 'read' ? true : false}
         onRowDragEnd={onRowDragEnd.bind(this)}
         onCellClicked={onCellClicked}
         onCellValueChanged={onRowDragEnd.bind(this)}
