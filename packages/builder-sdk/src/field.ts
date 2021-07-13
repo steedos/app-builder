@@ -5,9 +5,6 @@ export default class ObjectField {
             if(!obj){
                 return false;
             }
-            if(obj.enable_inline_edit === false){
-                return false;
-            }
             if(!fieldSchema){
                 return false;
             }
