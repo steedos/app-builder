@@ -244,7 +244,12 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       isModalForm={isModalForm}
       isDrawerForm={isDrawerForm}
       trigger={trigger}
-      onFinish={onFinish}
+      onFinish={async (values)=>{
+        setTimeout(async ()=>{
+          // console.log(`values`, JSON.stringify(values), JSON.stringify(currentForm.getFieldsValue(false)))
+          await onFinish(currentForm.getFieldsValue(false))
+        }, 150)
+      }}
       // omitNil={false}
       onValuesChange={onValuesChange}
       visible={visible}

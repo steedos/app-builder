@@ -67,7 +67,7 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
   });
 
   useOnClickOutside(refEditor, (e) => {
-    setTimeout(() => props.api.stopEditing(false), 300);
+    setTimeout(() => props.api.stopEditing(false), 100);
   });
 
   // const IntervalID = setInterval(()=>{
@@ -96,15 +96,11 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
               }
               editedMap[props.data._id][props.colDef.field] = newValue;
             }
+            if (['lookup','select','master_detail'].indexOf(valueType)>=0 && fieldSchema.multiple != true){
+              return setTimeout(() => props.api.stopEditing(false), 100);
+            }
 
-            // if (['lookup','select','master_detail'].indexOf(valueType)>=0){
-            //   setTimeout(() => props.api.stopEditing(false), 100);
-            // }
             if(fieldSchema.multiple != true){
-              // if(!element?.target || document.activeElement != element.target){
-              //   setTimeout(() => props.api.stopEditing(false), 100);
-              // }
-  
               if(element?.target && document.activeElement === element.target){
                 
                 const IntervalID = setInterval(()=>{
@@ -115,7 +111,6 @@ export const AgGridCellEditor = forwardRef((props: any, ref) => {
                 }, 300)
               }
             }
-            
           }}
           fieldProps={{
             _grid_row_id: props.data._id,
