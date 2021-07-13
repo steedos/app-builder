@@ -98,7 +98,7 @@ export const ObjectFieldGrid = (props) => {
   };
   const getColumns = ()=>{
 
-    let {sub_fields={}} = fieldSchema;
+    let {sub_fields={} , readonly } = fieldSchema;
 
     const columns:any[] = [{
       rowDrag: mode == 'edit',
@@ -140,7 +140,7 @@ export const ObjectFieldGrid = (props) => {
         // dataIndex: fieldName,
         // title: field.label?field.label:fieldName,
         // valueType: field.type,
-        editable: !field.readonly,
+        editable: readonly ? false : !field.readonly,
       })
     });
     // 操作按钮
