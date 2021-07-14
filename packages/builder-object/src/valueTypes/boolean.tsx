@@ -2,13 +2,14 @@ import React from 'react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Checkbox } from 'antd';
 import Button from '@salesforce/design-system-react/components/button'; 
+import { isNil } from 'lodash'
 
 export const boolean = {
   render: (text: any, props: any)=> {
     const { fieldProps } = props;
     const { field_schema } = fieldProps;
     const { readonly } = field_schema;
-    let value = fieldProps.value || props.text;
+    let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
     if (value){
       return (<CheckIcon/>)
     }
@@ -31,7 +32,7 @@ export const boolean = {
   renderFormItem: (text: any, props: any) => {
     const { fieldProps } = props;
     const { onChange: formOnChange } = fieldProps;
-    let value = fieldProps.value || props.text;
+    let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
     function onChange(e) {
       formOnChange(e.target.checked);
     }
