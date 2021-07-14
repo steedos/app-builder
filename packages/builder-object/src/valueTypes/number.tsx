@@ -96,7 +96,7 @@ export const number = {
     )
   },
   renderFormItem: (_: any, props: any) => {
-    console.log("===props===", props);
+    // console.log("===props===", props);
     return (
       <FieldNumber mode='edit' {...props} />
     )
