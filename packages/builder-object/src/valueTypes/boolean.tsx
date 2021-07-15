@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from "react";
 import { CheckIcon } from '@chakra-ui/icons'
 import { Checkbox } from 'antd';
 import Button from '@salesforce/design-system-react/components/button'; 
@@ -37,10 +37,13 @@ export const boolean = {
     const { fieldProps } = props;
     const { onChange: formOnChange } = fieldProps;
     let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
+    // 添加useState的原因是 列表视图 和grid类型下boolean子字段不能来回切换其值。
+    const [checked, setChecked] = useState(value);
     function onChange(e) {
       formOnChange(e.target.checked);
+      setChecked(e.target.checked);
     }
-    return (<Checkbox onChange={onChange} checked={value}></Checkbox>)
+    return (<Checkbox onChange={onChange} checked={checked}></Checkbox>)
   }
 }
 
