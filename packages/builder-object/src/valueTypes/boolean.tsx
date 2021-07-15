@@ -10,13 +10,16 @@ export const boolean = {
     const { field_schema } = fieldProps;
     const { readonly } = field_schema;
     let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
-    if (value){
-      return (<CheckIcon/>)
-    }
-    else{
-      if (readonly) {
+    if(readonly){
+      if(value){
+        return (<CheckIcon/>)
+      }else{
         return (<span></span>);
-      } else {
+      }
+    }else{
+      if(value){
+        return (<Checkbox checked={value}  disabled={true}/>)
+      }else{
         return (
           <Button
             iconCategory="utility"
@@ -27,7 +30,7 @@ export const boolean = {
             variant="icon" />
         );
       }
-    }
+    } 
   },
   renderFormItem: (text: any, props: any) => {
     const { fieldProps } = props;
@@ -37,6 +40,6 @@ export const boolean = {
       formOnChange(e.target.checked);
     }
     return (<Checkbox onChange={onChange} checked={value}></Checkbox>)
-  },
+  }
 }
 
