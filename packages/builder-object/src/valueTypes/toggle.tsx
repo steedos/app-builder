@@ -10,9 +10,6 @@ export const toggle = {
     const { field_schema, onChange: formOnChange } = fieldProps;
     const { readonly } = field_schema;
     let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
-    function onChange(e) {
-      formOnChange(e.target.checked);
-    }
     if(readonly){
       if(value){
         return (<CheckIcon/>)
@@ -20,7 +17,7 @@ export const toggle = {
         return (<span></span>);
       }
     }else{
-      return (<Switch onChange={onChange} checked={value}  disabled={true}/>)
+      return (<Switch checked={value}  disabled={true}/>)
     }   
   },
   renderFormItem: (_: any, props: any) => {
