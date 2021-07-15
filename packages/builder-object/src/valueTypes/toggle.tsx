@@ -1,5 +1,4 @@
-import React from 'react'
-import ProField from "@ant-design/pro-field";
+import React, { useState }  from 'react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Switch } from "antd";
 import { isNil } from 'lodash'
@@ -21,9 +20,15 @@ export const toggle = {
     }   
   },
   renderFormItem: (_: any, props: any) => {
-    return (
-      <ProField mode='edit' valueType='switch' {...props} />
-    )
+    const { fieldProps } = props;
+    const { onChange: formOnChange } = fieldProps;
+    let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;
+    const [checked, setChecked] = useState(value);
+    function onChange(check: boolean,event: Event) {
+      formOnChange(check);
+      setChecked(check);
+    }
+    return (<Switch onChange={onChange} checked={checked}></Switch>)
   }
 }
 
