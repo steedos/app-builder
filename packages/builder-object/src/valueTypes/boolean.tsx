@@ -22,6 +22,7 @@ export const boolean = {
       }else{
         return (
           <Button
+            style={{marginLeft:'-4px'}}
             iconCategory="utility"
             iconName="steps"
             iconSize="small"
