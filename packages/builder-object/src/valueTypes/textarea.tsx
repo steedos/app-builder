@@ -6,13 +6,13 @@ export const textarea = {
     const { fieldProps } = props;
     let value = fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
     return (
-      <pre
+      <span title={value}
         style={{
           whiteSpace: "pre-wrap"
         }}
       >
         {value}
-      </pre>
+      </span>
     )
   },
   renderFormItem: (text: any, props: any) => {
