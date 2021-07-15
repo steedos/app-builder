@@ -64,7 +64,7 @@ const numberToString = (number: number | string, scale: number, notThousands: bo
 export const FieldNumber = (props:any) => {
   const { mode, fieldProps } = props;
   const { field_schema: fieldSchema = {} } = fieldProps;
-  let value= fieldProps.value || props.text;//ProTable那边fieldProps.value没有值，只能用text
+  let value = !isNil(fieldProps.value) ? fieldProps.value : props.text;//ProTable那边fieldProps.value没有值，只能用text
   let scale = fieldSchema.scale;
   // let precision = fieldSchema.precision;
   if(mode === "read"){
