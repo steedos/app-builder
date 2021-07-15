@@ -132,7 +132,7 @@ export const ObjectForm = observer((props:ObjectFormProps) => {
       if(fields[key].type === 'date'){
         // 日期字段设置为utc0点
         // 加moment.utc 是因为日期不应该减8小时再清空小时、分钟、秒， 否则可能会有误差（保存上一天的值）：例如  2021:07:06  ==>  2021:07:05 . 
-        extendValues[key] = moment.utc(value);
+        extendValues[key] = moment(value);
         extendValues[key].utcOffset(0);
         extendValues[key].hour(0);
         extendValues[key].minute(0);
