@@ -407,7 +407,7 @@ export function isExpression(func) {
   return false;
 }
 
-export function parseSingleExpression(func, formData = {}, dataPath) {
+export function parseSingleExpression(func, formData = {}, dataPath, global?) {
   const parentPath = getParentPath(dataPath);
   const parent = getValueByPath(formData, parentPath) || {};
   if (typeof func === 'string') {
@@ -415,6 +415,7 @@ export function parseSingleExpression(func, formData = {}, dataPath) {
     const str = `
     return ${funcBody
       .replace(/formData/g, JSON.stringify(formData))
+      .replace(/global/g, JSON.stringify(global))
       .replace(/rootValue/g, JSON.stringify(parent))}`;
 
     try {
@@ -467,12 +468,12 @@ export const schemaContainsExpression = (schema, shallow = true) => {
 };
 
 // TODO: 两个优化，1. 可以通过表达式的path来判断，避免一些重复计算
-export const parseAllExpression = (_schema, formData, dataPath) => {
+export const parseAllExpression = (_schema, formData, dataPath, global = {}) => {
   const schema = clone(_schema);
   Object.keys(schema).forEach(key => {
     const value = schema[key];
     if (isExpression(value)) {
-      schema[key] = parseSingleExpression(value, formData, dataPath);
+      schema[key] = parseSingleExpression(value, formData, dataPath, global);
     }
     // 有可能叫 xxxProps
     if (typeof key === 'string' && key.toLowerCase().indexOf('props') > -1) {
@@ -482,7 +483,8 @@ export const parseAllExpression = (_schema, formData, dataPath) => {
           schema[key][k] = parseSingleExpression(
             propsObj[k],
             formData,
-            dataPath
+            dataPath,
+            global
           );
         });
       }

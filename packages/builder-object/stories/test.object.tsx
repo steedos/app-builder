@@ -15,8 +15,12 @@ export default {
         },
       }
     },
-    test: {
+    test1: {
+      type: 'text'
+    },
+    test2: {
       type: 'text',
+      defaultValue: "{{formData.test1+global.userId}}"
     },
     /*
     testImage: {

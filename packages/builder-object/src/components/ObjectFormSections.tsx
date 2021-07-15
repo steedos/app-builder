@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useImperativeHandle } from "rea
 import { forEach, defaults, groupBy, filter, map, defaultsDeep, isObject, isBoolean, cloneDeep, sortBy, has} from 'lodash';
 import { ObjectField } from "./ObjectField";
 import { observer } from "mobx-react-lite"
-import stores, { Objects, Forms, API, Settings } from '@steedos/builder-store';
+import stores, { Objects, Forms, User, Settings } from '@steedos/builder-store';
 import { FieldSection } from "@steedos/builder-form";
 import { Spin } from 'antd';
 import { isDeepEqual, parseAllExpression, schemaContainsExpression } from "../utils/utils";
@@ -94,11 +94,11 @@ const getSection = (objectApiName, fieldSchemaArray, isModalForm, mode, sectionN
   )
 }
 
-const getSections = (objectApiName, mergedSchema, fields, isModalForm, mode, formData, form) => {
+const getSections = (objectApiName, mergedSchema, fields, isModalForm, mode, formData, form, globalData) => {
   const _schema = cloneDeep(mergedSchema);
   forEach(_schema.fields, (field, key)=>{
     if (schemaContainsExpression(field)) {
-      Object.assign(field, parseAllExpression(field, formData, "#"));
+      Object.assign(field, parseAllExpression(field, formData, "#", globalData));
       if(field.visible_on === false){
         field.hidden = true;
       }
@@ -129,7 +129,12 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
   let setTimeoutId = null;
 
   const mode = Forms.loadById(formId)?.mode;
-
+  const userSession = User.getSession();
+  const globalData = {
+    userId: Settings.userId,
+    spaceId: Settings.tenantId,
+    user: User.isLoading ? {} : userSession
+  };
   useImperativeHandle(props.onRef, () => {
     return {
       reCalcSchema: function(event, value){
@@ -137,7 +142,7 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
           clearTimeout(setTimeoutId);
         }
         setTimeoutId = setTimeout(()=>{
-          const newSections = getSections(objectApiName, objectSchema, fields, isModalForm, mode, value, form);
+          const newSections = getSections(objectApiName, objectSchema, fields, isModalForm, mode, value, form, globalData);
           if(!isDeepEqual(sections, newSections)){
             setSections(newSections)
           }
@@ -151,7 +156,7 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
   if (object && object.isLoading) return (<div><Spin/></div>)
 
   useEffect(() => {
-    setSections(getSections(objectApiName, objectSchema, fields, isModalForm, mode, formData, form))
+    setSections(getSections(objectApiName, objectSchema, fields, isModalForm, mode, formData, form, globalData))
   }, [JSON.stringify(objectSchema), JSON.stringify(formData), mode]);
 
   return (
