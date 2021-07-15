@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import FieldDatePicker from "@ant-design/pro-field/es/components/DatePicker";
 import "moment/locale/zh-cn";
+import { onChange } from '@builder.io/react';
 
 // 日期类型字段
 // value 值为GMT标准时间的0点
@@ -13,7 +14,7 @@ export const date = {
   },
   renderFormItem: (text: any, props: any) => {
     const { fieldProps , format = "YYYY-MM-DD"} = props;
-    const { defaultValue } = fieldProps;
+    const { onChange: formOnChange, defaultValue } = fieldProps;
 
     if(defaultValue){
       if(moment.isMoment(defaultValue)){
@@ -22,8 +23,15 @@ export const date = {
         fieldProps.defaultValue= moment(defaultValue, format);
       }
     }
+    
+    function onChange(date, dateString: string){
+      formOnChange(dateString)
+    }
+    let newFieldProps = Object.assign({}, {...fieldProps}, {
+      onChange
+    })
     return (
-      <FieldDatePicker text={text as string} format={format} {...props} />
+      <FieldDatePicker text={text as string} format={format} {...props} fieldProps={newFieldProps} />
     )
   }
 }
