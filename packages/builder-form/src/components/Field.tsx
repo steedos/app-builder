@@ -95,8 +95,10 @@ export const Field = observer((props: any) => {
       fieldProps,
       dependFieldValues,proFieldProps: defaultProFieldProps, ...rest } = props
 
+    // 当'boolean','toggle'组件设置emptyText 为 false 时，字段值为空时只读模式下使其进入valueTypes中定义的render函数。
+    const emptyText = ['boolean', 'toggle'].indexOf(valueType) > -1 ? false : '';
     const proFieldProps = {
-      emptyText: '',
+      emptyText: emptyText,
       fieldProps: Object.assign({}, fieldProps, {
         field_schema: fieldSchema,
         placeholder,
