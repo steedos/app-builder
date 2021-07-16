@@ -133,7 +133,8 @@ export const ObjectFormSections = observer((props:ObjectFormSectionsProps) => {
   const globalData = {
     userId: Settings.userId,
     spaceId: Settings.tenantId,
-    user: User.isLoading ? {} : userSession
+    user: User.isLoading ? {} : userSession, 
+    now: new Date()
   };
   useImperativeHandle(props.onRef, () => {
     return {
