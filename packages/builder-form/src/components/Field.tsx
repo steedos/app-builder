@@ -114,14 +114,6 @@ export const Field = observer((props: any) => {
       }
       if (fieldProps.value === undefined && !isNil(defaultValue)) {
         let formValue = defaultValue;
-        // if(formValue === '{userId}'){
-        //   const userId = API.client.getUserId();
-        //   formValue = fieldSchema.multiple ? [userId] : userId;
-        // }
-        // else if(formValue === '{spaceId}'){
-        //   const spaceId = API.client.getSpaceId();
-        //   formValue = fieldSchema.multiple ? [spaceId] : spaceId;
-        // }
         proFieldProps.fieldProps.onChange(formValue);
         proFieldProps.fieldProps.defaultValue = formValue;
       }
