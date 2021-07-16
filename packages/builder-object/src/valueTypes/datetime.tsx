@@ -9,11 +9,11 @@ import "moment/locale/zh-cn";
 export const datetime = {
   render: (text: any, props: any) => {
     return (
-      <ProField mode='read' valueType='dateTime' {...props} />
+      <ProField mode='read' valueType='dateTime' {...props} format="YYYY-MM-DD HH:mm" />
     )
   },
   renderFormItem: (text: any, props: any) => {
-    const { fieldProps , format = "YYYY-MM-DD HH:mm:ss"} = props;
+    const { fieldProps , format = "YYYY-MM-DD HH:mm"} = props;
     const { defaultValue } = fieldProps;
 
     if(defaultValue){
