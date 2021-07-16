@@ -23,7 +23,7 @@ export const date = {
         fieldProps.defaultValue= moment(defaultValue, format);
       }
     }
-    
+    // 重写onChange()并且修改formOnChange()传入值的原因是： 当(0-8点期间)点击控件里的 ‘今天' 会导致（选择的）2021-07-16 ==> （最终保存为）2021-07-15;
     function onChange(date, dateString: string){
       formOnChange(dateString)
     }
