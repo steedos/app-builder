@@ -27,6 +27,8 @@ export const AgGridCellRenderer = (props: any) => {
       return render(dom, data)
     }
   }
+  // 当emptyText={false}时，boolean或toggle字段，数据库中无值，会进入valueTypes中自定义render（只读）。
+  const emptyText = ['boolean', 'toggle'].indexOf(valueType) > -1 ? false : '';
   return (
     
     <ProField 
@@ -39,7 +41,7 @@ export const AgGridCellRenderer = (props: any) => {
       }}
       form={form}
       text={value}
-      emptyText=''
+      emptyText={emptyText}
       />
   ) 
 }
