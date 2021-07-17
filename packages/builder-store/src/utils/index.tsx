@@ -23,20 +23,24 @@ export function safeEval(js: string){
   取当前工作区的信息
   ID: {spaceId}
   ===========
-  
  * @param express 
  */
-const getCompatibleDefaultValueExpression = (express: string)=>{
+const getCompatibleDefaultValueExpression = (express: string, multiple?: boolean)=>{
   const reg = /^\{\w+(\.*\w+)*\}$/;//只转换{}包着的老语法，新语法是两层大括号{{}}，不运行转换
+  let result = express;
   if(reg.test(express)){
     if(express.indexOf("userId") > -1 || express.indexOf("spaceId") > -1 || express.indexOf("user.") > -1 || express.indexOf("now") > -1){
-      return `{${express}}`.replace("{{", "{{global.");
+      result = `{${express}}`.replace("{{", "{{global.");
     }
     else{
-      return `{${express}}`.replace("{{", "{{formData.");
+      result = `{${express}}`.replace("{{", "{{formData.");
+    }
+    if(multiple){
+      // 如果是多选字段，则返回值应该加上中括号包裹，表示返回数组
+      result = result.replace(/\{\{(.+)\}\}/, "{{[$1]}}")
     }
   }
-  return express;
+  return result;
 }
 
 const getFieldSchema = (fieldName: any, objectConfig: any)=>{
@@ -135,7 +139,7 @@ const getFieldSchema = (fieldName: any, objectConfig: any)=>{
   }
   else if(typeof field.defaultValue === "string"){
     // _defaultValue属性存在说明defaultValue是一个function，不需要进行公式表达式兼容性转换
-    fieldSchema = Object.assign({}, fieldSchema, {defaultValue: getCompatibleDefaultValueExpression(field.defaultValue)});
+    fieldSchema = Object.assign({}, fieldSchema, {defaultValue: getCompatibleDefaultValueExpression(field.defaultValue, field.multiple)});
   }
 
   if(["autonumber", "formula", "summary"].indexOf(fieldType) > -1){
